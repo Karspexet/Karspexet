@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'tickets.apps.TicketsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,8 +79,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'karspexet',
-        'USER': 'django',
-        'PASSWORD': '',
+        # 'USER': 'django',
+        # 'PASSWORD': '',
         'HOST': '', # Connect thorugh UNIX socket
         'TEST': {
             'NAME': 'karspexet-test',
