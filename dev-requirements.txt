@@ -14,3 +14,4 @@ six==1.10.0
 tox==2.3.1
 wcwidth==0.1.6
 wheel==0.24.0
+codeclimate-test-reporter==0.1.0
