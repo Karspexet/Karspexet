@@ -50,7 +50,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Karspexet.urls'
+ROOT_URLCONF = 'karspexet.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Karspexet.wsgi.application'
+WSGI_APPLICATION = 'karspexet.wsgi.application'
 
 
 # Database
