@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,18 +76,8 @@ WSGI_APPLICATION = 'karspexet.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'karspexet',
-        'USER': 'django',
-        'PASSWORD': '',
-        'HOST': '', # Connect thorugh UNIX socket
-        'TEST': {
-            'NAME': 'karspexet-test',
-        },
-    }
+    'default': dj_database_url.config(default='postgres://127.0.0.1/karspexet'),
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
