@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,6 +31,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+OUR_APPS = [
+    'karspexet.show',
+    'karspexet.ticket',
+    'karspexet.venue',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+] + OUR_APPS
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,18 +82,8 @@ WSGI_APPLICATION = 'karspexet.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'karspexet',
-        'USER': 'django',
-        'PASSWORD': '',
-        'HOST': '', # Connect thorugh UNIX socket
-        'TEST': {
-            'NAME': 'karspexet-test',
-        },
-    }
+    'default': dj_database_url.config(default='postgres://127.0.0.1/karspexet'),
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -110,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'sv_SE'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
