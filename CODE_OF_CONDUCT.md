@@ -34,6 +34,6 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported by sending an e-mail to abuse@karspexet.se.
 
 This Code of Conduct is adapted from the [Contributor Covenant][1], version
-1.2.0, available at http://contributor-covenant.org/version/1/2/0/
+1.2.0, available at [http://contributor-covenant.org/version/1/2/0/]()
 
 [1]: http://contributor-covenant.org
