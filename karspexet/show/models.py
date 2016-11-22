@@ -13,3 +13,7 @@ class Show(models.Model):
     production = models.ForeignKey(Production, on_delete=models.PROTECT)
     date = models.DateField()
     venue = models.ForeignKey('venue.Venue', on_delete=models.PROTECT)
+
+
+    def __str__(self):
+        return self.production.name + " " + self.date.strftime("%Y-%m-%d %H:%M")
