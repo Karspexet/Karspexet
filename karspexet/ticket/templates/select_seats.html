@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Köp biljetter för {{ show }}</h2>
+    <div>
+        <form method="post" action="{% url "select_seats" show.id %}">
+            {% csrf_token %}
+
+            {% for seating_group in forms %}
+                <div class="seating-group">
+                    <h3>{{ seating_group.seating_group.name }}</h3>
+                    {% for form in seating_group.forms %}
+                        {{ form.as_p }}
+                    {%  endfor %}
+                </div>
+
+            {% endfor %}
+
+            <input type="submit" value="Boka!">
+        </form>
+    </div>
+{% endblock %}
