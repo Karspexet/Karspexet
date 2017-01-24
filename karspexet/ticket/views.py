@@ -11,6 +11,7 @@ def home(request):
         'upcoming_shows': upcoming_shows
     })
 
+
 def select_seats(request, show_id):
     show = Show.objects.get(id=show_id)
     forms = [SeatingGroupFormSet(seating_group) for seating_group in show.venue.seatinggroup_set.all()]

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.postgres.fields import HStoreField
 from django.db import models
 
 
@@ -7,6 +8,7 @@ from django.db import models
 
 class Reservation(models.Model):
     total = models.IntegerField()
+    tickets = HStoreField()
 
 
 class Ticket(models.Model):
