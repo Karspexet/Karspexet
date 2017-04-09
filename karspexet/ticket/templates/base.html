@@ -4,6 +4,15 @@
   </head>
   <body>
     <h1>Kårspexet - Biljetter</h1>
+    {% if messages %}
+    <section>
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
     {% block content %}
     {% endblock %}
   </body>
