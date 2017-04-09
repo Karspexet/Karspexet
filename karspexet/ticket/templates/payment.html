@@ -1,0 +1,16 @@
+<h2>Kontaktuppgifter</h2>
+
+<h3>Bokning</h3>
+<dl>
+    <dt>Föreställning</dt>
+    <dd>{{show}}</dd>
+    <dt>Platser</dt>
+    <dd>
+        <ul>
+            {% for seat in seats %}
+            <li>{{ seat }}</li>
+            {% endfor %}
+        </ul>
+    </dd>
+</dl>
+<p>Den här bokningen är giltig till och med <span class="session-timeout">{{ reservation.session_timeout|date:"c" }}</span>.</p>
