@@ -14,3 +14,18 @@
     </dd>
 </dl>
 <p>Den här bokningen är giltig till och med <span class="session-timeout">{{ reservation.session_timeout|date:"c" }}</span>.</p>
+
+<form action="{% url "process_payment" reservation.id %}" method="POST">
+  {% csrf_token %}
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="{{ stripe_key }}"
+    data-amount="26000"
+    data-name="Kårspexet"
+    data-description="Biljetter"
+    data-image="https://ceri.se/luva-transparent.png"
+    data-locale="auto"
+    data-zip-code="false"
+    data-currency="sek">
+  </script>
+</form>

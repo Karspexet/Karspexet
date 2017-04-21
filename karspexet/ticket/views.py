@@ -11,6 +11,13 @@ from karspexet.venue.models import Seat
 from karspexet.ticket.models import Reservation
 from karspexet.ticket.forms import TicketTypeForm, SeatingGroupFormSet
 
+import stripe
+from django.conf import settings
+
+stripe_keys = settings.ENV["stripe"]
+
+stripe.api_key = stripe_keys['secret_key']
+
 # TODO: Do we need to nuke the session in select_seats? I think it's only necessary in the latter steps.
 # Also, have longer timeout than 15 minutes
 # Then, double check the timeout before asking stripe about the charge.payment
@@ -73,7 +80,41 @@ def payment(request, show_id):
         'show': show,
         'seats': seats,
         'reservation': reservation,
+        'stripe_key': stripe_keys['publishable_key'],
     })
+
+def process_payment(request, reservation_id):
+    reservation = Reservation.objects.get(pk=reservation_id)
+
+    if request.POST:
+        amount = 26000 # Öre
+
+        stripe_token_type = request.POST['stripeTokenType']
+        stripe_email = request.POST['stripeEmail']
+        stripe_token = request.POST['stripeToken']
+
+        customer = stripe.Customer.create(
+            email=stripe_email,
+            source=stripe_token
+        )
+        charge = stripe.Charge.create(
+            customer=customer.id,
+            amount=amount,
+            currency="sek",
+            description="Biljetter till Kårspexet"
+        )
+
+        reservation.finalized = True
+        reservation.save()
+        request.session['reservation_timeout'] = None
+        request.session['reservation_id'] = None
+
+        return render(request, 'payment_succeeded.html', {
+            'reservation': reservation,
+        })
+
+
+    pass
 
 
 def _session_expired(request):

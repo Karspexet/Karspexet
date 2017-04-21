@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import dj_database_url
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,3 +131,18 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try:
+    with open(BASE_DIR + "/env.json") as env_json:
+        ENV = json.load(env_json)
+except FileNotFoundError:
+    import sys
+    sys.stderr.write("""
+    ================================================================================
+    No env.json settings file found.
+
+    Try starting with the sample one:
+
+    cp env.json.sample env.json
+    """)
+    sys.exit(1)

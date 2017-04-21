@@ -22,6 +22,8 @@ class Reservation(models.Model):
     tickets = HStoreField()
     session_timeout = models.DateTimeField()
     finalized = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified_at = models.DateTimeField(auto_now=True)
 
     objects = models.Manager()
     active = ActiveReservationsManager()
