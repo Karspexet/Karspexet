@@ -11,10 +11,10 @@ from karspexet.venue.models import Venue, SeatingGroup
 
 
 class TestHome(TestCase):
-    def test_home(self):
+    def test_home_lists_upcoming_shows(self):
         venue = Venue.objects.create(name="Teater 1")
         production = Production.objects.create(name="Uppsättningen")
-        date = timezone.datetime(2017,1,30,18,0)
+        date = timezone.now()+timezone.timedelta(days=1)
         show = Show.objects.create(date=date, production=production, venue=venue)
 
         response = self.client.get(reverse(views.home))
