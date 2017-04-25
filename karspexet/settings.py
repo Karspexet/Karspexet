@@ -145,4 +145,4 @@ except FileNotFoundError:
 
     cp env.json.sample env.json
     """)
-    sys.exit(1)
+    exit(1)
