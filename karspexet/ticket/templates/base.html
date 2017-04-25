@@ -1,8 +1,11 @@
+{% load staticfiles %}
 <html lang="sv">
   <head>
     <title>Kårspexet - Biljetter</title>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
   </head>
   <body>
+    <img src="{% static 'luva-transparent.png' %}" alt="Kårspexet logo">
     <h1>Kårspexet - Biljetter</h1>
     {% if messages %}
     <section>

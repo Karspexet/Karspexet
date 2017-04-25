@@ -132,6 +132,9 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 try:
     with open(BASE_DIR + "/env.json") as env_json:
         ENV = json.load(env_json)
