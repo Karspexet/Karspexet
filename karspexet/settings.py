@@ -140,12 +140,12 @@ try:
         ENV = json.load(env_json)
 except FileNotFoundError:
     import sys
-    sys.stderr.write("""
+    print("""
     ================================================================================
     No env.json settings file found.
 
     Try starting with the sample one:
 
     cp env.json.sample env.json
-    """)
+    """, file=sys.stderr)
     exit(1)
