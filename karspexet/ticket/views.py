@@ -5,6 +5,7 @@ from django.forms.formsets import formset_factory
 from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 
 from karspexet.show.models import Show
 from karspexet.venue.models import Seat
@@ -83,6 +84,7 @@ def payment(request, show_id):
         'stripe_key': stripe_keys['publishable_key'],
     })
 
+@transaction.atomic
 def process_payment(request, reservation_id):
     reservation = Reservation.objects.get(pk=reservation_id)
 
