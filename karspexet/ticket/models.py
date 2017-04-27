@@ -34,8 +34,12 @@ class Account(models.Model):
 
 
 class Ticket(models.Model):
+    TICKET_TYPES = [
+        ("normal", "Fullpris"),
+        ("student", "Student"),
+    ]
     price = models.IntegerField()
-    ticket_type = models.CharField(max_length=10) # TODO: Validate that ticket type is in ["normal", "student"]
+    ticket_type = models.CharField(max_length=10, choices=TICKET_TYPES, default="normal")
     show = models.ForeignKey(Show, null=False)
     seat = models.ForeignKey(Seat, null=False)
     account = models.ForeignKey(Account, null=False)
