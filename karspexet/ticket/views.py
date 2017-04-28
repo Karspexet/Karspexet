@@ -19,9 +19,7 @@ stripe_keys = settings.ENV["stripe"]
 
 stripe.api_key = stripe_keys['secret_key']
 
-# TODO: Do we need to nuke the session in select_seats? I think it's only necessary in the latter steps.
-# Also, have longer timeout than 15 minutes
-# Then, double check the timeout before asking stripe about the charge.payment
+SESSION_TIMEOUT_MINUTES = 30
 
 
 def home(request):
@@ -61,11 +59,9 @@ def select_seats(request, show_id):
     })
 
 def payment(request, show_id):
-    # TODO: verify that reservation_timeout has not passed
-    # TODO: call stripe and verify data
+    # TODO:
     # * create account/customer object
     # * create ticket objects
-    # * mark reservation as paid
     # * send email to customer
 
     if _session_expired(request):
@@ -87,6 +83,10 @@ def payment(request, show_id):
 @transaction.atomic
 def process_payment(request, reservation_id):
     reservation = Reservation.objects.get(pk=reservation_id)
+
+    if _session_expired(request):
+        messages.warning(request, "Your session has expired. Please start over from scratch.")
+        return redirect("select_seats", show_id=reservation.show_id)
 
     if request.POST:
         amount = 26000 # Öre
@@ -126,10 +126,10 @@ def _session_expired(request):
         return timeout < timezone.now()
 
 def _set_session_timeout(request):
-    request.session['reservation_timeout'] = (timezone.now() + relativedelta(minutes=15)).isoformat()
+    request.session['reservation_timeout'] = (timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
 
 def _get_or_create_reservation_object(request, show):
-    timeout = timezone.now() + relativedelta(minutes=15)
+    timeout = timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)
 
     if request.session.get('reservation_id'):
         try:
