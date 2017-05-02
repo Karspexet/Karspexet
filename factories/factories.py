@@ -35,3 +35,7 @@ class CreateReservation(DjangoModelFactory):
 class CreateReservation(DjangoModelFactory):
     class Meta:
         model = 'ticket.voucher'
+
+class CreatePricingModel(DjangoModelFactory):
+    class Meta:
+        model = 'ticket.pricingmodel'

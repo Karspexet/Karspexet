@@ -59,11 +59,6 @@ def select_seats(request, show_id):
     })
 
 def payment(request, show_id):
-    # TODO:
-    # * create account/customer object
-    # * create ticket objects
-    # * send email to customer
-
     if _session_expired(request):
         messages.warning(request, "Your session has expired. Please start over from scratch.")
         return redirect("select_seats", show_id=show_id)
@@ -82,6 +77,11 @@ def payment(request, show_id):
 
 @transaction.atomic
 def process_payment(request, reservation_id):
+    # TODO:
+    # * create account/customer object
+    # * create ticket objects
+    # * send email to customer
+
     reservation = Reservation.objects.get(pk=reservation_id)
 
     if _session_expired(request):
@@ -89,7 +89,7 @@ def process_payment(request, reservation_id):
         return redirect("select_seats", show_id=reservation.show_id)
 
     if request.POST:
-        amount = 26000 # Öre
+        amount = reservation.total_price() * 100 # Öre
 
         stripe_token_type = request.POST['stripeTokenType']
         stripe_email = request.POST['stripeEmail']

@@ -1,3 +1,4 @@
+from functools import reduce
 from django.conf import settings
 from django.contrib.postgres.fields import HStoreField
 from django.db import models
@@ -5,8 +6,12 @@ from django.db.models import Q
 from django.utils import timezone
 
 from karspexet.show.models import Show
-from karspexet.venue.models import Seat
+from karspexet.venue.models import Seat, SeatingGroup
 
+TICKET_TYPES = [
+    ("normal", "Fullpris"),
+    ("student", "Student"),
+]
 
 class ActiveReservationsManager(models.Manager):
     def get_queryset(self):
@@ -25,6 +30,10 @@ class Reservation(models.Model):
     objects = models.Manager()
     active = ActiveReservationsManager()
 
+    def total_price(self):
+        seats = Seat.objects.filter(pk__in=self.tickets.keys()).all()
+        return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[seat.id]))), seats, 0)
+
 
 class Account(models.Model):
     name = models.CharField(max_length=255)
@@ -34,10 +43,6 @@ class Account(models.Model):
 
 
 class Ticket(models.Model):
-    TICKET_TYPES = [
-        ("normal", "Fullpris"),
-        ("student", "Student"),
-    ]
     price = models.IntegerField()
     ticket_type = models.CharField(max_length=10, choices=TICKET_TYPES, default="normal")
     show = models.ForeignKey(Show, null=False)
@@ -53,3 +58,27 @@ class Voucher(models.Model):
     rebate_amount = models.IntegerField(help_text="Rabatt i SEK")
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
+
+
+class ActivePricingModelManager(models.Manager):
+    def active(self, timestamp=None):
+        if not timestamp:
+            timestamp = timezone.now()
+        return super().get_queryset().filter(valid_from__lte=timestamp).order_by("-valid_from")
+
+
+class PricingModel(models.Model):
+    """
+    A pricing model for a seating group.
+    """
+
+    seating_group = models.ForeignKey(SeatingGroup, null=False)
+    prices = HStoreField(null=False)
+    valid_from = models.DateTimeField(null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified_at = models.DateTimeField(auto_now=True)
+
+    objects = ActivePricingModelManager()
+
+    def price_for(self, ticket_type):
+        return int(self.prices[ticket_type])

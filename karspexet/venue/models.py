@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Venue(models.Model):
@@ -17,6 +18,9 @@ class SeatingGroup(models.Model):
     def __str__(self):
         return self.name
 
+    def active_pricing_model(self, timestamp=None):
+        return self.pricingmodel_set.active(timestamp).filter(seating_group_id=self.id).first()
+
 
 class Seat(models.Model):
     group = models.ForeignKey(SeatingGroup, on_delete=models.CASCADE)
@@ -24,3 +28,6 @@ class Seat(models.Model):
 
     def __str__(self):
         return self.name
+
+    def price_for_type(self, ticket_type, timestamp=None):
+        return self.group.active_pricing_model(timestamp).price_for(ticket_type)
