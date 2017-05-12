@@ -1,23 +1,19 @@
-from dateutil.relativedelta import relativedelta
 from dateutil import parser
-from django.shortcuts import render, redirect
-from django.forms.formsets import formset_factory
-from django.utils import timezone
+from dateutil.relativedelta import relativedelta
+
+from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.forms.formsets import formset_factory
+from django.shortcuts import render, redirect
+from django.utils import timezone
 
 from karspexet.show.models import Show
-from karspexet.venue.models import Seat
-from karspexet.ticket.models import Reservation, Account, Ticket
 from karspexet.ticket.forms import TicketTypeForm, SeatingGroupFormSet
-
-import stripe
-from django.conf import settings
+from karspexet.ticket.models import Reservation
+from karspexet.ticket.payment import PaymentError, PaymentProcess
 
 stripe_keys = settings.ENV["stripe"]
-
-stripe.api_key = stripe_keys['secret_key']
 
 SESSION_TIMEOUT_MINUTES = 30
 
@@ -66,21 +62,15 @@ def payment(request, show_id):
     _set_session_timeout(request)
     show = Show.objects.get(pk=show_id)
     reservation = _get_or_create_reservation_object(request, show)
-    seats = Seat.objects.filter(pk__in=reservation.tickets.keys())
 
     return render(request, 'payment.html', {
-        'show': show,
-        'seats': seats,
+        'seats': reservation.seats(),
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
     })
 
-@transaction.atomic
 def process_payment(request, reservation_id):
     # TODO:
-    # * create account/customer object
-    #   * with stripe customer id? (maybe no, it seems unsafe)
-    # * create ticket objects
     # * send email to customer (with tickets)
 
     reservation = Reservation.objects.get(pk=reservation_id)
@@ -89,48 +79,22 @@ def process_payment(request, reservation_id):
         messages.warning(request, "Your session has expired. Please start over from scratch.")
         return redirect("select_seats", show_id=reservation.show_id)
 
-    if request.POST:
-        amount = reservation.total_price() * 100 # Öre
+    if request.method == 'POST':
+        try:
+            reservation = PaymentProcess.run(reservation, request.POST)
+            request.session['reservation_timeout'] = None
+            request.session['reservation_id'] = None
 
-        email = request.POST['email']
-        phone = request.POST['phone']
-        name = request.POST['name']
-        stripe_token = request.POST['stripeToken']
-
-        account = Account.objects.create(
-            name=name,
-            phone=phone,
-            email=email
-        )
-
-        charge = stripe.Charge.create(
-            source=stripe_token,
-            amount=amount,
-            currency="sek",
-            description="Biljetter till Kårspexet"
-        )
-
-        for seat_id, ticket_type in reservation.tickets.items():
-            seat = Seat.objects.get(pk=seat_id)
-            Ticket.objects.create(
-                price=seat.price_for_type(ticket_type),
-                ticket_type=ticket_type,
-                show=reservation.show,
-                seat=seat,
-                account=account
-            )
-
-        reservation.finalized = True
-        reservation.save()
-        request.session['reservation_timeout'] = None
-        request.session['reservation_id'] = None
-
-        return render(request, 'payment_succeeded.html', {
-            'reservation': reservation,
-        })
-
-
-    pass
+            return render(request, 'payment_succeeded.html', {
+                'reservation': reservation,
+            })
+        except PaymentError as e:
+            return render(request, "payment.html", {
+                'reservation': reservation,
+                'seats': reservation.seats(),
+                'stripe_key': stripe_keys['publishable_key'],
+                'payment_failedj': True,
+            })
 
 
 def _session_expired(request):

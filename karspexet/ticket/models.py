@@ -30,9 +30,11 @@ class Reservation(models.Model):
     objects = models.Manager()
     active = ActiveReservationsManager()
 
+    def seats(self):
+        return Seat.objects.filter(pk__in=self.tickets.keys()).all()
+
     def total_price(self):
-        seats = Seat.objects.filter(pk__in=self.tickets.keys()).all()
-        return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), seats, 0)
+        return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), self.seats(), 0)
 
 
 class Account(models.Model):

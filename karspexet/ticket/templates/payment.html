@@ -3,7 +3,7 @@
 <h3>Bokning</h3>
 <dl>
     <dt>Föreställning</dt>
-    <dd>{{show}}</dd>
+    <dd>{{ reservation.show }}</dd>
     <dt>Platser</dt>
     <dd>
         <ul>
@@ -14,6 +14,12 @@
     </dd>
 </dl>
 <p>Den här bokningen är giltig till och med <span class="session-timeout">{{ reservation.session_timeout|date:"c" }}</span>.</p>
+
+{% if payment_failed %}
+<div>
+    <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
+</div>
+{% endif %}
 
 <script src="https://js.stripe.com/v3/"></script>
 <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
