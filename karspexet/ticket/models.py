@@ -52,6 +52,8 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
+    def __repr__(self):
+        return "<Ticket %s | %s | %s>" % (self.ticket_type, self.show, self.seat)
 
 class Voucher(models.Model):
     reservation = models.ForeignKey(Reservation, null=True)
