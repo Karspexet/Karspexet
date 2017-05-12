@@ -32,12 +32,13 @@ class Reservation(models.Model):
 
     def total_price(self):
         seats = Seat.objects.filter(pk__in=self.tickets.keys()).all()
-        return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[seat.id]))), seats, 0)
+        return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), seats, 0)
 
 
 class Account(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
+    phone = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 

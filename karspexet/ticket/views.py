@@ -9,7 +9,7 @@ from django.db import transaction
 
 from karspexet.show.models import Show
 from karspexet.venue.models import Seat
-from karspexet.ticket.models import Reservation
+from karspexet.ticket.models import Reservation, Account, Ticket
 from karspexet.ticket.forms import TicketTypeForm, SeatingGroupFormSet
 
 import stripe
@@ -79,8 +79,9 @@ def payment(request, show_id):
 def process_payment(request, reservation_id):
     # TODO:
     # * create account/customer object
+    #   * with stripe customer id? (maybe no, it seems unsafe)
     # * create ticket objects
-    # * send email to customer
+    # * send email to customer (with tickets)
 
     reservation = Reservation.objects.get(pk=reservation_id)
 
@@ -91,20 +92,33 @@ def process_payment(request, reservation_id):
     if request.POST:
         amount = reservation.total_price() * 100 # Öre
 
-        stripe_token_type = request.POST['stripeTokenType']
-        stripe_email = request.POST['stripeEmail']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        name = request.POST['name']
         stripe_token = request.POST['stripeToken']
 
-        customer = stripe.Customer.create(
-            email=stripe_email,
-            source=stripe_token
+        account = Account.objects.create(
+            name=name,
+            phone=phone,
+            email=email
         )
+
         charge = stripe.Charge.create(
-            customer=customer.id,
+            source=stripe_token,
             amount=amount,
             currency="sek",
             description="Biljetter till Kårspexet"
         )
+
+        for seat_id, ticket_type in reservation.tickets.items():
+            seat = Seat.objects.get(pk=seat_id)
+            Ticket.objects.create(
+                price=seat.price_for_type(ticket_type),
+                ticket_type=ticket_type,
+                show=reservation.show,
+                seat=seat,
+                account=account
+            )
 
         reservation.finalized = True
         reservation.save()

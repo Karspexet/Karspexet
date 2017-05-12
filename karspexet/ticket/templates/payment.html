@@ -15,17 +15,38 @@
 </dl>
 <p>Den här bokningen är giltig till och med <span class="session-timeout">{{ reservation.session_timeout|date:"c" }}</span>.</p>
 
-<form action="{% url "process_payment" reservation.id %}" method="POST">
-  {% csrf_token %}
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="{{ stripe_key }}"
-    data-amount="26000"
-    data-name="Kårspexet"
-    data-description="Biljetter"
-    data-image="https://ceri.se/luva-transparent.png"
-    data-locale="auto"
-    data-zip-code="false"
-    data-currency="sek">
-  </script>
+<script src="https://js.stripe.com/v3/"></script>
+<form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
+    {% csrf_token %}
+    <div class="group">
+    <label>
+      <span>Namn</span>
+      <input name="name" class="field" placeholder="Jane Doe" />
+    </label>
+    <label>
+      <span>Telefonnummer</span>
+      <input name="phone" class="field" placeholder="(123) 456-7890" type="tel" />
+    </label>
+    <label>
+      <span>E-postadress</span>
+      <input name="email" class="field" placeholder="" type="email" />
+    </label>
+  </div>
+  <div class="group">
+    <label>
+      <span>Kort</span>
+      <div id="card-element" class="field"></div>
+    </label>
+  </div>
+  <button type="submit">Betala {{ reservation.total_price }} kr</button>
+  <div class="outcome">
+    <div class="error" role="alert"></div>
+  </div>
 </form>
+
+<link rel="stylesheet" href="/static/payment.css" />
+<script src="/static/payment.js">
+</script>
+<script>
+  setupPayment('{{ stripe_key }}');
+</script>
