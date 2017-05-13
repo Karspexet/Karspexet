@@ -27,30 +27,7 @@ class PaymentProcess:
     @transaction.atomic
     def process(self):
         self.account = self._create_account()
-        try:
-            charge = self._charge_card()
-        except stripe.error.RateLimitError as e:
-            # Too many requests made to the API too quickly
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.InvalidRequestError as e:
-            # Invalid parameters were supplied to Stripe's API
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.AuthenticationError as e:
-            # Authentication with Stripe's API failed
-            # (maybe you changed API keys recently)
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.APIConnectionError as e:
-            # Network communication with Stripe failed
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.StripeError as e:
-            # Display a very generic error to the user, and maybe send
-            # yourself an email
-            logger.error(e)
-            raise PaymentError(str(e))
+        charge = self._charge_card()
 
         tickets = self._create_tickets()
         self.reservation = self._finalize_reservation()
@@ -73,12 +50,35 @@ class PaymentProcess:
         amount = self.reservation.total_price() * 100 # Öre
         stripe_token = self.data['stripeToken']
 
-        return stripe.Charge.create(
-            source=stripe_token,
-            amount=amount,
-            currency="sek",
-            description="Biljetter till Kårspexet"
-        )
+        try:
+            return stripe.Charge.create(
+                source=stripe_token,
+                amount=amount,
+                currency="sek",
+                description="Biljetter till Kårspexet"
+            )
+        except stripe.error.RateLimitError as e:
+            # Too many requests made to the API too quickly
+            logger.error(e)
+            raise PaymentError(str(e))
+        except stripe.error.InvalidRequestError as e:
+            # Invalid parameters were supplied to Stripe's API
+            logger.error(e)
+            raise PaymentError(str(e))
+        except stripe.error.AuthenticationError as e:
+            # Authentication with Stripe's API failed
+            # (maybe you changed API keys recently)
+            logger.error(e)
+            raise PaymentError(str(e))
+        except stripe.error.APIConnectionError as e:
+            # Network communication with Stripe failed
+            logger.error(e)
+            raise PaymentError(str(e))
+        except stripe.error.StripeError as e:
+            # Display a very generic error to the user, and maybe send
+            # yourself an email
+            logger.error(e)
+            raise PaymentError(str(e))
 
     def _create_tickets(self):
         tickets = []
