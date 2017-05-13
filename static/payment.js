@@ -7,15 +7,13 @@ function setupPayment(stripeKey) {
         style: {
             base: {
                 iconColor: '#666EE8',
-                    <!-- color: '#31325F', -->
+                    color: '#31325F',
                     lineHeight: '40px',
                 fontWeight: 300,
                 fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                 fontSize: '15px',
 
-                '::placeholder': {
-                        <!-- color: '#CFD7E0', -->
-                }
+                '::placeholder': {}
             }
         }
     });
