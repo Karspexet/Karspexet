@@ -21,3 +21,4 @@ ratings:
 exclude_paths:
 - tests/
 - karspexet/**/migrations/**/*
+- karspexet/**/test_*.py

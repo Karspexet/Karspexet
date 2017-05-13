@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import dj_database_url
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
 ] + OUR_APPS
 
 MIDDLEWARE_CLASSES = [
@@ -129,3 +131,24 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+try:
+    with open(BASE_DIR + "/env.json") as env_json:
+        ENV = json.load(env_json)
+except FileNotFoundError:
+    import sys
+    print("""
+    ================================================================================
+    No env.json settings file found.
+
+    Try starting with the sample one:
+
+    cp env.json.sample env.json
+    """, file=sys.stderr)
+    exit(1)
+
+EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')

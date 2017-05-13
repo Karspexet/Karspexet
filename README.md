@@ -6,3 +6,16 @@
 
 Detta repo innehåller Kårspexets IT-system, vilket just nu är dess
 biljettsystem.
+
+## Setup
+
+Skapa en `env.json`-fil med följande för att få stripe-integrationen att fungera:
+
+```json
+{
+  "stripe": {
+    "secret_key": "sk_test_...",
+    "publishable_key": "pk_test_..."
+  }
+}
+```
