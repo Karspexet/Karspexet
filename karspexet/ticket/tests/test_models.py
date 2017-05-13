@@ -30,7 +30,7 @@ class TestReservation(TestCase):
             total=200,
         )
 
-        self.assertTrue(reservation in Reservation.active.all())
+        assert reservation in Reservation.active.all()
 
     def test_finalized_reservation_is_active(self):
         timestamp = timezone.now() - relativedelta(days=1)
@@ -42,7 +42,7 @@ class TestReservation(TestCase):
             total=200,
         )
 
-        self.assertTrue(reservation in Reservation.active.all())
+        assert reservation in Reservation.active.all()
 
     def test_timed_out_reservation_is_not_active(self):
         timestamp = timezone.now() - relativedelta(days=1)
@@ -53,8 +53,8 @@ class TestReservation(TestCase):
             total=200,
         )
 
-        self.assertTrue(reservation in Reservation.objects.all())
-        self.assertFalse(reservation in Reservation.active.all())
+        assert reservation in Reservation.objects.all()
+        assert reservation not in Reservation.active.all()
 
 
     def test_total_price(self):
@@ -69,7 +69,7 @@ class TestReservation(TestCase):
             },
         )
 
-        self.assertEqual(reservation.total_price(), 450)
+        assert reservation.total_price() == 450
 
 class TestPricingModel(TestCase):
     def setUp(self):
@@ -86,8 +86,8 @@ class TestPricingModel(TestCase):
             },
         )
 
-        self.assertEqual(pricing.price_for('student'), 200)
-        self.assertEqual(pricing.price_for('normal'), 250)
+        assert pricing.price_for('student') == 200
+        assert pricing.price_for('normal') == 250
 
     def test_price_for_at_past_date(self):
         old_pricing = PricingModel.objects.create(
@@ -109,5 +109,5 @@ class TestPricingModel(TestCase):
         seat = f.CreateSeat(group=self.group)
         one_day_ago = timezone.now() - relativedelta(days=1)
 
-        self.assertEqual(seat.price_for_type('student'), 200)
-        self.assertEqual(seat.price_for_type('student', one_day_ago), 150)
+        assert seat.price_for_type('student') == 200
+        assert seat.price_for_type('student', one_day_ago) == 150
