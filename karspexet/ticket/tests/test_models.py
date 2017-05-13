@@ -68,6 +68,7 @@ class TestReservation(TestCase):
                 self.seat2.id: 'normal',
             },
         )
+        reservation = Reservation.objects.get(pk=reservation.id)
 
         assert reservation.total_price() == 450
 
