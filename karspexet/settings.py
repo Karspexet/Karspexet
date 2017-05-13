@@ -135,6 +135,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
 try:
     with open(BASE_DIR + "/env.json") as env_json:
         ENV = json.load(env_json)
@@ -149,3 +150,5 @@ except FileNotFoundError:
     cp env.json.sample env.json
     """, file=sys.stderr)
     exit(1)
+
+EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')

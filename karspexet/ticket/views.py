@@ -70,9 +70,6 @@ def payment(request, show_id):
     })
 
 def process_payment(request, reservation_id):
-    # TODO:
-    # * send email to customer (with tickets)
-
     reservation = Reservation.objects.get(pk=reservation_id)
 
     if _session_expired(request):

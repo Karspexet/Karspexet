@@ -2,6 +2,7 @@ import stripe
 import logging
 
 from django.conf import settings
+from django.core.mail import send_mail
 from django.db import transaction
 
 from karspexet.ticket.models import Account, Ticket
@@ -53,6 +54,7 @@ class PaymentProcess:
 
         tickets = self._create_tickets()
         self.reservation = self._finalize_reservation()
+        self._send_mail_to_customer()
 
         return self.reservation
 
@@ -99,3 +101,17 @@ class PaymentProcess:
         self.reservation.save()
 
         return self.reservation
+
+    def _send_mail_to_customer(self):
+        subject = "Dina biljetter till Kårspexet"
+        body = """
+        Här är dina biljetter till Kårspexets föreställning: %s
+        """ % (self.reservation.show)
+        to_address = "%s <%s>" % (self.account.name, self.account.email)
+        send_mail(
+            subject,
+            body,
+            'noreply@karspexet.se',
+            [to_address],
+            fail_silently=False,
+        )
