@@ -4,6 +4,13 @@ import logging
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db import transaction
+from stripe.error import (
+    APIConnectionError,
+    AuthenticationError,
+    InvalidRequestError,
+    RateLimitError,
+    StripeError
+)
 
 from karspexet.ticket.models import Account, Ticket
 from karspexet.venue.models import Seat
@@ -57,26 +64,8 @@ class PaymentProcess:
                 currency="sek",
                 description="Biljetter till Kårspexet"
             )
-        except stripe.error.RateLimitError as e:
+        except (APIConnectionError, AuthenticationError, InvalidRequestError, RateLimitError, StripeError) as e:
             # Too many requests made to the API too quickly
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.InvalidRequestError as e:
-            # Invalid parameters were supplied to Stripe's API
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.AuthenticationError as e:
-            # Authentication with Stripe's API failed
-            # (maybe you changed API keys recently)
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.APIConnectionError as e:
-            # Network communication with Stripe failed
-            logger.error(e)
-            raise PaymentError(str(e))
-        except stripe.error.StripeError as e:
-            # Display a very generic error to the user, and maybe send
-            # yourself an email
             logger.error(e)
             raise PaymentError(str(e))
 
