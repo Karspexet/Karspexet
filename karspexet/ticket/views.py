@@ -37,7 +37,7 @@ def select_seats(request, show_id):
         if _all_seats_available(taken_seats_qs, seat_params.keys()):
             reservation.tickets = seat_params
             reservation.save()
-            return redirect("payment", show_id=show_id)
+            return redirect("booking_overview")
         else:
             messages.error(request, "Some of your chosen seats are already taken")
 
@@ -54,14 +54,14 @@ def select_seats(request, show_id):
         'forms': forms,
     })
 
-def payment(request, show_id):
+def booking_overview(request):
+    reservation = _get_or_create_reservation_object(request)
+
     if _session_expired(request):
         messages.warning(request, "Your session has expired. Please start over from scratch.")
-        return redirect("select_seats", show_id=show_id)
+        return redirect("select_seats", show_id=reservation.show_id)
 
     _set_session_timeout(request)
-    show = Show.objects.get(pk=show_id)
-    reservation = _get_or_create_reservation_object(request, show)
 
     return render(request, 'payment.html', {
         'seats': reservation.seats(),
@@ -103,12 +103,12 @@ def _session_expired(request):
 def _set_session_timeout(request):
     request.session['reservation_timeout'] = (timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
 
-def _get_or_create_reservation_object(request, show):
+def _get_or_create_reservation_object(request, show=None):
     timeout = timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)
 
     if request.session.get('reservation_id'):
         try:
-            reservation = Reservation.objects.get(pk=request.session['reservation_id'], show=show)
+            reservation = Reservation.objects.get(pk=request.session['reservation_id'])
             reservation.session_timeout = timeout
             reservation.save()
             return reservation
