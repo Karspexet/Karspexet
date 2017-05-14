@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <h2>Kontaktuppgifter</h2>
 
 <h3>Bokning</h3>
@@ -55,3 +57,4 @@
 <script>
   setupPayment('{{ stripe_key }}');
 </script>
+{% endblock %}
