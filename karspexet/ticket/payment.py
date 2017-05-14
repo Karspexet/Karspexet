@@ -29,12 +29,17 @@ class PaymentProcess:
         self.data = post_data
 
     def run(reservation, post_data):
-        return PaymentProcess(reservation, post_data).process()
+        if settings.PAYMENT_PROCESS == "fake":
+            process_class = FakePaymentProcess
+        elif settings.PAYMENT_PROCESS == "stripe":
+            process_class = StripePaymentProcess
+
+        return process_class(reservation, post_data).process()
 
     @transaction.atomic
     def process(self):
         self.account = self._create_account()
-        charge = self._charge_card()
+        self._charge_card()
 
         tickets = self._create_tickets()
         self.reservation = self._finalize_reservation()
@@ -54,20 +59,7 @@ class PaymentProcess:
         )
 
     def _charge_card(self):
-        amount = self.reservation.total_price() * 100 # Öre
-        stripe_token = self.data['stripeToken']
-
-        try:
-            return stripe.Charge.create(
-                source=stripe_token,
-                amount=amount,
-                currency="sek",
-                description="Biljetter till Kårspexet"
-            )
-        except (APIConnectionError, AuthenticationError, InvalidRequestError, RateLimitError, StripeError) as e:
-            # Too many requests made to the API too quickly
-            logger.error(e)
-            raise PaymentError(str(e))
+        raise NotImplementedError
 
     def _create_tickets(self):
         tickets = []
@@ -104,3 +96,30 @@ class PaymentProcess:
             [to_address],
             fail_silently=False,
         )
+
+class FakePaymentProcess(PaymentProcess):
+
+    def _charge_card(self):
+        if self.data['payment_success'] == 'true':
+            return True
+        else:
+            raise PaymentError("NO TICKETS FOR YOU")
+
+
+class StripePaymentProcess(PaymentProcess):
+
+    def _charge_card(self):
+        amount = self.reservation.total_price() * 100 # Öre
+        stripe_token = self.data['stripeToken']
+
+        try:
+            return stripe.Charge.create(
+                source=stripe_token,
+                amount=amount,
+                currency="sek",
+                description="Biljetter till Kårspexet"
+            )
+        except (APIConnectionError, AuthenticationError, InvalidRequestError, RateLimitError, StripeError) as e:
+            # Too many requests made to the API too quickly
+            logger.error(e)
+            raise PaymentError(str(e))

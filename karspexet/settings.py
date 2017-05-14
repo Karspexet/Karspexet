@@ -153,3 +153,4 @@ except FileNotFoundError:
     exit(1)
 
 EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
+PAYMENT_PROCESS = ENV["payment_process"]

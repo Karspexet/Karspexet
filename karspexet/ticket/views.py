@@ -15,7 +15,11 @@ from karspexet.ticket.models import Reservation, PricingModel
 from karspexet.ticket.payment import PaymentError, PaymentProcess
 from karspexet.venue.models import Seat
 
-stripe_keys = settings.ENV["stripe"]
+if settings.PAYMENT_PROCESS == "stripe":
+    stripe_keys = settings.ENV["stripe"]
+else:
+    stripe_keys = {"publishable_key": "fake", "secret_key": "fake"}
+
 
 SESSION_TIMEOUT_MINUTES = 30
 
@@ -97,7 +101,7 @@ def process_payment(request, reservation_id):
                 'reservation': reservation,
                 'seats': reservation.seats(),
                 'stripe_key': stripe_keys['publishable_key'],
-                'payment_failedj': True,
+                'payment_failed': True,
             })
 
 
