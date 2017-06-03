@@ -1,0 +1,34 @@
+section.select-seats {
+    display: flex;
+    flex-direction: row;
+}
+
+div.seat-info div {
+    border: 1px dotted;
+    padding: 0.5rem;
+}
+
+.theater-seat-map svg {
+    max-width: 400px;
+    max-height: 400px;
+}
+
+.seat {
+    fill: #000 !important;
+}
+
+.taken-seat {
+    fill: #ff173d !important;
+}
+
+.selected-seat {
+    fill: #ffff00 !important;
+}
+
+.seat:not(.taken-seat) {
+    cursor: pointer;
+}
+
+.seat:not(.taken-seat):hover {
+    fill: #ffff00 !important;
+}

@@ -1,3 +1,5 @@
+import json
+
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
 
@@ -10,8 +12,9 @@ from django.utils import timezone
 
 from karspexet.show.models import Show
 from karspexet.ticket.forms import TicketTypeForm, SeatingGroupFormSet
-from karspexet.ticket.models import Reservation
+from karspexet.ticket.models import Reservation, PricingModel
 from karspexet.ticket.payment import PaymentError, PaymentProcess
+from karspexet.venue.models import Seat
 
 stripe_keys = settings.ENV["stripe"]
 
@@ -42,16 +45,21 @@ def select_seats(request, show_id):
             messages.error(request, "Some of your chosen seats are already taken")
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
-    forms = [
-        SeatingGroupFormSet(seating_group, taken_seats)
-        for seating_group
-        in show.venue.seatinggroup_set.all()
-    ]
+
+    pricings = {
+        pricing.seating_group_id : pricing.prices
+        for pricing in PricingModel.objects.select_related('seating_group').filter(seating_group__venue_id=show.venue).all()
+    }
+
+    seats = Seat.objects.filter(group_id__in=pricings.keys())
+    seats = {"seat-%d" % s.id: {"id": s.id, "name": s.name, "group": s.group_id} for s in seats}
 
     return render(request, "select_seats.html", {
+        'taken_seats': list(taken_seats),
         'show': show,
         'venue': show.venue,
-        'forms': forms,
+        'pricings': pricings,
+        'seats': json.dumps(seats)
     })
 
 def booking_overview(request):
@@ -63,8 +71,12 @@ def booking_overview(request):
 
     _set_session_timeout(request)
 
+    reserved_seats = {seat.id:seat for seat in reservation.seats()}
+
+    seats = ["%s (%s, %dkr)" % (reserved_seats[int(id)].name, ticket_type, reserved_seats[int(id)].price_for_type(ticket_type)) for (id, ticket_type) in reservation.tickets.items()]
+
     return render(request, 'payment.html', {
-        'seats': reservation.seats(),
+        'seats': seats,
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
     })
