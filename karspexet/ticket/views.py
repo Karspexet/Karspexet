@@ -21,7 +21,7 @@ SESSION_TIMEOUT_MINUTES = 30
 def home(request):
     upcoming_shows = Show.upcoming()
 
-    return render(request, "home.html", {
+    return render(request, "ticket/ticket.html", {
         'upcoming_shows': upcoming_shows
     })
 
@@ -48,7 +48,7 @@ def select_seats(request, show_id):
         in show.venue.seatinggroup_set.all()
     ]
 
-    return render(request, "select_seats.html", {
+    return render(request, "ticket/select_seats.html", {
         'show': show,
         'venue': show.venue,
         'forms': forms,
@@ -63,7 +63,7 @@ def booking_overview(request):
 
     _set_session_timeout(request)
 
-    return render(request, 'payment.html', {
+    return render(request, 'ticket/payment.html', {
         'seats': reservation.seats(),
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
@@ -82,11 +82,11 @@ def process_payment(request, reservation_id):
             request.session['reservation_timeout'] = None
             request.session['reservation_id'] = None
 
-            return render(request, 'payment_succeeded.html', {
+            return render(request, 'ticket/payment_succeeded.html', {
                 'reservation': reservation,
             })
         except PaymentError as e:
-            return render(request, "payment.html", {
+            return render(request, "ticket/payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
                 'stripe_key': stripe_keys['publishable_key'],
