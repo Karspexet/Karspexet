@@ -4,3 +4,6 @@ dj-database-url==0.4.1
 python-dateutil==2.6.0
 stripe==1.53.0
 django-inline-svg==0.1.1
+django-cms==3.4.3
+django-filer==1.2.7
+djangocms-text-ckeditor==3.1.0

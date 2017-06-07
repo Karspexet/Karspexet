@@ -27,7 +27,7 @@ SESSION_TIMEOUT_MINUTES = 30
 def home(request):
     upcoming_shows = Show.upcoming()
 
-    return render(request, "home.html", {
+    return render(request, "ticket/ticket.html", {
         'upcoming_shows': upcoming_shows
     })
 
@@ -53,7 +53,7 @@ def select_seats(request, show_id):
 
     pricings, seats = _build_pricings_and_seats(show.venue)
 
-    return render(request, "select_seats.html", {
+    return render(request, "ticket/select_seats.html", {
         'taken_seats': list(taken_seats),
         'show': show,
         'venue': show.venue,
@@ -74,7 +74,7 @@ def booking_overview(request):
 
     seats = ["%s (%s, %dkr)" % (reserved_seats[int(id)].name, ticket_type, reserved_seats[int(id)].price_for_type(ticket_type)) for (id, ticket_type) in reservation.tickets.items()]
 
-    return render(request, 'payment.html', {
+    return render(request, 'ticket/payment.html', {
         'seats': seats,
         'payment_partial': _payment_partial(),
         'reservation': reservation,
@@ -94,11 +94,11 @@ def process_payment(request, reservation_id):
             request.session['reservation_timeout'] = None
             request.session['reservation_id'] = None
 
-            return render(request, 'payment_succeeded.html', {
+            return render(request, 'ticket/payment_succeeded.html', {
                 'reservation': reservation,
             })
         except PaymentError as e:
-            return render(request, "payment.html", {
+            return render(request, "ticket/payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
                 'payment_partial': _payment_partial(),
