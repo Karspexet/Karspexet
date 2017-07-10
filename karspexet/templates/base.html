@@ -1,0 +1,18 @@
+{% load menu_tags cms_tags sekizai_tags staticfiles%}
+<html>
+    <head>
+        <title>{% page_attribute "page_title" %}</title>
+        <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+        {% render_block "css" %}
+        {% render_block "js" %}
+    </head>
+    <body>
+        {% cms_toolbar %}
+        <ul>
+            {% show_menu 0 100 100 100 %}
+        </ul>
+
+        {% block content %}
+        {% endblock content%}
+    </body>
+</html>
