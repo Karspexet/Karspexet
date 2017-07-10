@@ -46,10 +46,7 @@ def select_seats(request, show_id):
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
-    pricings = {
-        pricing.seating_group_id : pricing.prices
-        for pricing in PricingModel.objects.select_related('seating_group').filter(seating_group__venue_id=show.venue).all()
-    }
+    pricings = _build_pricings(show.venue)
 
     seats = Seat.objects.filter(group_id__in=pricings.keys())
     seats = {"seat-%d" % s.id: {"id": s.id, "name": s.name, "group": s.group_id} for s in seats}
@@ -140,4 +137,12 @@ def _seat_specifications(request):
         int(seat.replace("seat_", "")):ticket_type
             for seat,ticket_type in request.POST.items()
             if seat.startswith("seat_")
+    }
+
+
+def _build_pricings(venue):
+    qs = PricingModel.objects.select_related('seating_group').filter(seating_group__venue_id=venue)
+    return {
+        pricing.seating_group_id : pricing.prices
+        for pricing in qs.all()
     }
