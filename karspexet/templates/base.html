@@ -8,10 +8,14 @@
     </head>
     <body>
         {% cms_toolbar %}
-        <ul>
-            {% show_menu 0 100 100 100 %}
-        </ul>
-
+        <div class="menu">
+            <ul>
+                {% show_menu 0 100 0 1 %}
+            </ul>
+        </div>
+        {% addtoblock "css" %}
+        <link href="{% static 'menu.css' %}" rel="stylesheet" type="text/css"/>
+        {% endaddtoblock %}
         {% block content %}
         {% endblock content%}
     </body>
