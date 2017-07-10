@@ -1,0 +1,30 @@
+{% load menu_tags cms_tags sekizai_tags staticfiles %}
+<html>
+    <head>
+        <title>{% page_attribute "page_title" %}</title>
+        <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+        {% render_block "css" %}
+        <link href="{% static 'fonts.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'menu.css' %}" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        {% cms_toolbar %}
+        <div id="navbar">
+            <div class="horizontal titleContainer">
+              <h1><span class="g">KÅR</span>S<span class="g">P</span>EX<span class="g">ET</span></h1>
+            </div>
+
+            <div class="horizontal menuContainer">
+              <ul class="menu">
+                {% show_menu 0 100 0 1 %}
+              </ul>
+            </div>
+        </div>
+
+        <div id="contentBox">
+            {% block content %}
+            {% endblock content%}
+        </div>
+        {% render_block "js" %}
+    </body>
+</html>
