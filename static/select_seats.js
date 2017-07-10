@@ -42,9 +42,10 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
         });
 
         document.querySelector('#booking').innerHTML = output;
-        document.querySelectorAll('#booking select').forEach(function (select) {
-            select.addEventListener('change', selectSeatType);
-        });
+        Array.prototype.forEach.call(
+            document.querySelectorAll('#booking select'),
+            function (select) { select.addEventListener('change', selectSeatType); }
+        );
     }
 
     function renderSeatForm(seat) {
@@ -87,7 +88,8 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
         });
     });
 
-    document.querySelectorAll('.seat:not(.taken-seat)').forEach(function (seat) {
-        seat.addEventListener('click', selectSeat);
-    });
+    Array.prototype.forEach.call(
+        document.querySelectorAll('.seat:not(.taken-seat)'),
+        function makeSeatAvailable(seat) {seat.addEventListener('click', selectSeat);}
+    );
 }
