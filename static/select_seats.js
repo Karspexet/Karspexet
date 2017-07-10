@@ -87,13 +87,7 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
         });
     });
 
-    Promise.resolve(
-        takenSeats.forEach(function (seatId) {
-            document.querySelector('#seat-' + seatId).classList.add('taken-seat');
-        })
-    ).then(function() {
-        document.querySelectorAll('.seat:not(.taken-seat)').forEach(function (seat) {
-            seat.addEventListener('click', selectSeat);
-        });
+    document.querySelectorAll('.seat:not(.taken-seat)').forEach(function (seat) {
+        seat.addEventListener('click', selectSeat);
     });
 }

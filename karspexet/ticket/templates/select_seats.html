@@ -4,7 +4,9 @@
     <h2>Köp biljetter för {{ show }}</h2>
     <section class="select-seats">
         <main>
-            <span class="theater-seat-map">{% svg 'testteater_2' %}</span>
+            <span class="theater-seat-map">
+                {% include "seat_map.svg" with venue=venue taken_seats=taken_seats %}
+            </span>
         </main>
         <aside>
             <form method="post" action="{% url "select_seats" show.id %}">

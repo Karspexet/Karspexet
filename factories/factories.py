@@ -9,6 +9,9 @@ class CreateSeatingGroup(DjangoModelFactory):
         model = 'venue.seatinggroup'
 
 class CreateSeat(DjangoModelFactory):
+    x_pos = 0
+    y_pos = 0
+
     class Meta:
         model = 'venue.seat'
 
