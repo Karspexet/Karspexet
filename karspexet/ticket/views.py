@@ -47,10 +47,7 @@ def select_seats(request, show_id):
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
-    pricings = _build_pricings(show.venue)
-
-    seats = Seat.objects.filter(group_id__in=pricings.keys())
-    seats = {"seat-%d" % s.id: {"id": s.id, "name": s.name, "group": s.group_id} for s in seats}
+    pricings, seats = _build_pricings_and_seats(show.venue)
 
     return render(request, "select_seats.html", {
         'taken_seats': list(taken_seats),
@@ -144,9 +141,16 @@ def _some_seat_is_missing_ticket_type(seat_params):
     return any(not ticket_type for ( seat,ticket_type ) in seat_params.items())
 
 
-def _build_pricings(venue):
+def _build_pricings_and_seats(venue):
     qs = PricingModel.objects.select_related('seating_group').filter(seating_group__venue_id=venue)
-    return {
+    pricings = {
         pricing.seating_group_id : pricing.prices
         for pricing in qs.all()
     }
+
+    seats = {
+        "seat-%d" % s.id: {"id": s.id, "name": s.name, "group": s.group_id}
+        for s in Seat.objects.filter(group_id__in=pricings.keys())
+    }
+
+    return (pricings, seats)
