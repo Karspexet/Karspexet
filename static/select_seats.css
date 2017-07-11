@@ -10,19 +10,31 @@ div.seat-info div {
 
 .theater-seat-map svg {
     max-width: 400px;
-    max-height: 400px;
+    max-height: 480px;
+}
+
+.theater-seat-map svg rect.stage {
+    stroke-width: 1;
+    fill: none;
+    stroke: #000;
+}
+
+.theater-seat-map svg text.stage-text {
+    font-size: 14;
+    text-anchor: middle;
+    fill: #000;
 }
 
 .seat {
-    fill: #000 !important;
+    fill: #000;
 }
 
 .taken-seat {
-    fill: #ff173d !important;
+    fill: #ff173d;
 }
 
 .selected-seat {
-    fill: #ffff00 !important;
+    fill: #ffff00;
 }
 
 .seat:not(.taken-seat) {
@@ -30,5 +42,5 @@ div.seat-info div {
 }
 
 .seat:not(.taken-seat):hover {
-    fill: #ffff00 !important;
+    fill: #ffff00;
 }
