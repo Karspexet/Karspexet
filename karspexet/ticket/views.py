@@ -1,3 +1,4 @@
+# coding: utf-8
 import json
 
 from dateutil import parser
@@ -37,12 +38,14 @@ def select_seats(request, show_id):
 
     if request.POST:
         seat_params = _seat_specifications(request)
-        if _all_seats_available(taken_seats_qs, seat_params.keys()):
+        if not _all_seats_available(taken_seats_qs, seat_params.keys()):
+            messages.error(request, "Vissa av platserna du valde har redan blivit bokade av någon annan")
+        elif _some_seat_is_missing_ticket_type(seat_params):
+            messages.error(request, "Du måste välja biljettyp för alla platser")
+        else:
             reservation.tickets = seat_params
             reservation.save()
             return redirect("booking_overview")
-        else:
-            messages.error(request, "Some of your chosen seats are already taken")
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
@@ -138,6 +141,9 @@ def _seat_specifications(request):
             for seat,ticket_type in request.POST.items()
             if seat.startswith("seat_")
     }
+
+def _some_seat_is_missing_ticket_type(seat_params):
+    return any(not ticket_type for ( seat,ticket_type ) in seat_params.items())
 
 
 def _build_pricings(venue):

@@ -64,7 +64,7 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
         }
         return '<div><label>' + displayName + ': ' +
             '<select name="seat_' + seatId + '" data-id="' + seatId + '">' +
-            '<option value=""></option>' +
+            '<option value="">(Välj biljettyp)</option>' +
             option('normal', seatType) +
             option('student', seatType) +
             '</select></label></div>';
