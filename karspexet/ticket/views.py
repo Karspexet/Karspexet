@@ -7,12 +7,10 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms.formsets import formset_factory
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from karspexet.show.models import Show
-from karspexet.ticket.forms import TicketTypeForm, SeatingGroupFormSet
 from karspexet.ticket.models import Reservation, PricingModel
 from karspexet.ticket.payment import PaymentError, PaymentProcess
 from karspexet.venue.models import Seat
