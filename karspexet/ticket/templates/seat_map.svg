@@ -1,0 +1,16 @@
+<svg viewBox="0 0 400 480" xmlns="http://www.wd.org/2000/svg">
+  <rect x="0" y="400" width="390" height="40" class="stage"/>
+  <text x="200" y="420" width="390" class="stage-text">Scen</text>
+
+  {% for group in venue.seatinggroup_set.all %}
+  {% for seat in group.seat_set.all %}
+  <circle
+      cx={{ seat.x_pos}}
+      cy={{ seat.y_pos }}
+      r="5"
+      class="seat{% if seat.id in taken_seats %} taken-seat {% endif %}"
+      id="seat-{{ seat.id }}"
+    />
+  {% endfor %}
+  {% endfor %}
+</svg>

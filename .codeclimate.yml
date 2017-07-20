@@ -5,7 +5,8 @@ engines:
     config:
       languages:
       - javascript
-      - python
+      - python:
+          python_version: 3
   fixme:
     enabled: true
   radon:

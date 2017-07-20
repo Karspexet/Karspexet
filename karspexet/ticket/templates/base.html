@@ -1,11 +1,12 @@
-{% load staticfiles %}
+{% load staticfiles svg %}
 <html lang="sv">
   <head>
     <title>Kårspexet - Biljetter</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
   </head>
   <body>
-    <img src="{% static 'luva-transparent.png' %}" alt="Kårspexet logo">
+    <span class="logo">{% svg 'luva' %}</span>
     <h1>Kårspexet - Biljetter</h1>
     {% if messages %}
     <section>

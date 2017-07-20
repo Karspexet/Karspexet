@@ -1,21 +1,26 @@
 {% extends "base.html" %}
+{% load staticfiles svg %}
 {% block content %}
     <h2>Köp biljetter för {{ show }}</h2>
-    <div>
-        <form method="post" action="{% url "select_seats" show.id %}">
-            {% csrf_token %}
-
-            {% for seating_group in forms %}
-                <div class="seating-group">
-                    <h3>{{ seating_group.seating_group.name }}</h3>
-                    {% for form in seating_group.forms %}
-                        {{ form.as_p }}
-                    {%  endfor %}
-                </div>
-
-            {% endfor %}
-
-            <input type="submit" value="Boka!">
-        </form>
-    </div>
+    <section class="select-seats">
+        <main>
+            <span class="theater-seat-map">
+                {% include "seat_map.svg" with venue=venue taken_seats=taken_seats %}
+            </span>
+        </main>
+        <aside>
+            <h2>Dina valda platser</h2>
+            <form method="post" action="{% url "select_seats" show.id %}">
+                {% csrf_token %}
+                <div id="booking"></div>
+                <input type="submit" value="Boka!">
+            </form>
+            <div class="seat-info"></div>
+        </aside>
+    </section>
+    <link rel="stylesheet" href="{% static 'select_seats.css' %}">
+    <script src="{% static 'select_seats.js' %}"></script>
+    <script>
+     setupSelectSeats({{ seats|safe }}, {{ taken_seats|safe }}, {{ pricings|safe }});
+    </script>
 {% endblock %}

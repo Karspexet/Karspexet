@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'svg',
 ] + OUR_APPS
 
 MIDDLEWARE_CLASSES = [

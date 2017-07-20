@@ -25,6 +25,8 @@ class SeatingGroup(models.Model):
 class Seat(models.Model):
     group = models.ForeignKey(SeatingGroup, on_delete=models.CASCADE)
     name = models.CharField(max_length=40, help_text='Till exempel "Rad 17, Stol 5011"')
+    x_pos = models.IntegerField()
+    y_pos = models.IntegerField()
 
     def __str__(self):
         return self.name
