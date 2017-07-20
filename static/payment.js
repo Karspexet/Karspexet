@@ -1,3 +1,4 @@
+/* global Stripe */
 function setupPayment(stripeKey) {
     var stripe = Stripe(stripeKey)
     var elements = stripe.elements({locale: "sv"})
