@@ -6,6 +6,7 @@
         {% render_block "css" %}
         <link href="{% static 'fonts.css' %}" rel="stylesheet" type="text/css"/>
         <link href="{% static 'menu.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'karspexet.css' %}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         {% cms_toolbar %}
@@ -21,7 +22,7 @@
             </div>
         </div>
 
-        <div id="contentBox">
+        <div class="card" id="contentBox">
             {% block content %}
             {% endblock content%}
         </div>
