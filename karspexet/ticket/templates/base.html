@@ -6,8 +6,13 @@
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
   </head>
   <body>
+    <header>
     <span class="logo">{% svg 'luva' %}</span>
     <h1>Kårspexet - Biljetter</h1>
+    <menu>
+        <li><a href="/">Startsida</a></li>
+    </menu>
+    </header>
     {% if messages %}
     <section>
         <ul class="messages">
