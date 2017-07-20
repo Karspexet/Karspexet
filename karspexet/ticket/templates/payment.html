@@ -51,7 +51,8 @@
 </form>
 
 <link rel="stylesheet" href="/static/payment.css" />
-<script src="/static/payment.js"></script>
 <script>
-  setupPayment('{{ stripe_key }}');
+  window.config = window.config || {}
+  window.config.payment = '{{ stripe_key }}'
 </script>
+<script src="/static/payment.js"></script>

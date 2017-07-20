@@ -1,5 +1,5 @@
-/* global Stripe */
-function setupPayment(stripeKey) {
+/* global Stripe, config */
+(function setupPayment(stripeKey) {
     var stripe = Stripe(stripeKey)
     var elements = stripe.elements({locale: "sv"})
 
@@ -56,4 +56,4 @@ function setupPayment(stripeKey) {
         }
         stripe.createToken(card, extraDetails).then(setOutcome)
     })
-}
+})(config.payment)
