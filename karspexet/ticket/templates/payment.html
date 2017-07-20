@@ -21,9 +21,6 @@
 </div>
 {% endif %}
 
-{% if stripe_key == 'fake' %}
-FAKE PAYMENT
-{% endif %}
 <script src="https://js.stripe.com/v3/"></script>
 <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
     {% csrf_token %}
@@ -41,26 +38,7 @@ FAKE PAYMENT
       <input name="email" class="field" placeholder="" type="email" />
     </label>
   </div>
-  {% if stripe_key == "fake" %}
-  <div class="group">
-      <span>Vill du att din låtsasbetalning ska lyckas eller inte?</span>
-      <label>
-          <span>Ja</span>
-          <input type="radio" name="payment_success" value="true">
-      </label>
-      <label>
-          <span>Nej</span>
-          <input type="radio" name="payment_success" value="false">
-      </label>
-  </div>
-  {% else %}
-  <div class="group">
-    <label>
-      <span>Kort</span>
-      <div id="card-element" class="field"></div>
-    </label>
-  </div>
-  {% endif %}
+  {% include payment_partial %}
   <button type="submit">Betala {{ reservation.total_price }} kr</button>
   <div class="outcome">
     <div class="error" role="alert"></div>

@@ -76,6 +76,7 @@ def booking_overview(request):
 
     return render(request, 'payment.html', {
         'seats': seats,
+        'payment_partial': _payment_partial(),
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
     })
@@ -100,6 +101,7 @@ def process_payment(request, reservation_id):
             return render(request, "payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
+                'payment_partial': _payment_partial(),
                 'stripe_key': stripe_keys['publishable_key'],
                 'payment_failed': True,
             })
@@ -158,3 +160,9 @@ def _build_pricings_and_seats(venue):
     }
 
     return (pricings, seats)
+
+def _payment_partial():
+    if settings.PAYMENT_PROCESS == "stripe":
+        return "_stripe_payment.html"
+    else:
+        return "_fake_payment.html"
