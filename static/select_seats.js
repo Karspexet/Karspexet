@@ -1,4 +1,4 @@
-function setupSelectSeats(allSeats, takenSeats, pricings) {
+(function setupSelectSeats(config) {
     var booking = {}
 
     function selectSeat(event) {
@@ -49,9 +49,9 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
     function renderSeatForm(seat) {
         var seatId = seat.id,
             seatType = seat.value,
-            seatObject = allSeats["seat-" + seatId],
+            seatObject = config.allSeats["seat-" + seatId],
             displayName = seatObject.name,
-            pricing = pricings[seatObject.group]
+            pricing = config.pricings[seatObject.group]
 
         function option(seatType, selectedSeatType) {
             var selectedString = seatType === selectedSeatType ? " selected" : ""
@@ -72,11 +72,11 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
         ].join("")
     }
 
-    Object.keys(allSeats).forEach(function(seat) {
+    Object.keys(config.allSeats).forEach(function(seat) {
         var element = document.getElementById(seat),
-            seatObject = allSeats[seat]
+            seatObject = config.allSeats[seat]
         element.addEventListener("mouseover", function() {
-            var pricing = pricings[seatObject.group],
+            var pricing = config.pricings[seatObject.group],
                 info = [
                     "<div>", seatObject.name, "<br>",
                     "Student: ", pricing["student"], "kr", "<br>",
@@ -96,4 +96,4 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
         document.querySelectorAll(".seat:not(.taken-seat)"),
         function makeSeatAvailable(seat) {seat.addEventListener("click", selectSeat)}
     )
-}
+})(window.config.seatSelection)

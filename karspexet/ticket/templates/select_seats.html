@@ -19,8 +19,12 @@
         </aside>
     </section>
     <link rel="stylesheet" href="{% static 'select_seats.css' %}">
-    <script src="{% static 'select_seats.js' %}"></script>
     <script>
-     setupSelectSeats({{ seats|safe }}, {{ taken_seats|safe }}, {{ pricings|safe }});
+     window.config = window.config || {}
+     window.config.seatSelection = {
+         allSeats: {{ seats|safe }},
+         pricings: {{ pricings|safe }}
+     }
     </script>
+    <script src="{% static 'select_seats.js' %}"></script>
 {% endblock %}
