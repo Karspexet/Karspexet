@@ -19,3 +19,16 @@ Skapa en `env.json`-fil med följande för att få stripe-integrationen att fung
   }
 }
 ```
+
+## Linters
+
+För att försöka hålla javascript-koden hyfsat homogen använder vi `eslint`.
+
+Den kan man köra på sina javascript-filer genom:
+
+    eslint var/nu/min/fil/ligger.js
+
+Det kan hända att den klagar på en massa saker, och att vissa av de sakerna går
+att fixa automatiskt. Då kan man göra det med:
+
+    eslint --fix var/nu/min/fil/ligger.js
