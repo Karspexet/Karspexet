@@ -57,17 +57,21 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
 
         function option(seatType, selectedSeatType) {
             var selectedString = seatType === selectedSeatType ? " selected" : "";
-            return '<option value="' + seatType + '" '+ selectedString + '>' +
-                seatType[0].toUpperCase() + seatType.slice(1) +
-                ' (' + pricing[seatType] + 'kr)' +
-                '</option>';
+            return [
+                '<option value="', seatType, '" ', selectedString, '>',
+                seatType[0].toUpperCase(), seatType.slice(1),
+                ' (', pricing[seatType], 'kr)',
+                '</option>'
+            ].join("");
         }
-        return '<div><label>' + displayName + ': ' +
-            '<select name="seat_' + seatId + '" data-id="' + seatId + '">' +
-            '<option value="">(Välj biljettyp)</option>' +
-            option('normal', seatType) +
-            option('student', seatType) +
-            '</select></label></div>';
+        return [
+            '<div><label>', displayName, ': ',
+            '<select name="seat_', seatId, '" data-id="', seatId, '">',
+            '<option value="">(Välj biljettyp)</option>',
+            option('normal', seatType),
+            option('student', seatType),
+            '</select></label></div>'
+        ].join("");
     }
 
     Object.keys(allSeats).forEach(function(seat) {
@@ -75,10 +79,12 @@ function setupSelectSeats(allSeats, takenSeats, pricings) {
             seatObject = allSeats[seat];
         element.addEventListener('mouseover', function() {
             var pricing = pricings[seatObject.group],
-                info = '<div>' + seatObject.name + '<br>' +
-                'Student: ' + pricing['student'] + 'kr' + '<br>' +
-                'Normal: ' + pricing['normal'] + 'kr' + '<br>' +
-                '</div>';
+                info = [
+                    '<div>', seatObject.name, '<br>',
+                    'Student: ', pricing['student'], 'kr', '<br>',
+                    'Normal: ', pricing['normal'], 'kr', '<br>',
+                    '</div>'
+                ].join("");
 
             document.querySelector('.seat-info').innerHTML = info;
         });
