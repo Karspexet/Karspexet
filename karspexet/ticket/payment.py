@@ -98,7 +98,6 @@ class PaymentProcess:
         )
 
 class FakePaymentProcess(PaymentProcess):
-
     def _charge_card(self):
         if self.data['payment_success'] == 'true':
             return True
@@ -107,7 +106,6 @@ class FakePaymentProcess(PaymentProcess):
 
 
 class StripePaymentProcess(PaymentProcess):
-
     def _charge_card(self):
         amount = self.reservation.total_price() * 100 # Öre
         stripe_token = self.data['stripeToken']
