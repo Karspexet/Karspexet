@@ -33,6 +33,11 @@ class PaymentProcess:
             process_class = FakePaymentProcess
         elif settings.PAYMENT_PROCESS == "stripe":
             process_class = StripePaymentProcess
+        else:
+            raise TypeError(
+                "Invalid payment process setting {}. "
+                "Please use either 'stripe' or 'fake'".format(settings.PAYMENT_PROCESS)
+            )
 
         return process_class(reservation, post_data).process()
 
