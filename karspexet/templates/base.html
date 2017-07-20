@@ -4,7 +4,6 @@
         <title>{% page_attribute "page_title" %}</title>
         <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
         {% render_block "css" %}
-        {% render_block "js" %}
     </head>
     <body>
         {% cms_toolbar %}
@@ -23,6 +22,12 @@
         <link href="{% static 'fonts.css' %}" rel="stylesheet" type="text/css"/>
         <link href="{% static 'menu.css' %}" rel="stylesheet" type="text/css"/>
         {% endaddtoblock %}
+        {% addtoblock "js" %}
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{% static 'menu.js' %}" type="text/javascript"></script>
+        {% endaddtoblock %}
+
         {% block content %}
         {% endblock content%}
 
@@ -83,20 +88,6 @@ Hamburger filet mignon prosciutto shoulder brisket tenderloin. Chuck biltong kev
 
 Sausage tenderloin cupim, kielbasa hamburger short loin sirloin venison meatball pastrami pancetta. Bacon pancetta cow shankle. Fatback pork chop jerky, biltong ground round pastrami tri-tip landjaeger porchetta pork belly bacon. Salami t-bone ground round, andouille venison doner turkey boudin rump ham kielbasa. Tongue spare ribs turkey ground round.
 </div>
-    </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
-    const navbar = $("#navbar");
-
-    document.onscroll = () => {
-        const titleHeight = parseInt($(".titleContainer").css("height"));
-
-        if (titleHeight > window.pageYOffset){
-            navbar.css("top", -window.pageYOffset);
-        } else {
-            navbar.css("top", -titleHeight);
-        }
-
-    }
-    </script>
+{% render_block "js" %}
+</body>
 </html>
