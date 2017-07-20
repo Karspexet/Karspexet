@@ -23,15 +23,13 @@
         <link href="{% static 'menu.css' %}" rel="stylesheet" type="text/css"/>
         {% endaddtoblock %}
         {% addtoblock "js" %}
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="{% static 'menu.js' %}" type="text/javascript"></script>
         {% endaddtoblock %}
-
-        {% block content %}
-        {% endblock content%}
-
-        <div>
+        <div id="contentBox">
+            {% block content %}
+            {% endblock content%}
+            
 Bacon ipsum dolor amet chicken short loin bresaola picanha rump. Cow burgdoggen alcatra ribeye prosciutto, turducken flank beef pork loin. Pancetta pork belly pork loin shankle salami, filet mignon andouille. Cow picanha meatloaf, sausage tail biltong shankle flank bacon ball tip capicola. Cow drumstick landjaeger jerky frankfurter, picanha corned beef salami bacon doner. Boudin shank ham hock rump spare ribs pancetta salami tongue chuck turkey.
 
 Tri-tip chuck short ribs kevin. Pork belly beef turducken, meatball beef ribs tongue biltong porchetta picanha frankfurter doner fatback chuck. Hamburger capicola spare ribs picanha shoulder flank andouille tenderloin short ribs shank. Pig ribeye bacon meatloaf sirloin, turkey doner tenderloin ham. Beef ribs bresaola shank sausage burgdoggen. Biltong jerky sirloin doner filet mignon capicola pork tongue brisket jowl kielbasa alcatra. Strip steak doner tri-tip bresaola fatback pig, short loin chicken bacon ribeye capicola tail shank sirloin.

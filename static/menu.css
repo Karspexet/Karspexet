@@ -8,11 +8,17 @@ body {
   width: 100%;
   font-size: 1.2em;
   color: #fc0;
+  z-index: 1;
 }
 .horizontal {
   display: flex;
   justify-content: center;
 }
+
+#contentBox {
+  position: absolute;
+}
+
 #navbar h1 {
   margin-bottom: 0;
   font-family: 'Pergament', Fallback, sans-serif;
