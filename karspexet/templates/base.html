@@ -86,15 +86,15 @@ Sausage tenderloin cupim, kielbasa hamburger short loin sirloin venison meatball
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-    const navbar = $("#navbar");
+    const navigationBar = $("#navbar");
 
     document.onscroll = () => {
         const titleHeight = parseInt($(".titleContainer").css("height"));
 
         if (titleHeight > window.pageYOffset){
-            navbar.css("top", -window.pageYOffset);
+            navigationBar.css("top", -window.pageYOffset);
         } else {
-            navbar.css("top", -titleHeight);
+            navigationBar.css("top", -titleHeight);
         }
 
     }
