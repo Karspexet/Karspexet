@@ -8,12 +8,24 @@
     </head>
     <body>
         {% cms_toolbar %}
+        <div id="navbar">
+            <div class="horizontal">
+              <h1><span class="g">KÅR</span>S<span class="g">P</span>EX<span class="g">ET</span></h1>
+            </div>
+            
+            <div class="horizontal">
+              <ul class="menu">
+                {% show_menu 0 100 0 1 %}
+              </ul>
+            </div>
+        </div>
         <div class="menu">
             <ul>
                 {% show_menu 0 100 0 1 %}
             </ul>
         </div>
         {% addtoblock "css" %}
+        <link href="{% static 'fonts.css' %}" rel="stylesheet" type="text/css"/>
         <link href="{% static 'menu.css' %}" rel="stylesheet" type="text/css"/>
         {% endaddtoblock %}
         {% block content %}
