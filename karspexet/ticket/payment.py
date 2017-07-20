@@ -117,7 +117,6 @@ class StripePaymentProcess(PaymentProcess):
                 currency="sek",
                 description="Biljetter till Kårspexet"
             )
-        except (APIConnectionError, AuthenticationError, InvalidRequestError, RateLimitError, StripeError) as e:
-            # Too many requests made to the API too quickly
-            logger.error(e)
-            raise PaymentError(str(e))
+        except (APIConnectionError, AuthenticationError, InvalidRequestError, RateLimitError, StripeError) as error:
+            logger.error(error)
+            raise PaymentError from error
