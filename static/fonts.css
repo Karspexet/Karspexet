@@ -1,5 +1,5 @@
 @font-face {
   font-family: 'Pergament';
-  src: url('pergament.woff') format('woff'),
-       url('pergament.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+  src: url('PergamentNormal.woff') format('woff'),
+       url('PergamentNormal.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
