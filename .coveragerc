@@ -3,6 +3,7 @@ branch = True
 source = .
 omit =
   manage.py
+  venv/**/*
 
 [report]
 exclude_lines =
