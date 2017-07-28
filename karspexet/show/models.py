@@ -15,6 +15,7 @@ class Show(models.Model):
     date = models.DateTimeField()
     venue = models.ForeignKey('venue.Venue', on_delete=models.PROTECT)
 
+    @staticmethod
     def upcoming():
         return Show.objects.filter(date__gte=datetime.date.today())
 
