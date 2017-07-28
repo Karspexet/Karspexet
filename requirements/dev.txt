@@ -3,6 +3,7 @@
 blessings==1.6
 bpython==0.15
 codeclimate-test-reporter==0.1.2
+codacy-coverage==1.3.6
 curtsies==0.2.9
 greenlet==0.4.10
 jedi==0.9.0
