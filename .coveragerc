@@ -3,8 +3,16 @@ branch = True
 source = .
 omit =
   manage.py
+  venv/**/*
 
 [report]
 exclude_lines =
     pragma: no cover
     def __repr__
+show_missing = True
+
+[paths]
+source = karspexet
+
+[html]
+directory = coverage_html_report

@@ -1,0 +1,52 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.1
+      - image: circleci/postgres:9.6.2
+
+    working_directory: ~/repo
+    environment:
+      - DATABASE_URL=postgres://root@127.0.0.1:5432/circle_test
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - dependencies-v1-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - dependencies-v1
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt
+            cp env.json{.sample,} || /bin/true
+
+      - save_cache:
+          paths:
+            - venv
+          key: dependencies-v1-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
+
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            py.test --cov --cov-report term --cov-report xml --cov-report html
+
+      - run:
+          name: Upload coverage to Codacy
+          command: |
+            . venv/bin/activate
+            python-codacy-coverage -r coverage.xml
+
+      - store_artifacts:
+          path: coverage_html_report
+          destination: test-reports
