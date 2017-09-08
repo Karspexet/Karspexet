@@ -1,8 +1,8 @@
 # Kårspexets IT-system
 
-[![Build Status](https://semaphoreci.com/api/v1/frost/karspexet/branches/master/shields_badge.svg)](https://semaphoreci.com/frost/karspexet)
-[![Code Climate](https://codeclimate.com/github/Karspexet/Karspexet/badges/gpa.svg)](https://codeclimate.com/github/Karspexet/Karspexet)
-[![Test Coverage](https://codeclimate.com/github/Karspexet/Karspexet/badges/coverage.svg)](https://codeclimate.com/github/Karspexet/Karspexet/coverage)
+[![Build Status](https://circleci.com/gh/Karspexet/Karspexet.svg?style=svg)](https://circleci.com/gh/Karspexet/Karspexet)
+[![Codacy](https://api.codacy.com/project/badge/Grade/8834660783b148a1af9d76807d4a1008)](https://www.codacy.com/app/Frost/Karspexet?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Karspexet/Karspexet&amp;utm_campaign=Badge_Grade)
+[![Test Coverage](https://api.codacy.com/project/badge/Coverage/8834660783b148a1af9d76807d4a1008)](https://www.codacy.com/app/Frost/Karspexet?utm_source=github.com&utm_medium=referral&utm_content=Karspexet/Karspexet&utm_campaign=Badge_Coverage)
 
 Detta repo innehåller Kårspexets IT-system, vilket just nu är dess
 biljettsystem.
