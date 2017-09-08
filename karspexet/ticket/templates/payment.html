@@ -38,12 +38,7 @@
       <input name="email" class="field" placeholder="" type="email" />
     </label>
   </div>
-  <div class="group">
-    <label>
-      <span>Kort</span>
-      <div id="card-element" class="field"></div>
-    </label>
-  </div>
+  {% include payment_partial %}
   <button type="submit">Betala {{ reservation.total_price }} kr</button>
   <div class="outcome">
     <div class="error" role="alert"></div>

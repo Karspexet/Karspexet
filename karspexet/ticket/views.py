@@ -15,7 +15,11 @@ from karspexet.ticket.models import Reservation, PricingModel
 from karspexet.ticket.payment import PaymentError, PaymentProcess
 from karspexet.venue.models import Seat
 
-stripe_keys = settings.ENV["stripe"]
+if settings.PAYMENT_PROCESS == "stripe":
+    stripe_keys = settings.ENV["stripe"]
+else:
+    stripe_keys = {"publishable_key": "fake", "secret_key": "fake"}
+
 
 SESSION_TIMEOUT_MINUTES = 30
 
@@ -72,6 +76,7 @@ def booking_overview(request):
 
     return render(request, 'payment.html', {
         'seats': seats,
+        'payment_partial': _payment_partial(),
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
     })
@@ -96,8 +101,9 @@ def process_payment(request, reservation_id):
             return render(request, "payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
+                'payment_partial': _payment_partial(),
                 'stripe_key': stripe_keys['publishable_key'],
-                'payment_failedj': True,
+                'payment_failed': True,
             })
 
 
@@ -154,3 +160,9 @@ def _build_pricings_and_seats(venue):
     }
 
     return (pricings, seats)
+
+def _payment_partial():
+    if settings.PAYMENT_PROCESS == "stripe":
+        return "_stripe_payment.html"
+    else:
+        return "_fake_payment.html"

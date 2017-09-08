@@ -1,5 +1,7 @@
 /* global Stripe, config */
 (function setupPayment(stripeKey) {
+    if (stripeKey === "fake") return
+
     var stripe = Stripe(stripeKey)
     var elements = stripe.elements({locale: "sv"})
 
