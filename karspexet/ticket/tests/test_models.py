@@ -1,10 +1,13 @@
+import pytest
+
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
 
 from factories import factories as f
 
-from karspexet.ticket.models import Reservation, PricingModel
+from karspexet.ticket.models import PricingModel, Reservation, Ticket
+from django.core.exceptions import ValidationError
 
 class TestReservation(TestCase):
     def setUp(self):
@@ -112,3 +115,24 @@ class TestPricingModel(TestCase):
 
         assert seat.price_for_type('student') == 200
         assert seat.price_for_type('student', one_day_ago) == 150
+
+class TestTicket(TestCase):
+    def setUp(self):
+        production = f.CreateProduction()
+        venue = f.CreateVenue()
+        group = f.CreateSeatingGroup(venue=venue)
+        self.seat = f.CreateSeat(group=group)
+        self.show = f.CreateShow(venue=venue, production=production, date=timezone.now())
+        self.pricing = f.CreatePricingModel(
+            seating_group=group,
+            prices={'student': 200, 'normal': 250},
+            valid_from=timezone.now()
+        )
+
+    def test_ticket_must_be_unique_per_show(self):
+        old_ticket = f.CreateTicket(show=self.show, seat=self.seat, price=200, account=f.CreateAccount())
+
+        duplicate_ticket = Ticket(show=self.show, seat=self.seat, price=200, account=f.CreateAccount())
+
+        with pytest.raises(ValidationError) as error:
+            duplicate_ticket.full_clean()
