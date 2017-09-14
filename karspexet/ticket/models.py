@@ -54,7 +54,6 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
-
     class Meta:
         unique_together = ('show', 'seat')
 
