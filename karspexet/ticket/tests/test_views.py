@@ -1,6 +1,4 @@
 # coding: utf-8
-from datetime import datetime
-
 from django.shortcuts import reverse
 from django.test import TestCase
 from django.utils import timezone
@@ -34,5 +32,3 @@ class TestSelect_seats(TestCase):
         response = self.client.get(reverse(views.select_seats, args=[show.id]))
 
         self.assertContains(response, "Köp biljetter för Uppsättningen")
-
-
