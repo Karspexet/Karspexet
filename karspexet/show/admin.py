@@ -10,5 +10,6 @@ class ProductionAdmin(admin.ModelAdmin):
 class ShowAdmin(admin.ModelAdmin):
     pass
 
+
 admin.site.register(Production, ProductionAdmin)
 admin.site.register(Show, ShowAdmin)
