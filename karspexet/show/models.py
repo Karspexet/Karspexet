@@ -1,5 +1,6 @@
 from django.db import models
-import datetime
+from datetime import datetime
+from django.utils import timezone
 
 
 class Production(models.Model):
@@ -17,7 +18,7 @@ class Show(models.Model):
 
     @staticmethod
     def upcoming():
-        return Show.objects.filter(date__gte=datetime.date.today())
+        return Show.objects.filter(date__gte=timezone.make_aware(datetime.today()))
 
     @staticmethod
     def ticket_coverage():
