@@ -5,8 +5,10 @@ body {
 #navbar {
   background-color: #590000;
   position: fixed;
+  top: 0px;
   width: 100%;
   font-size: 1.2em;
+  height: 120px;
   color: #fc0;
   z-index: 1;
 }
@@ -16,7 +18,8 @@ body {
 }
 
 #contentBox {
-  position: absolute;
+    margin-top: 120px;
+    position: absolute;
 }
 
 #navbar h1 {
