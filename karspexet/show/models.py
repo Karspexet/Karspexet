@@ -22,23 +22,23 @@ class Show(models.Model):
     @staticmethod
     def ticket_coverage():
         return Show.objects.raw("""
-            select show.id,
+            SELECT show.id,
                 show.production_id,
                 show.venue_id,
                 venue.name as venue_name,
                 production.name as production_name,
                 show.date,
-                count(distinct(ticket.id)) as ticket_count,
-                count(distinct(seat.id)) as seat_count,
-                100 * (count(distinct(ticket.id))::float / count(distinct(seat.id))) as sales_percentage
-            from show_show show
-                left outer join ticket_ticket ticket on ticket.show_id = show.id
-                left join venue_venue venue on show.venue_id = venue.id
-                left join venue_seatinggroup sg on sg.venue_id = venue.id
-                left join venue_seat seat on sg.id = seat.group_id
-                left join show_production production on show.production_id = production.id
-            group by show.id, venue.name, production.name
-            order by show.date desc
+                COUNT(DISTINCT(ticket.id)) AS ticket_count,
+                COUNT(DISTINCT(seat.id)) AS seat_count,
+                100 * (COUNT(DISTINCT(ticket.id))::float / COUNT(DISTINCT(seat.id))) AS sales_percentage
+            FROM show_show show
+                LEFT OUTER JOIN ticket_ticket ticket ON ticket.show_id = show.id
+                LEFT JOIN venue_venue venue ON show.venue_id = venue.id
+                LEFT JOIN venue_seatinggroup sg ON sg.venue_id = venue.id
+                LEFT JOIN venue_seat seat ON sg.id = seat.group_id
+                LEFT JOIN show_production production ON show.production_id = production.id
+            GROUP BY show.id, venue.name, production.name
+            ORDER BY show.date desc
             """)
 
     def date_string(self):
