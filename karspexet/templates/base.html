@@ -1,4 +1,4 @@
-{% load menu_tags cms_tags sekizai_tags staticfiles %}
+{% load menu_tags cms_tags sekizai_tags staticfiles svg %}
 <html>
     <head>
         <title>{% page_attribute "page_title" %}</title>
@@ -12,7 +12,7 @@
         {% cms_toolbar %}
         <div id="navbar">
             <div class="horizontal titleContainer">
-              <h1><span class="g">KÅR</span>S<span class="g">P</span>EX<span class="g">ET</span></h1>
+              {% svg 'karspexet-logo-pergament' %}
             </div>
 
             <div class="horizontal menuContainer">
