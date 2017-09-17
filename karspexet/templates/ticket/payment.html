@@ -25,7 +25,6 @@
     {% endif %}
 </section>
 
-<script src="https://js.stripe.com/v3/"></script>
 <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
     {% csrf_token %}
     <div class="group">
@@ -49,10 +48,8 @@
   </div>
 </form>
 
-<link rel="stylesheet" href="/static/payment.css" />
 <script>
   window.config = window.config || {}
   window.config.payment = '{{ stripe_key }}'
 </script>
-<script src="/static/payment.js"></script>
 {% endblock %}

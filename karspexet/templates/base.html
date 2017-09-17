@@ -1,12 +1,14 @@
 {% load menu_tags cms_tags sekizai_tags staticfiles svg %}
+{% load render_bundle from webpack_loader %}
 <html>
     <head>
         <title>{% page_attribute "page_title" %}</title>
         <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
         {% render_block "css" %}
-        <link href="{% static 'fonts.css' %}" rel="stylesheet" type="text/css"/>
-        <link href="{% static 'menu.css' %}" rel="stylesheet" type="text/css"/>
-        <link href="{% static 'karspexet.css' %}" rel="stylesheet" type="text/css"/>
+        {% render_block "js" %}
+        <script src="https://js.stripe.com/v3/" async></script>
+        {% render_bundle "app" "js" attrs="async" %}
+        {% render_bundle "style" "css" attrs="async" %}
     </head>
     <body>
         {% cms_toolbar %}
@@ -26,6 +28,5 @@
             {% block content %}
             {% endblock content%}
         </div>
-        {% render_block "js" %}
     </body>
 </html>
