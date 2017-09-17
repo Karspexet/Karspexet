@@ -1,13 +1,6 @@
+{% extends "base.html" %}
 {% load staticfiles svg %}
-<html lang="sv">
-  <head>
-    <title>Kårspexet - Biljetter</title>
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-  </head>
-  <body>
-    <span class="logo">{% svg 'luva' %}</span>
-    <h1>Kårspexet - Biljetter</h1>
+{% block content %}
     {% if messages %}
     <section>
         <ul class="messages">
@@ -17,7 +10,6 @@
         </ul>
     </section>
     {% endif %}
-    {% block content %}
+    {% block ticket_content %}
     {% endblock %}
-  </body>
-</html>
+{% endblock %}
