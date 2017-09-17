@@ -122,3 +122,9 @@
     font-weight: 500;
     font-size: 13px;
 }
+
+section.contact-details {
+    width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
