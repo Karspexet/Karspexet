@@ -1,5 +1,8 @@
-(function setupSelectSeats(config) {
-    var booking = {}
+function setupSelectSeats({seatSelection}) {
+    if (!seatSelection) return
+
+    var config = seatSelection,
+        booking = {}
 
     function selectSeat(event) {
         var seat = event.target.id
@@ -96,4 +99,6 @@
         document.querySelectorAll(".seat:not(.taken-seat)"),
         function makeSeatAvailable(seat) {seat.addEventListener("click", selectSeat)}
     )
-})(window.config.seatSelection)
+}
+
+exports.setupSelectSeats = setupSelectSeats
