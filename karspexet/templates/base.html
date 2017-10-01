@@ -9,24 +9,34 @@
         <script src="https://js.stripe.com/v3/" async></script>
         {% render_bundle "app" "js" attrs="async" %}
         {% render_bundle "style" "css" attrs="async" %}
+    <!--    <link href="{% static 'fonts.css' %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static 'karspexet.css' %}" rel="stylesheet" type="text/css"/>
+    -->
     </head>
     <body>
         {% cms_toolbar %}
-        <div id="navbar">
-            <div class="horizontal titleContainer">
-              {% svg 'karspexet-logo-pergament' %}
-            </div>
-
-            <div class="horizontal menuContainer">
-              <ul class="menu">
-                {% show_menu 0 100 0 1 %}
+        <div class="centering">
+          <div class="content">
+            <div class="navbar">
+              <ul>
+                <li><div>HEM</div></li>
+                <li><span class="list_decorator"></span></li>
+                <li><div>ÅRETS SPEX</div></li>
+                <li><span class="list_decorator"></span></li>
+                <li><div>OM KÅRSPEXET</div></li>
+                <li><img class="luva" src="{% static 'svg/luva-inkscape.svg' %}"></li>
+                <li><div>SÖK KÅRSPEXET</div></li>
+                <li><span class="list_decorator"></span></li>
+                <li><div>FÖRETAG</div></li>
+                <li><span class="list_decorator"></span></li>
+                <li><div>KONTAKT</div></li>
               </ul>
             </div>
-        </div>
-
-        <div class="card" id="contentBox">
+        <div id="page">
             {% block content %}
             {% endblock content%}
         </div>
+        <script src="{% static 'fontawsome' %}"/>
+        {% render_block "js" %}
     </body>
 </html>
