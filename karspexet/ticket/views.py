@@ -7,7 +7,8 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.template.response import TemplateResponse
 from django.utils import timezone
 
 from karspexet.show.models import Show
@@ -25,9 +26,9 @@ SESSION_TIMEOUT_MINUTES = 30
 
 
 def home(request):
-    upcoming_shows = Show.upcoming()
+    upcoming_shows = Show.upcoming().filter(visible=True).all()
 
-    return render(request, "home.html", {
+    return TemplateResponse(request, "home.html", {
         'upcoming_shows': upcoming_shows
     })
 
@@ -53,13 +54,14 @@ def select_seats(request, show_id):
 
     pricings, seats = _build_pricings_and_seats(show.venue)
 
-    return render(request, "select_seats.html", {
+    return TemplateResponse(request, "select_seats.html", {
         'taken_seats': list(taken_seats),
         'show': show,
         'venue': show.venue,
         'pricings': pricings,
         'seats': json.dumps(seats)
     })
+
 
 def booking_overview(request):
     reservation = _get_or_create_reservation_object(request)
@@ -74,12 +76,13 @@ def booking_overview(request):
 
     seats = ["%s (%s, %dkr)" % (reserved_seats[int(id)].name, ticket_type, reserved_seats[int(id)].price_for_type(ticket_type)) for (id, ticket_type) in reservation.tickets.items()]
 
-    return render(request, 'payment.html', {
+    return TemplateResponse(request, 'payment.html', {
         'seats': seats,
         'payment_partial': _payment_partial(),
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
     })
+
 
 def process_payment(request, reservation_id):
     reservation = Reservation.objects.get(pk=reservation_id)
@@ -94,11 +97,11 @@ def process_payment(request, reservation_id):
             request.session['reservation_timeout'] = None
             request.session['reservation_id'] = None
 
-            return render(request, 'payment_succeeded.html', {
+            return TemplateResponse(request, 'payment_succeeded.html', {
                 'reservation': reservation,
             })
         except PaymentError as e:
-            return render(request, "payment.html", {
+            return TemplateResponse(request, "payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
                 'payment_partial': _payment_partial(),
@@ -113,8 +116,10 @@ def _session_expired(request):
         timeout = parser.parse(timeout)
         return timeout < timezone.now()
 
+
 def _set_session_timeout(request):
     request.session['reservation_timeout'] = (timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
+
 
 def _get_or_create_reservation_object(request, show=None):
     timeout = timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)
@@ -133,8 +138,10 @@ def _get_or_create_reservation_object(request, show=None):
 
     return reservation
 
+
 def _all_seats_available(qs, seat_ids):
     return not qs.filter(tickets__has_any_keys=seat_ids).exists()
+
 
 def _seat_specifications(request):
     return {
@@ -142,6 +149,7 @@ def _seat_specifications(request):
             for seat,ticket_type in request.POST.items()
             if seat.startswith("seat_")
     }
+
 
 def _some_seat_is_missing_ticket_type(seat_params):
     return any(not ticket_type for ( seat,ticket_type ) in seat_params.items())
@@ -160,6 +168,7 @@ def _build_pricings_and_seats(venue):
     }
 
     return (pricings, seats)
+
 
 def _payment_partial():
     if settings.PAYMENT_PROCESS == "stripe":

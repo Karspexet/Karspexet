@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.shortcuts import reverse
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.utils import timezone
 
 from karspexet.show.models import Show, Production
@@ -8,18 +8,42 @@ from karspexet.ticket import views
 
 from karspexet.venue.models import Venue, SeatingGroup
 
+import pytest
+
 
 class TestHome(TestCase):
-    def test_home_lists_upcoming_shows(self):
+    def setUp(self):
+        rf = RequestFactory()
+        self.request = rf.get(reverse(views.home))
+        self.tomorrow = timezone.now() + timezone.timedelta(days=1)
+
+    def test_home_lists_visible_upcoming_shows(self):
         venue = Venue.objects.create(name="Teater 1")
         production = Production.objects.create(name="Uppsättningen")
-        date = timezone.now()+timezone.timedelta(days=1)
-        show = Show.objects.create(date=date, production=production, venue=venue)
+        yesterday = timezone.now() - timezone.timedelta(days=1)
+        show = Show.objects.create(date=self.tomorrow, production=production, venue=venue)
+        invisible_show = Show.objects.create(date=self.tomorrow, production=production, venue=venue, visible=False)
+        old_show = Show.objects.create(date=yesterday, production=production, venue=venue)
 
-        response = self.client.get(reverse(views.home))
+        response = views.home(self.request)
 
-        self.assertContains(response, production.name)
-        self.assertContains(response, show.date_string())
+        shows = response.context_data["upcoming_shows"]
+
+        assert show in shows
+        assert old_show not in shows
+
+    def test_home_contains_only_visible_shows(self):
+        venue = Venue.objects.create(name="Teater 1")
+        production = Production.objects.create(name="Uppsättningen")
+        show = Show.objects.create(date=self.tomorrow, production=production, venue=venue)
+        invisible_show = Show.objects.create(date=self.tomorrow, production=production, venue=venue, visible=False)
+
+        response = views.home(self.request)
+
+        shows = response.context_data["upcoming_shows"]
+
+        assert show in shows
+        assert invisible_show not in shows
 
 
 class TestSelect_seats(TestCase):
