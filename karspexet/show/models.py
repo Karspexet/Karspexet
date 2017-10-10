@@ -15,6 +15,7 @@ class Show(models.Model):
     production = models.ForeignKey(Production, on_delete=models.PROTECT)
     date = models.DateTimeField()
     venue = models.ForeignKey('venue.Venue', on_delete=models.PROTECT)
+    visible = models.BooleanField(default=True)
 
     @staticmethod
     def upcoming():
