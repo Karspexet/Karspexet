@@ -8,7 +8,7 @@ root = true
 # Unix-style newlines with a newline ending every file
 # Geared towards Python development, with 4-space indenting
 [*]
-indent_size = 4
+indent_size = 2
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
@@ -18,12 +18,12 @@ charset = utf-8
 # Django model names and ORM management can cause lines to get fairly long,
 # so this is a compromise against PEP8
 [*.py]
+indent_size = 4
 max_line_length = 119
-
-# HTML files usually have deep nesting, so we use smaller indent size
-[*.html]
-indent_size = 2
 
 # Makefiles need to use tabs for indentation
 [Makefile]
 indent_style = tab
+
+[*.js]
+indent_size = 4
