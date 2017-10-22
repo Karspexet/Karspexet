@@ -23,7 +23,6 @@ class Show(models.Model):
 
     @staticmethod
     def ticket_coverage(show=None):
-        where_clause = f"WHERE show.id = {show.id}" if show else ""
         return Show.objects.raw(f"""
             SELECT show.id,
                 show.production_id,
@@ -40,7 +39,7 @@ class Show(models.Model):
                 LEFT JOIN venue_seatinggroup sg ON sg.venue_id = venue.id
                 LEFT JOIN venue_seat seat ON sg.id = seat.group_id
                 LEFT JOIN show_production production ON show.production_id = production.id
-            {where_clause}
+            {f'WHERE show.id = {show.id}' if show else ''}
             GROUP BY show.id, venue.name, production.name
             ORDER BY show.date desc
             """)
