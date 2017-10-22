@@ -90,3 +90,11 @@ class PricingModel(models.Model):
 
     def price_for(self, ticket_type):
         return int(self.prices[ticket_type])
+
+    def __repr__(self):
+        return "<PricingModel(id={}, prices={}, seating_group={}, valid_from={})>".format(
+            self.id,
+            self.prices,
+            self.seating_group,
+            self.valid_from
+        )
