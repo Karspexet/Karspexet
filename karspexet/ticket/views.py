@@ -1,5 +1,6 @@
 # coding: utf-8
 import json
+import logging
 
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
@@ -23,6 +24,8 @@ else:
 
 
 SESSION_TIMEOUT_MINUTES = 30
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -100,7 +103,8 @@ def process_payment(request, reservation_id):
             return TemplateResponse(request, 'payment_succeeded.html', {
                 'reservation': reservation,
             })
-        except PaymentError as e:
+        except PaymentError as error:
+            logger.exception(error)
             return TemplateResponse(request, "payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
