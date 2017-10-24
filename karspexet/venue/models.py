@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import HStoreField
 from django.db import models
 
 
@@ -5,6 +6,7 @@ class Venue(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     address = models.TextField(blank=True)
+    seat_map_dimensions = HStoreField(null=False, default={})
 
     def __str__(self):
         return self.name
