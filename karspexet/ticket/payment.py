@@ -46,7 +46,7 @@ class PaymentProcess:
         self.account = self._create_account()
         self._charge_card()
 
-        tickets = self._create_tickets()
+        self._create_tickets()
         self.reservation = self._finalize_reservation()
         self._send_mail_to_customer()
 
