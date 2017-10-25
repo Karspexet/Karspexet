@@ -14,7 +14,8 @@ class SeatingGroupInline(admin.StackedInline):
     extra = 1
     readonly_fields = ['admin_link']
 
-    def admin_link(self, obj):
+    @classmethod
+    def admin_link(cls, obj):
         url = _admin_change_link(obj)
         return format_html(u'<a href="{}">Edit: {}</a>', url, obj)
 
