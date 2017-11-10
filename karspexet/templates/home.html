@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load cms_tags  sekizai_tags%}
+{% load cms_tags  sekizai_tags fontawesome %}
 {% block content %}
     <div class="poster_container">
         <img class="poster_image" src="https://static1.squarespace.com/static/556b95e7e4b0dfc7140a799b/556b9736e4b0807cd7b712c8/5579849ce4b0427d6ed929be/1450036273556/IMG_4699+artorius_4.jpg">
@@ -11,22 +11,22 @@
       <div class="running_shows"> 
         <!-- This div should be replaced-->
         <div>
-          <span><i class="fa fa-clock-o" aria-hidden="true"></i>KOMMANDE FÖRESTÄLLNINGAR:</span>
+          <span>{% fontawesome_icon 'clock'%} KOMMANDE FÖRESTÄLLNINGAR:</span>
         </div>
         <div>
-          <span><i class="fa fa-calendar" aria-hidden="true"></i>27/8</span>
-          <span><i class="fa fa-clock-o" aria-hidden="true"></i>19:00</span>
-          <span><i class="fa fa-map-marker" aria-hidden="true"></i>Södra Teatern</span>
+          <span>{% fontawesome_icon 'calendar' %}27/8</span>
+          <span>{% fontawesome_icon 'clock' %}19:00</span>
+          <span>{% fontawesome_icon 'map-marker' %}Södra Teatern</span>
         </div>
         <div>
-          <span><i class="fa fa-calendar" aria-hidden="true"></i>27/8</span>
-          <span><i class="fa fa-clock-o" aria-hidden="true"></i>19:00</span>
-          <span><i class="fa fa-map-marker" aria-hidden="true"></i>Södra Teatern</span>
+          <span>{% fontawesome_icon 'calendar' %}27/8</span>
+          <span>{% fontawesome_icon 'clock' %}19:00</span>
+          <span>{% fontawesome_icon 'map-marker' %}Södra Teatern</span>
         </div>
         <div>
-          <span><i class="fa fa-calendar" aria-hidden="true"></i>27/8</span>
-          <span><i class="fa fa-clock-o" aria-hidden="true"></i>19:00</span>
-          <span><i class="fa fa-map-marker" aria-hidden="true"></i>Södra Teatern</span>
+          <span>{% fontawesome_icon 'calendar' %}27/8</span>
+          <span>{% fontawesome_icon 'clock' %}19:00</span>
+          <span>{% fontawesome_icon 'map-marker' %}Södra Teatern</span>
         </div>
         <div>SE FLER</div>
       </div>

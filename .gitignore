@@ -64,5 +64,6 @@ target/
 .ipynb_checkpoints
 /env.json
 
-# VS Code
-.vscode/
+#Webpack & NPM
+node_modules
+webpack-stats.json
