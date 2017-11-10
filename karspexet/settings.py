@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.postgres',
     'svg',
+    'fontawesome',
     'webpack_loader'
 ] + OUR_APPS
 
