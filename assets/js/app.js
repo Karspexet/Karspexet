@@ -12,9 +12,9 @@
         switch (readyState) {
         case "complete":
             initApplication(window.config)
-            break;
+            break
         }
     }
 
-    document.addEventListener('readystatechange', bootstrap)
+    document.addEventListener("readystatechange", bootstrap)
 })(window, document)

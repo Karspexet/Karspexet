@@ -17,7 +17,8 @@ module.exports = {
     },
 
     plugins: [
-        new BundleTracker({filename: "./webpack-stats.json"})
+        new BundleTracker({filename: "./webpack-stats.json"}),
+        new ExtractTextPlugin("[name]-[hash].css"),
     ],
 
     module: {
@@ -46,11 +47,6 @@ module.exports = {
             }
         ]
     },
-
-    plugins: [
-        new ExtractTextPlugin("[name]-[hash].css"),
-        new BundleTracker({filename: "./webpack-stats.json"})
-    ],
 
     devtool: "source-map"
 }
