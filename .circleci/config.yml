@@ -2,25 +2,74 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
+defaults: &defaults
+  working_directory: ~/repo
+  environment:
+    - DATABASE_URL=postgres://root@127.0.0.1:5432/circle_test
+
+
+cache_keys:
+  python_cache: &python_cache
+    key: dependencies-v1-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
+    paths:
+      - venv
+  node_cache: &node_cache
+    key: dependencies-v1-{{ checksum "package-lock.json" }}
+    paths:
+      - node_modules
+      - ~/.npm
+
 version: 2
 jobs:
-  build:
+  bundle_assets:
+    <<: *defaults
     docker:
-      - image: circleci/python:3.6.1
-      - image: circleci/postgres:9.6.2
-
-    working_directory: ~/repo
-    environment:
-      - DATABASE_URL=postgres://root@127.0.0.1:5432/circle_test
+      - image: circleci/node:8.9
 
     steps:
       - checkout
 
       - restore_cache:
-          keys:
-          - dependencies-v1-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - dependencies-v1
+          name: Restore NPM cache
+          <<: *node_cache
+
+      - run:
+          name: Install NPM packages
+          command: npm install --no-optional
+
+      - save_cache:
+          name: Save NPM cache
+          <<: *node_cache
+
+      - run:
+          name: Build assets
+          command: ./node_modules/.bin/webpack
+
+      - run:
+          name: Copy asset bundles to workspace
+          command: |
+            mkdir -p /tmp/workspace
+            cp -r assets/bundles /tmp/workspace
+            cp -r webpack-stats.json /tmp/workspace
+
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - bundles
+            - webpack-stats.json
+
+  python_tests:
+    <<: *defaults
+    docker:
+      - image: circleci/python:3.6.1
+      - image: circleci/postgres:9.6.2
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: Restore python cache
+          <<: *python_cache
 
       - run:
           name: install dependencies
@@ -31,9 +80,17 @@ jobs:
             cp env.json{.sample,} || /bin/true
 
       - save_cache:
-          paths:
-            - venv
-          key: dependencies-v1-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
+          name: Save python cache
+          <<: *python_cache
+
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Copy bundles from workspace
+          command: |
+            cp -r /tmp/workspace/bundles assets
+            cp /tmp/workspace/webpack-stats.json .
 
       - run:
           name: run tests
@@ -50,3 +107,11 @@ jobs:
       - store_artifacts:
           path: coverage_html_report
           destination: test-reports
+workflows:
+  version: 2
+  test:
+    jobs:
+      - bundle_assets
+      - python_tests:
+          requires:
+            - bundle_assets
