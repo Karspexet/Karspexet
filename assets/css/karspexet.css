@@ -74,3 +74,23 @@ body {
     color: rgb(222, 210, 95);
     margin-right: 2px;
   }
+
+  .partnersContainer {
+    width: 100%;
+    background-color: white;
+  }
+  .ourPartners {
+    color: black;
+  }
+
+  .partnerPictures {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row wrap;
+  }
+
+  .partnerPictures .cms-plugin {
+    height: 80px;
+    width: 200px;
+    border: solid black 1px;
+  }

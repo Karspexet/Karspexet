@@ -55,6 +55,7 @@ OUR_APPS = [
     'easy_thumbnails',
     'mptt',
     'djangocms_text_ckeditor',
+    'djangocms_picture',
 ]
 
 INSTALLED_APPS = [
