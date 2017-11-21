@@ -8,6 +8,8 @@
         {% fontawesome_stylesheet %}
         {% render_bundle "app" "js" attrs="async" %}
         {% render_bundle "style" "css" attrs="async" %}
+        {% render_block "js" %}
+        {% render_block "css" %}
     </head>
     <body>
         {% cms_toolbar %}
