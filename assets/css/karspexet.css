@@ -17,13 +17,15 @@ body {
     justify-content: space-around;
     list-style: none;
   }
-  .navbar ul li {
+  .navbar ul li a{
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
+    text-decoration: none;
   }
-  .navbar ul li:hover {
+  .navbar ul li a:hover {
     color: rgb(222, 210, 95);
   }
   .luva {
@@ -31,10 +33,7 @@ body {
     height: auto;
   }
   .list_decorator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: rgb(222, 210, 95);
+    font-size: small
   }
   .poster_container {
     width: 94vw;
