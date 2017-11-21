@@ -1,9 +1,11 @@
+from string import ascii_uppercase, digits
 from functools import reduce
 from django.conf import settings
 from django.contrib.postgres.fields import HStoreField
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.crypto import get_random_string
 
 from karspexet.show.models import Show
 from karspexet.venue.models import Seat, SeatingGroup
@@ -12,6 +14,9 @@ TICKET_TYPES = [
     ("normal", "Fullpris"),
     ("student", "Student"),
 ]
+
+def _generate_reservation_code():
+    return get_random_string(allowed_chars=ascii_uppercase+digits)
 
 class ActiveReservationsManager(models.Manager):
     def get_queryset(self):
@@ -26,6 +31,7 @@ class Reservation(models.Model):
     finalized = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
+    reservation_code = models.CharField(unique=True, max_length=16, default=_generate_reservation_code)
 
     objects = models.Manager()
     active = ActiveReservationsManager()
