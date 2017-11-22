@@ -121,9 +121,19 @@ def process_payment(request, reservation_id):
 def reservation_detail(request, reservation_code):
     reservation = Reservation.objects.get(reservation_code=reservation_code)
 
-    return TemplateResponse(request, "detail.html", {
+    return TemplateResponse(request, "reservation_detail.html", {
         'reservation': reservation,
         'seats': reservation.seats(),
+    })
+
+
+def ticket_detail(request, reservation_code, ticket_id):
+    reservation = Reservation.objects.get(reservation_code=reservation_code)
+    ticket = reservation.ticket_set.get(pk=ticket_id)
+
+    return TemplateResponse(request, "ticket_detail.html", {
+        'reservation': reservation,
+        'ticket': ticket,
     })
 
 

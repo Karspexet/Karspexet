@@ -23,8 +23,8 @@
       </dl>
 
       <ul>
-        {% for seat in seats %}
-        <li>{{ seat.name }}</li>
+        {% for ticket in reservation.tickets %}
+        <li><a href="{% url 'ticket_detail' reservation.reservation_code ticket.id %}">{{ seat.name }}</a></li>
         {% endfor %}
       </ul>
     </main>

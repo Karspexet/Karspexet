@@ -1,0 +1,22 @@
+{% load staticfiles svg %}
+<html lang="sv">
+  <head>
+    <title>Kårspexet - Biljett</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+  </head>
+  <body>
+    <span class="logo">{% svg 'luva' %}</span>
+    <h1>Kårspexet - Biljett</h1>
+    <main>
+      <dl>
+        <dt>Föreställning</dt>
+        <dd>{{ reservation.show.production }}</dd>
+        <dt>Datum</dt>
+        <dd>{{ reservation.show.date|date:"Y-m-d H:i" }}</dd>
+        <dt>Plats</dt>
+        <dd>{{ seat.name }}</dd>
+      </dl>
+    </main>
+  </body>
+</html>
