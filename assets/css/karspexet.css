@@ -1,96 +1,109 @@
 body {
-    background-color: black;
-    color: white;
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  .centering {
-    display: flex;
-    justify-content: center;
-  }
-  ul {
-    padding-left: 0;
-  }
-  .navbar ul {
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-  }
-  .navbar ul li {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    cursor: pointer;
-  }
-  .navbar ul li:hover {
-    color: rgb(222, 210, 95);
-  }
-  .luva {
-    max-width: 5vw;
-    height: auto;
-  }
-  .list_decorator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: rgb(222, 210, 95);
-  }
-  .poster_container {
-    width: 94vw;
-    height: 60vh;
-    position: relative;
-  }
-  .poster_image {
-    width: inherit;
-    height: inherit;
-    object-fit: cover;
-    object-position: 0 14%;
-    position: absolute;
-  }
-  .poster_title {
-    position: absolute;
-    left: 10%;
-    bottom: 10%;
-    text-shadow: 2px 2px 4px #000000;
-    font-size: 1.5em;
-  }
-  .poster_title h1 {
-    margin: 0;
-  }
-  .poster_title p {
-    margin: 0;
-  }
-  
-  .running_shows {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8em;
-    padding: 4px;
-  }
-  
-  .fa {
-    font-size: 1.1em;
-    color: rgb(222, 210, 95);
-    margin-right: 2px;
-  }
+  background-color: black;
+  color: white;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
 
-  .partnersContainer {
-    width: 100%;
-    background-color: white;
-  }
-  .ourPartners {
-    color: black;
-  }
+.centering {
+  display: flex;
+  justify-content: center;
+}
+ul {
+  padding-left: 0;
+}
+.navbar ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+}
+.navbar ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+.navbar ul li:hover {
+  color: rgb(222, 210, 95);
+}
+.luva {
+  max-width: 5vw;
+  height: auto;
+}
+.list_decorator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgb(222, 210, 95);
+}
 
-  .partnerPictures {
-    display: flex;
-    justify-content: space-around;
-    flex-flow: row wrap;
-  }
+.poster_container {
+  width: 100vw;
+  height: 300px;
+  position: relative;
+}
+.poster_image {
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
+  object-position: 0 14%;
+  position: absolute;
+}
+.poster_title {
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+  text-shadow: 2px 2px 4px #000000;
+  font-size: 1.5em;
+}
+.poster_title h1 {
+  margin: 0;
+}
+.poster_title p {
+  margin: 0;
+}
 
-  .partnerPictures .cms-plugin {
-    height: 80px;
-    width: 200px;
-    border: solid black 1px;
-  }
+.running_shows {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 6px;
+}
+
+.fa {
+  font-size: 1.1em;
+  color: rgb(222, 210, 95);
+  margin-right: 2px;
+}
+
+.partnersContainer {
+  width: 100%;
+  background-color: white;
+  padding-bottom: 25px;
+  width: 100vw;
+}
+
+.ourPartners {
+  color: black;
+  text-align: center;
+}
+
+.partnerPictures {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+}
+
+.partnerPictures .cms-plugin {
+  height: 80px;
+  width: 200px;
+  border: solid black 1px;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background-color: red;
+}
