@@ -1,28 +1,31 @@
 {% load menu_tags cms_tags sekizai_tags staticfiles svg fontawesome %}
 {% load render_bundle from webpack_loader %}
 <html>
-    <head>
-        <title>{% page_attribute "page_title" %}</title>
-        <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-        <script src="https://js.stripe.com/v3/" async></script>
-        {% fontawesome_stylesheet %}
-        {% render_bundle "app" "js" attrs="async" %}
-        {% render_bundle "style" "css" attrs="async" %}
-        {% render_block "js" %}
-        {% render_block "css" %}
-    </head>
-    <body>
-        {% cms_toolbar %}
-        <div class="centering">
-          <div class="content">
+<head>
+    <title>{% page_attribute "page_title" %}</title>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <script src="https://js.stripe.com/v3/" async></script>
+    {% fontawesome_stylesheet %}
+    {% render_bundle "app" "js" attrs="async" %}
+    {% render_bundle "style" "css" attrs="async" %}
+    {% render_block "js" %}
+    {% render_block "css" %}
+</head>
+<body>
+    {% cms_toolbar %}
+    <div class="centering">
+        <div class="content">
             <div class="navbar">
-              <ul>
-                {% show_menu 0 100 100 0 "menu.html" %}
-              </ul>
+                <ul>
+                    {% show_menu 0 100 100 0 "menu.html" %}
+                </ul>
             </div>
-        <div id="page">
-            {% block content %}
-            {% endblock content%}
+            <div id="page">
+                {% block content %}
+                {% endblock content%}
+            </div>
+            <div class="footer">Hej</div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

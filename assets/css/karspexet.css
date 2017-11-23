@@ -9,6 +9,12 @@ body {
   display: flex;
   justify-content: center;
 }
+
+.content {
+  position: relative;
+  min-height: 100%;
+}
+
 ul {
   padding-left: 0;
 }
@@ -35,6 +41,10 @@ ul {
   height: 6px;
   border-radius: 50%;
   background-color: rgb(222, 210, 95);
+}
+
+#page {
+  padding-bottom: 30px;
 }
 
 .poster_container {
@@ -83,6 +93,15 @@ ul {
   width: 100vw;
 }
 
+.partnersContainer .cms-placeholder-17 {
+  display: none;
+}
+
+.partnersContainer h1 {
+  margin: 0;
+  padding-bottom: 20px;
+}
+
 .ourPartners {
   color: black;
   text-align: center;
@@ -104,6 +123,7 @@ ul {
   position: absolute;
   left: 0;
   right: 0;
+  bottom: 0;
   height: 30px;
-  background-color: red;
+  background-color: rgb(141, 4, 28);
 }
