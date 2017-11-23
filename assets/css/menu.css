@@ -2,16 +2,24 @@ body {
   padding: 0;
   margin: 0;
 }
-#navbar {
-  background-color: #590000;
+
+.navbar {
   position: fixed;
   top: 0px;
   width: 100%;
   font-size: 1.2em;
-  height: 120px;
+  height: 70px;
   color: #fc0;
   z-index: 1;
+  text-decoration: none;
+  text-transform: uppercase;
 }
+
+.navbar a {
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
 .horizontal {
   display: flex;
   justify-content: center;
