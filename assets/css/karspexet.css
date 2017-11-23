@@ -106,13 +106,14 @@ ul {
   height: auto;
 }
 .list_decorator {
-  width: 6px;
+  /*width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: rgb(222, 210, 95);
+  background-color: rgb(222, 210, 95);*/
 }
 
 #page {
+  padding-top: 70px;
   padding-bottom: 30px;
 }
 
