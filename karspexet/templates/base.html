@@ -24,7 +24,22 @@
                 {% block content %}
                 {% endblock content%}
             </div>
-            <div class="footer">Hej</div>
+            <div class="footer">
+                <div class="footerContent">
+                    <div class="relatedLinks">
+                        <img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" />
+                    </div>
+                    <div class="footerElement">
+                        Med kärlek i Stockholm
+                    </div>
+                    <div class="socialMedia footerElement">
+                        Följ oss på sociala medier:
+                        <span>{% fontawesome_icon 'facebook' %}</span>
+                        <span>{% fontawesome_icon 'twitter' %}</span>
+                        <span>{% fontawesome_icon 'instagram' %}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

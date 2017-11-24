@@ -7,7 +7,6 @@ body {
   position: fixed;
   top: 0px;
   width: 100%;
-  font-size: 1.2em;
   height: 70px;
   color: #fc0;
   z-index: 1;
@@ -16,7 +15,7 @@ body {
 }
 
 .navbar a {
-  color: rgb(222, 210, 95);
+  color: white;
   text-decoration: none;
 }
 
@@ -61,5 +60,4 @@ body {
   color: #fd0 !important;
   text-decoration: underline;
   font-weight: bold;
-  font-style: italic;
 }
