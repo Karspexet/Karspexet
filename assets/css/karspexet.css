@@ -18,6 +18,10 @@ body {
 ul {
   padding-left: 0;
 }
+
+.navbar{
+  background-color: rgba(0,0,0,0.8);
+}
 .navbar ul {
   display: flex;
   justify-content: space-around;
@@ -114,7 +118,7 @@ ul {
 
 #page {
   padding-top: 70px;
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 }
 
 .poster_container {
@@ -163,7 +167,7 @@ ul {
   width: 100vw;
 }
 
-.partnersContainer .cms-placeholder-17 {
+.cms-placeholder{
   display: none;
 }
 
@@ -194,6 +198,30 @@ ul {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 30px;
+  height: 40px;
   background-color: rgb(141, 4, 28);
+}
+
+.footer .footerContent {
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+}
+
+.footer .footerElement {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
+}
+
+.footer .thsLogo {
+  width: 32px;
+  height: auto;
+  padding: 4px;
+}
+
+.socialMediaLogo {
+  width: 12px;
+  height: auto;
+  margin-left: 4px;
 }
