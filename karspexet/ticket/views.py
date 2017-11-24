@@ -99,10 +99,10 @@ def process_payment(request, reservation_id):
             reservation = PaymentProcess.run(reservation, request.POST)
             request.session['reservation_timeout'] = None
             request.session['reservation_id'] = None
+            messages.success(request, "Betalningen lyckades!")
 
-            return TemplateResponse(request, 'payment_succeeded.html', {
-                'reservation': reservation,
-            })
+            return redirect("reservation_detail", reservation.reservation_code)
+
         except PaymentError as error:
             logger.exception(error)
             return TemplateResponse(request, "payment.html", {
@@ -112,6 +112,15 @@ def process_payment(request, reservation_id):
                 'stripe_key': stripe_keys['publishable_key'],
                 'payment_failed': True,
             })
+
+
+def reservation_detail(request, reservation_code):
+    reservation = Reservation.objects.get(reservation_code=reservation_code)
+
+    return TemplateResponse(request, "detail.html", {
+        'reservation': reservation,
+        'seats': reservation.seats(),
+    })
 
 
 def _session_expired(request):
