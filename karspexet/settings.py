@@ -20,6 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "assets"),
+    os.path.join(BASE_DIR, "filer_public"),
+    os.path.join(BASE_DIR, "filer_public_thumbnails"),
+
 ]
 
 WEBPACK_LOADER = {
@@ -199,3 +202,24 @@ THUMBNAIL_PROCESSORS = (
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters'
 )
+
+FILER_STORAGES = {
+    'public': {
+        'main': {
+            'ENGINE': 'filer.storage.PublicFileSystemStorage',
+            'OPTIONS': {
+                'location': 'filer_public',
+                'base_url': '/static/',
+            },
+            'UPLOAD_TO': 'filer.utils.generate_filename.randomized',
+            'UPLOAD_TO_PREFIX': 'filer_public',
+        },
+        'thumbnails': {
+            'ENGINE': 'filer.storage.PublicFileSystemStorage',
+            'OPTIONS': {
+                'location': 'filer_public_thumbnails',
+                'base_url': '/static/',
+            },
+        },
+    }
+}
