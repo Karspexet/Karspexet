@@ -59,6 +59,7 @@ OUR_APPS = [
     'mptt',
     'djangocms_text_ckeditor',
     'djangocms_picture',
+    'djangocms_link',
 ]
 
 INSTALLED_APPS = [
