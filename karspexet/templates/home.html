@@ -2,7 +2,9 @@
 {% load cms_tags  sekizai_tags fontawesome %}
 {% block content %}
 <div class="poster_container">
-  <img class="poster_image" src="https://static1.squarespace.com/static/556b95e7e4b0dfc7140a799b/556b9736e4b0807cd7b712c8/5579849ce4b0427d6ed929be/1450036273556/IMG_4699+artorius_4.jpg">
+    <div class="poster_image">
+      {% placeholder "Hero Image" %}  
+    </div>
   <div class="poster_title">
     <h1>{% placeholder "Show Title" %}</h1>
     <p>{% placeholder "eller-titel" %}</p>

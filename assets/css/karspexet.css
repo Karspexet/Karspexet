@@ -11,6 +11,8 @@ body {
 }
 
 .content {
+  max-width: 1058px;
+  width: 100%;
   position: relative;
   min-height: 100%;
 }
@@ -20,6 +22,8 @@ ul {
 }
 
 .navbar{
+  max-width: 1058px;
+  width: 100%;
   background-color: rgba(0,0,0,0.8);
 }
 .navbar ul {
@@ -53,15 +57,21 @@ ul {
 }
 
 .poster_container {
-  width: 100vw;
-  height: 300px;
+  width: 100%;
+  height: 400px;
   position: relative;
 }
 .poster_image {
   width: inherit;
   height: inherit;
+  position: absolute;
+}
+
+.poster_image .cms-plugin{
+  width: inherit;
+  height: inherit;
   object-fit: cover;
-  object-position: 0 14%;
+  object-position: 0 50%;
   position: absolute;
 }
 .poster_title {
@@ -95,7 +105,6 @@ ul {
   width: 100%;
   background-color: white;
   padding-bottom: 25px;
-  width: 100vw;
 }
 
 .cms-placeholder{
