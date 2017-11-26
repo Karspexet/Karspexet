@@ -8,6 +8,8 @@ body {
   top: 0px;
   width: 100%;
   height: 70px;
+  max-width: 1058px;
+  background-color: rgba(0,0,0,0.8);
   color: #fc0;
   z-index: 1;
   text-decoration: none;
@@ -17,6 +19,21 @@ body {
 .navbar a {
   color: white;
   text-decoration: none;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+}
+.navbar ul li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+.navbar ul li:hover {
+  color: rgb(222, 210, 95);
 }
 
 .horizontal {
