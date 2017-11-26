@@ -190,6 +190,7 @@ PAYMENT_PROCESS = ENV.get("payment_process", "not set")
 SITE_ID = 1
 CMS_TEMPLATES = [
     ('home.html', 'Home page template'),
+    ('about.html', 'Content page template'),
 ]
 LANGUAGES = [
     ('en', 'English'),
