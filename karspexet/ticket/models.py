@@ -42,6 +42,9 @@ class Reservation(models.Model):
     def total_price(self):
         return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), self.seats(), 0)
 
+    def ticket_set(self):
+        return Ticket.objects.filter(show=self.show).filter(seat_id__in=self.tickets.keys())
+
 
 class Account(models.Model):
     name = models.CharField(max_length=255)
