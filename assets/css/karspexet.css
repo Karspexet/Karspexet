@@ -81,11 +81,10 @@ ul {
   flex-wrap: wrap;
   justify-content: space-around;
   align-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .card {
-  border: 1px solid white;
   width: 300px;
   padding: 10px;
 }
@@ -122,9 +121,6 @@ ul {
 }
 
 .partnerPictures .cms-plugin {
-  height: 80px;
-  width: 200px;
-  border: solid black 1px;
 }
 
 .footer {
