@@ -11,7 +11,7 @@ body {
   max-width: 1058px;
   background-color: rgba(0,0,0,0.8);
   color: #fc0;
-  z-index: 1;
+  z-index: 2;
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -31,6 +31,9 @@ body {
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+  padding: 0 15;
+  height: 30px;
+  
 }
 .navbar ul li:hover {
   color: rgb(222, 210, 95);
@@ -70,11 +73,11 @@ body {
   text-decoration: none;
 }
 .menu a:hover {
-  color: #fd0 !important;
+  color: #fd0;
   text-decoration: underline;
 }
 .selected a {
-  color: #fd0 !important;
+  color: #fd0;
   text-decoration: underline;
   font-weight: bold;
 }

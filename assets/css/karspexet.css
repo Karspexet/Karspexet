@@ -125,9 +125,14 @@ ul {
   background-color: rgb(222, 210, 95);*/
 }
 
+.menu_ticket_link {
+  background-color: rgb(141, 4, 28);
+  border-radius: 5px;
+}
+
 #page {
   padding-top: 70px;
-  padding-bottom: 40px;
+  padding-bottom: 80px;
 }
 
 .poster_container {
@@ -141,7 +146,7 @@ ul {
   position: absolute;
 }
 
-.poster_image .cms-plugin{
+.poster_image img{
   width: inherit;
   height: inherit;
   object-fit: cover;
@@ -154,6 +159,7 @@ ul {
   bottom: 10%;
   text-shadow: 2px 2px 4px #000000;
   font-size: 1.5em;
+  z-index: 1;
 }
 .poster_title h1 {
   margin: 0;
@@ -161,10 +167,17 @@ ul {
 .poster_title p {
   margin: 0;
 }
+.poster_shadow {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  bottom: 0;
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1));
+}
 
 .running_shows {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   font-size: 12px;
   padding: 6px;
 }
@@ -179,12 +192,48 @@ ul {
 
 .card {
   width: 300px;
-  padding: 10px;
+  padding: 30px 10px;
 }
 
-.card .card_image .cms-plugin {
+.card .card_image img {
   width: 300px;
   height: auto;
+}
+
+.card .card_title p{
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0 0 0;
+}
+
+.card .card_text p{
+  font-size: 1em;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.card .card_link a{
+  font-size: 1em;
+  float: right;
+}
+
+.card .card_link a:link{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:visited{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:hover{
+  color: rgb(222, 210, 95);
+  text-decoration: underline;
+}
+
+.card .card_link a:active{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
 }
 
 .partnersContainer {
@@ -209,12 +258,11 @@ ul {
 
 .partnerPictures {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   flex-flow: row wrap;
 }
 
-.partnerPictures .cms-plugin {
-}
 
 .footer {
   display: table;
@@ -231,7 +279,7 @@ ul {
   display: table-cell;
   vertical-align: middle;
   margin: auto;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0 40px;
 }
 
@@ -246,7 +294,8 @@ ul {
   width: 200px;
   height: 40px;
   line-height: 40px;
-  margin-left: 4px;
   text-align: right;
   float: right;
+  margin-left: 4px;
+  margin-right: 4px;
 }
