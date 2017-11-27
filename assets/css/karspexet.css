@@ -37,6 +37,12 @@ ul {
   background-color: rgb(222, 210, 95);*/
 }
 
+.menu_ticket_link {
+  background-color: rgb(141, 4, 28);
+  border-radius: 5px;
+  
+}
+
 #page {
   padding-top: 70px;
   padding-bottom: 80px;
@@ -127,8 +133,6 @@ ul {
   color: rgb(222, 210, 95);
   text-decoration: none;
 }
-
-
 
 .card .card_link a:visited{
   color: rgb(222, 210, 95);

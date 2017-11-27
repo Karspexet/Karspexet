@@ -31,6 +31,9 @@ body {
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+  padding: 0 15;
+  height: 30px;
+  
 }
 .navbar ul li:hover {
   color: rgb(222, 210, 95);
