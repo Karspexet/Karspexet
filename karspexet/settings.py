@@ -225,3 +225,43 @@ FILER_STORAGES = {
         },
     }
 }
+
+CMS_PLACEHOLDER_CONF = {
+    None: {
+        "plugins": ['TextPlugin', 'LinkPlugin'],
+        'excluded_plugins': ['InheritPlugin'],
+    },
+    'image': {
+        'plugins': ['PicturePlugin'],
+        'name': "Image",
+        'language_fallback': True,
+        'default_plugins': [
+            {
+                'plugin_type': 'TextPlugin',
+                'values': {
+                    'body':'<p>Lorem ipsum dolor sit amet...</p>',
+                },
+            },
+        ],
+    },
+    'home.html hero_image': {
+        'inherit': 'image',
+        'name': "Hero Image",
+    },
+    'home.html card_1_image': {
+        'inherit': 'image',
+        'name': "Card 1 Image",
+    },
+    'home.html card_2_image': {
+        'inherit': 'image',
+        'name': "Card 2 Image",
+    },
+    'home.html card_3_image': {
+        'inherit': 'image',
+        'name': "Card 3 Image",
+    },
+    'home.html sponsor_images': {
+        'inherit': 'image',
+        'name': "Sponsor Images",
+    },
+}
