@@ -9,8 +9,7 @@ div.seat-info div {
 }
 
 .theater-seat-map svg {
-    max-width: 400px;
-    max-height: 480px;
+    border: 1px solid black;
 }
 
 .theater-seat-map svg rect.stage {

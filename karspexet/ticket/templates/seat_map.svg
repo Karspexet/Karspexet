@@ -1,6 +1,18 @@
-<svg viewBox="0 0 400 480" xmlns="http://www.wd.org/2000/svg">
-  <rect x="0" y="400" width="390" height="40" class="stage"/>
-  <text x="200" y="420" width="390" class="stage-text">Scen</text>
+<svg viewBox="0 0 {{ venue.seat_map_dimensions.width }} {{ venue.seat_map_dimensions.height }}"
+     xmlns="http://www.wd.org/2000/svg"
+     style="max-width: {{ venue.seat_map_dimensions.width }}px; max-height: {{ venue.seat_map_dimensions.height }}px">
+    <rect x="{{ venue.seat_map_dimensions.stage_x }}"
+          y="{{ venue.seat_map_dimensions.stage_y }}"
+          width="{{ venue.seat_map_dimensions.stage_width }}"
+          height="{{ venue.seat_map_dimensions.stage_height }}"
+          class="stage"/>
+    <text x="50%"
+          y="{{ venue.seat_map_dimensions.height|add:'-10'}}"
+          alignment-baseline="middle"
+          text-anchor="middle"
+          class="stage-text">
+        Scen
+    </text>
 
   {% for group in venue.seatinggroup_set.all %}
   {% for seat in group.seat_set.all %}

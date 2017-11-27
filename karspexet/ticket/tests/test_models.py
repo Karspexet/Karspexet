@@ -75,6 +75,14 @@ class TestReservation(TestCase):
 
         assert reservation.total_price() == 450
 
+    def test_reservations_have_auto_generated_reservation_code(self):
+        reservation_1 = Reservation()
+        reservation_2 = Reservation()
+
+        assert len(reservation_1.reservation_code) == 12
+        assert reservation_1.reservation_code is not reservation_2.reservation_code
+
+
 class TestPricingModel(TestCase):
     def setUp(self):
         venue = f.CreateVenue()

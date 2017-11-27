@@ -22,8 +22,8 @@ class Show(models.Model):
         return Show.objects.filter(date__gte=timezone.make_aware(datetime.today()))
 
     @staticmethod
-    def ticket_coverage():
-        return Show.objects.raw("""
+    def ticket_coverage(show=None):
+        return Show.objects.raw(f"""
             SELECT show.id,
                 show.production_id,
                 show.venue_id,
@@ -39,6 +39,7 @@ class Show(models.Model):
                 LEFT JOIN venue_seatinggroup sg ON sg.venue_id = venue.id
                 LEFT JOIN venue_seat seat ON sg.id = seat.group_id
                 LEFT JOIN show_production production ON show.production_id = production.id
+            {f'WHERE show.id = {show.id}' if show else ''}
             GROUP BY show.id, venue.name, production.name
             ORDER BY show.date desc
             """)

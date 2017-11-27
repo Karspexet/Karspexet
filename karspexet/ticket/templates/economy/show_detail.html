@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+<h2>Föreställningsöversikt: {{show.production.name}} {{show.date|date:"Y-m-d H:i:s" }}</h2>
+<em>{{show.venue}}</em>
+
+<h3>Inloggad som: {{ user }}</h3>
+
+<h3>Sålda biljetter</h3>
+
+<dl>
+  <dt>Antal sålda biljetter</dt>
+  <dd>{{ coverage.ticket_count }}</dd>
+  <dt>Antal platser</dt>
+  <dd>{{ coverage.seat_count }}</dd>
+  <dt>Beläggning</dt>
+  <dd>{{ coverage.sales_percentage|floatformat }} %</dd>
+</dl>
+
+<span class="theater-seat-map">
+    {% include "seat_map.svg" with venue=show.venue taken_seats=taken_seats %}
+</span>
+<link rel="stylesheet" href="{% static 'select_seats.css' %}">
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Sektion</th>
+      <th>Plats</th>
+      <th>Namn</th>
+      <th>Telefonnummer</th>
+      <th>E-postadress</th>
+      <th>Biljettyp</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ticket in show.ticket_set.all %}
+    <tr>
+      <td>{{ ticket.seat.group.name }}</td>
+      <td>{{ ticket.seat.name  }}</td>
+      <td>{{ ticket.account.name }}</td>
+      <td class="number">{{ ticket.account.phone }}</td>
+      <td>{{ ticket.account.email }}</td>
+      <td>{{ ticket.ticket_type }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
