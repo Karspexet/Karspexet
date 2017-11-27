@@ -19,12 +19,12 @@
         <dt>Datum</dt>
         <dd>{{ reservation.show.date|date:"Y-m-d H:i" }}</dd>
         <dt>Antal biljetter</dt>
-        <dd>{{ seats|length }}</dd>
+        <dd>{{ tickets|length }}</dd>
       </dl>
 
       <ul>
-        {% for ticket in reservation.tickets %}
-        <li><a href="{% url 'ticket_detail' reservation.reservation_code ticket.id %}">{{ seat.name }}</a></li>
+        {% for ticket in tickets %}
+        <li><a href="{% url 'ticket_detail' reservation.reservation_code ticket.id '.pdf' %}">{{ ticket.seat.name }}</a></li>
         {% endfor %}
       </ul>
     </main>
