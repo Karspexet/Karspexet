@@ -73,11 +73,11 @@ body {
   text-decoration: none;
 }
 .menu a:hover {
-  color: #fd0 !important;
+  color: #fd0;
   text-decoration: underline;
 }
 .selected a {
-  color: #fd0 !important;
+  color: #fd0;
   text-decoration: underline;
   font-weight: bold;
 }
