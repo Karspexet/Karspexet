@@ -1,22 +1,49 @@
 {% load staticfiles svg %}
 <html lang="sv">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Kårspexet - Biljett</title>
     <link rel="stylesheet" href="{% static 'main.css' %}">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <style>
+      body {
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        width: 14.8cm;
+        height: 21cm;
+        padding: 1em;
+      }
+
+      h1.title::before {
+        content: "Kårspexet ";
+      }
+
+      em.alt-name::before {
+        content: "...eller ";
+      }
+
+    </style>
+    <style media="screen">
+      html {
+        background-color: #ccc;
+      }
+    </style>
   </head>
   <body>
-    <span class="logo">{% svg 'luva' %}</span>
-    <h1>Kårspexet - Biljett</h1>
-    <main>
+    {% svg 'luva' %}
+    <h1 class="title">{{ reservation.show.production }}</h1>
+    <em class="alt-name">{{ reservation.show.production.alt_name }}</em>
+    <main class="info">
       <dl>
-        <dt>Föreställning</dt>
-        <dd>{{ reservation.show.production }}</dd>
         <dt>Datum</dt>
         <dd>{{ reservation.show.date|date:"Y-m-d H:i" }}</dd>
         <dt>Plats</dt>
-        <dd>{{ seat.name }}</dd>
+        <dd>{{ ticket.seat.name }}</dd>
       </dl>
     </main>
+    <aside class="qrcode">
+      QR-kod
+    </aside>
   </body>
 </html>
