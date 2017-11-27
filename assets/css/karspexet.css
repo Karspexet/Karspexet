@@ -107,6 +107,18 @@ ul {
   height: auto;
 }
 
+.card .card_title p{
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0 0 0;
+}
+
+.card .card_text p{
+  font-size: 1em;
+  margin: 0.5em 0 0.5em 0;
+}
+
+
 .partnersContainer {
   width: 100%;
   background-color: white;
