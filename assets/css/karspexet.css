@@ -53,7 +53,7 @@ ul {
   position: absolute;
 }
 
-.poster_image .cms-plugin{
+.poster_image img{
   width: inherit;
   height: inherit;
   object-fit: cover;
@@ -102,7 +102,7 @@ ul {
   padding: 10px;
 }
 
-.card .card_image .cms-plugin {
+.card .card_image img {
   width: 300px;
   height: auto;
 }
@@ -133,8 +133,6 @@ ul {
   flex-flow: row wrap;
 }
 
-.partnerPictures .cms-plugin {
-}
 
 .footer {
   display: table;
