@@ -5,6 +5,11 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.fa {
+  font-size: 1.1em;
+  color: rgb(222, 210, 95);
+  margin-right: 2px;
+}
 .centering {
   display: flex;
   justify-content: center;
@@ -132,34 +137,36 @@ ul {
 }
 
 .footer {
+  display: table;
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 40px;
+  height: 80px;
+  width: 100%;
   background-color: rgb(141, 4, 28);
 }
 
 .footer .footerContent {
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-}
-
-.footer .footerElement {
-  text-align: center;
+  display: table-cell;
   vertical-align: middle;
-  line-height: 40px; 
+  margin: auto;
+  font-size: 12px;
+  padding: 0 40px;
 }
 
 .footer .thsLogo {
-  width: 32px;
-  height: auto;
-  padding: 4px;
+  width: auto;
+  height: 40px;
+  line-height: 40px;
+  float: left;
 }
 
-.socialMediaLogo {
-  width: 12px;
-  height: auto;
+.socialMedia {
+  width: 200px;
+  height: 40px;
+  line-height: 40px;
   margin-left: 4px;
+  text-align: right;
+  float: right;
 }
