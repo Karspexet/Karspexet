@@ -5,6 +5,7 @@ from django.utils import timezone
 
 class Production(models.Model):
     name = models.CharField(max_length=100)
+    alt_name = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
