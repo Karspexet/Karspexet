@@ -89,7 +89,7 @@ ul {
 
 .running_shows {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   font-size: 12px;
   padding: 6px;
 }
@@ -191,7 +191,7 @@ ul {
   display: table-cell;
   vertical-align: middle;
   margin: auto;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0 40px;
 }
 
@@ -206,7 +206,8 @@ ul {
   width: 200px;
   height: 40px;
   line-height: 40px;
-  margin-left: 4px;
   text-align: right;
   float: right;
+  margin-left: 4px;
+  margin-right: 4px;
 }
