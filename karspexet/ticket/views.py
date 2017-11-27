@@ -1,6 +1,7 @@
 # coding: utf-8
 import json
 import logging
+import pdfkit
 
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
@@ -8,8 +9,8 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import redirect
-from django.template.response import TemplateResponse
+from django.shortcuts import redirect, render
+from django.template.response import HttpResponse, TemplateResponse
 from django.utils import timezone
 
 from karspexet.show.models import Show
@@ -123,19 +124,44 @@ def reservation_detail(request, reservation_code):
 
     return TemplateResponse(request, "reservation_detail.html", {
         'reservation': reservation,
-        'seats': reservation.seats(),
+        'tickets': reservation.ticket_set(),
     })
 
 
-def ticket_detail(request, reservation_code, ticket_id):
+def ticket_detail(request, reservation_code, ticket_id, render_pdf=""):
     reservation = Reservation.objects.get(reservation_code=reservation_code)
-    ticket = reservation.ticket_set.get(pk=ticket_id)
+    ticket = reservation.ticket_set().get(pk=ticket_id)
 
     return TemplateResponse(request, "ticket_detail.html", {
         'reservation': reservation,
         'ticket': ticket,
     })
 
+
+def ticket_pdf(request, reservation_code, ticket_id):
+    reservation = Reservation.objects.get(reservation_code=reservation_code)
+    ticket = reservation.ticket_set().get(pk=ticket_id)
+
+    template = TemplateResponse(request, "ticket_detail.html", {
+            'reservation': reservation,
+            'ticket': ticket,
+        },
+        content_type="utf-8"
+    ).render()
+
+    pdfkit_options = {
+        'page-size': 'A5',
+        'dpi': '300',
+    }
+
+    # TODO: HTTP headers för unicode, linebreaks, etc
+    content = template.rendered_content
+    print(type(content))
+    pdf = pdfkit.from_string(content, False, pdfkit_options)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'inline;filename=karspexet-bokning-{}-{}.pdf'.format(reservation_code, ticket.id)
+
+    return response
 
 def _session_expired(request):
     timeout = request.session.get('reservation_timeout', None)
