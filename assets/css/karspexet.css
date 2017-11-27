@@ -118,6 +118,32 @@ ul {
   margin: 0.5em 0 0.5em 0;
 }
 
+.card .card_link a{
+  font-size: 1.2em;
+  float: right;
+}
+
+.card .card_link a:link{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+
+
+.card .card_link a:visited{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:hover{
+  color: rgb(222, 210, 95);
+  text-decoration: underline;
+}
+
+.card .card_link a:active{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
 
 .partnersContainer {
   width: 100%;
