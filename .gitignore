@@ -63,3 +63,10 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 /env.json
+
+#Webpack & NPM
+node_modules
+webpack-stats.json
+
+filer_public/
+filer_public_thumbnails/

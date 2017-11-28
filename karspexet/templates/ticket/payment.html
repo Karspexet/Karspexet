@@ -1,27 +1,30 @@
-<h2>Kontaktuppgifter</h2>
+{% extends "ticket/base.html" %}
+{% block ticket_content %}
+<section class="contact-details">
+    <h2>Kontaktuppgifter</h2>
 
-<h3>Bokning</h3>
-<dl>
-    <dt>Föreställning</dt>
-    <dd>{{ reservation.show }}</dd>
-    <dt>Platser</dt>
-    <dd>
-        <ul>
-            {% for seat in seats %}
-            <li>{{ seat }}</li>
-            {% endfor %}
-        </ul>
-    </dd>
-</dl>
-<p>Den här bokningen är giltig till och med <span class="session-timeout">{{ reservation.session_timeout|date:"c" }}</span>.</p>
+    <h3>Bokning</h3>
+    <dl>
+        <dt>Föreställning</dt>
+        <dd>{{ reservation.show }}</dd>
+        <dt>Platser</dt>
+        <dd>
+            <ul>
+                {% for seat in seats %}
+                <li>{{ seat }}</li>
+                {% endfor %}
+            </ul>
+        </dd>
+    </dl>
+    <p>Den här bokningen är giltig till och med <span class="session-timeout">{{ reservation.session_timeout|date:"c" }}</span>.</p>
 
-{% if payment_failed %}
-<div>
-    <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
-</div>
-{% endif %}
+    {% if payment_failed %}
+    <div>
+        <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
+    </div>
+    {% endif %}
+</section>
 
-<script src="https://js.stripe.com/v3/"></script>
 <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
     {% csrf_token %}
     <div class="group">
@@ -45,9 +48,8 @@
   </div>
 </form>
 
-<link rel="stylesheet" href="/static/payment.css" />
 <script>
   window.config = window.config || {}
   window.config.payment = '{{ stripe_key }}'
 </script>
-<script src="/static/payment.js"></script>
+{% endblock %}

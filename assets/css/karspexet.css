@@ -1,0 +1,213 @@
+body {
+  background-color: black;
+  color: white;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.fa {
+  font-size: 1.1em;
+  color: rgb(222, 210, 95);
+  margin-right: 2px;
+}
+.centering {
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  max-width: 1058px;
+  width: 100%;
+  position: relative;
+  min-height: 100%;
+}
+
+ul {
+  padding-left: 0;
+}
+
+.luva {
+  max-width: 5vw;
+  height: auto;
+}
+.list_decorator {
+  /*width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgb(222, 210, 95);*/
+}
+
+.menu_ticket_link {
+  background-color: rgb(141, 4, 28);
+  border-radius: 5px;
+}
+
+#page {
+  padding-top: 70px;
+  padding-bottom: 80px;
+}
+
+.poster_container {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+.poster_image {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+}
+
+.poster_image img{
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
+  object-position: 0 50%;
+  position: absolute;
+}
+.poster_title {
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+  text-shadow: 2px 2px 4px #000000;
+  font-size: 1.5em;
+  z-index: 1;
+}
+.poster_title h1 {
+  margin: 0;
+}
+.poster_title p {
+  margin: 0;
+}
+.poster_shadow {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  bottom: 0;
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1));
+}
+
+.running_shows {
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  padding: 6px;
+}
+
+.card_container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: center;
+  align-items: flex-start;
+}
+
+.card {
+  width: 300px;
+  padding: 30px 10px;
+}
+
+.card .card_image img {
+  width: 300px;
+  height: auto;
+}
+
+.card .card_title p{
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0 0 0;
+}
+
+.card .card_text p{
+  font-size: 1em;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.card .card_link a{
+  font-size: 1em;
+  float: right;
+}
+
+.card .card_link a:link{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:visited{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:hover{
+  color: rgb(222, 210, 95);
+  text-decoration: underline;
+}
+
+.card .card_link a:active{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.partnersContainer {
+  width: 100%;
+  background-color: white;
+  padding-bottom: 25px;
+}
+
+.cms-placeholder{
+  display: none;
+}
+
+.partnersContainer h1 {
+  margin: 0;
+  padding-bottom: 20px;
+}
+
+.ourPartners {
+  color: black;
+  text-align: center;
+}
+
+.partnerPictures {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+
+.footer {
+  display: table;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 80px;
+  width: 100%;
+  background-color: rgb(141, 4, 28);
+}
+
+.footer .footerContent {
+  display: table-cell;
+  vertical-align: middle;
+  margin: auto;
+  font-size: 14px;
+  padding: 0 40px;
+}
+
+.footer .thsLogo {
+  width: auto;
+  height: 40px;
+  line-height: 40px;
+  float: left;
+}
+
+.socialMedia {
+  width: 200px;
+  height: 40px;
+  line-height: 40px;
+  text-align: right;
+  float: right;
+  margin-left: 4px;
+  margin-right: 4px;
+}

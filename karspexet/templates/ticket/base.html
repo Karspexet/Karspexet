@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load staticfiles svg %}
+{% block content %}
+    {% if messages %}
+    <section>
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+    {% block ticket_content %}
+    {% endblock %}
+{% endblock %}

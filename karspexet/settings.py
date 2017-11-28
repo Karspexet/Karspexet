@@ -17,6 +17,20 @@ import json
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "assets"),
+    os.path.join(BASE_DIR, "filer_public"),
+    os.path.join(BASE_DIR, "filer_public_thumbnails"),
+
+]
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "BUNDLE_DIR_NAME": "bundles/",
+        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
+    }
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -36,20 +50,35 @@ OUR_APPS = [
     'karspexet.show',
     'karspexet.ticket',
     'karspexet.venue',
+    'cms',
+    'menus',
+    'treebeard',
+    'sekizai',
+    'filer',
+    'easy_thumbnails',
+    'mptt',
+    'djangocms_text_ckeditor',
+    'djangocms_picture',
+    'djangocms_link',
 ]
 
 INSTALLED_APPS = [
+    'djangocms_admin_style',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'django.contrib.postgres',
     'svg',
+    'fontawesome',
+    'webpack_loader'
 ] + OUR_APPS
 
 MIDDLEWARE_CLASSES = [
+    'cms.middleware.utils.ApphookReloadMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,6 +87,11 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
 ]
 
 ROOT_URLCONF = 'karspexet.urls'
@@ -65,14 +99,17 @@ ROOT_URLCONF = 'karspexet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['karspexet/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.i18n',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai',
+                'cms.context_processors.cms_settings',
             ],
         },
     },
@@ -133,10 +170,6 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-
 try:
     with open(BASE_DIR + "/env.json") as env_json:
         ENV = json.load(env_json)
@@ -154,3 +187,81 @@ except FileNotFoundError:
 
 EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
 PAYMENT_PROCESS = ENV.get("payment_process", "not set")
+SITE_ID = 1
+CMS_TEMPLATES = [
+    ('home.html', 'Home page template'),
+    ('about.html', 'Content page template'),
+]
+LANGUAGES = [
+    ('en', 'English'),
+    ('sv', 'Swedish'),
+]
+THUMBNAIL_HIGH_RESOLUTION = True
+
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters'
+)
+
+FILER_STORAGES = {
+    'public': {
+        'main': {
+            'ENGINE': 'filer.storage.PublicFileSystemStorage',
+            'OPTIONS': {
+                'location': 'filer_public',
+                'base_url': '/static/',
+            },
+            'UPLOAD_TO': 'filer.utils.generate_filename.randomized',
+            'UPLOAD_TO_PREFIX': 'filer_public',
+        },
+        'thumbnails': {
+            'ENGINE': 'filer.storage.PublicFileSystemStorage',
+            'OPTIONS': {
+                'location': 'filer_public_thumbnails',
+                'base_url': '/static/',
+            },
+        },
+    }
+}
+
+CMS_PLACEHOLDER_CONF = {
+    None: {
+        "plugins": ['TextPlugin', 'LinkPlugin'],
+        'excluded_plugins': ['InheritPlugin'],
+    },
+    'image': {
+        'plugins': ['PicturePlugin'],
+        'name': "Image",
+        'language_fallback': True,
+        'default_plugins': [
+            {
+                'plugin_type': 'TextPlugin',
+                'values': {
+                    'body':'<p>Lorem ipsum dolor sit amet...</p>',
+                },
+            },
+        ],
+    },
+    'home.html hero_image': {
+        'inherit': 'image',
+        'name': "Hero Image",
+    },
+    'home.html card_1_image': {
+        'inherit': 'image',
+        'name': "Card 1 Image",
+    },
+    'home.html card_2_image': {
+        'inherit': 'image',
+        'name': "Card 2 Image",
+    },
+    'home.html card_3_image': {
+        'inherit': 'image',
+        'name': "Card 3 Image",
+    },
+    'home.html sponsor_images': {
+        'inherit': 'image',
+        'name': "Sponsor Images",
+    },
+}

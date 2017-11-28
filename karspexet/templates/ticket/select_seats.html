@@ -1,6 +1,6 @@
-{% extends "base.html" %}
-{% load staticfiles svg %}
-{% block content %}
+{% extends "ticket/base.html" %}
+{% load staticfiles %}
+{% block ticket_content %}
     <h2>Köp biljetter för {{ show }}</h2>
     <section class="select-seats">
         <main>
@@ -18,7 +18,6 @@
             <div class="seat-info"></div>
         </aside>
     </section>
-    <link rel="stylesheet" href="{% static 'select_seats.css' %}">
     <script>
      window.config = window.config || {}
      window.config.seatSelection = {
@@ -26,5 +25,4 @@
          pricings: {{ pricings|safe }}
      }
     </script>
-    <script src="{% static 'select_seats.js' %}"></script>
 {% endblock %}

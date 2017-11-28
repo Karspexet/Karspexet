@@ -1,6 +1,11 @@
-/* global Stripe, config */
-(function setupPayment(stripeKey) {
+/* global Stripe exports */
+function setupPayment(config) {
+    if (!config) return
+
+    var stripeKey = config.payment
     if (stripeKey === "fake") return
+
+    if (typeof Stripe == "undefined") return
 
     var stripe = Stripe(stripeKey)
     var elements = stripe.elements({locale: "sv"})
@@ -58,4 +63,6 @@
         }
         stripe.createToken(card, extraDetails).then(setOutcome)
     })
-})(config.payment)
+}
+
+exports.setupPayment = setupPayment
