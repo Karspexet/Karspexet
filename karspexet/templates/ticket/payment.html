@@ -1,3 +1,5 @@
+{% extends "ticket/base.html" %}
+{% block content %}
 <h2>Kontaktuppgifter</h2>
 
 <h3>Bokning</h3>
@@ -51,3 +53,4 @@
   window.config.payment = '{{ stripe_key }}'
 </script>
 <script src="/static/payment.js"></script>
+{% endblock %}
