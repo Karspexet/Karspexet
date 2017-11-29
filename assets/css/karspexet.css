@@ -236,6 +236,34 @@ ul {
   text-decoration: none;
 }
 
+.ticket_list {
+  list-style: none;
+}
+
+.ticket_list a {
+  font-size: 1em;
+}
+
+.ticket_list a:link{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.ticket_list a:visited{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.ticket_list a:hover{
+  color: rgb(222, 210, 95);
+  text-decoration: underline;
+}
+
+.ticket_list a:active{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
 .partnersContainer {
   width: 100%;
   background-color: white;

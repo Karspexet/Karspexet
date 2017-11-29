@@ -1,8 +1,8 @@
 {% extends "ticket/base.html" %}
 {% block ticket_content %}
-<article>
+<article class="card">
   <h2>Välj föreställning</h2>
-  <ul>
+  <ul class="ticket_list">
     {% for show in upcoming_shows %}
     <li>
       <a href="{% url "select_seats" show.id %}">{{ show }}</a>
