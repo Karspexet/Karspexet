@@ -1,7 +1,7 @@
 {% load menu_tags cms_tags sekizai_tags staticfiles svg fontawesome %}
 {% load render_bundle from webpack_loader %}
 <html>
-<head>
+  <head>
     <title>{% page_attribute "page_title" %}</title>
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <script src="https://js.stripe.com/v3/" async></script>
@@ -10,33 +10,31 @@
     {% render_bundle "style" "css" attrs="async" %}
     {% render_block "js" %}
     {% render_block "css" %}
-</head>
-<body>
+  </head>
+  <body>
     {% cms_toolbar %}
-    <div class="centering">
-        <div class="content">
-            <div class="navbar">
-                <ul>
-                    {% show_menu 0 100 100 0 "menu.html" %}
-                </ul>
-            </div>
-            <div id="page">
-                {% block content %}
-                {% endblock content%}
-            </div>
-            <div class="footer">
-                <div class="footerContent">
-                    <div class="relatedLinks">
-                        <img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" />
-                    </div>
-                    <div class="socialMedia footerElement">
-                        Följ oss på sociala medier:
-                        <a href="https://www.facebook.com/karspexet.kth/">{% fontawesome_icon 'facebook' %}</a>
-                        <a href="https://www.instagram.com/karspexet/">{% fontawesome_icon 'instagram' %}</a>
-                    </div>
-                </div>
-            </div>
+    <div class="content">
+      <div class="navbar">
+        <ul>
+          {% show_menu 0 100 100 0 "menu.html" %}
+        </ul>
+      </div>
+      <div id="page">
+        {% block content %}
+        {% endblock content%}
+      </div>
+      <div class="footer">
+        <div class="footerContent">
+          <div class="relatedLinks">
+            <img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" />
+          </div>
+          <div class="socialMedia footerElement">
+            Följ oss på sociala medier:
+            <a href="https://www.facebook.com/karspexet.kth/">{% fontawesome_icon 'facebook' %}</a>
+            <a href="https://www.instagram.com/karspexet/">{% fontawesome_icon 'instagram' %}</a>
+          </div>
         </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
