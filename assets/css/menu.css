@@ -16,11 +16,6 @@ body {
   text-transform: uppercase;
 }
 
-.navbar a {
-  color: white;
-  text-decoration: none;
-}
-
 .navbar ul {
   display: flex;
   justify-content: space-around;
@@ -31,16 +26,30 @@ body {
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
-  padding: 0 15;
   height: 30px;
-  
 }
 .navbar ul li:hover {
   color: rgb(222, 210, 95);
+}
+
+.navbar ul li.child {
+  text-align: center;
+  width: 15vw;
+  max-width: 140px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
 }
 
 .navbar ul li.selected a {
   color: #fd0;
   text-decoration: underline;
   font-weight: bold;
+}
+
+.luva {
+  max-width: 5vw;
+  height: auto;
 }
