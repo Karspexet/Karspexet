@@ -1,6 +1,5 @@
 /* global  __dirname module */
 var path = require("path"),
-    //webpack = require("webpack"), //Commented as it is not used, but could be needed later.
     BundleTracker = require("webpack-bundle-tracker"),
     ExtractTextPlugin = require("extract-text-webpack-plugin")
 
