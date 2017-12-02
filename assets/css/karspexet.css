@@ -14,6 +14,12 @@ body {
   flex-direction: column;
 }
 
+a {
+  color: #fd0;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 .fa {
   font-size: 1.1em;
   color: rgb(222, 210, 95);
