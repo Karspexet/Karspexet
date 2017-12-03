@@ -1,6 +1,6 @@
 /* global Stripe exports */
 function setupPayment(config) {
-    if (!config) return
+    if (!config || !config.payment) return
 
     var stripeKey = config.payment
     if (stripeKey === "fake") return

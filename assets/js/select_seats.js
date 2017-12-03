@@ -1,8 +1,8 @@
-function setupSelectSeats({seatSelection}) {
-    if (!seatSelection) return
+function setupSelectSeats(config) {
+    if (!config || !config.seatSelection) return
 
-    var config = seatSelection,
-        booking = {}
+    config = config.seatSelection
+    var booking = {}
 
     function selectSeat(event) {
         var seat = event.target.id
