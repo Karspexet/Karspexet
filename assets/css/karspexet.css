@@ -60,7 +60,16 @@ a {
   height: inherit;
   object-fit: cover;
   object-position: 0 50%;
-  position: absolute;
+}
+
+.poster_image::after {
+  display: block;
+  position: relative;
+  background-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  margin-top: -150px;
+  height: 150px;
+  width: 100%;
+  content: '';
 }
 
 .poster_title {
