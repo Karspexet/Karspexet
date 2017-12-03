@@ -13,27 +13,21 @@
   </head>
   <body>
     {% cms_toolbar %}
-    <div class="content">
-      <div class="navbar">
-        <ul>
-          {% show_menu 0 100 100 0 "menu.html" %}
-        </ul>
+    <div class="navbar">
+      <ul>
+        {% show_menu 0 100 100 0 "menu.html" %}
+      </ul>
+    </div>
+    {% block content %}
+    {% endblock content%}
+    <div class="footer">
+      <div class="relatedLinks">
+        <img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" />
       </div>
-      <div id="page">
-        {% block content %}
-        {% endblock content%}
-      </div>
-      <div class="footer">
-        <div class="footerContent">
-          <div class="relatedLinks">
-            <img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" />
-          </div>
-          <div class="socialMedia footerElement">
-            Följ oss på sociala medier:
-            <a href="https://www.facebook.com/karspexet.kth/">{% fontawesome_icon 'facebook' %}</a>
-            <a href="https://www.instagram.com/karspexet/">{% fontawesome_icon 'instagram' %}</a>
-          </div>
-        </div>
+      <div class="socialMedia footerElement">
+        Följ oss på sociala medier:
+        <a href="https://www.facebook.com/karspexet.kth/">{% fontawesome_icon 'facebook' %}</a>
+        <a href="https://www.instagram.com/karspexet/">{% fontawesome_icon 'instagram' %}</a>
       </div>
     </div>
   </body>

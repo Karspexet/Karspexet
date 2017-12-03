@@ -1,17 +1,29 @@
 body {
   background-color: black;
   color: white;
-  margin: 0;
+
+  display: flex-inline;
+
+  flex-direction: column;
   font-family: 'Roboto', sans-serif;
-  display: flex;
   justify-content: center;
+
+  margin: 0 auto;
+  padding: 0;
+
+  max-width: 1058px;
+  min-height: 100%;
+  width: 100%;
+  padding-top: 80px;
 }
 
 #page {
   padding-top: 70px;
-  flex: 1;
   display: flex;
+  flex-shrink: 0;
+  min-height: 100%;
   flex-direction: column;
+  flex: 1;
 }
 
 a {
@@ -24,20 +36,6 @@ a {
   font-size: 1.1em;
   color: rgb(222, 210, 95);
   margin-right: 2px;
-}
-
-.content {
-  max-width: 1058px;
-  width: 100%;
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.luva {
-  max-width: 5vw;
-  height: auto;
 }
 
 .list_decorator {
@@ -55,7 +53,6 @@ a {
   height: inherit;
   object-fit: cover;
   object-position: 0 14%;
-  position: absolute;
 }
 
 .poster_image img{
@@ -125,16 +122,18 @@ ul {
 
 .card_container{
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-content: center;
-  align-items: flex-start;
   flex: 1;
+  flex-shrink: 0;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 
 .card {
   width: 300px;
   padding: 30px 10px;
+  display: block;
+  justify-content: center;
 }
 
 .card .card_image img {
@@ -214,6 +213,8 @@ ul {
   width: 100%;
   background-color: white;
   padding-bottom: 25px;
+  flex: 0;
+  color: black;
 }
 
 .partnersContainer h1 {
@@ -234,34 +235,23 @@ ul {
 }
 
 .footer {
-  display: table;
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  margin: auto;
   height: 80px;
   width: 100%;
   background-color: rgb(141, 4, 28);
-  flex-grow: 0;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.footer .footerContent {
-  display: table-cell;
-  vertical-align: middle;
-  margin: auto;
-  font-size: 14px;
+.footer div {
   padding: 0 40px;
+  line-height: 40px;
 }
 
 .footer .thsLogo {
   width: auto;
   height: 40px;
-  line-height: 40px;
-  float: left;
-}
-
-.socialMedia {
-  width: 200px;
-  height: 40px;
-  line-height: 40px;
-  text-align: right;
-  float: right;
-  margin-left: 4px;
-  margin-right: 4px;
 }
