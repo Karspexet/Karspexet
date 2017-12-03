@@ -1,13 +1,15 @@
 {% extends "ticket/base.html" %}
 {% block ticket_content %}
-<article class="card">
-  <h2>Välj föreställning</h2>
-  <ul class="ticket_list">
-    {% for show in upcoming_shows %}
-    <li>
-      <a href="{% url "select_seats" show.id %}">{{ show }}</a>
-    </li>
-    {% endfor %}
-  </ul>
-</article>
+<div class="card_container">
+  <article class="card">
+    <h2>Välj föreställning</h2>
+    <ul class="ticket_list">
+      {% for show in upcoming_shows %}
+      <li>
+        <a href="{% url "select_seats" show.id %}">{{ show }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </article>
+</div>
 {% endblock %}
