@@ -124,7 +124,7 @@ ul {
   padding-left: 0;
 }
 
-.menu_ticket_link {
+.navbar ul li:last-child {
   background-color: rgb(141, 4, 28);
   border-radius: 5px;
 }
