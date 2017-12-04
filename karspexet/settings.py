@@ -60,6 +60,7 @@ OUR_APPS = [
     'djangocms_text_ckeditor',
     'djangocms_picture',
     'djangocms_link',
+    'djangocms_admin_style',
 ]
 
 INSTALLED_APPS = [
