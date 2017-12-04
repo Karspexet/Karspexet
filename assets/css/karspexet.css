@@ -253,6 +253,10 @@ ul {
   padding: 0 40px;
 }
 
+.content_container {
+  flex: 1 0 auto;
+}
+
 .footer {
   display: flex;
   flex-direction: row;
