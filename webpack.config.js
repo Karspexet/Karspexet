@@ -44,7 +44,11 @@ module.exports = {
                     fallback: "style-loader",
                     use: ["css-loader"]
                 })
-            }
+            },
+            {
+                test: /\.(eot|svg|ttf|woff(2)?)$/,
+                loader: 'url-loader'
+            },
         ]
     },
 
