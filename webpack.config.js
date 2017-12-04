@@ -46,8 +46,12 @@ module.exports = {
                 })
             },
             {
-                test: /\.(eot|svg|ttf|woff(2)?)$/,
+                test: /\.(woff2?)$/,
                 loader: 'url-loader'
+            },
+            {
+                test: /\.(eot|svg|ttf|)$/,
+                loader: 'file-loader'
             },
         ]
     },

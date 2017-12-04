@@ -126,6 +126,10 @@ a {
   padding: 6px;
 }
 
+.running_shows i[class^="icon-"] {
+  margin: 0 2px;
+}
+
 ul {
   padding-left: 0;
 }
@@ -277,4 +281,8 @@ ul {
 .footer .thsLogo {
   width: auto;
   height: 40px;
+}
+
+.socialMedia a {
+  text-decoration: none;
 }

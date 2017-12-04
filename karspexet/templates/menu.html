@@ -1,4 +1,4 @@
-{% load staticfiles fontawesome%}
+{% load staticfiles %}
 {% for child in children %}
     <li class="child{% if child.selected %} selected{% endif %}{% if child.ancestor %} ancestor{% endif %}{% if child.sibling %} sibling{% endif %}{% if child.descendant %} descendant{% endif %}">
         <div>
@@ -9,7 +9,7 @@
         {% if forloop.counter == forloop.revcounter|add:"-1" %}
             <li><img class="luva" src="{% static 'svg/luva-inkscape.svg' %}"></li>
         {% else %}
-            <li><span class="list_decorator">{% fontawesome_icon 'circle' %}</span></li>
+            <li><span class="list_decorator icon-circle"></span></li>
         {% endif %}
     {% endif %}
 {% endfor %}

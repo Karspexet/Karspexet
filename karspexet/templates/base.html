@@ -1,11 +1,10 @@
-{% load menu_tags cms_tags sekizai_tags staticfiles svg fontawesome %}
+{% load menu_tags cms_tags sekizai_tags staticfiles svg %}
 {% load render_bundle from webpack_loader %}
 <html>
   <head>
     <title>{% page_attribute "page_title" %}</title>
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <script src="https://js.stripe.com/v3/" async></script>
-    {% fontawesome_stylesheet %}
     {% render_bundle "app" "js" attrs="async" %}
     {% render_bundle "style" "css" attrs="async" %}
     {% render_block "js" %}
@@ -26,8 +25,8 @@
       </div>
       <div class="socialMedia footerElement">
         Följ oss på sociala medier:
-        <a href="https://www.facebook.com/karspexet.kth/">{% fontawesome_icon 'facebook' %}</a>
-        <a href="https://www.instagram.com/karspexet/">{% fontawesome_icon 'instagram' %}</a>
+        <a href="https://www.facebook.com/karspexet.kth/" class="icon-facebook"></a>
+        <a href="https://www.instagram.com/karspexet/" class="icon-instagram"></a>
       </div>
     </div>
   </body>
