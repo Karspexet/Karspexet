@@ -249,6 +249,10 @@ ul {
   flex-flow: row wrap;
 }
 
+.ticket_detail {
+  padding: 0 40px;
+}
+
 .footer {
   display: flex;
   flex-direction: row;

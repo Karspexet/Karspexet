@@ -1,12 +1,7 @@
+{% extends "ticket/base.html" %}
 {% load staticfiles svg %}
-<html lang="sv">
-  <head>
-    <title>Kårspexet - Biljetter</title>
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-  </head>
-  <body>
-    <span class="logo">{% svg 'luva' %}</span>
+{% block ticket_content %}
+<div class="ticket_detail">
     <h1>Kårspexet - Biljetter</h1>
     {% if messages %}
     <section>
@@ -33,5 +28,5 @@
         {% endfor %}
       </ul>
     </main>
-  </body>
-</html>
+</div>
+{% endblock %}
