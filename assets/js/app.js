@@ -1,3 +1,5 @@
+"use strict";
+
 (function(window, document) {
     var setupPayment = require("./payment.js").setupPayment,
         setupSelectSeats = require("./select_seats.js").setupSelectSeats
