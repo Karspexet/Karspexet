@@ -12,3 +12,4 @@ djangocms-picture==2.0.6
 djangocms-link==2.1.2
 djangocms-admin-style==1.2.7
 django-webpack-loader
+raven

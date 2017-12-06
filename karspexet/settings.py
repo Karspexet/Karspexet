@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import dj_database_url
 import json
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.postgres',
+    'raven.contrib.django.raven_compat',
     'svg',
     'webpack_loader'
 ] + OUR_APPS
@@ -263,4 +265,9 @@ CMS_PLACEHOLDER_CONF = {
         'inherit': 'image',
         'name': "Sponsor Images",
     },
+}
+
+RAVEN_CONFIG = {
+    'dsn': ENV.get('sentry_dsn'),
+    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
 }
