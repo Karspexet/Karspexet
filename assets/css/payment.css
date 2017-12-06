@@ -75,10 +75,12 @@
 
 #payment-form button:focus {
   background: #fd0;
+  color: black;
 }
 
 #payment-form button:active {
   background: #fd0;
+  color: black;
 }
 
 #payment-form .outcome {
