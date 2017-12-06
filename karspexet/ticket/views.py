@@ -96,7 +96,7 @@ def process_payment(request, reservation_id):
 
     if request.method == 'POST':
         try:
-            reservation = PaymentProcess.run(reservation, request.POST)
+            reservation = PaymentProcess.run(reservation, request.POST, request)
             request.session['reservation_timeout'] = None
             request.session['reservation_id'] = None
             messages.success(request, "Betalningen lyckades!")
