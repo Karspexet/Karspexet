@@ -24,6 +24,9 @@
       <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
     </div>
     {% endif %}
+    <p>
+      Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!
+    </p>
   </section>
 
   <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
