@@ -128,6 +128,7 @@ a {
 
 .running_shows i[class^="icon-"] {
   margin: 0 2px;
+  color: #fd0;
 }
 
 ul {
