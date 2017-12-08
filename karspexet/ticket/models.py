@@ -64,6 +64,7 @@ class Ticket(models.Model):
     account = models.ForeignKey(Account, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
+    ticket_code = models.CharField(unique=True, max_length=16, default=_generate_reservation_code)
 
     class Meta:
         unique_together = ('show', 'seat')
