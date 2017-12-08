@@ -85,7 +85,7 @@ def booking_overview(request):
 
     reserved_seats = {seat.id:seat for seat in reservation.seats()}
 
-    seats = ["%s (%s, %dkr)" % (reserved_seats[int(id)].name, ticket_type, reserved_seats[int(id)].price_for_type(ticket_type)) for (id, ticket_type) in reservation.tickets.items()]
+    seats = ["%s: %s (%s, %dkr)" % (reserved_seats[int(id)].group.name, reserved_seats[int(id)].name, ticket_type, reserved_seats[int(id)].price_for_type(ticket_type)) for (id, ticket_type) in reservation.tickets.items()]
 
     return TemplateResponse(request, 'ticket/payment.html', {
         'seats': seats,
