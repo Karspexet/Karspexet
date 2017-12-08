@@ -70,7 +70,7 @@ def booking_overview(request):
     reservation = _get_or_create_reservation_object(request)
 
     if _session_expired(request):
-        messages.warning(request, "Your session has expired. Please start over from scratch.")
+        messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_id=reservation.show_id)
 
     _set_session_timeout(request)
@@ -95,7 +95,7 @@ def process_payment(request, reservation_id):
     reservation = Reservation.objects.get(pk=reservation_id)
 
     if _session_expired(request):
-        messages.warning(request, "Your session has expired. Please start over from scratch.")
+        messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_id=reservation.show_id)
 
     if request.method == 'POST':
