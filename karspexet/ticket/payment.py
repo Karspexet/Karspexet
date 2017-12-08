@@ -53,10 +53,10 @@ class PaymentProcess:
 
     @transaction.atomic
     def process(self):
+        self._create_tickets()
         self.account = self._create_account()
         self._charge_card()
 
-        self._create_tickets()
         self.reservation = self._finalize_reservation()
         self._send_mail_to_customer()
 
