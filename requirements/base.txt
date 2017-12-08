@@ -14,3 +14,4 @@ djangocms-admin-style==1.2.7
 django-webpack-loader
 raven
 pdfkit==0.6.1
+pyqrcode

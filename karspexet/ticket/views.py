@@ -1,7 +1,10 @@
 # coding: utf-8
+import io
 import json
 import logging
 import pdfkit
+import pyqrcode
+
 
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
@@ -131,23 +134,33 @@ def reservation_detail(request, reservation_code):
     })
 
 
-def ticket_detail(request, reservation_code, ticket_id, render_pdf=""):
+def ticket_detail(request, reservation_code, ticket_code):
     reservation = Reservation.objects.get(reservation_code=reservation_code)
-    ticket = reservation.ticket_set().get(pk=ticket_id)
+    ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     return TemplateResponse(request, "ticket_detail.html", {
         'reservation': reservation,
+        'show': reservation.show,
+        'venue': reservation.show.venue,
+        'production': reservation.show.production,
         'ticket': ticket,
+        'seat': ticket.seat,
+        'qr_code': _qr_code(request)
     })
 
 
-def ticket_pdf(request, reservation_code, ticket_id):
+def ticket_pdf(request, reservation_code, ticket_code):
     reservation = Reservation.objects.get(reservation_code=reservation_code)
-    ticket = reservation.ticket_set().get(pk=ticket_id)
+    ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     template = TemplateResponse(request, "ticket_detail.html", {
             'reservation': reservation,
+            'show': reservation.show,
+            'venue': reservation.show.venue,
+            'production': reservation.show.production,
             'ticket': ticket,
+            'seat': ticket.seat,
+            'qr_code': _qr_code(request)
         },
         content_type="utf-8"
     ).render()
@@ -231,3 +244,9 @@ def _payment_partial():
         return "_stripe_payment.html"
     else:
         return "_fake_payment.html"
+
+def _qr_code(request):
+    url = pyqrcode.create(request.build_absolute_uri())
+    buffer = io.BytesIO()
+    url.svg(buffer, scale=4)
+    return buffer.getvalue()

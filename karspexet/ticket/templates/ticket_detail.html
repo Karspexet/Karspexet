@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <style>
       body {
+        position: relative;
         margin-left: auto;
         margin-right: auto;
         background-color: white;
@@ -15,12 +16,32 @@
         padding: 1em;
       }
 
+      .logo {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      h1.title {
+        margin-bottom: 0;
+      }
+
       h1.title::before {
         content: "Kårspexet ";
       }
 
+      em.alt-name {
+        margin-top: 0;
+      }
+
       em.alt-name::before {
         content: "...eller ";
+      }
+
+      aside.qrcode {
+        position: absolute;
+        bottom: 1em;
+        right: 1em;
       }
 
     </style>
@@ -30,20 +51,28 @@
       }
     </style>
   </head>
-  <body>
-    {% svg 'luva' %}
-    <h1 class="title">{{ reservation.show.production }}</h1>
-    <em class="alt-name">{{ reservation.show.production.alt_name }}</em>
+  <body class="ticket-pdf">
+    <div class="logo">
+      {% svg 'luva' %}
+    </div>
+    <em>Biljett till:</em>
+    <h1 class="title">{{ production }}</h1>
+    <em class="alt-name">{{ production.alt_name }}</em>
+
     <main class="info">
       <dl>
         <dt>Datum</dt>
-        <dd>{{ reservation.show.date|date:"Y-m-d H:i" }}</dd>
+        <dd><strong>{{ show.date|date:"Y-m-d H:i" }}</strong></dd>
         <dt>Plats</dt>
-        <dd>{{ ticket.seat.name }}</dd>
+        <dd><strong>{{ seat.name }}</strong></dd>
+        <dt>Teater</dt>
+        <dd>{{ venue }}</dd>
+        <dt>Address</dt>
+        <dd>{{ venue.address }}</dd>
       </dl>
     </main>
     <aside class="qrcode">
-      QR-kod
+      {{ qr_code|safe }}
     </aside>
   </body>
 </html>
