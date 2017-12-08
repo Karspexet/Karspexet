@@ -271,3 +271,5 @@ RAVEN_CONFIG = {
     'dsn': ENV.get('sentry_dsn'),
     'release': raven.fetch_git_sha(os.path.abspath(os.path.dirname(os.path.dirname(__file__)))),
 }
+
+WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")

@@ -170,10 +170,14 @@ def ticket_pdf(request, reservation_code, ticket_code):
         'dpi': '300',
     }
 
-    # TODO: HTTP headers för unicode, linebreaks, etc
     content = template.rendered_content
-    print(type(content))
-    pdf = pdfkit.from_string(content, False, pdfkit_options)
+
+    if settings.WKHTMLTOPDF_PATH:
+        pdfkit_config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_PATH)
+        pdf = pdfkit.from_string(content, False, pdfkit_options, configuration=pdfkit_config)
+    else:
+        pdf = pdfkit.from_string(content, False, pdfkit_options)
+
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'inline;filename=karspexet-bokning-{}-{}.pdf'.format(reservation_code, ticket.id)
 
