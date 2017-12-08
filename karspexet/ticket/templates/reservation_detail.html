@@ -35,7 +35,7 @@
     <ul>
       {% for ticket in tickets %}
       <li>
-        <a href="{% url 'ticket_pdf' reservation.reservation_code ticket.id %}">{{ ticket.seat.name }}</a>
+        <a href="{% url 'ticket_pdf' reservation.reservation_code ticket.ticket_code %}">{{ ticket.seat.name }}</a>
       </li>
       {% endfor %}
     </ul>
