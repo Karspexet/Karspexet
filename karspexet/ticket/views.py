@@ -75,6 +75,10 @@ def booking_overview(request):
 
     _set_session_timeout(request)
 
+    if not reservation.tickets:
+        messages.warning(request, "Du måste välja minst en plats")
+        return redirect("select_seats", show_id=reservation.show_id)
+
     reserved_seats = {seat.id:seat for seat in reservation.seats()}
 
     seats = ["%s (%s, %dkr)" % (reserved_seats[int(id)].name, ticket_type, reserved_seats[int(id)].price_for_type(ticket_type)) for (id, ticket_type) in reservation.tickets.items()]
