@@ -129,12 +129,13 @@ a {
   padding: 6px;
 }
 
-.running_shows i[class^="icon-"] {
+.running_shows [class^="icon-"],
+.ticket-detail [class^="icon-"] {
   margin: 0 2px;
   color: #fd0;
 }
 
-ul {
+.navbar ul {
   padding-left: 0;
 }
 
@@ -257,8 +258,12 @@ ul {
   flex-flow: row wrap;
 }
 
-.ticket_detail {
+.ticket-detail {
   padding: 0 40px;
+}
+
+.ticket-detail ul {
+
 }
 
 .content_container {
@@ -289,4 +294,17 @@ ul {
 
 .socialMedia a {
   text-decoration: none;
+}
+
+.alt-name {
+  font-style: italic;
+  margin-top: 0;
+}
+
+.alt-name::before {
+  content: "...eller "
+}
+
+.ticket-detail-header h1 {
+  margin-bottom: 0;
 }

@@ -1,32 +1,38 @@
 {% extends "ticket/base.html" %}
 {% load staticfiles svg %}
 {% block ticket_content %}
-<div class="ticket_detail">
-    <h1>Kårspexet - Biljetter</h1>
-    {% if messages %}
-    <section>
-        <ul class="messages">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
-    <main>
-      <dl>
-        <dt>Föreställning</dt>
-        <dd>{{ reservation.show.production }}</dd>
-        <dt>Datum</dt>
-        <dd>{{ reservation.show.date|date:"Y-m-d H:i" }}</dd>
-        <dt>Antal biljetter</dt>
-        <dd>{{ tickets|length }}</dd>
-      </dl>
+<div class="content_container ticket-detail">
+  <div class="ticket-detail-header">
+    <p>Välkommen till Kårspexet</p>
+    <h1>{{ production.name }}</h1>
+    <p class="alt-name">{{ production.alt_name }}</p>
+    <em>
+      <i class="icon-calendar"></i>{{ show.date|date:"Y-m-d" }}
+      <i class="icon-clock"></i>{{ show.date|date:"H:i" }}
+    </em>
+  </div>
+  {% if messages %}
+  <section>
+    <ul class="messages">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <main>
+    <h2>Här finner du dina biljetter</h2>
 
-      <ul>
-        {% for ticket in tickets %}
-        <li><a href="{% url 'ticket_pdf' reservation.reservation_code ticket.id %}">{{ ticket.seat.name }}</a></li>
-        {% endfor %}
-      </ul>
-    </main>
+    <p>Vi kommer skicka ett mail till dig med den här informationen och en länk till den här sidan.</p>
+    <p>Däremot har vi ibland problem med att vissa mail inte kommer fram, så vi rekommenderar att du laddar ner biljetterna härifrån på en gång.</p>
+
+    <ul>
+      {% for ticket in tickets %}
+      <li>
+        <a href="{% url 'ticket_pdf' reservation.reservation_code ticket.id %}">{{ ticket.seat.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </main>
 </div>
 {% endblock %}

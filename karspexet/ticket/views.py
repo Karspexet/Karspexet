@@ -124,6 +124,8 @@ def reservation_detail(request, reservation_code):
 
     return TemplateResponse(request, "reservation_detail.html", {
         'reservation': reservation,
+        'show': reservation.show,
+        'production': reservation.show.production,
         'tickets': reservation.ticket_set(),
     })
 
