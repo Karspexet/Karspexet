@@ -24,7 +24,7 @@
 
       <ul>
         {% for ticket in tickets %}
-        <li><a href="{% url 'ticket_detail' reservation.reservation_code ticket.id '.pdf' %}">{{ ticket.seat.name }}</a></li>
+        <li><a href="{% url 'ticket_pdf' reservation.reservation_code ticket.id %}">{{ ticket.seat.name }}</a></li>
         {% endfor %}
       </ul>
     </main>
