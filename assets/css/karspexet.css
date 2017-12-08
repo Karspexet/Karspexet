@@ -201,6 +201,24 @@ a {
   text-decoration: none;
 }
 
+.show-card {
+  /* box-shadow: 0 2px 10px #fd0; */
+  border-radius: 10px;
+}
+
+.show-card:hover {
+  background-color: #222;
+}
+
+.show-card .alt-name {
+  color: white;
+}
+
+.show-card em,
+.show-card address {
+  color: white
+}
+
 .ticket_list {
   list-style: none;
 }

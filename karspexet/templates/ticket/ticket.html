@@ -11,15 +11,23 @@
   </div>
 </div>
 <div class="card_container">
-  <article class="card">
-    <h2>Välj föreställning</h2>
-    <ul class="ticket_list">
-      {% for show in upcoming_shows %}
-      <li>
-        <a href="{% url "select_seats" show.id %}">{{ show }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-  </article>
+  {% for show in upcoming_shows %}
+  <a class="show-card" href="{% url "select_seats" show.id %}">
+    <article class="card">
+        <h1>{{ show.production.name }}</h1>
+        <p class="alt-name">{{ show.production.alt_name }}</p>
+        <ul class="show-info">
+          <li>
+            <i class="icon-calendar"></i> <em>{{ show.date|date:"Y-m-d" }}</em>
+            <i class="icon-clock"></i> <em>{{ show.date|date:"H:i" }}</em>
+          </li>
+          <li>
+
+            <i class="icon-map-marker"></i
+            <em><address>{{ show.venue.name }}</address></em>
+        </ul>
+    </article>
+  </a>
+  {% endfor %}
 </div>
 {% endblock %}
