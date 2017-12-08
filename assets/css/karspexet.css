@@ -262,10 +262,6 @@ a {
   padding: 0 40px;
 }
 
-.ticket-detail ul {
-
-}
-
 .content_container {
   flex: 1 0 auto;
 }
@@ -307,4 +303,12 @@ a {
 
 .ticket-detail-header h1 {
   margin-bottom: 0;
+}
+
+ul.show-info {
+  list-style: none;
+}
+
+.show-info address {
+  display: inline;
 }
