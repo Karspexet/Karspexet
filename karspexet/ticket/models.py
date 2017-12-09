@@ -72,6 +72,9 @@ class Ticket(models.Model):
     def __repr__(self):
         return "<Ticket %s | %s | %s>" % (self.ticket_type, self.show, self.seat)
 
+    def __str__(self):
+        return f"{self.show}, {self.seat.group}, {self.seat}"
+
 class Voucher(models.Model):
     reservation = models.ForeignKey(Reservation, null=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
