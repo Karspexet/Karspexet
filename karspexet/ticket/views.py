@@ -55,7 +55,7 @@ def select_seats(request, show_id):
         else:
             reservation.tickets = seat_params
             reservation.save()
-            return redirect("booking_overview")
+            return redirect("booking_overview", show.id)
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
@@ -70,8 +70,9 @@ def select_seats(request, show_id):
     })
 
 
-def booking_overview(request):
-    reservation = _get_or_create_reservation_object(request)
+def booking_overview(request, show_id):
+    show = Show.objects.get(pk=show_id)
+    reservation = _get_or_create_reservation_object(request, show)
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
@@ -106,7 +107,7 @@ def process_payment(request, reservation_id):
         try:
             reservation = PaymentProcess.run(reservation, request.POST, request)
             request.session['reservation_timeout'] = None
-            request.session['reservation_id'] = None
+            request.session[f'show_{reservation.show_id}'] = None
             messages.success(request, "Betalningen lyckades!")
 
             return redirect("reservation_detail", reservation.reservation_code)
@@ -194,12 +195,14 @@ def _set_session_timeout(request):
     request.session['reservation_timeout'] = (timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
 
 
-def _get_or_create_reservation_object(request, show=None):
+def _get_or_create_reservation_object(request, show):
     timeout = timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)
+    session_key = f'show_{show.id}'
+    reservation_id = request.session.get(session_key)
 
-    if request.session.get('reservation_id'):
+    if reservation_id:
         try:
-            reservation = Reservation.objects.get(pk=request.session['reservation_id'])
+            reservation = Reservation.objects.get(pk=reservation_id)
             reservation.session_timeout = timeout
             reservation.save()
             return reservation
@@ -207,7 +210,7 @@ def _get_or_create_reservation_object(request, show=None):
             pass
 
     reservation = Reservation.objects.create(show=show, total=0, tickets={}, session_timeout=timeout)
-    request.session['reservation_id'] = reservation.id
+    request.session[session_key] = reservation.id
 
     return reservation
 
