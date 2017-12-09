@@ -5,7 +5,7 @@ function remainingTime(timeElement, outputElement) {
         secondsRemaining = Math.floor(timeRemaining) % 60,
         minutesRemaining = Math.floor(timeRemaining / 60)
 
-    outputElement.innerHTML = minutesRemaining + "minuter och " + secondsRemaining + "sekunder"
+    outputElement.innerHTML = minutesRemaining + " minuter och " + secondsRemaining + " sekunder"
 }
 function setupBookingOverview() {
     Array.prototype.forEach.call(
