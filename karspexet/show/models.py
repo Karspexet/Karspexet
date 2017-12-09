@@ -1,3 +1,5 @@
+from django.utils.crypto import get_random_string
+
 from django.db import models
 from datetime import datetime
 from django.utils import timezone
@@ -17,6 +19,7 @@ class Show(models.Model):
     date = models.DateTimeField()
     venue = models.ForeignKey('venue.Venue', on_delete=models.PROTECT)
     visible = models.BooleanField(default=True)
+    slug = models.CharField(max_length=20, unique=True, default=get_random_string)
 
     @staticmethod
     def upcoming():

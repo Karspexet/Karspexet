@@ -40,8 +40,8 @@ def home(request):
     })
 
 
-def select_seats(request, show_id):
-    show = Show.objects.get(id=show_id)
+def select_seats(request, show_slug):
+    show = Show.objects.get(slug=show_slug)
     reservation = _get_or_create_reservation_object(request, show)
     taken_seats_qs = Reservation.active.exclude(pk=reservation.pk).filter(show=show)
     _set_session_timeout(request)
@@ -55,7 +55,7 @@ def select_seats(request, show_id):
         else:
             reservation.tickets = seat_params
             reservation.save()
-            return redirect("booking_overview", show.id)
+            return redirect("booking_overview", show.slug)
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
@@ -70,8 +70,8 @@ def select_seats(request, show_id):
     })
 
 
-def booking_overview(request, show_id):
-    show = Show.objects.get(pk=show_id)
+def booking_overview(request, show_slug):
+    show = Show.objects.get(slug=show_slug)
     reservation = _get_or_create_reservation_object(request, show)
 
     if _session_expired(request):
