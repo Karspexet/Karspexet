@@ -135,8 +135,8 @@ def reservation_detail(request, reservation_code):
     })
 
 
-def ticket_detail(request, reservation_code, ticket_code):
-    reservation = Reservation.objects.get(reservation_code=reservation_code)
+def ticket_detail(request, reservation_id, ticket_code):
+    reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     return TemplateResponse(request, "ticket_detail.html", {
@@ -150,8 +150,8 @@ def ticket_detail(request, reservation_code, ticket_code):
     })
 
 
-def ticket_pdf(request, reservation_code, ticket_code):
-    reservation = Reservation.objects.get(reservation_code=reservation_code)
+def ticket_pdf(request, reservation_id, ticket_code):
+    reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     template = TemplateResponse(request, "ticket_detail.html", {
@@ -180,7 +180,7 @@ def ticket_pdf(request, reservation_code, ticket_code):
         pdf = pdfkit.from_string(content, False, pdfkit_options)
 
     response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'inline;filename=karspexet-bokning-{}-{}.pdf'.format(reservation_code, ticket.id)
+    response['Content-Disposition'] = 'inline;filename=karspexet-bokning-{}-{}.pdf'.format(reservation_id, ticket_code)
 
     return response
 
