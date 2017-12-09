@@ -113,3 +113,6 @@ class PricingModel(models.Model):
             self.seating_group,
             self.valid_from
         )
+
+    def __str__(self):
+        return f"PricingModel {self.id} {self.valid_from} {self.prices} {self.seating_group}"
