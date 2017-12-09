@@ -76,13 +76,13 @@ def booking_overview(request, show_slug):
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_id=reservation.show_id)
+        return redirect("select_seats", show_slug=reservation.show_slug)
 
     _set_session_timeout(request)
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
-        return redirect("select_seats", show_id=reservation.show_id)
+        return redirect("select_seats", show_slug=reservation.show_slug)
 
     reserved_seats = {seat.id:seat for seat in reservation.seats()}
 
@@ -101,7 +101,7 @@ def process_payment(request, reservation_id):
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_id=reservation.show_id)
+        return redirect("select_seats", show_slug=reservation.show_slug)
 
     if request.method == 'POST':
         try:
