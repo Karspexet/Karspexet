@@ -30,7 +30,12 @@
             <form method="post" action="{% url "select_seats" show.slug %}">
                 {% csrf_token %}
                 <div id="booking"></div>
-                <input type="submit" id="book-submit-button" disabled="disabled" value="Boka!">
+                <input type="submit" id="book-submit-button" disabled="disabled" value="Till betalning!">
+            </form>
+            <span>eller</span>
+            <form method="post" action="{% url 'cancel_reservation' show.id %}">
+              {% csrf_token %}
+              <input type="submit" id="cancel-reservation-button" value="Avbryt bokning">
             </form>
             <div class="seat-info"></div>
         </aside>

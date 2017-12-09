@@ -184,6 +184,15 @@ def ticket_pdf(request, reservation_id, ticket_code):
 
     return response
 
+
+def cancel_reservation(request, show_id):
+    if request.method == "POST":
+        request.session[f"show_{show_id}"] = None
+        request.session['reservation_timeout'] = None
+
+    return redirect("ticket_home")
+
+
 def _session_expired(request):
     timeout = request.session.get('reservation_timeout', None)
     if timeout:

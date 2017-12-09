@@ -57,6 +57,13 @@
     </div>
   </form>
 
+  <div>
+  <span>eller</span>
+  <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
+    {% csrf_token %}
+    <input type="submit" id="cancel-reservation-button" value="avbryt bokning">
+  </form>
+  </div>
   <script>
     window.config = window.config || {}
     window.config.payment = '{{ stripe_key }}'
