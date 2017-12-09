@@ -14,7 +14,14 @@
         </em>
       </li>
       <li>
-        <em><i class="icon-map-marker"></i><address>{{ venue.name }}, {{ venue.address }}</address></em>
+        <em>
+          <i class="icon-map-marker"></i>
+          <address>{{ venue.name }}, {{ venue.address }}</address>
+        </em>
+      </li>
+      {% if venue.map_address %}
+        <li><a href="{{ venue.map_address }}" target="_blank">Öppna på karta</a></li>
+      {% endif %}
     </ul>
   </div>
   {% if messages %}
