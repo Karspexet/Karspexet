@@ -44,3 +44,7 @@ div.seat-info div {
 .seat:not(.taken-seat):hover {
     fill: #fd0;
 }
+
+.select-seats aside {
+  padding: 0 1em;
+}
