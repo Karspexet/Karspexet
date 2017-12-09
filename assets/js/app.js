@@ -2,11 +2,13 @@
 
 (function(window, document) {
     var setupPayment = require("./payment.js").setupPayment,
-        setupSelectSeats = require("./select_seats.js").setupSelectSeats
+        setupSelectSeats = require("./select_seats.js").setupSelectSeats,
+        setupBookingOverview = require("./booking_overview.js").setupBookingOverview
 
     function initApplication(config) {
         setupSelectSeats(config)
         setupPayment(config)
+        setupBookingOverview(config)
     }
 
     function bootstrap(event) {

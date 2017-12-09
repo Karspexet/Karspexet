@@ -46,7 +46,7 @@ class Show(models.Model):
             """)
 
     def date_string(self):
-        return self.date.strftime("%Y-%m-%d %H:%M")
+        return timezone.localtime(self.date).strftime("%Y-%m-%d %H:%M")
 
     def __str__(self):
         return self.production.name + " " + self.date_string()

@@ -1,4 +1,5 @@
 {% extends "ticket/base.html" %}
+{% load tz %}
 {% block ticket_content %}
 <div class="content_container">
   <section class="contact-details">
@@ -8,6 +9,8 @@
     <dl>
       <dt>Föreställning</dt>
       <dd>{{ reservation.show }}</dd>
+      <dt>Antal biljetter</dt>
+      <dd>{{seats|length}}
       <dt>Platser</dt>
       <dd>
         <ul>
@@ -17,19 +20,21 @@
         </ul>
       </dd>
     </dl>
-    <p>Den här bokningen är giltig till och med <span class="session-timeout">{{ reservation.session_timeout|date:"c" }}</span>.</p>
+    <p class="fn-session-timeout">Dina platsreservationer är giltiga i <span class="fn-session-timeout-output">30 minuter</span><br/>(till <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"Y-m-d H:i" }}</time>)
 
     {% if payment_failed %}
     <div>
       <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
     </div>
     {% endif %}
-    <p>
-      Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!
-    </p>
   </section>
 
   <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
+    <h2>Betalning</h2>
+
+    <p>För att betala dina biljetter, fyll i dina kortuppgifter här nedanför.</p>
+    <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!</p>
+
     {% csrf_token %}
     <div class="group">
       <label>
