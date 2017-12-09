@@ -57,7 +57,7 @@ div.seat-info div {
   margin: 1em 0;
 }
 
-#book-submit-button[disabled="disabled"] {
+#book-submit-button:disabled {
   background-color: grey;
   color: black;
 }
