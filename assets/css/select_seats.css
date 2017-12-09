@@ -48,3 +48,37 @@ div.seat-info div {
 .select-seats aside {
   padding: 0 1em;
 }
+
+#book-submit-button {
+  background-color: hsl(349, 94.5%, 28.4%);
+  color: #fd0;
+  font-weight: bold;
+  padding: 1em;
+  border-radius: 10px;
+  display: inline-block;
+  border-style: outset;
+  border: 0;
+  margin: 1em 0;
+}
+
+#book-submit-button:hover {
+  background-color: hsl(349, 94.5%, 30%);
+}
+
+#book-submit-button[disabled="disabled"] {
+  background-color: grey;
+  color: black;
+}
+
+#cancel-reservation-button {
+  background-color: black;
+  color: #fd0;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+#Cancel-reservation-button:hover {
+  text-decoration: underline;
+}
