@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
             for group_name, seat_name, x_pos, y_pos in reader:
                 group = groupings.get(group_name, None)
-                if group is not None:
+                if group is None:
                     group = SeatingGroup.objects.create(
                         name=group_name,
                         venue=venue
