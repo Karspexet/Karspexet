@@ -272,8 +272,12 @@ a {
 .partnerPictures {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: space-around;
   flex-flow: row wrap;
+}
+
+.partnerPictures img {
+  padding: 5px 10px;
 }
 
 .ticket-detail {
