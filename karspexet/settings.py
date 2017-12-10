@@ -230,7 +230,7 @@ FILER_STORAGES = {
 
 CMS_PLACEHOLDER_CONF = {
     None: {
-        "plugins": ['TextPlugin', 'LinkPlugin'],
+        "plugins": ['TextPlugin', 'LinkPlugin', 'PicturePlugin'],
         'excluded_plugins': ['InheritPlugin'],
     },
     'image': {
