@@ -284,6 +284,12 @@ a {
   flex: 1 0 auto;
 }
 
+.content_container table,
+.content_container table th,
+.content_container table td {
+  border: none;
+}
+
 .footer {
   display: flex;
   flex-direction: row;
