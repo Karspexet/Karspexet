@@ -312,6 +312,19 @@ a {
   height: 40px;
 }
 
+.footer .secondary-menu a,
+.footer .secondary-menu a:visited {
+  color: white;
+  font-weight: normal;
+  text-decoration: none;
+  margin: 0;
+  margin-right: 0.5em;
+}
+
+.footer .secondary-menu a:hover {
+  text-decoration: underline;
+}
+
 .socialMedia a {
   text-decoration: none;
 }
