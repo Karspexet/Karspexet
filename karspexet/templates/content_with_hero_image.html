@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load cms_tags sekizai_tags %}
+{% block content %}
+<div class="poster_container">
+  <div class="poster_image">
+    {% placeholder "hero_image" %}
+  </div>
+  <div class="poster_title">
+    <h1>{% placeholder "Show Title" %}</h1>
+    <p>{% placeholder "eller-titel" %}</p>
+  </div>
+</div>
+<div class="content_container">
+    <h1>{% placeholder "title" %}</h1>
+    <p>{% placeholder "content" %}</p>
+</div>
+{% endblock %}

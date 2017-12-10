@@ -192,6 +192,7 @@ SITE_ID = 1
 CMS_TEMPLATES = [
     ('home.html', 'Home page template'),
     ('about.html', 'Content page template'),
+    ('content_with_hero_image.html', 'Content page template with hero image'),
 ]
 LANGUAGES = [
     ('en', 'English'),
