@@ -4,6 +4,8 @@ function setupSelectSeats(config) {
     config = config.seatSelection
     var booking = {}
 
+    var isMobile = /Mobi/.test(navigator.userAgent)
+
     function selectSeat(event) {
         var seat = event.target.id
         if (booking.hasOwnProperty(seat)) {
@@ -82,6 +84,8 @@ function setupSelectSeats(config) {
     }
 
     Object.keys(config.allSeats).forEach(function(seat) {
+        if (isMobile) return
+
         var element = document.getElementById(seat),
             seatObject = config.allSeats[seat]
         element.addEventListener("mouseover", function() {
