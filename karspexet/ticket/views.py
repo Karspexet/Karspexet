@@ -101,7 +101,7 @@ def process_payment(request, reservation_id):
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_slug=servation.show.slug)
+        return redirect("select_seats", show_slug=reservation.show.slug)
 
     if request.method == 'POST':
         try:
