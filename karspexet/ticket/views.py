@@ -113,7 +113,9 @@ def process_payment(request, reservation_id):
             return redirect("reservation_detail", reservation.reservation_code)
 
         except PaymentError as error:
-            logger.exception(error)
+            logger.exception(error, exc_info=True, extra={
+                'request': request
+            })
             return TemplateResponse(request, "ticket/payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),

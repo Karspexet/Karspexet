@@ -51,7 +51,13 @@ class PaymentProcess:
                 "Please use either 'stripe' or 'fake'".format(settings.PAYMENT_PROCESS)
             )
 
-        return process_class(reservation, post_data, request).process()
+        try:
+            return process_class(reservation, post_data, request).process()
+        except OSError as error:
+            logger.exception("OSError in payment process", exc_info=True, extra={
+                'request': request
+            })
+            raise PaymentError("OSError in payment process")
 
     @transaction.atomic
     def process(self):
