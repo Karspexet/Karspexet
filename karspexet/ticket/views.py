@@ -55,7 +55,7 @@ def select_seats(request, show_slug):
         else:
             reservation.tickets = seat_params
             reservation.save()
-            return redirect("booking_overview", show.slug)
+            return redirect("booking_overview", show_slug=show.slug)
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
@@ -110,7 +110,7 @@ def process_payment(request, reservation_id):
             request.session[f'show_{reservation.show_id}'] = None
             messages.success(request, "Betalningen lyckades!")
 
-            return redirect("reservation_detail", reservation.reservation_code)
+            return redirect("reservation_detail", reservation_code=reservation.reservation_code)
 
         except PaymentError as error:
             logger.exception(error, exc_info=True, extra={
