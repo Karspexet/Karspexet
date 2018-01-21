@@ -34,7 +34,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for ticket in show.ticket_set.all %}
+    {% for ticket in tickets %}
     <tr>
       <td>{{ ticket.seat.group.name }}</td>
       <td>{{ ticket.seat.name  }}</td>
