@@ -13,7 +13,8 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 class VoucherAdmin(admin.ModelAdmin):
-    list_display = ('reservation', 'created_by', 'rebate_amount')
+    list_display = ('amount', 'code', 'expiry_date', 'created_by')
+    list_filter = ('expiry_date', 'created_by')
 
 
 class PricingModelAdmin(admin.ModelAdmin):

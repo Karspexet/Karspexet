@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from datetime import date
 
 from karspexet.show.models import Show
 from karspexet.venue.models import Seat, SeatingGroup
@@ -18,6 +19,11 @@ TICKET_TYPES = [
 
 def _generate_random_code():
     return get_random_string(allowed_chars=ascii_uppercase+digits)
+
+
+def _fifteenth_september_this_year():
+    today = timezone.now().date()
+    return date(today.year + 1, 9, 15)
 
 
 class ActiveReservationsManager(models.Manager):
@@ -78,10 +84,17 @@ class Ticket(models.Model):
     def __str__(self):
         return f"{self.show}, {self.seat.group}, {self.seat}"
 
+
 class Voucher(models.Model):
-    reservation = models.ForeignKey(Reservation, null=True)
+    """
+    A voucher valid for getting a discount on one single Reservation.
+
+    Vouchers cannot be partially applied to a Reservation, so any excess value is void after use.
+    """
+    amount = models.IntegerField(help_text="Rabatt i SEK")
+    code = models.CharField(unique=True, max_length=16, null=False, default=_generate_random_code)
+    expiry_date = models.DateField(null=False, default=_fifteenth_september_this_year)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
-    rebate_amount = models.IntegerField(help_text="Rabatt i SEK")
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
