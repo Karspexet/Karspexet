@@ -57,6 +57,7 @@ class Account(models.Model):
     def __str__(self):
         return f"{self.name} <{self.email}>"
 
+
 class Ticket(models.Model):
     price = models.IntegerField()
     ticket_type = models.CharField(max_length=10, choices=TICKET_TYPES, default="normal")
