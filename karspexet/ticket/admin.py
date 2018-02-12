@@ -4,22 +4,23 @@ from karspexet.ticket.models import Account, Reservation, Ticket, Voucher, Prici
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('show', 'total', 'finalized', 'reservation_code', 'tickets')
+    list_filter = ('finalized', 'show')
 
 
 class TicketAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('price', 'ticket_type', 'show', 'seat', 'account', 'ticket_code')
 
 
 class VoucherAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('reservation', 'created_by', 'rebate_amount')
 
 
 class PricingModelAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('seating_group', 'prices', 'valid_from')
 
 class AccountAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'email', 'phone')
 
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Ticket, TicketAdmin)
