@@ -4,11 +4,11 @@ from karspexet.show.models import Production, Show
 
 
 class ProductionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'alt_name')
 
 
 class ShowAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('production', 'slug', 'date_string')
 
 
 admin.site.register(Production, ProductionAdmin)
