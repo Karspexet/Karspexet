@@ -144,3 +144,8 @@ class TestTicket(TestCase):
 
         with pytest.raises(ValidationError) as error:
             duplicate_ticket.full_clean()
+
+
+class TestDiscount:
+    def discount_must_have_a_unique_voucher_reservation_combo():
+        pass

@@ -1,5 +1,6 @@
 from string import ascii_uppercase, digits
 from functools import reduce
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.contrib.postgres.fields import HStoreField
 from django.db import models
@@ -79,6 +80,22 @@ class Voucher(models.Model):
     reservation = models.ForeignKey(Reservation, null=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     rebate_amount = models.IntegerField(help_text="Rabatt i SEK")
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_modified_at = models.DateTimeField(auto_now=True)
+
+
+class Discount(models.Model):
+    """
+    A model representing a given discount on a specific reservation.
+
+    This is a connecting model between a Voucher and a Reservation.
+
+    A Voucher can only ever be discounted to one single Reservation, and a
+    Reservation can only ever have one single Discount applied.
+    """
+    amount = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(5000)], null=False)
+    reservation = models.OneToOneField(Reservation, null=False, unique=True)
+    voucher = models.OneToOneField(Voucher, null=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
