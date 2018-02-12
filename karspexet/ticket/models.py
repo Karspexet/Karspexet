@@ -16,8 +16,9 @@ TICKET_TYPES = [
     ("student", "Student"),
 ]
 
-def _generate_reservation_code():
+def _generate_random_code():
     return get_random_string(allowed_chars=ascii_uppercase+digits)
+
 
 class ActiveReservationsManager(models.Manager):
     def get_queryset(self):
@@ -32,7 +33,7 @@ class Reservation(models.Model):
     finalized = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
-    reservation_code = models.CharField(unique=True, max_length=16, default=_generate_reservation_code)
+    reservation_code = models.CharField(unique=True, max_length=16, default=_generate_random_code)
 
     objects = models.Manager()
     active = ActiveReservationsManager()
@@ -66,7 +67,7 @@ class Ticket(models.Model):
     account = models.ForeignKey(Account, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
-    ticket_code = models.CharField(unique=True, max_length=16, default=_generate_reservation_code)
+    ticket_code = models.CharField(unique=True, max_length=16, default=_generate_random_code)
 
     class Meta:
         unique_together = ('show', 'seat')
