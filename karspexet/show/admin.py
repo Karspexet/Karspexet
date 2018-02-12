@@ -9,6 +9,7 @@ class ProductionAdmin(admin.ModelAdmin):
 
 class ShowAdmin(admin.ModelAdmin):
     list_display = ('production', 'slug', 'date_string')
+    list_filter = ('production',)
 
 
 admin.site.register(Production, ProductionAdmin)
