@@ -22,9 +22,19 @@ def _generate_random_code():
     return get_random_string(allowed_chars=ascii_uppercase+digits)
 
 
-def _fifteenth_september_this_year():
+def _generate_voucher_code():
+    return get_random_string(length=16, allowed_chars=ascii_uppercase+digits)
+
+
+def _next_fifteenth_september():
     today = timezone.now().date()
-    return date(today.year + 1, 9, 15)
+    fifteenth_september_this_year = date(today.year, 9, 15)
+    fifteenth_september_next_year = date(today.year + 1, 9, 15)
+
+    if today >= fifteenth_september_this_year:
+        return fifteenth_september_next_year
+    else:
+        return fifteenth_september_this_year
 
 
 class ActiveReservationsManager(models.Manager):
@@ -114,12 +124,19 @@ class Voucher(models.Model):
     Vouchers cannot be partially applied to a Reservation, so any excess value is void after use.
     """
     amount = models.IntegerField(help_text="Rabatt i SEK")
-    code = models.CharField(unique=True, max_length=16, null=False, default=_generate_random_code)
-    expiry_date = models.DateField(null=False, default=_fifteenth_september_this_year)
+    code = models.CharField(unique=True, max_length=16, null=False, default=_generate_voucher_code)
+    expiry_date = models.DateField(null=False, default=_next_fifteenth_september)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
+    note = models.CharField(max_length=255, null=False, default="")
 
+    @staticmethod
+    def active():
+        return Voucher.objects.exclude(id__in=Discount.objects.values_list('id', flat=True))
+
+    def __str__(self):
+        return f"id={self.id} amount={self.amount} code={self.code}"
 
 class Discount(models.Model):
     """
@@ -136,6 +153,8 @@ class Discount(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
+    def unused_amount(self):
+        return self.voucher.amount - self.amount
 
 class ActivePricingModelManager(models.Manager):
     def active(self, timestamp=None):
