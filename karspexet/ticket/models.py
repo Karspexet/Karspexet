@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.postgres.fields import HStoreField
 from django.db import models
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from datetime import date
@@ -33,7 +34,8 @@ class ActiveReservationsManager(models.Manager):
 
 class Reservation(models.Model):
     show = models.ForeignKey(Show, null=False)
-    total = models.IntegerField()
+    ticket_price = models.IntegerField(validators=[MinValueValidator(0)])
+    total = models.IntegerField(validators=[MinValueValidator(0)])
     tickets = HStoreField()
     session_timeout = models.DateTimeField()
     finalized = models.BooleanField(default=False)
@@ -47,11 +49,31 @@ class Reservation(models.Model):
     def seats(self):
         return Seat.objects.filter(pk__in=self.tickets.keys()).all()
 
-    def total_price(self):
-        return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), self.seats(), 0)
-
     def ticket_set(self):
         return Ticket.objects.filter(show=self.show).filter(seat_id__in=self.tickets.keys())
+
+    def save(self, *args, **kwargs):
+        self.calculate_ticket_price_and_total()
+        super().save(*args, **kwargs)
+
+    def apply_voucher(self, code):
+        if Discount.objects.filter(reservation=self).exists():
+            raise AlreadyDiscountedException("This reservation already has a discount: reservation_id=%d existing_discount_code=%s new_code=%s" % (self.id, self.discount.voucher.code, code))
+        if Discount.objects.filter(Q(voucher__code=code)).exists():
+            raise InvalidVoucherException("Voucher has already been used: code=%s" % code)
+        voucher = Voucher.objects.get(code=code)
+        amount = min(self.ticket_price, voucher.amount)
+        discount = Discount.objects.create(reservation=self, voucher=voucher, amount=amount)
+        self.total = self.ticket_price - amount
+
+        return discount
+
+    def calculate_ticket_price_and_total(self):
+        self.ticket_price = reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), self.seats(), 0)
+        try:
+            self.total = self.ticket_price - self.discount.amount
+        except ObjectDoesNotExist:
+            self.total = self.ticket_price
 
 
 class Account(models.Model):
@@ -148,3 +170,11 @@ class PricingModel(models.Model):
 
     def __str__(self):
         return f"PricingModel {self.id} {self.valid_from} {self.prices} {self.seating_group}"
+
+
+class InvalidVoucherException(Exception):
+    pass
+
+
+class AlreadyDiscountedException(Exception):
+    pass
