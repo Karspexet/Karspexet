@@ -30,6 +30,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='voucher',
             name='expiry_date',
-            field=models.DateField(default=karspexet.ticket.models._fifteenth_september_this_year),
+            field=models.DateField(default=karspexet.ticket.models._next_fifteenth_september),
         ),
     ]
