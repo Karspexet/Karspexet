@@ -1,0 +1,53 @@
+{% extends "economy/base.html" %}
+{% load staticfiles %}
+{% block economy_content %}
+<h2>Presentkort</h2>
+
+<h3>Inloggad som: {{ user }}</h3>
+
+<form method="POST" action="{% url 'economy_create_voucher' %}">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Lägg till presentkort</legend>
+        <div>
+            <label>
+                Summa
+                <input type="number" name="amount" required/>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Anteckning (Vem har köpt denna?)
+                <input type="text" name="note" required/>
+            </label>
+        </div>
+        <input type="submit" value="Lägg till!">
+    </fieldset>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kod</th>
+      <th>Summa</th>
+      <th>Inlagt den</th>
+      <th>Inlagt av</th>
+      <th>Utgångsdatum</th>
+      <th>Anteckning</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for voucher in vouchers %}
+    <tr>
+      <td>{{ voucher.code }}</td>
+      <td>{{ voucher.amount }}</td>
+      <td>{{ voucher.created_at|date }}</td>
+      <td>{{ voucher.created_by }}</td>
+      <td>{{ voucher.expiry_date }}</td>
+      <td>{{ voucher.note }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

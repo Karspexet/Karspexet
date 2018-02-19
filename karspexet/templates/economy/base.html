@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <span>Meny</span>
+    <ul>
+        <li><a href="{% url 'economy_overview' %}">Beläggning</a></li>
+        <li><a href="{% url 'economy_vouchers' %}">Presentkort</a></li>
+        <li><a href="{% url 'economy_discounts' %}">Utnyttjade presentkort</a></li>
+    </ul>
+</div>
+
+{% block economy_content %}
+{% endblock %}
+{% endblock %}

@@ -1,9 +1,11 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template.response import TemplateResponse
+from django.shortcuts import redirect
 
 from karspexet.show.models import Show
-from karspexet.ticket.models import Ticket
+from karspexet.ticket.models import Ticket, Voucher, Discount
 # Create your views here.
+
 
 @staff_member_required
 def overview(request):
@@ -12,6 +14,7 @@ def overview(request):
         'shows': shows,
         'user': request.user,
     })
+
 
 @staff_member_required
 def show_detail(request, show_id):
@@ -27,3 +30,29 @@ def show_detail(request, show_id):
         "coverage": coverage,
         "user": request.user,
     })
+
+
+@staff_member_required
+def vouchers(request):
+    vouchers = Voucher.active()
+
+    return TemplateResponse(request, "economy/vouchers.html", context={
+        "vouchers": vouchers
+    })
+
+
+@staff_member_required
+def discounts(request):
+    discounts = Discount.objects.select_related("reservation", "voucher").all()
+
+    return TemplateResponse(request, "economy/discounts.html", context={
+        "discounts": discounts
+    })
+
+
+@staff_member_required
+def create_voucher(request):
+    if request.method == "POST":
+        voucher = Voucher.objects.create(created_by=request.user, amount=request.POST["amount"], note=request.POST["note"])
+
+        return redirect("economy_vouchers")

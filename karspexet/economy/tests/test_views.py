@@ -16,7 +16,7 @@ class TestOverview(TestCase):
         response = self.client.get("/economy/")
         assert response.status_code == 302
 
-        _create_staff_user("ture", "test")
+        f.CreateStaffUser("ture", "test")
         assert self.client.login(username="ture", password="test")
 
         response = self.client.get("/economy/")
@@ -37,15 +37,8 @@ class TestShowDetail(TestCase):
         response = self.client.get(f"/economy/{show.id}")
         assert response.status_code == 302
 
-        _create_staff_user("ture", "test")
+        f.CreateStaffUser("ture", "test")
         assert self.client.login(username="ture", password="test")
 
         response = self.client.get(f"/economy/{show.id}")
         assert "Föreställningsöversikt" in response.content.decode("utf-8")
-
-def _create_staff_user(username, password):
-    user = User.objects.create_user(username, email="ture@example.com")
-    user.set_password(password)
-    user.is_staff = True
-    user.save()
-    return user
