@@ -1,24 +1,6 @@
 ---
-engines:
-  pylint:
-    enabled: true
-    python_version: 3
-    exclude_paths:
-      - tests/
-      - karspexet/**/migrations/**/*
-      - karspexet/**/test_*.py
-  bandit:
-    enabled: true
-    exclude_paths:
-      - tests/
-      - karspexet/**/migrations/**/*
-      - karspexet/**/test_*.py
-  csslint:
-    enable: true
-    exclude_paths:
-      - assets/fonts/**/*
-
-  eslint:
-    enable: true
-    exclude_paths:
-      - assets/fonts/**/*
+exclude_paths:
+  - tests/
+  - karspexet/**/migrations/**/*
+  - karspexet/**/test_*.py
+  - assets/fonts/**/*
