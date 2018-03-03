@@ -1,3 +1,5 @@
+@import "../fonts/icomoon/style.css";
+
 /* latin-ext */
 @font-face {
   font-family: 'Roboto';
@@ -21,5 +23,3 @@
   font-weight: 400;
   src: local('Trajan Pro Regular'), url(../fonts/Trajan-Pro-Regular.ttf) format('ttf');
 }
-
-@import "../fonts/icomoon/style.css";
