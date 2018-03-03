@@ -12,7 +12,7 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.template.response import HttpResponse, TemplateResponse
 from django.utils import timezone
 
