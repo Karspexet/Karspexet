@@ -17,3 +17,8 @@ engines:
     enable: true
     exclude_paths:
       - assets/fonts/**/*
+
+  eslint:
+    enable: true
+    exclude_paths:
+      - assets/fonts/**/*
