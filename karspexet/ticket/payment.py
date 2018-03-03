@@ -21,6 +21,8 @@ stripe.api_key = stripe_keys['secret_key']
 
 MAIL_TEMPLATE = """Här är dina biljetter till Kårspexets föreställning: {}
 
+Bokningskod: {}
+
 {}
 
 Länk till din reservation: {}
@@ -49,7 +51,13 @@ class PaymentProcess:
                 "Please use either 'stripe' or 'fake'".format(settings.PAYMENT_PROCESS)
             )
 
-        return process_class(reservation, post_data, request).process()
+        try:
+            return process_class(reservation, post_data, request).process()
+        except OSError as error:
+            logger.exception("OSError in payment process", exc_info=True, extra={
+                'request': request
+            })
+            raise PaymentError("OSError in payment process")
 
     @transaction.atomic
     def process(self):
@@ -105,6 +113,7 @@ class PaymentProcess:
             tickets_string.append("{}: {}".format(seat.group.name, seat.name))
         body = MAIL_TEMPLATE.format(
             str(self.reservation.show),
+            self.reservation.reservation_code,
             "\n".join(tickets_string),
             self.request.build_absolute_uri("/ticket/reservation/{}/".format(self.reservation.reservation_code))
         )

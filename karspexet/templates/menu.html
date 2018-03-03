@@ -7,7 +7,11 @@
     </li>
     {% if not forloop.last %}
         {% if forloop.counter == forloop.revcounter|add:"-1" %}
-            <li><img class="luva" src="{% static 'svg/luva-inkscape.svg' %}"></li>
+    <li>
+      <a href="/">
+        <img class="luva" src="{% static 'svg/luva-inkscape.svg' %}">
+      </a>
+    </li>
         {% else %}
             <li><span class="list_decorator icon-circle"></span></li>
         {% endif %}

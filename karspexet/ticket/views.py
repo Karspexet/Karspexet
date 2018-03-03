@@ -40,8 +40,8 @@ def home(request):
     })
 
 
-def select_seats(request, show_id):
-    show = Show.objects.get(id=show_id)
+def select_seats(request, show_slug):
+    show = Show.objects.get(slug=show_slug)
     reservation = _get_or_create_reservation_object(request, show)
     taken_seats_qs = Reservation.active.exclude(pk=reservation.pk).filter(show=show)
     _set_session_timeout(request)
@@ -55,7 +55,7 @@ def select_seats(request, show_id):
         else:
             reservation.tickets = seat_params
             reservation.save()
-            return redirect("booking_overview")
+            return redirect("booking_overview", show_slug=show.slug)
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
@@ -70,18 +70,19 @@ def select_seats(request, show_id):
     })
 
 
-def booking_overview(request):
-    reservation = _get_or_create_reservation_object(request)
+def booking_overview(request, show_slug):
+    show = Show.objects.get(slug=show_slug)
+    reservation = _get_or_create_reservation_object(request, show)
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_id=reservation.show_id)
+        return redirect("select_seats", show_slug=show_slug)
 
     _set_session_timeout(request)
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
-        return redirect("select_seats", show_id=reservation.show_id)
+        return redirect("select_seats", show_slug=show_slug)
 
     reserved_seats = {seat.id:seat for seat in reservation.seats()}
 
@@ -100,19 +101,21 @@ def process_payment(request, reservation_id):
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_id=reservation.show_id)
+        return redirect("select_seats", show_slug=reservation.show.slug)
 
     if request.method == 'POST':
         try:
             reservation = PaymentProcess.run(reservation, request.POST, request)
             request.session['reservation_timeout'] = None
-            request.session['reservation_id'] = None
+            request.session[f'show_{reservation.show_id}'] = None
             messages.success(request, "Betalningen lyckades!")
 
-            return redirect("reservation_detail", reservation.reservation_code)
+            return redirect("reservation_detail", reservation_code=reservation.reservation_code)
 
         except PaymentError as error:
-            logger.exception(error)
+            logger.exception(error, exc_info=True, extra={
+                'request': request
+            })
             return TemplateResponse(request, "ticket/payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
@@ -134,8 +137,8 @@ def reservation_detail(request, reservation_code):
     })
 
 
-def ticket_detail(request, reservation_code, ticket_code):
-    reservation = Reservation.objects.get(reservation_code=reservation_code)
+def ticket_detail(request, reservation_id, ticket_code):
+    reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     return TemplateResponse(request, "ticket_detail.html", {
@@ -149,8 +152,8 @@ def ticket_detail(request, reservation_code, ticket_code):
     })
 
 
-def ticket_pdf(request, reservation_code, ticket_code):
-    reservation = Reservation.objects.get(reservation_code=reservation_code)
+def ticket_pdf(request, reservation_id, ticket_code):
+    reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     template = TemplateResponse(request, "ticket_detail.html", {
@@ -179,9 +182,18 @@ def ticket_pdf(request, reservation_code, ticket_code):
         pdf = pdfkit.from_string(content, False, pdfkit_options)
 
     response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'inline;filename=karspexet-bokning-{}-{}.pdf'.format(reservation_code, ticket.id)
+    response['Content-Disposition'] = 'inline;filename=karspexet-bokning-{}-{}.pdf'.format(reservation_id, ticket_code)
 
     return response
+
+
+def cancel_reservation(request, show_id):
+    if request.method == "POST":
+        request.session[f"show_{show_id}"] = None
+        request.session['reservation_timeout'] = None
+
+    return redirect("ticket_home")
+
 
 def _session_expired(request):
     timeout = request.session.get('reservation_timeout', None)
@@ -194,12 +206,14 @@ def _set_session_timeout(request):
     request.session['reservation_timeout'] = (timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
 
 
-def _get_or_create_reservation_object(request, show=None):
+def _get_or_create_reservation_object(request, show):
     timeout = timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)
+    session_key = f'show_{show.id}'
+    reservation_id = request.session.get(session_key)
 
-    if request.session.get('reservation_id'):
+    if reservation_id:
         try:
-            reservation = Reservation.objects.get(pk=request.session['reservation_id'])
+            reservation = Reservation.objects.get(pk=reservation_id)
             reservation.session_timeout = timeout
             reservation.save()
             return reservation
@@ -207,7 +221,7 @@ def _get_or_create_reservation_object(request, show=None):
             pass
 
     reservation = Reservation.objects.create(show=show, total=0, tickets={}, session_timeout=timeout)
-    request.session['reservation_id'] = reservation.id
+    request.session[session_key] = reservation.id
 
     return reservation
 

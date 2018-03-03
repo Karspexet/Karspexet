@@ -150,7 +150,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Stockholm'
 
 USE_I18N = True
 
@@ -192,6 +192,7 @@ SITE_ID = 1
 CMS_TEMPLATES = [
     ('home.html', 'Home page template'),
     ('about.html', 'Content page template'),
+    ('content_with_hero_image.html', 'Content page template with hero image'),
 ]
 LANGUAGES = [
     ('en', 'English'),
@@ -229,7 +230,7 @@ FILER_STORAGES = {
 
 CMS_PLACEHOLDER_CONF = {
     None: {
-        "plugins": ['TextPlugin', 'LinkPlugin'],
+        "plugins": ['TextPlugin', 'LinkPlugin', 'PicturePlugin'],
         'excluded_plugins': ['InheritPlugin'],
     },
     'image': {

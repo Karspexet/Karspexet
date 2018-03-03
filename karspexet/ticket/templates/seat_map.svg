@@ -19,7 +19,7 @@
   <circle
       cx={{ seat.x_pos}}
       cy={{ seat.y_pos }}
-      r="5"
+      r="6"
       class="seat{% if seat.id in taken_seats %} taken-seat {% endif %}"
       id="seat-{{ seat.id }}"
     />

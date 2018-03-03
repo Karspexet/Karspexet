@@ -4,6 +4,8 @@ function setupSelectSeats(config) {
     config = config.seatSelection
     var booking = {}
 
+    var isMobile = /Mobi/.test(navigator.userAgent)
+
     function selectSeat(event) {
         var seat = event.target.id
         if (booking.hasOwnProperty(seat)) {
@@ -17,16 +19,12 @@ function setupSelectSeats(config) {
         var seatId = seat.replace("seat-", "")
         booking[seat] = {id: seatId, value: null}
         document.querySelector("#" + seat).classList.add("selected-seat")
-        document.querySelector("#book-submit-button").disabled = false
         renderBooking()
     }
 
     function removeSeat(seat) {
         delete booking[seat]
         document.querySelector("#" + seat).classList.remove("selected-seat")
-        if (Object.keys(booking).length === 0) {
-            document.querySelector("#book-submit-button").disabled = true
-        }
         renderBooking()
     }
 
@@ -44,7 +42,9 @@ function setupSelectSeats(config) {
         var output = ""
         if (Object.keys(booking).length === 0) {
             document.querySelector("#no-seats-selected").hidden = false
+            document.querySelector("#book-submit-button").disabled = true
         } else {
+            document.querySelector("#book-submit-button").disabled = false
             document.querySelector("#no-seats-selected").hidden = true
             Object.keys(booking).forEach(function(seatId) {
                 output += renderSeatForm(booking[seatId])
@@ -84,6 +84,8 @@ function setupSelectSeats(config) {
     }
 
     Object.keys(config.allSeats).forEach(function(seat) {
+        if (isMobile) return
+
         var element = document.getElementById(seat),
             seatObject = config.allSeats[seat]
         element.addEventListener("mouseover", function() {

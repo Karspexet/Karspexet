@@ -272,8 +272,12 @@ a {
 .partnerPictures {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: space-around;
   flex-flow: row wrap;
+}
+
+.partnerPictures img {
+  padding: 5px 10px;
 }
 
 .ticket-detail {
@@ -282,6 +286,12 @@ a {
 
 .content_container {
   flex: 1 0 auto;
+}
+
+.content_container table,
+.content_container table th,
+.content_container table td {
+  border: none;
 }
 
 .footer {
@@ -304,6 +314,19 @@ a {
 .footer .thsLogo {
   width: auto;
   height: 40px;
+}
+
+.footer .secondary-menu a,
+.footer .secondary-menu a:visited {
+  color: white;
+  font-weight: normal;
+  text-decoration: none;
+  margin: 0;
+  margin-right: 0.5em;
+}
+
+.footer .secondary-menu a:hover {
+  text-decoration: underline;
 }
 
 .socialMedia a {

@@ -5,6 +5,7 @@
     <title>{% page_attribute "page_title" %}</title>
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <script src="https://js.stripe.com/v3/" async></script>
+    <meta type="description" content="Kårspexet är en studentförening på KTH som sätter upp interaktiv humoristisk musikal med historisk anknytning, ett så kallat spex, varje år. Vi är 70 ideellt arbetande amatörer som brinner för att skapa en proffsig produkt med ingenjörsmässiga metoder. Kom gärna förbi och se oss när vi spelar på Södra Teatern!" />
     {% render_bundle "app" "js" attrs="async" %}
     {% render_bundle "style" "css" attrs="async" %}
     {% render_block "js" %}
@@ -24,6 +25,10 @@
         <a href="http://ths.kth.se/"><img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" /></a>
       </div>
       <div class="socialMedia footerElement">
+        <span class="secondary-menu">
+          <a href="/foretag">Företag</a>
+          <a href="/kontakt">Kontakt</a>
+        </span>
         Följ oss på sociala medier:
         <a href="https://www.facebook.com/karspexet.kth/" class="icon-facebook"></a>
         <a href="https://www.instagram.com/karspexet/" class="icon-instagram"></a>
