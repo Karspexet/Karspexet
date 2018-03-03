@@ -1,4 +1,4 @@
-/* global Stripe exports */
+/* global Stripe */
 function setupPayment(config) {
     if (!config || !config.payment) return
 
