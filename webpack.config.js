@@ -47,11 +47,11 @@ module.exports = {
             },
             {
                 test: /\.(woff2?)$/,
-                loader: 'url-loader'
+                loader: "url-loader"
             },
             {
                 test: /\.(eot|svg|ttf|)$/,
-                loader: 'file-loader'
+                loader: "file-loader"
             },
         ]
     },
