@@ -13,3 +13,7 @@ engines:
       - tests/
       - karspexet/**/migrations/**/*
       - karspexet/**/test_*.py
+  csslint:
+    enable: true
+    exclude_paths:
+      - assets/fonts/**/*
