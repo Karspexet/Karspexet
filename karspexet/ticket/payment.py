@@ -53,7 +53,7 @@ class PaymentProcess:
 
         try:
             return process_class(reservation, post_data, request).process()
-        except OSError as error:
+        except OSError:
             logger.exception("OSError in payment process", exc_info=True, extra={
                 'request': request
             })
