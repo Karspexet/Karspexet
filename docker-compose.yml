@@ -1,0 +1,43 @@
+version: '3'
+services:
+  migration:
+    build: .
+    command: python manage.py migrate
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+    environment:
+      DATABASE_NAME: karspexet
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+  djangocms:
+    build: .
+    command: bash -c "npm install && npm run runserver"
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:80"
+    environment:
+      DATABASE_NAME: karspexet
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: karspexet
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
