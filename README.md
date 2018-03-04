@@ -7,6 +7,13 @@
 Detta repo innehåller Kårspexets IT-system, vilket just nu är dess
 biljettsystem.
 
+## Docker setup
+
+1. Ladda ner och installera Docker
+2. Gå till mappen för ditt klonade repo och skriv `docker build` för att bygga image:en, skriv sedan `docker-compose up` för att starta docker containers.
+
+2018-03-04: NPM saknas från den image vi bygger - behöver få in NPM där innan docker-compose fungerar och får igång django cms servern.
+
 ## Setup
 
 Skapa en `env.json`-fil med följande för att få stripe-integrationen att fungera:
