@@ -1,6 +1,6 @@
 <svg viewBox="0 0 {{ venue.seat_map_dimensions.width }} {{ venue.seat_map_dimensions.height }}"
      xmlns="http://www.wd.org/2000/svg"
-     style="max-width: {{ venue.seat_map_dimensions.width }}px; max-height: {{ venue.seat_map_dimensions.height }}px">
+     style="max-width: {{ venue.seat_map_dimensions.width }}px; max-height: {{ venue.seat_map_dimensions.height }}px; width: {{ venue.seat_map_dimensions.width }}; height: {{ venue.seat_map_dimensions.height }}">
     <rect x="{{ venue.seat_map_dimensions.stage_x }}"
           y="{{ venue.seat_map_dimensions.stage_y }}"
           width="{{ venue.seat_map_dimensions.stage_width }}"
@@ -19,7 +19,7 @@
   <circle
       cx={{ seat.x_pos}}
       cy={{ seat.y_pos }}
-      r="5"
+      r="6"
       class="seat{% if seat.id in taken_seats %} taken-seat {% endif %}"
       id="seat-{{ seat.id }}"
     />

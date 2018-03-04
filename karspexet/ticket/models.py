@@ -42,6 +42,9 @@ class Reservation(models.Model):
     def total_price(self):
         return reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), self.seats(), 0)
 
+    def ticket_set(self):
+        return Ticket.objects.filter(show=self.show).filter(seat_id__in=self.tickets.keys())
+
 
 class Account(models.Model):
     name = models.CharField(max_length=255)
@@ -50,6 +53,8 @@ class Account(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.name} <{self.email}>"
 
 class Ticket(models.Model):
     price = models.IntegerField()
@@ -59,12 +64,16 @@ class Ticket(models.Model):
     account = models.ForeignKey(Account, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
+    ticket_code = models.CharField(unique=True, max_length=16, default=_generate_reservation_code)
 
     class Meta:
         unique_together = ('show', 'seat')
 
     def __repr__(self):
         return "<Ticket %s | %s | %s>" % (self.ticket_type, self.show, self.seat)
+
+    def __str__(self):
+        return f"{self.show}, {self.seat.group}, {self.seat}"
 
 class Voucher(models.Model):
     reservation = models.ForeignKey(Reservation, null=True)
@@ -104,3 +113,6 @@ class PricingModel(models.Model):
             self.seating_group,
             self.valid_from
         )
+
+    def __str__(self):
+        return f"PricingModel {self.id} {self.valid_from} {self.prices} {self.seating_group}"

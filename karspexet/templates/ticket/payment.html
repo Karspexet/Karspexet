@@ -1,0 +1,72 @@
+{% extends "ticket/base.html" %}
+{% load tz %}
+{% block ticket_content %}
+<div class="content_container">
+  <section class="contact-details">
+    <h2>Kontaktuppgifter</h2>
+
+    <h3>Bokning</h3>
+    <dl>
+      <dt>Föreställning</dt>
+      <dd>{{ reservation.show }}</dd>
+      <dt>Antal biljetter</dt>
+      <dd>{{seats|length}}
+      <dt>Platser</dt>
+      <dd>
+        <ul>
+          {% for seat in seats %}
+          <li>{{ seat }}</li>
+          {% endfor %}
+        </ul>
+      </dd>
+    </dl>
+    <p class="fn-session-timeout">Dina platsreservationer är giltiga i <span class="fn-session-timeout-output">30 minuter</span><br/>(till <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"Y-m-d H:i" }}</time>)
+
+    {% if payment_failed %}
+    <div>
+      <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
+    </div>
+    {% endif %}
+  </section>
+
+  <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
+    <h2>Betalning</h2>
+
+    <p>För att betala dina biljetter, fyll i dina kortuppgifter här nedanför.</p>
+    <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!</p>
+
+    {% csrf_token %}
+    <div class="group">
+      <label>
+        <span>Namn</span>
+        <input name="name" class="field" placeholder="Jane Doe" />
+      </label>
+      <label>
+        <span>Telefonnummer</span>
+        <input name="phone" class="field" placeholder="(123) 456-7890" type="tel" />
+      </label>
+      <label>
+        <span>E-postadress</span>
+        <input name="email" class="field" placeholder="" type="email" />
+      </label>
+    </div>
+    {% include payment_partial %}
+    <button type="submit">Betala {{ reservation.total_price }} kr</button>
+    <div class="outcome">
+      <div class="error" role="alert"></div>
+    </div>
+  </form>
+
+  <div>
+  <span>eller</span>
+  <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
+    {% csrf_token %}
+    <input type="submit" id="cancel-reservation-button" value="avbryt bokning">
+  </form>
+  </div>
+  <script>
+    window.config = window.config || {}
+    window.config.payment = '{{ stripe_key }}'
+  </script>
+  </div>
+  {% endblock %}

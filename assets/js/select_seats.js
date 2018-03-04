@@ -1,5 +1,10 @@
-(function setupSelectSeats(config) {
+function setupSelectSeats(config) {
+    if (!config || !config.seatSelection) return
+
+    config = config.seatSelection
     var booking = {}
+
+    var isMobile = /Mobi/.test(navigator.userAgent)
 
     function selectSeat(event) {
         var seat = event.target.id
@@ -35,10 +40,16 @@
 
     function renderBooking() {
         var output = ""
-        Object.keys(booking).forEach(function(seatId) {
-            output += renderSeatForm(booking[seatId])
-        })
-
+        if (Object.keys(booking).length === 0) {
+            document.querySelector("#no-seats-selected").hidden = false
+            document.querySelector("#book-submit-button").disabled = true
+        } else {
+            document.querySelector("#book-submit-button").disabled = false
+            document.querySelector("#no-seats-selected").hidden = true
+            Object.keys(booking).forEach(function(seatId) {
+                output += renderSeatForm(booking[seatId])
+            })
+        }
         document.querySelector("#booking").innerHTML = output
         Array.prototype.forEach.call(
             document.querySelectorAll("#booking select"),
@@ -73,6 +84,8 @@
     }
 
     Object.keys(config.allSeats).forEach(function(seat) {
+        if (isMobile) return
+
         var element = document.getElementById(seat),
             seatObject = config.allSeats[seat]
         element.addEventListener("mouseover", function() {
@@ -96,4 +109,6 @@
         document.querySelectorAll(".seat:not(.taken-seat)"),
         function makeSeatAvailable(seat) {seat.addEventListener("click", selectSeat)}
     )
-})(window.config.seatSelection)
+}
+
+exports.setupSelectSeats = setupSelectSeats

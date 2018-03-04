@@ -1,0 +1,355 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-color: black;
+  color: white;
+
+  display: flex;
+
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+  justify-content: center;
+
+  margin: 0 auto;
+  padding: 0;
+
+  max-width: 1058px;
+  min-width: 800px;
+  min-height: 100%;
+  width: 100%;
+  padding-top: 62px;
+  box-sizing: border-box;
+}
+
+#page {
+  padding-top: 70px;
+  display: flex;
+  flex-shrink: 0;
+  min-height: 100%;
+  flex-direction: column;
+  flex: 1;
+}
+
+a {
+  color: #fd0;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.fa {
+  font-size: 1.1em;
+  color: rgb(222, 210, 95);
+  margin-right: 2px;
+}
+
+.list_decorator {
+  font-size: small
+}
+
+.poster_container {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+.poster_image {
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
+  object-position: 0 14%;
+}
+
+.poster_image img{
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
+  object-position: 0 50%;
+}
+
+.poster_image::after {
+  display: block;
+  position: relative;
+  background-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  margin-top: -150px;
+  height: 150px;
+  width: 100%;
+  content: '';
+}
+
+.poster_title {
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+  text-shadow: 2px 2px 4px #000000;
+  font-size: 1.5em;
+}
+
+.poster_title h1 {
+  margin: 0;
+  font-family: "Trajan Pro Regular";
+  font-weight: normal;
+}
+
+.poster_title p {
+  margin: 0;
+  font-family: "Trajan Pro Regular";
+}
+
+.poster_title {
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+  text-shadow: 2px 2px 4px #000000;
+  font-size: 1.5em;
+  z-index: 1;
+}
+
+.poster_title h1 {
+  margin: 0;
+}
+
+.poster_title p {
+  margin: 0;
+}
+
+.poster_shadow {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  bottom: 0;
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1));
+}
+
+.running_shows {
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  padding: 6px;
+}
+
+.running_shows [class^="icon-"],
+.ticket-detail [class^="icon-"] {
+  margin: 0 2px;
+  color: #fd0;
+}
+
+.navbar ul {
+  padding-left: 0;
+}
+
+.navbar ul li:last-child {
+  background-color: rgb(141, 4, 28);
+  border-radius: 5px;
+}
+
+.card_container{
+  display: flex;
+  flex: 1 0 auto;
+  flex-shrink: 0;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.card {
+  width: 300px;
+  padding: 30px 10px;
+  display: block;
+  justify-content: center;
+}
+
+.card .card_image img {
+  width: 300px;
+  height: auto;
+}
+
+.card .card_title p{
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0 0 0;
+}
+
+.card .card_text p{
+  font-size: 1em;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.card .card_link a{
+  font-size: 1em;
+  float: right;
+}
+
+.card .card_link a:link{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:visited{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:hover{
+  color: rgb(222, 210, 95);
+  text-decoration: underline;
+}
+
+.card .card_link a:active{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.show-card {
+  /* box-shadow: 0 2px 10px #fd0; */
+  border-radius: 10px;
+}
+
+.show-card:hover {
+  background-color: #222;
+}
+
+.show-card .alt-name {
+  color: white;
+}
+
+.show-card em,
+.show-card address {
+  color: white
+}
+
+.ticket_list {
+  list-style: none;
+}
+
+.ticket_list a {
+  font-size: 1em;
+}
+
+.ticket_list a:link{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.ticket_list a:visited{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.ticket_list a:hover{
+  color: rgb(222, 210, 95);
+  text-decoration: underline;
+}
+
+.ticket_list a:active{
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.cms-placeholder{
+  display: none;
+}
+
+.partnersContainer {
+  width: 100%;
+  background-color: white;
+  padding-bottom: 25px;
+  flex: 0;
+  color: black;
+}
+
+.partnersContainer h1 {
+  margin: 0;
+  padding-bottom: 20px;
+}
+
+.ourPartners {
+  color: black;
+  text-align: center;
+}
+
+.partnerPictures {
+  display: flex;
+  justify-content: center;
+  align-items: space-around;
+  flex-flow: row wrap;
+}
+
+.partnerPictures img {
+  padding: 5px 10px;
+}
+
+.ticket-detail {
+  padding: 0 40px;
+}
+
+.content_container {
+  flex: 1 0 auto;
+}
+
+.content_container table,
+.content_container table th,
+.content_container table td {
+  border: none;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  margin: auto;
+  height: 80px;
+  width: 100%;
+  background-color: rgb(141, 4, 28);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer div {
+  padding: 0 40px;
+  line-height: 40px;
+}
+
+.footer .thsLogo {
+  width: auto;
+  height: 40px;
+}
+
+.footer .secondary-menu a,
+.footer .secondary-menu a:visited {
+  color: white;
+  font-weight: normal;
+  text-decoration: none;
+  margin: 0;
+  margin-right: 0.5em;
+}
+
+.footer .secondary-menu a:hover {
+  text-decoration: underline;
+}
+
+.socialMedia a {
+  text-decoration: none;
+}
+
+.alt-name {
+  font-style: italic;
+  margin-top: 0;
+}
+
+.alt-name::before {
+  content: "...eller "
+}
+
+.ticket-detail-header h1 {
+  margin-bottom: 0;
+}
+
+ul.show-info {
+  list-style: none;
+}
+
+.show-info address {
+  display: inline;
+}

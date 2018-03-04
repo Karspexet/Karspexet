@@ -19,16 +19,28 @@ logger = logging.getLogger(__file__)
 stripe_keys = settings.ENV["stripe"]
 stripe.api_key = stripe_keys['secret_key']
 
+MAIL_TEMPLATE = """Här är dina biljetter till Kårspexets föreställning: {}
+
+Bokningskod: {}
+
+{}
+
+Länk till din reservation: {}
+
+Välkommen!
+"""
+
 class PaymentError(Exception):
     pass
 
 
 class PaymentProcess:
-    def __init__(self, reservation, post_data):
+    def __init__(self, reservation, post_data, request):
         self.reservation = reservation
         self.data = post_data
+        self.request = request
 
-    def run(reservation, post_data):
+    def run(reservation, post_data, request):
         if settings.PAYMENT_PROCESS == "fake":
             process_class = FakePaymentProcess
         elif settings.PAYMENT_PROCESS == "stripe":
@@ -39,14 +51,20 @@ class PaymentProcess:
                 "Please use either 'stripe' or 'fake'".format(settings.PAYMENT_PROCESS)
             )
 
-        return process_class(reservation, post_data).process()
+        try:
+            return process_class(reservation, post_data, request).process()
+        except OSError:
+            logger.exception("OSError in payment process", exc_info=True, extra={
+                'request': request
+            })
+            raise PaymentError("OSError in payment process")
 
     @transaction.atomic
     def process(self):
         self.account = self._create_account()
+        self._create_tickets()
         self._charge_card()
 
-        self._create_tickets()
         self.reservation = self._finalize_reservation()
         self._send_mail_to_customer()
 
@@ -90,9 +108,16 @@ class PaymentProcess:
 
     def _send_mail_to_customer(self):
         subject = "Dina biljetter till Kårspexet"
-        body = """
-        Här är dina biljetter till Kårspexets föreställning: %s
-        """ % (self.reservation.show)
+        tickets_string = []
+        for seat in self.reservation.seats():
+            tickets_string.append("{}: {}".format(seat.group.name, seat.name))
+        body = MAIL_TEMPLATE.format(
+            str(self.reservation.show),
+            self.reservation.reservation_code,
+            "\n".join(tickets_string),
+            self.request.build_absolute_uri("/ticket/reservation/{}/".format(self.reservation.reservation_code))
+        )
+
         to_address = "%s <%s>" % (self.account.name, self.account.email)
         send_mail(
             subject,

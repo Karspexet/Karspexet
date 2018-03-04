@@ -1,0 +1,73 @@
+{% load staticfiles svg %}
+<html lang="sv">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Kårspexet - Biljett</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <style>
+      body {
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        width: 14.8cm;
+        height: 21cm;
+        padding: 1em;
+      }
+
+      .logo {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      h1.title {
+        margin-bottom: 0;
+      }
+
+      h1.title::before {
+        content: "Kårspexet ";
+      }
+
+      em.alt-name {
+        margin-top: 0;
+      }
+
+      em.alt-name::before {
+        content: "...eller ";
+      }
+
+      aside.qrcode {
+        position: absolute;
+        bottom: 1em;
+        right: 1em;
+      }
+
+    </style>
+  </head>
+  <body class="ticket-pdf">
+    <div class="logo">
+      {% svg 'luva' %}
+    </div>
+    <em>Biljett till:</em>
+    <h1 class="title">{{ production }}</h1>
+    <em class="alt-name">{{ production.alt_name }}</em>
+
+    <main class="info">
+      <dl>
+        <dt>Datum</dt>
+        <dd><strong>{{ show.date|date:"Y-m-d H:i" }}</strong></dd>
+        <dt>Plats</dt>
+        <dd><strong>{{ seat.group.name }}: {{ seat.name }}</strong></dd>
+        <dt>Teater</dt>
+        <dd>{{ venue }}</dd>
+        <dt>Address</dt>
+        <dd>{{ venue.address }}</dd>
+      </dl>
+    </main>
+    <aside class="qrcode">
+      {{ qr_code|safe }}
+    </aside>
+  </body>
+</html>

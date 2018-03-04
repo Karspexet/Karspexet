@@ -20,6 +20,17 @@ Skapa en `env.json`-fil med följande för att få stripe-integrationen att fung
 }
 ```
 
+För att installera alla appens beroenden körs kommandot:
+```sh
+pip install -r requirements/dev.txt
+```
+För datalagring används en Postgres server som förväntas finnas på port `5432`.
+Därefter går servern att starta genom kommandot:
+```sh
+python3 manage.py runserver
+```
+Rikta sedan din favoritwebläsare mot `localhost:8000` för att se hemsidan.
+
 ## Linters
 
 För att försöka hålla javascript-koden hyfsat homogen använder vi `eslint`.

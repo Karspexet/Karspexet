@@ -53,6 +53,6 @@ class TestSelect_seats(TestCase):
         production = Production.objects.create(name="Uppsättningen")
         show = Show.objects.create(date=timezone.now(), production=production, venue=venue)
 
-        response = self.client.get(reverse(views.select_seats, args=[show.id]))
+        response = self.client.get(reverse(views.select_seats, args=[show.slug]))
 
         self.assertContains(response, "Köp biljetter för Uppsättningen")

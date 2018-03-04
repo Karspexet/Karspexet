@@ -1,0 +1,51 @@
+{% extends "ticket/base.html" %}
+{% load staticfiles svg %}
+{% block ticket_content %}
+<div class="content_container ticket-detail">
+  <div class="ticket-detail-header">
+    <p>Välkommen till Kårspexet</p>
+    <h1>{{ production.name }}</h1>
+    <p class="alt-name">{{ production.alt_name }}</p>
+    <ul class="show-info">
+      <li>
+        <em>
+          <i class="icon-calendar"></i>{{ show.date|date:"Y-m-d" }}
+          <i class="icon-clock"></i>{{ show.date|date:"H:i" }}
+        </em>
+      </li>
+      <li>
+        <em>
+          <i class="icon-map-marker"></i>
+          <address>{{ venue.name }}, {{ venue.address }}</address>
+        </em>
+      </li>
+      {% if venue.map_address %}
+        <li><a href="{{ venue.map_address }}" target="_blank">Öppna på karta</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  {% if messages %}
+  <section>
+    <ul class="messages">
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <main>
+    <h2>Här finner du dina biljetter</h2>
+
+    <p>Vi kommer skicka ett mail till dig med den här informationen och en länk till den här sidan.</p>
+    <p>Däremot har vi ibland problem med att vissa mail inte kommer fram, så vi rekommenderar att du laddar ner biljetterna härifrån på en gång.</p>
+
+    <ul>
+      {% for ticket in tickets %}
+      <li>
+        <a href="{% url 'ticket_pdf' reservation.id ticket.ticket_code %}">{{ ticket.seat.group.name }}: {{ ticket.seat.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </main>
+</div>
+{% endblock %}

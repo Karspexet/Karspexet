@@ -6,6 +6,7 @@ class Venue(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     address = models.TextField(blank=True)
+    map_address = models.CharField(blank=True, max_length=255)
     seat_map_dimensions = HStoreField(null=False, default={})
 
     def __str__(self):
