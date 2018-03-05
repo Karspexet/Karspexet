@@ -123,14 +123,7 @@ WSGI_APPLICATION = 'karspexet.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ["DATABASE_NAME"],
-        'USER': os.environ["DATABASE_USER"],
-        'PASSWORD': os.environ["DATABASE_PASSWORD"],
-        'HOST': os.environ["DATABASE_HOST"],
-        'PORT': os.environ["DATABASE_PORT"],
-    }
+    'default': dj_database_url.config(default='postgres://127.0.0.1/karspexet'),
 }
 
 # Password validation

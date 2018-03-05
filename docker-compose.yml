@@ -7,7 +7,7 @@ services:
       POSTGRES_DB: karspexet
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
   djangocms:
@@ -20,11 +20,9 @@ services:
       - 8000:8000
     environment:
       PORT: 8000
-      DATABASE_NAME: karspexet
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: password
       DATABASE_HOST: db
       DATABASE_PORT: 5432
+      DATABASE_URL: postgres://postgres:password@db:5432/karspexet
   adminer:
     image: adminer
     restart: always
