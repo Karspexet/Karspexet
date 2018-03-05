@@ -11,8 +11,10 @@ biljettsystem.
 
 1. Ladda ner och installera Docker
 2. Gå till mappen för ditt klonade repo och skriv `docker build` för att bygga image:en, skriv sedan `docker-compose up` för att starta docker containers.
+3. Kör `docker exec -it karspexet_djangocms_1 bash ./create_superuser.sh ` för att skapa ett admin konto.
 
-2018-03-04: NPM saknas från den image vi bygger - behöver få in NPM där innan docker-compose fungerar och får igång django cms servern.
+Vi skulle kunna länka in källkoden som en `VOLUME` till docker bilden
+men detta skapar inte lika säker produktionssättning.
 
 ## Setup
 

@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+venv/
 env/
 build/
 develop-eggs/
@@ -73,3 +74,6 @@ webpack-stats.json
 
 filer_public/
 filer_public_thumbnails/
+
+# Docker volumes
+postgres-data/

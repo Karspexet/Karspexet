@@ -1,0 +1,15 @@
+node_modules
+.circleci
+.diea
+.vscode
+.codacy.yml
+.coveragerc
+.editorconfig
+.eslintrc.json
+.gitignore
+docker-compose.yml
+venv
+postgres-data
+CODE_OF_CONDUCT.md
+LICENSE
+README.md
