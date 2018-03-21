@@ -282,11 +282,14 @@ def _build_pricings_and_seats(venue):
     return (pricings, seats)
 
 
-def _payment_partial():
+def _payment_partial(reservation):
+    if reservation.total == 0:
+        return "_discount_payment.html"
     if settings.PAYMENT_PROCESS == "stripe":
         return "_stripe_payment.html"
     else:
         return "_fake_payment.html"
+
 
 def _qr_code(request):
     url = pyqrcode.create(request.build_absolute_uri())
