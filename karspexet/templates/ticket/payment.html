@@ -11,6 +11,10 @@
       <dd>{{ reservation.show }}</dd>
       <dt>Antal biljetter</dt>
       <dd>{{seats|length}}
+    {% if reservation.discount %}
+      <dt>Presentkort</dt>
+      <dd>{{ reservation.discount.voucher.code }}</dd>
+    {% endif %}
       <dt>Platser</dt>
       <dd>
         <ul>
