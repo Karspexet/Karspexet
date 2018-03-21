@@ -12,12 +12,13 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.shortcuts import redirect, render
 from django.template.response import HttpResponse, TemplateResponse
 from django.utils import timezone
 
 from karspexet.show.models import Show
-from karspexet.ticket.models import Reservation, PricingModel
+from karspexet.ticket.models import Reservation, PricingModel, InvalidVoucherException, AlreadyDiscountedException
 from karspexet.ticket.payment import PaymentError, PaymentProcess
 from karspexet.venue.models import Seat
 
@@ -90,10 +91,34 @@ def booking_overview(request, show_slug):
 
     return TemplateResponse(request, 'ticket/payment.html', {
         'seats': seats,
-        'payment_partial': _payment_partial(),
+        'payment_partial': _payment_partial(reservation),
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
     })
+
+
+@transaction.atomic
+def apply_voucher(request, reservation_id):
+    reservation = Reservation.objects.get(pk=reservation_id)
+    show = reservation.show
+
+    if _session_expired(request):
+        messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
+        return redirect("select_seats", show_slug=show.slug)
+
+    if request.method == "POST":
+        try:
+            code = request.POST["voucher_code"]
+            reservation.apply_voucher(code)
+            reservation.save()
+        except KeyError:
+            messages.error(request, "För att kunna få rabatt måste du fylla i ett presentkort")
+        except InvalidVoucherException:
+            messages.error(request, "Ogiltigt presentkort")
+        except AlreadyDiscountedException:
+            messages.error(request, "Du har redan använt ett presentkort")
+
+    return redirect("booking_overview", show_slug=show.slug)
 
 
 def process_payment(request, reservation_id):
@@ -119,7 +144,7 @@ def process_payment(request, reservation_id):
             return TemplateResponse(request, "ticket/payment.html", {
                 'reservation': reservation,
                 'seats': reservation.seats(),
-                'payment_partial': _payment_partial(),
+                'payment_partial': _payment_partial(reservation),
                 'stripe_key': stripe_keys['publishable_key'],
                 'payment_failed': True,
             })
