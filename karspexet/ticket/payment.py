@@ -61,9 +61,16 @@ class PaymentProcess:
 
     @transaction.atomic
     def process(self):
+        assert self.reservation.tickets, "A reservation must have tickets to be paid for (reservation_id=%d)" % self.reservation.id
+
         self.account = self._create_account()
         self._create_tickets()
-        self._charge_card()
+
+        # Here we ensure that the ticket_price and total on the reservatino are populated.
+        # This _should_ be done in Reservation.save, but we can afford a few CPU cycles to know that this happens.
+        self.reservation.calculate_ticket_price_and_total()
+        if self.reservation.total > 0:
+          self._charge_card()
 
         self.reservation = self._finalize_reservation()
         self._send_mail_to_customer()
@@ -137,7 +144,8 @@ class FakePaymentProcess(PaymentProcess):
 
 class StripePaymentProcess(PaymentProcess):
     def _charge_card(self):
-        amount = self.reservation.total_price() * 100 # Öre
+        assert self.reservation.total > 0, "We cannot charge a reservation without a total price"
+        amount = self.reservation.total * 100 # Öre
         stripe_token = self.data['stripeToken']
 
         try:
