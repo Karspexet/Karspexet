@@ -257,7 +257,7 @@ def _all_seats_available(qs, seat_ids):
 
 def _seat_specifications(request):
     return {
-        int(seat.replace("seat_", "")):ticket_type
+        seat.replace("seat_", ""):ticket_type
             for seat,ticket_type in request.POST.items()
             if seat.startswith("seat_")
     }
