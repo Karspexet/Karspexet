@@ -31,14 +31,37 @@
       <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
     </div>
     {% endif %}
-  </section>
 
-  <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form">
-    <h2>Betalning</h2>
+    <h2>Betalning / Presentkort</h2>
+
 
     <p>För att betala dina biljetter, fyll i dina kortuppgifter här nedanför.</p>
     <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!</p>
 
+    {% if not reservation.discount %}
+    <button id="enter-discount-code">Presentkort</button>
+    {% endif %}
+
+    <div id="discount-form" class="hidden" data-discount-code="{{ reservation.discount.voucher.code }}">
+        <button id="cancel-discount">Tillbaka</button>
+
+        <p>Om du har ett presentkort måste du använda den innan du kan betala. Detta för att vi behöver räkna om ditt biljettpris efter att du valt att använda din presentkortskod. Annars kommer du betala hela biljettpriset.</p>
+
+        <p>För att använda ett presentkort, fyll i koden nedan och klicka sedan på "Använd Presentkort"</p>
+
+        <form method="POST" action="{% url "apply_voucher" reservation.id %}" class="payment-form" id="discount-form">
+            {% csrf_token %}
+            <div class="group">
+                <label>
+                    <span>Presentkort</span>
+                    <input type="text" class="field" name="voucher_code"/>
+                </label>
+            </div>
+            <button type="submit">Använd presentkort!</button>
+        </form>
+    </div>
+
+  <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form">
     {% csrf_token %}
     <div class="group">
       <label>
@@ -55,12 +78,11 @@
       </label>
     </div>
     {% include payment_partial %}
-    <button type="submit">Betala {{ reservation.total_price }} kr</button>
+    <button type="submit">Betala {{ reservation.total }} kr</button>
     <div class="outcome">
       <div class="error" role="alert"></div>
     </div>
   </form>
-
   <div>
   <span>eller</span>
   <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
@@ -68,9 +90,12 @@
     <input type="submit" id="cancel-reservation-button" value="avbryt bokning">
   </form>
   </div>
+  </section>
+  {% if reservation.total > 0 %}
   <script>
     window.config = window.config || {}
     window.config.payment = '{{ stripe_key }}'
   </script>
-  </div>
-  {% endblock %}
+  {% endif %}
+</div>
+{% endblock %}
