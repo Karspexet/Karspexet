@@ -213,10 +213,14 @@ def ticket_pdf(request, reservation_id, ticket_code):
 
 
 def cancel_reservation(request, show_id):
+    session_key = f'show_{show_id}'
     if request.method == "POST":
-        request.session[f"show_{show_id}"] = None
+        request.session[session_key] = None
         request.session['reservation_timeout'] = None
 
+    reservation_id = request.session.get(session_key)
+    if reservation_id:
+        Reservation.objects.filter(pk=reservation_id).delete()
     return redirect("ticket_home")
 
 
