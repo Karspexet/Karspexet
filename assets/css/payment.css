@@ -1,16 +1,16 @@
-#payment-form {
+.payment-form {
     width: 480px;
     margin: 20px auto;
 }
 
-#payment-form .group {
+.payment-form .group {
     background: white;
     box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10), 0 3px 6px 0 rgba(0,0,0,0.08);
     border-radius: 4px;
     margin-bottom: 20px;
 }
 
-#payment-form label {
+.payment-form label {
     position: relative;
     color: black;
     font-weight: 300;
@@ -22,16 +22,16 @@
     font-size: small;
 }
 
-#payment-form .group label:not(:last-child) {
+.payment-form .group label:not(:last-child) {
     border-bottom: 1px solid #F0F5FA;
 }
 
-#payment-form label > span {
+.payment-form label > span {
     width: 20%;
     float: left;
 }
 
-#payment-form .field {
+.payment-form .field {
     background: transparent;
     font-weight: 300;
     border: 0;
@@ -45,20 +45,23 @@
     float: right;
 }
 
-#payment-form .field::-webkit-input-placeholder {
+.payment-form .field::-webkit-input-placeholder {
     color: #CFD7E0;
 }
 
-#payment-form .field::-moz-placeholder {
+.payment-form .field::-moz-placeholder {
     color: #CFD7E0;
 }
 
-#payment-form .field:-ms-input-placeholder {
+.payment-form .field:-ms-input-placeholder {
     color: #CFD7E0;
 }
 
-#payment-form button {
-    float: left;
+#discount-form.hidden {
+    display: none;
+}
+
+.payment-form button {
     display: block;
     background: rgb(141, 4, 28);
     color: #fd0;
@@ -74,17 +77,17 @@
     outline: none;
 }
 
-#payment-form button:focus {
+.payment-form button:focus {
   background: #fd0;
   color: black;
 }
 
-#payment-form button:active {
+.payment-form button:active {
   background: #fd0;
   color: black;
 }
 
-#payment-form .outcome {
+.payment-form .outcome {
     float: left;
     width: 100%;
     padding-top: 8px;
@@ -92,24 +95,24 @@
     text-align: center;
 }
 
-#payment-form .success, .error {
+.payment-form .success, .error {
     display: none;
     font-size: 13px;
 }
 
-#payment-form .success.visible, .error.visible {
+.payment-form .success.visible, .error.visible {
     display: inline;
 }
 
-#payment-form .error {
+.payment-form .error {
     color: #E4584C;
 }
 
-#payment-form .success {
+.payment-form .success {
     color: #666EE8;
 }
 
-#payment-form .success .token {
+.payment-form .success .token {
     font-weight: 500;
     font-size: 13px;
 }
