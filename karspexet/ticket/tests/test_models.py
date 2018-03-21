@@ -12,6 +12,7 @@ from factories import factories as f
 from karspexet.ticket.models import PricingModel, Reservation, Ticket, Voucher, Discount, AlreadyDiscountedException, InvalidVoucherException
 from karspexet.venue.models import Seat
 from django.core.exceptions import ValidationError
+from factories.fixtures import show, user
 
 
 class TestReservation(TestCase):
@@ -146,27 +147,6 @@ class TestTicket(TestCase):
             duplicate_ticket.full_clean()
 
 
-@pytest.fixture
-def show():
-    venue = f.CreateVenue()
-    group = f.CreateSeatingGroup(venue=venue)
-    pricing = f.CreatePricingModel(
-        seating_group=group,
-        prices={'student': 200, 'normal': 250},
-        valid_from=timezone.now()
-    )
-    f.CreateSeat(group=group)
-    f.CreateSeat(group=group)
-
-    production = f.CreateProduction()
-    return f.CreateShow(production=production, venue=venue, date=timezone.now())
-
-
-@pytest.fixture
-def user():
-    return f.CreateStaffUser(username="test", password="test")
-
-
 @pytest.mark.django_db
 class TestDiscount:
     def test_discount_lowers_the_total_of_a_reservation(self, show, user):
@@ -251,4 +231,3 @@ class TestDiscount:
         with patch("karspexet.ticket.models.timezone.now", return_value=end_of_year):
             voucher = Voucher(amount=100, created_by=user)
             assert voucher.expiry_date == date(next_year, 9, 15)
-
