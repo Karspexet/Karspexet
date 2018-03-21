@@ -63,6 +63,28 @@ function setupPayment(config) {
         }
         stripe.createToken(card, extraDetails).then(setOutcome)
     })
+
+
+    var discountButton = document.getElementById("enter-discount-code")
+    var discountForm = document.querySelector("#discount-form")
+    var cancelDiscountButton = discountForm.querySelector("#cancel-discount")
+    function displayDiscountForm() {
+        if (discountForm.dataset.discountCode === "") {
+            discountForm.classList.remove("hidden")
+            discountForm.hidden = false
+            discountButton.hidden = true
+            paymentForm.hidden = true
+        }
+    }
+    function closeDiscountForm() {
+        discountButton.hidden = false
+        discountForm.hidden = true
+        paymentForm.hidden = false
+    }
+    if (discountButton) {
+        discountButton.addEventListener("click", displayDiscountForm)
+    }
+    cancelDiscountButton.addEventListener("click", closeDiscountForm)
 }
 
 exports.setupPayment = setupPayment
