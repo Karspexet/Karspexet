@@ -1,10 +1,14 @@
 # coding: utf-8
 from django.shortcuts import reverse
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
+from factories import factories as f
+from factories.fixtures import show, user
 
 from karspexet.show.models import Show, Production
 from karspexet.ticket import views
+from karspexet.ticket.models import Seat, Voucher, Reservation, Discount
 
 from karspexet.venue.models import Venue, SeatingGroup
 
@@ -56,3 +60,24 @@ class TestSelect_seats(TestCase):
         response = self.client.get(reverse(views.select_seats, args=[show.slug]))
 
         self.assertContains(response, "Köp biljetter för Uppsättningen")
+
+
+@pytest.mark.django_db
+def test_cancelling_a_discounted_reservation_allows_voucher_for_reuse(show, user):
+    seat = Seat.objects.first()
+    tickets = {str(seat.id): 'normal'}
+    reservation = f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
+    voucher = Voucher.objects.create(amount=100, created_by=user)
+    discount = reservation.apply_voucher(voucher.code)
+
+    rf = RequestFactory()
+    request = rf.get(reverse(views.cancel_reservation, args=[show.id]))
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+    request.session[f"show_{show.id}"] = reservation.id
+
+    response = views.cancel_reservation(request, show_id=show.id)
+
+    assert Reservation.objects.filter(pk=reservation.id).count() == 0
+    assert Discount.objects.filter(pk=discount.id).count() == 0
