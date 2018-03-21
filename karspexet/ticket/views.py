@@ -245,7 +245,7 @@ def _get_or_create_reservation_object(request, show):
         except ObjectDoesNotExist:
             pass
 
-    reservation = Reservation.objects.create(show=show, total=0, tickets={}, session_timeout=timeout)
+    reservation = Reservation.objects.create(show=show, tickets={}, session_timeout=timeout)
     request.session[session_key] = reservation.id
 
     return reservation
