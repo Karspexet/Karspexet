@@ -44,8 +44,8 @@ class ActiveReservationsManager(models.Manager):
 
 class Reservation(models.Model):
     show = models.ForeignKey(Show, null=False)
-    ticket_price = models.IntegerField(validators=[MinValueValidator(0)])
-    total = models.IntegerField(validators=[MinValueValidator(0)])
+    ticket_price = models.PositiveIntegerField()
+    total = models.PositiveIntegerField()
     tickets = HStoreField()
     session_timeout = models.DateTimeField()
     finalized = models.BooleanField(default=False)
@@ -98,7 +98,7 @@ class Account(models.Model):
 
 
 class Ticket(models.Model):
-    price = models.IntegerField()
+    price = models.PositiveIntegerField()
     ticket_type = models.CharField(max_length=10, choices=TICKET_TYPES, default="normal")
     show = models.ForeignKey(Show, null=False)
     seat = models.ForeignKey(Seat, null=False)
@@ -123,7 +123,7 @@ class Voucher(models.Model):
 
     Vouchers cannot be partially applied to a Reservation, so any excess value is void after use.
     """
-    amount = models.IntegerField(help_text="Rabatt i SEK")
+    amount = models.PositiveIntegerField(help_text="Rabatt i SEK")
     code = models.CharField(unique=True, max_length=16, null=False, default=_generate_voucher_code)
     expiry_date = models.DateField(null=False, default=_next_fifteenth_september)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -147,7 +147,7 @@ class Discount(models.Model):
     A Voucher can only ever be discounted to one single Reservation, and a
     Reservation can only ever have one single Discount applied.
     """
-    amount = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(5000)], null=False)
+    amount = models.PositiveIntegerField(validators=[MinValueValidator(100), MaxValueValidator(5000)], null=False)
     reservation = models.OneToOneField(Reservation, null=False, unique=True)
     voucher = models.OneToOneField(Voucher, null=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
