@@ -156,6 +156,7 @@ class Discount(models.Model):
     def unused_amount(self):
         return self.voucher.amount - self.amount
 
+
 class ActivePricingModelManager(models.Manager):
     def active(self, timestamp=None):
         if not timestamp:

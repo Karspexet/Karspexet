@@ -4,7 +4,7 @@ from karspexet.ticket.models import Account, Reservation, Ticket, Voucher, Prici
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('show', 'total', 'finalized', 'reservation_code', 'session_timeout', 'tickets')
+    list_display = ('show', 'reservation_code', 'finalized', 'ticket_price', 'total', 'session_timeout', 'tickets')
     list_filter = ('finalized', 'show')
 
 
