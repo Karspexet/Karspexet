@@ -20,6 +20,7 @@ class Show(models.Model):
     venue = models.ForeignKey('venue.Venue', on_delete=models.PROTECT)
     visible = models.BooleanField(default=True)
     slug = models.CharField(max_length=20, unique=True, default=get_random_string)
+    short_description = models.CharField(null=False, default="", max_length=255)
 
     @staticmethod
     def upcoming():
@@ -52,7 +53,8 @@ class Show(models.Model):
         return timezone.localtime(self.date).strftime("%Y-%m-%d %H:%M")
 
     def __str__(self):
-        return f"{self.production.name} ({self.slug}) {self.date_string()}"
+        short = f"({self.short_description}) " if self.short_description else ""
+        return f"{self.production.name} {short}{self.date_string()}"
 
     class Meta:
         ordering = ('date',)

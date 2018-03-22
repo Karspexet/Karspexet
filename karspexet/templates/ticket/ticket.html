@@ -16,6 +16,9 @@
     <article class="card">
         <h1>{{ show.production.name }}</h1>
         <p class="alt-name">{{ show.production.alt_name }}</p>
+        {% if show.short_description %}
+        <p>{{ show.short_description }}</p>
+        {% endif %}
         <ul class="show-info">
           <li>
             <i class="icon-calendar"></i> <em>{{ show.date|date:"Y-m-d" }}</em>
