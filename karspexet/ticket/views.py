@@ -114,7 +114,7 @@ def apply_voucher(request, reservation_id):
         except KeyError:
             messages.error(request, "För att kunna få rabatt måste du fylla i ett presentkort")
         except InvalidVoucherException:
-            messages.error(request, "Ogiltigt presentkort")
+            messages.error(request, "Presentkortet har redan använts")
         except AlreadyDiscountedException:
             messages.error(request, "Du har redan använt ett presentkort")
         except Voucher.DoesNotExist:
