@@ -20,7 +20,7 @@ class Show(models.Model):
     venue = models.ForeignKey('venue.Venue', on_delete=models.PROTECT)
     visible = models.BooleanField(default=True)
     slug = models.CharField(max_length=20, unique=True, default=get_random_string)
-    short_description = models.CharField(null=False, default="", max_length=255)
+    short_description = models.CharField(null=False, blank=True, default="", max_length=255)
 
     @staticmethod
     def upcoming():
