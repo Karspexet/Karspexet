@@ -18,7 +18,7 @@ from django.template.response import HttpResponse, TemplateResponse
 from django.utils import timezone
 
 from karspexet.show.models import Show
-from karspexet.ticket.models import Reservation, PricingModel, InvalidVoucherException, AlreadyDiscountedException
+from karspexet.ticket.models import Reservation, PricingModel, InvalidVoucherException, AlreadyDiscountedException, Voucher
 from karspexet.ticket.payment import PaymentError, PaymentProcess
 from karspexet.venue.models import Seat
 
@@ -117,6 +117,8 @@ def apply_voucher(request, reservation_id):
             messages.error(request, "Ogiltigt presentkort")
         except AlreadyDiscountedException:
             messages.error(request, "Du har redan använt ett presentkort")
+        except Voucher.DoesNotExist:
+            messages.error(request, "Ogiltigt presentkort")
 
     return redirect("booking_overview", show_slug=show.slug)
 
