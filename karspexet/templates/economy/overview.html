@@ -18,7 +18,7 @@
   <tbody>
     {% for show in shows %}
     <tr>
-      <td><a href="{% url 'economy_show_detail' show.id %}">{{ show.production_name }}</a></td>
+      <td><a href="{% url 'economy_show_detail' show.id %}">{{ show.production_name }} {{ show.short_description }}</a></td>
       <td>{{ show.date|date:"Y-m-d H:i"  }}</td>
       <td>{{ show.venue_name}}</td>
       <td class="number">{{ show.ticket_count }}</td>
