@@ -45,5 +45,5 @@
 
 .luva {
   max-width: 5vw;
-  height: auto;
+  max-height: 30px;
 }
