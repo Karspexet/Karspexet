@@ -16,15 +16,22 @@ function setupSelectSeats(config) {
     }
 
     function addSeat(seat) {
-        var seatId = seat.replace("seat-", "")
+        var seatId = seat.replace("seat-", ""),
+            seatElement = document.querySelector("#" + seat),
+            classes = seatElement.getAttribute("class")
         booking[seat] = {id: seatId, value: null}
-        document.querySelector("#" + seat).classList.add("selected-seat")
+
+        seatElement.setAttribute("class", classes + " selected-seat")
         renderBooking()
     }
 
     function removeSeat(seat) {
         delete booking[seat]
-        document.querySelector("#" + seat).classList.remove("selected-seat")
+        var seatElement = document.querySelector("#" + seat),
+            classes = seatElement.getAttribute("class"),
+            newClasses = classes.split(" ").filter(function(x) { return x != "selected-seat"}).join(" ")
+
+        seatElement.setAttribute("class", newClasses)
         renderBooking()
     }
 
