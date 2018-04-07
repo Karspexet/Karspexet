@@ -14,7 +14,7 @@ class Venue(models.Model):
 
 
 class SeatingGroup(models.Model):
-    venue = models.ForeignKey(Venue)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
 
     def __str__(self):
