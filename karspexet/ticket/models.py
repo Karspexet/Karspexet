@@ -24,7 +24,7 @@ class ActiveReservationsManager(models.Manager):
 
 
 class Reservation(models.Model):
-    show = models.ForeignKey(Show, null=False)
+    show = models.ForeignKey(Show, null=False, on_delete=models.CASCADE)
     total = models.IntegerField()
     tickets = HStoreField()
     session_timeout = models.DateTimeField()
@@ -59,9 +59,9 @@ class Account(models.Model):
 class Ticket(models.Model):
     price = models.IntegerField()
     ticket_type = models.CharField(max_length=10, choices=TICKET_TYPES, default="normal")
-    show = models.ForeignKey(Show, null=False)
-    seat = models.ForeignKey(Seat, null=False)
-    account = models.ForeignKey(Account, null=False)
+    show = models.ForeignKey(Show, null=False, on_delete=models.PROTECT)
+    seat = models.ForeignKey(Seat, null=False, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, null=False, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
     ticket_code = models.CharField(unique=True, max_length=16, default=_generate_reservation_code)
@@ -76,8 +76,8 @@ class Ticket(models.Model):
         return f"{self.show}, {self.seat.group}, {self.seat}"
 
 class Voucher(models.Model):
-    reservation = models.ForeignKey(Reservation, null=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    reservation = models.ForeignKey(Reservation, null=True, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     rebate_amount = models.IntegerField(help_text="Rabatt i SEK")
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
@@ -95,7 +95,7 @@ class PricingModel(models.Model):
     A pricing model for a seating group.
     """
 
-    seating_group = models.ForeignKey(SeatingGroup, null=False)
+    seating_group = models.ForeignKey(SeatingGroup, null=False, on_delete=models.PROTECT)
     prices = HStoreField(null=False)
     valid_from = models.DateTimeField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
