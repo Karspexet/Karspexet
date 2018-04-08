@@ -76,6 +76,7 @@ a {
   height: 150px;
   width: 100%;
   content: '';
+  pointer-events: none;
 }
 
 .poster_title {
