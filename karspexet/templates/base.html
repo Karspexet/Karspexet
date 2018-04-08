@@ -4,7 +4,9 @@
 <html lang="sv">
   <head>
     <meta charset="utf-8">
-    <title>{% page_attribute "page_title" %}</title>
+    {% block title %}
+      <title>{% page_attribute "page_title" %}</title>
+    {% endblock %}
     <meta name="description" content="{% page_attribute 'meta_description' %}" />
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <script src="https://js.stripe.com/v3/" async></script>
