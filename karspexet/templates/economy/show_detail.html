@@ -1,26 +1,37 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block content %}
-<h2>Föreställningsöversikt: {{show.production.name}} {{show.date|date:"Y-m-d H:i:s" }}</h2>
+<h2>Föreställningsöversikt: {{show.production.name}} {{ show.short_description }} {{show.date|date:"Y-m-d H:i:s" }}</h2>
 <em>{{show.venue}}</em>
 
 <h3>Inloggad som: {{ user }}</h3>
 
 <h3>Sålda biljetter</h3>
 
-<dl>
-  <dt>Antal sålda biljetter</dt>
-  <dd>{{ coverage.ticket_count }}</dd>
-  <dt>Antal platser</dt>
-  <dd>{{ coverage.seat_count }}</dd>
-  <dt>Beläggning</dt>
-  <dd>{{ coverage.sales_percentage|floatformat }} %</dd>
-</dl>
+<table>
+  <tr>
+    <th>Student</th>
+    <th>Fullpris</th>
+    <th>Totalt</th>
+    <th>Antal platser</th>
+    <th>Beläggning</th>
+  </tr>
+  <tr>
+    <td>{{ number_students }}</td>
+    <td>{{ number_normal }}</td>
+    <td>{{ coverage.ticket_count }}</td>
+    <td>{{ coverage.seat_count }}</td>
+    <td>{{ coverage.sales_percentage|floatformat }}%</td>
+  </tr>
+</table>
+
+<h3>Platskarta</h3>
 
 <span class="theater-seat-map">
     {% include "seat_map.svg" with venue=show.venue taken_seats=taken_seats %}
 </span>
 
+<h3>Besökare</h3>
 
 <table>
   <thead>

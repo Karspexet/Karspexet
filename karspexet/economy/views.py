@@ -21,12 +21,16 @@ def show_detail(request, show_id):
     show = Show.objects.get(pk=show_id)
     tickets = show.ticket_set.select_related('seat', 'account').all()
     taken_seats = Ticket.objects.filter(show=show).values_list('seat_id', flat=True)
+    number_students = tickets.filter(ticket_type="student").count()
+    number_normal = tickets.filter(ticket_type="normal").count()
     [coverage] = Show.ticket_coverage(show)
 
     return TemplateResponse(request, "economy/show_detail.html", context={
         "show": show,
         "taken_seats": taken_seats,
         "tickets": tickets,
+        "number_students": number_students,
+        "number_normal": number_normal,
         "coverage": coverage,
         "user": request.user,
     })
