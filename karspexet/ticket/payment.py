@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import stripe
 import logging
 
@@ -129,7 +131,7 @@ class PaymentProcess:
         send_mail(
             subject,
             body,
-            'noreply@karspexet.se',
+            settings.TICKET_EMAIL_FROM_ADDRESS,
             [to_address],
             fail_silently=False,
         )

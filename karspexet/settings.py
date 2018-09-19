@@ -274,3 +274,5 @@ RAVEN_CONFIG = {
 }
 
 WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
+
+TICKET_EMAIL_FROM_ADDRESS = "noreply@karspexet.se"
