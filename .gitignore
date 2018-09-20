@@ -73,3 +73,9 @@ webpack-stats.json
 
 filer_public/
 filer_public_thumbnails/
+
+# PyCharm
+.idea/
+
+# Some editor temp files
+*~
