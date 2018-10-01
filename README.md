@@ -31,6 +31,18 @@ python3 manage.py runserver
 ```
 Rikta sedan din favoritwebläsare mot `localhost:8000` för att se hemsidan.
 
+## Tester
+
+Testerna körs genom kommandot `pytest`. Du behöver ha igång Postgres-databasen
+för att de ska kunna köras.
+
+Om du kör Postgres genom [Docker](https://www.docker.com/), starta den då med
+detta kommando för att kunna köra testerna:
+
+    docker run --rm --publish 5432:5432 -e POSTGRES_USER=test postgres
+
+    DATABASE_URL='postgres://test@127.0.0.1/karspexet' pytest
+
 ## Linters
 
 För att försöka hålla javascript-koden hyfsat homogen använder vi `eslint`.
