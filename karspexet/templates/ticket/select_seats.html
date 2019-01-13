@@ -7,6 +7,10 @@
     <div>
     <h2>Köp biljetter för {{ show }}</h2>
 
+    {% if show.production.description %}
+    <p>{{ show.production.description }}</p>
+    {% endif %}
+
     <h3>Instruktioner</h3>
 
     <ol>
