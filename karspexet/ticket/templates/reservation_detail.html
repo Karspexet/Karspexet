@@ -46,6 +46,13 @@
       </li>
       {% endfor %}
     </ul>
+
+    <h3>Skicka bokningen via E-post</h3>
+    <form action="{% url 'send_reservation_email' reservation.reservation_code %}" method="post">
+      {% csrf_token %}
+      {{ email_form.as_p }}
+      <input type="submit" value="Skicka via E-post!">
+    </form>
   </main>
 </div>
 {% endblock %}

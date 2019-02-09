@@ -1,0 +1,11 @@
+Här är dina biljetter till Kårspexets föreställning: {{ reservation.show }}
+
+Bokningskod: {{ reservation.reservation_code }}
+
+{% for seat in reservation.seats %}
+* {{ seat.group.name }}: {{ seat.name }}
+{% endfor %}
+
+Länk till din reservation: {{ url }}
+
+Välkommen!
