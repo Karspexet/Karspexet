@@ -75,7 +75,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'raven.contrib.django.raven_compat',
     'svg',
-    'webpack_loader'
+    'webpack_loader',
+    'django_assets',
 ] + OUR_APPS
 
 MIDDLEWARE_CLASSES = [
@@ -276,3 +277,8 @@ RAVEN_CONFIG = {
 WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
 
 TICKET_EMAIL_FROM_ADDRESS = "noreply@karspexet.se"
+
+ASSETS_MODULES = ["karspexet.assets"]
+ASSETS_DEBUG = DEBUG
+ASSETS_AUTO_BUILD = True
+ASSETS_URL_EXPIRE = True

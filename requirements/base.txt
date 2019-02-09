@@ -15,3 +15,5 @@ django-webpack-loader
 raven
 pdfkit==0.6.1
 pyqrcode
+django-assets==0.12
+cssmin==0.2.0
