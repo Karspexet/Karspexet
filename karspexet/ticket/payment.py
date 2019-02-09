@@ -116,6 +116,8 @@ class PaymentProcess:
         return self.reservation
 
     def _send_mail_to_customer(self):
+        if not self.account.email:
+            return
         subject = "Dina biljetter till Kårspexet"
         tickets_string = []
         for seat in self.reservation.seats():
