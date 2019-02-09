@@ -6,7 +6,7 @@ from django.utils import timezone
 def show():
     venue = f.CreateVenue()
     group = f.CreateSeatingGroup(venue=venue)
-    pricing = f.CreatePricingModel(
+    f.CreatePricingModel(
         seating_group=group,
         prices={'student': 200, 'normal': 250},
         valid_from=timezone.now()
