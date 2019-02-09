@@ -118,4 +118,6 @@ function setupSelectSeats(config) {
     )
 }
 
-exports.setupSelectSeats = setupSelectSeats
+(function(window) {
+    window.setupSelectSeats = setupSelectSeats
+})(window);

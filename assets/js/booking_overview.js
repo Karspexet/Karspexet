@@ -21,4 +21,6 @@ function setupBookingOverview() {
     )
 }
 
-exports.setupBookingOverview = setupBookingOverview
+(function(window) {
+    window.setupBookingOverview = setupBookingOverview
+})(window);

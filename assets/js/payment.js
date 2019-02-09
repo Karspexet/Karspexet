@@ -87,4 +87,6 @@ function setupPayment(config) {
     cancelDiscountButton.addEventListener("click", closeDiscountForm)
 }
 
-exports.setupPayment = setupPayment
+(function(window) {
+    window.setupPayment = setupPayment
+})(window);
