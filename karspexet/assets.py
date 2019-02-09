@@ -17,7 +17,7 @@ css = Bundle(
     ),
     Bundle(
         "css/fonts.css",
-        "fonts/icomoon/style.css",
+        "css/icons.css",
     ),
     filters="cssmin",
     output="static/style-%(version)s.css",
