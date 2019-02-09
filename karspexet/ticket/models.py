@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from django.urls import reverse
 from datetime import date
 
 from karspexet.show.models import Show
@@ -84,6 +85,9 @@ class Reservation(models.Model):
             self.total = self.ticket_price - self.discount.amount
         except ObjectDoesNotExist:
             self.total = self.ticket_price
+
+    def get_absolute_url(self):
+        return reverse('reservation_detail', kwargs={'reservation_code': self.reservation_code})
 
 
 class Account(models.Model):
