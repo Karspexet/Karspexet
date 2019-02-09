@@ -4,7 +4,6 @@ import stripe
 import logging
 
 from django.conf import settings
-from django.core.mail import send_mail
 from django.db import transaction
 from stripe.error import (
     APIConnectionError,
@@ -16,21 +15,12 @@ from stripe.error import (
 
 from karspexet.ticket.models import Account, Ticket
 from karspexet.venue.models import Seat
+from karspexet.ticket.tasks import send_ticket_email_to_customer
 
 logger = logging.getLogger(__file__)
 stripe_keys = settings.ENV["stripe"]
 stripe.api_key = stripe_keys['secret_key']
 
-MAIL_TEMPLATE = """Här är dina biljetter till Kårspexets föreställning: {}
-
-Bokningskod: {}
-
-{}
-
-Länk till din reservation: {}
-
-Välkommen!
-"""
 
 class PaymentError(Exception):
     pass
@@ -116,27 +106,7 @@ class PaymentProcess:
         return self.reservation
 
     def _send_mail_to_customer(self):
-        if not self.account.email:
-            return
-        subject = "Dina biljetter till Kårspexet"
-        tickets_string = []
-        for seat in self.reservation.seats():
-            tickets_string.append("{}: {}".format(seat.group.name, seat.name))
-        body = MAIL_TEMPLATE.format(
-            str(self.reservation.show),
-            self.reservation.reservation_code,
-            "\n".join(tickets_string),
-            self.request.build_absolute_uri("/ticket/reservation/{}/".format(self.reservation.reservation_code))
-        )
-
-        to_address = "%s <%s>" % (self.account.name, self.account.email)
-        send_mail(
-            subject,
-            body,
-            settings.TICKET_EMAIL_FROM_ADDRESS,
-            [to_address],
-            fail_silently=False,
-        )
+        return send_ticket_email_to_customer(self.reservation, self.account.email, self.account.name)
 
 class FakePaymentProcess(PaymentProcess):
     def _charge_card(self):
