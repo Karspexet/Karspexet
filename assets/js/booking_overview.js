@@ -21,6 +21,6 @@ function setupBookingOverview() {
     )
 }
 
-(function(window) {
+!function(window) {
     window.setupBookingOverview = setupBookingOverview
-})(window);
+}(window);

@@ -1,6 +1,6 @@
 "use strict";
 
-(function(window, document) {
+!function(window, document) {
     function initApplication(config) {
         window.setupSelectSeats(config)
         window.setupPayment(config)
@@ -17,4 +17,4 @@
     }
 
     document.addEventListener("readystatechange", bootstrap)
-})(window, document);
+}(window, document);

@@ -118,6 +118,6 @@ function setupSelectSeats(config) {
     )
 }
 
-(function(window) {
+!function(window) {
     window.setupSelectSeats = setupSelectSeats
-})(window);
+}(window);

@@ -87,6 +87,6 @@ function setupPayment(config) {
     cancelDiscountButton.addEventListener("click", closeDiscountForm)
 }
 
-(function(window) {
+!function(window) {
     window.setupPayment = setupPayment
-})(window);
+}(window);
