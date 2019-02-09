@@ -5,8 +5,8 @@ js = Bundle(
     "js/select_seats.js",
     "js/booking_overview.js",
     "js/app.js",
-    filters="rjsmin",
     output="static/app-%(version)s.js",
+    filters="slimit",
 )
 css = Bundle(
     Bundle(
