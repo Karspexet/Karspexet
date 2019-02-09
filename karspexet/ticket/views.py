@@ -13,7 +13,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.template.response import HttpResponse, TemplateResponse
 from django.utils import timezone
 from django.views.decorators.http import require_POST

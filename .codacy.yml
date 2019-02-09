@@ -13,3 +13,4 @@ engines:
       - tests/
       - karspexet/**/migrations/**/*
       - karspexet/**/test_*.py
+      - assets/fonts/icomoon/**/*
