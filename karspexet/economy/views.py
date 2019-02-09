@@ -57,6 +57,6 @@ def discounts(request):
 @staff_member_required
 def create_voucher(request):
     if request.method == "POST":
-        voucher = Voucher.objects.create(created_by=request.user, amount=request.POST["amount"], note=request.POST["note"])
+        Voucher.objects.create(created_by=request.user, amount=request.POST["amount"], note=request.POST["note"])
 
         return redirect("economy_vouchers")
