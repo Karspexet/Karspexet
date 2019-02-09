@@ -10,7 +10,7 @@
     <p>{% placeholder "eller-titel" %}</p>
   </div>
 </div>
-<div class="card_container">
+<div class="card_container select_show">
   {% for show in upcoming_shows %}
   <a class="show-card" href="{% url "select_seats" show.slug %}">
     <article class="card">
