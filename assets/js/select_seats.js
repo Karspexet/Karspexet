@@ -120,4 +120,4 @@ function setupSelectSeats(config) {
 
 !function(window) {
     window.setupSelectSeats = setupSelectSeats
-}(window);
+}(window)

@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 !function(window, document) {
     function initApplication(config) {
@@ -17,4 +17,4 @@
     }
 
     document.addEventListener("readystatechange", bootstrap)
-}(window, document);
+}(window, document)

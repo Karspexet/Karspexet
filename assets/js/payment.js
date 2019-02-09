@@ -89,4 +89,4 @@ function setupPayment(config) {
 
 !function(window) {
     window.setupPayment = setupPayment
-}(window);
+}(window)

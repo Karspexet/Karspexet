@@ -23,4 +23,4 @@ function setupBookingOverview() {
 
 !function(window) {
     window.setupBookingOverview = setupBookingOverview
-}(window);
+}(window)
