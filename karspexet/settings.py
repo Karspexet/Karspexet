@@ -271,5 +271,15 @@ TICKET_EMAIL_FROM_ADDRESS = "noreply@karspexet.se"
 
 ASSETS_MODULES = ["karspexet.assets"]
 ASSETS_DEBUG = DEBUG
-ASSETS_AUTO_BUILD = True
+ASSETS_ROOT = "staticfiles"
+ASSETS_AUTO_BUILD = ASSETS_DEBUG
 ASSETS_URL_EXPIRE = True
+SLIMIT_MANGLE = not ASSETS_DEBUG
+SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django_assets.finders.AssetsFinder",
+]
+STATIC_ROOT = "staticfiles"
