@@ -9,11 +9,16 @@ js = Bundle(
     output="static/app-%(version)s.js",
 )
 css = Bundle(
-    "css/karspexet.css",
-    "css/select_seats.css",
-    "css/menu.css",
-    "css/payment.css",
-    "css/fonts.css",
+    Bundle(
+        "css/karspexet.css",
+        "css/select_seats.css",
+        "css/menu.css",
+        "css/payment.css",
+    ),
+    Bundle(
+        "css/fonts.css",
+        "fonts/icomoon/style.css",
+    ),
     filters="cssmin",
     output="static/style-%(version)s.css",
 )
