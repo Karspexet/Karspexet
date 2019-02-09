@@ -82,3 +82,6 @@ filer_public_thumbnails/
 
 # webassets
 .webassets-cache/
+
+# our server setup
+staticfiles/
