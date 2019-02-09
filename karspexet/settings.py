@@ -23,15 +23,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "assets"),
     os.path.join(BASE_DIR, "filer_public"),
     os.path.join(BASE_DIR, "filer_public_thumbnails"),
-
 ]
-
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "BUNDLE_DIR_NAME": "bundles/",
-        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
-    }
-}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -75,7 +67,6 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'raven.contrib.django.raven_compat',
     'svg',
-    'webpack_loader',
     'django_assets',
 ] + OUR_APPS
 
