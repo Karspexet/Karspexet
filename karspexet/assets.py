@@ -1,12 +1,13 @@
 from django_assets import Bundle, register
 
+
 js = Bundle(
     "js/payment.js",
     "js/select_seats.js",
     "js/booking_overview.js",
     "js/app.js",
-    output="static/app-%(version)s.js",
     filters="slimit",
+    output="js/app-%(version)s.js",
 )
 css = Bundle(
     Bundle(
@@ -20,7 +21,7 @@ css = Bundle(
         "css/icons.css",
     ),
     filters="cssmin",
-    output="static/style-%(version)s.css",
+    output="css/style-%(version)s.css",
 )
 
 register("js_all", js)
