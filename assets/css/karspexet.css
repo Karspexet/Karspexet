@@ -144,13 +144,17 @@ a {
   border-radius: 5px;
 }
 
-.card_container{
+.card_container {
   display: flex;
   flex: 1 0 auto;
   flex-shrink: 0;
   flex-flow: row wrap;
   justify-content: space-around;
   align-items: flex-start;
+}
+
+.card_container.select_show {
+  flex: 0 0 auto;
 }
 
 .card {
@@ -201,9 +205,13 @@ a {
   text-decoration: none;
 }
 
-.show-card {
-  /* box-shadow: 0 2px 10px #fd0; */
+.show_card {
   border-radius: 10px;
+}
+
+.select_show .show-card {
+  box-shadow: 0 0 6px 1px rgba(255, 221, 0, 0.5);
+  margin-top: 2em;
 }
 
 .show-card:hover {
@@ -299,6 +307,7 @@ a {
   flex-direction: row;
   font-size: 14px;
   margin: auto;
+  margin-bottom: 0;
   height: 80px;
   width: 100%;
   background-color: rgb(141, 4, 28);
