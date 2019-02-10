@@ -13,14 +13,17 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.template.response import HttpResponse, TemplateResponse
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 
 from karspexet.show.models import Show
 from karspexet.ticket.models import Reservation, PricingModel, InvalidVoucherException, AlreadyDiscountedException, Voucher
 from karspexet.ticket.payment import PaymentError, PaymentProcess
 from karspexet.venue.models import Seat
+from karspexet.ticket.forms import CustomerEmailForm
+from karspexet.ticket.tasks import send_ticket_email_to_customer
 
 if settings.PAYMENT_PROCESS == "stripe":
     stripe_keys = settings.ENV["stripe"]
@@ -154,6 +157,7 @@ def process_payment(request, reservation_id):
 
 def reservation_detail(request, reservation_code):
     reservation = Reservation.objects.get(reservation_code=reservation_code)
+    email_form = CustomerEmailForm()
 
     return TemplateResponse(request, "reservation_detail.html", {
         'reservation': reservation,
@@ -161,6 +165,7 @@ def reservation_detail(request, reservation_code):
         'venue': reservation.show.venue,
         'production': reservation.show.production,
         'tickets': reservation.ticket_set(),
+        'email_form': email_form,
     })
 
 
@@ -224,6 +229,19 @@ def cancel_reservation(request, show_id):
     if reservation_id:
         Reservation.objects.filter(pk=reservation_id).delete()
     return redirect("ticket_home")
+
+
+@require_POST
+def send_reservation_email(request, reservation_code):
+    reservation = get_object_or_404(Reservation, reservation_code=reservation_code)
+    form = CustomerEmailForm(data=request.POST)
+    if form.is_valid():
+        send_ticket_email_to_customer(reservation, form.data['email'])
+        messages.success(request, 'E-postmeddelande skickat!')
+    else:
+        messages.error(request, 'Felaktig e-postadress')
+
+    return redirect("reservation_detail", reservation_code=reservation.reservation_code)
 
 
 def _session_expired(request):

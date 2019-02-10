@@ -79,3 +79,9 @@ filer_public_thumbnails/
 
 # Some editor temp files
 *~
+
+# webassets
+.webassets-cache/
+
+# our server setup
+staticfiles/
