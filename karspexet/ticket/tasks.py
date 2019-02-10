@@ -3,7 +3,6 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
-from django.template import Context
 
 logger = logging.getLogger(__file__)
 
@@ -29,10 +28,10 @@ def send_ticket_email_to_customer(reservation, email, name=None):
     subject = 'Dina biljetter till Kårspexet'
     site = Site.objects.get_current()
     reservation_url = f'https://{site.domain}{reservation.get_absolute_url()}'
-    body = render_to_string('reservation_email.txt', Context({
+    body = render_to_string('reservation_email.txt', {
         'reservation': reservation,
         'url': reservation_url,
-    }))
+    })
 
     send_mail(
         subject,
