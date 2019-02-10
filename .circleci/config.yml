@@ -10,7 +10,7 @@ defaults: &defaults
 
 cache_keys:
   python_cache: &python_cache
-    key: dependencies-v1-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
+    key: dependencies-v2-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
     paths:
       - venv
   node_cache: &node_cache
