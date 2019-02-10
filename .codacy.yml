@@ -13,4 +13,8 @@ engines:
       - tests/
       - karspexet/**/migrations/**/*
       - karspexet/**/test_*.py
+
+  eslint:
+    enabled: true
+    exclude_paths:
       - assets/fonts/icomoon/**/*
