@@ -1,5 +1,5 @@
 {% load menu_tags cms_tags sekizai_tags staticfiles svg %}
-{% load render_bundle from webpack_loader %}
+{% load assets %}
 <!doctype html>
 <html lang="sv">
   <head>
@@ -10,8 +10,13 @@
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <script src="https://js.stripe.com/v3/" async></script>
 
-    {% render_bundle "app" "js" attrs="async" %}
-    {% render_bundle "style" "css" attrs="async" %}
+    {% assets "js_all" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets "css_all" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+
     {% render_block "js" %}
     {% render_block "css" %}
   </head>

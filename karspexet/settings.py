@@ -23,15 +23,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "assets"),
     os.path.join(BASE_DIR, "filer_public"),
     os.path.join(BASE_DIR, "filer_public_thumbnails"),
-
 ]
-
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "BUNDLE_DIR_NAME": "bundles/",
-        "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
-    }
-}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -75,7 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'raven.contrib.django.raven_compat',
     'svg',
-    'webpack_loader'
+    'django_assets',
 ] + OUR_APPS
 
 MIDDLEWARE_CLASSES = [
@@ -276,3 +268,18 @@ RAVEN_CONFIG = {
 WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
 
 TICKET_EMAIL_FROM_ADDRESS = "noreply@karspexet.se"
+
+ASSETS_MODULES = ["karspexet.assets"]
+ASSETS_DEBUG = DEBUG
+ASSETS_ROOT = "staticfiles"
+ASSETS_AUTO_BUILD = ASSETS_DEBUG
+ASSETS_URL_EXPIRE = True
+SLIMIT_MANGLE = not ASSETS_DEBUG
+SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django_assets.finders.AssetsFinder",
+]
+STATIC_ROOT = "staticfiles"

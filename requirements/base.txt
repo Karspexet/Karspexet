@@ -11,7 +11,9 @@ djangocms-text-ckeditor==3.1.0
 djangocms-picture==2.0.6
 djangocms-link==2.1.2
 djangocms-admin-style==1.2.7
-django-webpack-loader
 raven
 pdfkit==0.6.1
 pyqrcode
+django-assets==0.12
+cssmin==0.2.0
+slimit==0.8.1
