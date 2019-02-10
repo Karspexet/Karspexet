@@ -34,6 +34,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install -U pip
             pip install -r requirements/dev.txt
             cp env.json{.sample,} || /bin/true
 
