@@ -1,7 +1,7 @@
 -r base.txt
 
 blessings==1.6
-bpython==0.15
+bpython==0.17.1
 codeclimate-test-reporter==0.1.2
 codacy-coverage==1.3.6
 isort
