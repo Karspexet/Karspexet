@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'django_assets',
 ] + OUR_APPS
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'cms.middleware.utils.ApphookReloadMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
