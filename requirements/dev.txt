@@ -6,6 +6,5 @@ isort
 jedi==0.13.2
 pytest-cov
 pytest-django
-pytest-xdist
 pytest
 factory_boy
