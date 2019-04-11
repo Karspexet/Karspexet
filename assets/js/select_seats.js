@@ -100,7 +100,7 @@ function setupSelectSeats(config) {
                 info = [
                     "<div>", seatObject.name, "<br>",
                     "Student: ", pricing["student"], "kr", "<br>",
-                    "Normal: ", pricing["normal"], "kr", "<br>",
+                    "Fullpris: ", pricing["normal"], "kr", "<br>",
                     "</div>"
                 ].join("")
 
