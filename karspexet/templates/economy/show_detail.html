@@ -36,12 +36,12 @@
 <table>
   <thead>
     <tr>
-      <th>Sektion</th>
-      <th>Plats</th>
-      <th>Namn</th>
-      <th>Telefonnummer</th>
-      <th>E-postadress</th>
-      <th>Biljettyp</th>
+      <th><a href="?{% order_by request 'seat__group__name' %}">Sektion</a></th>
+      <th><a href="?{% order_by request 'seat__name' %}">Plats</a></th>
+      <th><a href="?{% order_by request 'account__name' %}">Namn</a></th>
+      <th><a href="?{% order_by request 'account__phone' %}">Telefonnummer</a></th>
+      <th><a href="?{% order_by request 'account__email' %}">E-postadress</a></th>
+      <th><a href="?{% order_by request 'ticket_type' %}">Biljettyp</a></th>
     </tr>
   </thead>
   <tbody>
