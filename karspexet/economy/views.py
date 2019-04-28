@@ -1,6 +1,9 @@
+from urllib.parse import urlencode
+
 from django.contrib.admin.views.decorators import staff_member_required
-from django.template.response import TemplateResponse
 from django.shortcuts import redirect
+from django.template.defaulttags import register
+from django.template.response import TemplateResponse
 
 from karspexet.show.models import Show
 from karspexet.ticket.models import Ticket, Voucher, Discount
@@ -19,7 +22,8 @@ def overview(request):
 @staff_member_required
 def show_detail(request, show_id):
     show = Show.objects.get(pk=show_id)
-    tickets = show.ticket_set.select_related('seat', 'account').all()
+    order_by = request.GET.get('order_by', 'created_at')
+    tickets = show.ticket_set.select_related('seat', 'account').all().order_by(order_by)
     taken_seats = Ticket.objects.filter(show=show).values_list('seat_id', flat=True)
     number_students = tickets.filter(ticket_type="student").count()
     number_normal = tickets.filter(ticket_type="normal").count()
@@ -34,6 +38,22 @@ def show_detail(request, show_id):
         "coverage": coverage,
         "user": request.user,
     })
+
+
+@register.simple_tag
+def order_by(request, value, direction=''):
+    dict_ = request.GET.copy()
+    field = 'order_by'
+    if field in dict_.keys():
+        if dict_[field].startswith('-') and dict_[field].lstrip('-') == value:
+            dict_[field] = value
+        elif dict_[field].lstrip('-') == value:
+            dict_[field] = "-" + value
+        else:
+            dict_[field] = direction + value
+    else:
+        dict_[field] = direction + value
+    return urlencode(dict(dict_.items()))
 
 
 @staff_member_required
