@@ -15,6 +15,7 @@ css = Bundle(
         "css/select_seats.css",
         "css/menu.css",
         "css/payment.css",
+        "css/tables.css",
     ),
     Bundle(
         "css/fonts.css",
