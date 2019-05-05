@@ -98,6 +98,7 @@ def select_seats(request, show_slug):
     })
 
 
+@transaction.atomic
 def booking_overview(request, show_slug):
     show = Show.objects.get(slug=show_slug)
     reservation = _get_or_create_reservation_object(request, show)
@@ -112,15 +113,47 @@ def booking_overview(request, show_slug):
         messages.warning(request, "Du måste välja minst en plats")
         return redirect("select_seats", show_slug=show_slug)
 
-    reserved_seats = {seat.id:seat for seat in reservation.seats()}
 
-    seats = ["%s: %s (%s, %dkr)" % (reserved_seats[int(id)].group.name, reserved_seats[int(id)].name, ticket_type, reserved_seats[int(id)].price_for_type(ticket_type)) for (id, ticket_type) in reservation.tickets.items()]
+    if show.free_seating:
+        reserved_seats = {}
+        for seat in reservation.seats():
+            ticket_type = reservation.tickets[str(seat.id)]
+            tickets = reserved_seats.get(ticket_type, {
+                'price': seat.price_for_type(ticket_type),
+                'count': 0,
+                'group': seat.group.name,
+            })
+            tickets['count'] += 1
+            reserved_seats[ticket_type] = tickets
+
+        seats = [
+            "%d x %s (à %dkr)" % (
+                ticket_group['count'],
+                ticket_group['group'],
+                ticket_group['price'],
+            )
+            for (ticket_type, ticket_group) in reserved_seats.items()
+        ]
+        num_tickets = sum((group['count'] for (ticket_type, group) in reserved_seats.items()))
+    else:
+        reserved_seats = {seat.id:seat for seat in reservation.seats()}
+        seats = [
+            "%s: %s (%s, %dkr)" % (
+                reserved_seats[int(id)].group.name,
+                reserved_seats[int(id)].name,
+                ticket_type,
+                reserved_seats[int(id)].price_for_type(ticket_type)
+            )
+            for (id, ticket_type) in reservation.tickets.items()
+        ]
+        num_tickets = len(seats)
 
     return TemplateResponse(request, 'ticket/payment.html', {
         'seats': seats,
         'payment_partial': _payment_partial(reservation),
         'reservation': reservation,
         'stripe_key': stripe_keys['publishable_key'],
+        'num_tickets': num_tickets,
     })
 
 
