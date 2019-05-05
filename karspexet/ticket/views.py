@@ -44,33 +44,57 @@ def home(request):
     })
 
 
+@transaction.atomic
 def select_seats(request, show_slug):
     show = Show.objects.get(slug=show_slug)
     reservation = _get_or_create_reservation_object(request, show)
     taken_seats_qs = Reservation.active.exclude(pk=reservation.pk).filter(show=show)
     _set_session_timeout(request)
 
+    seats_in_venue = Seat.objects.filter(group__venue=show.venue).all()
+    available_seats = seats_in_venue.exclude(id__in=show.ticket_set.values_list('seat_id')).all()
+
     if request.POST:
-        seat_params = _seat_specifications(request)
-        if not _all_seats_available(taken_seats_qs, seat_params.keys()):
-            messages.error(request, "Vissa av platserna du valde har redan blivit bokade av någon annan")
-        elif _some_seat_is_missing_ticket_type(seat_params):
-            messages.error(request, "Du måste välja biljettyp för alla platser")
-        else:
-            reservation.tickets = seat_params
-            reservation.save()
-            return redirect("booking_overview", show_slug=show.slug)
+        if show.free_seating:
+            num_available_seats = available_seats.count()
+            requested_normal_seats = int(request.POST.get('normal', 0))
+            requested_student_seats = int(request.POST.get('student', 0))
+
+            num_requested_seats = requested_student_seats + requested_normal_seats
+            if num_requested_seats <= num_available_seats:
+                student_seats = available_seats[0:requested_student_seats]
+                normal_seats = available_seats[requested_student_seats:num_requested_seats]
+
+                reservation.build_tickets(student=student_seats, normal=normal_seats)
+                reservation.save()
+                return redirect("booking_overview", show_slug=show.slug)
+            else:
+                messages.error(request, "Det finns inte tillräckligt många biljetter kvar.")
+
+        else: # Select seats from seatmap
+            seat_params = _seat_specifications(request)
+            if not _all_seats_available(taken_seats_qs, seat_params.keys()):
+                messages.error(request, "Vissa av platserna du valde har redan blivit bokade av någon annan")
+            elif _some_seat_is_missing_ticket_type(seat_params):
+                messages.error(request, "Du måste välja biljettyp för alla platser")
+            else:
+                reservation.tickets = seat_params
+                reservation.save()
+                return redirect("booking_overview", show_slug=show.slug)
 
     taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
     pricings, seats = _build_pricings_and_seats(show.venue)
+    if show.free_seating:
+        pricings = next(iter(pricings.values()), {})
 
     return TemplateResponse(request, "ticket/select_seats.html", {
         'taken_seats': list(taken_seats),
         'show': show,
         'venue': show.venue,
         'pricings': pricings,
-        'seats': json.dumps(seats)
+        'seats': json.dumps(seats),
+        'num_available_seats': len(available_seats),
     })
 
 
