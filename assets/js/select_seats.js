@@ -1,7 +1,5 @@
-function setupSelectSeats(config) {
-    if (!config || !config.seatSelection) return
 
-    config = config.seatSelection
+function setupSeatMapSelection(config) {
     var booking = {}
 
     var isMobile = /Mobi/.test(navigator.userAgent)
@@ -116,6 +114,13 @@ function setupSelectSeats(config) {
         document.querySelectorAll(".seat:not(.taken-seat)"),
         function makeSeatAvailable(seat) {seat.addEventListener("click", selectSeat)}
     )
+}
+
+function setupSelectSeats(config) {
+    if (!config || !config.seatSelection) return
+    config = config.seatSelection
+
+    return setupSeatMapSelection(config)
 }
 
 !function(window) {
