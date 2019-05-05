@@ -21,6 +21,7 @@ class Show(models.Model):
     visible = models.BooleanField(default=True)
     slug = models.CharField(max_length=20, unique=True, default=get_random_string)
     short_description = models.CharField(null=False, blank=True, default="", max_length=255)
+    free_seating = models.BooleanField(default=False, null=False, help_text="Fri placering")
 
     @staticmethod
     def upcoming():
