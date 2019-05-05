@@ -55,11 +55,9 @@ function setupSeatMapSelection(config) {
     function renderBooking() {
         var output = ""
         if (Object.keys(booking).length === 0) {
-            document.querySelector("#no-seats-selected").hidden = false
-            document.querySelector("#book-submit-button").disabled = true
+            disableSubmitButton()
         } else {
-            document.querySelector("#book-submit-button").disabled = false
-            document.querySelector("#no-seats-selected").hidden = true
+            enableSubmitButton()
             Object.keys(booking).forEach(function(seatId) {
                 output += renderSeatForm(booking[seatId])
             })
