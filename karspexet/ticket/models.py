@@ -130,7 +130,10 @@ class Ticket(models.Model):
         return "<Ticket %s | %s | %s>" % (self.ticket_type, self.show, self.seat)
 
     def __str__(self):
-        return f"{self.show}, {self.seat.group}, {self.seat}"
+        if self.show.free_seating:
+            return str(self.seat.group)
+        else:
+            return f"{self.show}, {self.seat.group}, {self.seat}"
 
 
 class Voucher(models.Model):
