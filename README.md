@@ -21,15 +21,33 @@ Skapa en `env.json`-fil med följande för att få stripe-integrationen att fung
 ```
 
 För att installera alla appens beroenden körs kommandot:
+
 ```sh
 pip install -r requirements/dev.txt
 ```
+
 För datalagring används en Postgres server som förväntas finnas på port `5432`.
 Därefter går servern att starta genom kommandot:
+
 ```sh
 python3 manage.py runserver
 ```
+
 Rikta sedan din favoritwebläsare mot `localhost:8000` för att se hemsidan.
+
+## Tester
+
+Kör `postgresql` via docker i en terminal:
+
+```sh
+docker run -it --rm -p 5432:5432 circleci/postgres:9.6.2
+```
+
+Kör sedan testerna mot den i en annan terminal:
+
+```sh
+DATABASE_URL=postgres://root@127.0.0.1:5432/circle_test pytest
+```
 
 ## Linters
 
