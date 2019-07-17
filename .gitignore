@@ -67,6 +67,21 @@ target/
 # VS Code
 .vscode/
 
+# OSX files
+.DS_Store
+
+# pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# pyenv
+.python-version
+
+# asdf
+.tool-versions
+
 #Webpack & NPM
 node_modules
 webpack-stats.json
