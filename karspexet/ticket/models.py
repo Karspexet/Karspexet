@@ -89,6 +89,18 @@ class Reservation(models.Model):
     def get_absolute_url(self):
         return reverse('reservation_detail', kwargs={'reservation_code': self.reservation_code})
 
+    def build_tickets(self, student, normal):
+        tickets = {}
+        for seat in student:
+            tickets[str(seat.id)] = 'student'
+        for seat in normal:
+            tickets[str(seat.id)] = 'normal'
+
+        if not len(tickets) == len(student) + len(normal):
+            raise MultipleTicketTypeException("One seat may not have multiple ticket types")
+
+        self.tickets = tickets
+
 
 class Account(models.Model):
     name = models.CharField(max_length=255)
@@ -118,7 +130,10 @@ class Ticket(models.Model):
         return "<Ticket %s | %s | %s>" % (self.ticket_type, self.show, self.seat)
 
     def __str__(self):
-        return f"{self.show}, {self.seat.group}, {self.seat}"
+        if self.show.free_seating:
+            return str(self.seat.group)
+        else:
+            return f"{self.show}, {self.seat.group}, {self.seat}"
 
 
 class Voucher(models.Model):
@@ -201,4 +216,8 @@ class InvalidVoucherException(Exception):
 
 
 class AlreadyDiscountedException(Exception):
+    pass
+
+
+class MultipleTicketTypeException(Exception):
     pass

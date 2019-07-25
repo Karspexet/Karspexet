@@ -1,7 +1,14 @@
-function setupSelectSeats(config) {
-    if (!config || !config.seatSelection) return
+function disableSubmitButton() {
+    document.querySelector("#no-seats-selected").hidden = false
+    document.querySelector("#book-submit-button").disabled = true
+}
 
-    config = config.seatSelection
+function enableSubmitButton() {
+    document.querySelector("#book-submit-button").disabled = false
+    document.querySelector("#no-seats-selected").hidden = true
+}
+
+function setupSeatMapSelection(config) {
     var booking = {}
 
     var isMobile = /Mobi/.test(navigator.userAgent)
@@ -48,11 +55,9 @@ function setupSelectSeats(config) {
     function renderBooking() {
         var output = ""
         if (Object.keys(booking).length === 0) {
-            document.querySelector("#no-seats-selected").hidden = false
-            document.querySelector("#book-submit-button").disabled = true
+            disableSubmitButton()
         } else {
-            document.querySelector("#book-submit-button").disabled = false
-            document.querySelector("#no-seats-selected").hidden = true
+            enableSubmitButton()
             Object.keys(booking).forEach(function(seatId) {
                 output += renderSeatForm(booking[seatId])
             })
@@ -116,6 +121,71 @@ function setupSelectSeats(config) {
         document.querySelectorAll(".seat:not(.taken-seat)"),
         function makeSeatAvailable(seat) {seat.addEventListener("click", selectSeat)}
     )
+}
+
+function setupFreeSeating(config) {
+    var booking = {
+        student: 0,
+        normal: 0,
+    }
+
+    function setNumberOfSeats(seatType, numberOfSeats) {
+        var saneNumberOfSeats = Number(numberOfSeats) < 0 ? 0 : Number(numberOfSeats)
+        booking[seatType] = saneNumberOfSeats
+    }
+
+    function renderBooking() {
+        var bookingElement = document.getElementById("booking")
+        if (booking.student === 0 && booking.normal === 0) {
+            disableSubmitButton()
+            bookingElement.innerText = ""
+
+            return
+        }
+
+        enableSubmitButton()
+        var studentTotal = (booking.student || 0) * (config.pricings.student || 0)
+        var normalTotal = (booking.normal || 0) * (config.pricings.normal || 0)
+        var totalPrice = studentTotal + normalTotal
+        bookingElement.innerText = "Totalsumma: " + totalPrice
+    }
+
+    function setupChangeNumberOfSeats(seatType) {
+        return function changeSeats(event) {
+            var numberOfSeats = Number(event.target.value)
+            if (numberOfSeats < 0) {
+                numberOfSeats = 0
+            }
+
+            setNumberOfSeats(seatType, numberOfSeats)
+            renderBooking()
+        }
+    }
+
+    var numberOfSeatsElements = document.getElementsByClassName("number-of-seats")
+    Array.prototype.forEach.call(
+        numberOfSeatsElements,
+        function setupEventListeners(field) {
+            var seatType = field.getAttribute("name")
+            setNumberOfSeats(seatType, field.value)
+            if (typeof(field.value) !== "number") {
+                field.value = 0
+            }
+            renderBooking()
+            field.addEventListener("change", setupChangeNumberOfSeats(seatType))
+        }
+    )
+}
+
+function setupSelectSeats(config) {
+    if (!config || !config.seatSelection) return
+    config = config.seatSelection
+
+    if (config.freeSeating) {
+        return setupFreeSeating(config)
+    } else {
+        return setupSeatMapSelection(config)
+    }
 }
 
 !function(window) {

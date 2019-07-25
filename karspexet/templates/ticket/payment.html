@@ -10,7 +10,7 @@
       <dt>Föreställning</dt>
       <dd>{{ reservation.show }}</dd>
       <dt>Antal biljetter</dt>
-      <dd>{{seats|length}}
+      <dd>{{num_tickets}}</dd>
     {% if reservation.discount %}
       <dt>Presentkort</dt>
       <dd>{{ reservation.discount.voucher.code }}</dd>

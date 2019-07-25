@@ -11,47 +11,18 @@
     <p>{{ show.production.description }}</p>
     {% endif %}
 
-    <h3>Instruktioner</h3>
+    {% if show.free_seating %}
+      {% include "ticket/_select_seats_free_seating.html" %}
+    {% else %}
+      {% include "ticket/_select_seats_seatmap.html" %}
+    {% endif %}
 
-    <ol>
-      <li>
-        Välj platser genom att klicka på de platser där du vill sitta i platskartan nedan
-        <ul>
-          <li>För att välja en plats, klicka på en av de grå cirklarna</li>
-          <li>För att avmarkera en plats som du inte längre vill ha, klicka på den gula cirkeln som motsvarar den platsen</li>
-        </ul>
-      </li>
-      <li>Välj vilken biljettyp du vill ha för varje biljett i listan till höger</li>
-      <li>Klicka på "Till betalning!" för att komma vidare till betalningssidan</li>
-    </ol>
-
-    <section class="select-seats">
-        <main>
-            <span class="theater-seat-map">
-                {% include "seat_map.svg" with venue=venue taken_seats=taken_seats %}
-            </span>
-        </main>
-        <aside>
-            <h2>Dina valda platser</h2>
-            <p id="no-seats-selected">Du måste välja minst en plats i platskartan till vänster</p>
-            <form method="post" action="{% url "select_seats" show.slug %}">
-                {% csrf_token %}
-                <div id="booking"></div>
-                <input type="submit" id="book-submit-button" disabled="disabled" value="Till betalning!">
-            </form>
-            <span>eller</span>
-            <form method="post" action="{% url 'cancel_reservation' show.id %}">
-              {% csrf_token %}
-              <input type="submit" id="cancel-reservation-button" value="Avbryt bokning">
-            </form>
-            <div class="seat-info"></div>
-        </aside>
-    </section>
     <script>
      window.config = window.config || {}
      window.config.seatSelection = {
-         allSeats: {{ seats|safe }},
-         pricings: {{ pricings|safe }}
+        allSeats: {{ seats|safe }},
+        pricings: {{ pricings|safe }},
+        freeSeating: {{ show.free_seating|yesno:"true,false" }}
      }
     </script>
     </div>
