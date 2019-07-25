@@ -4,10 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-bpython = "==0.18"
-codacy-coverage = "==1.3.11"
+bpython = "*"
+codacy-coverage = "*"
 isort = "*"
-jedi = "==0.13.3"
+jedi = "*"
 pytest-cov = "*"
 pytest-django = "*"
 pytest = "*"
