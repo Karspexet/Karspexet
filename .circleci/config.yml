@@ -10,7 +10,7 @@ defaults: &defaults
 
 cache_keys:
   python_cache: &python_cache
-    key: dependencies-v3-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}
+    key: dependencies-v4-{{ checksum "Pipfile" }}-{{ checksum "Pipfile.lock" }}
     paths:
       - venv
 
@@ -34,8 +34,8 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -U pip
-            pip install -r requirements/dev.txt
+            pip install -U pip pipenv
+            pipenv install --dev
             cp env.json{.sample,} || /bin/true
 
       - save_cache:
@@ -52,7 +52,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            py.test --cov --cov-report term --cov-report xml --cov-report html
+            pytest --cov --cov-report term --cov-report xml --cov-report html
 
       - run:
           name: Upload coverage to Codacy
