@@ -29,7 +29,7 @@ pdfkit = "==0.6.1"
 django-assets = "==0.12"
 cssmin = "==0.2.0"
 slimit = "==0.8.1"
-Django = "==1.11.22"
+Django = "==1.11.23"
 django_sendmail_backend = "==0.1.2"
 PyQRCode = "*"
 
