@@ -12,5 +12,6 @@ urlpatterns = [
     url(r"^ticket/(?P<reservation_id>\d+)-(?P<ticket_code>[A-Z0-9]+).pdf$", views.ticket_pdf, name="ticket_pdf"),
     url(r"^reservation/(?P<reservation_code>[A-Z0-9]+)/send_reservation_email$", views.send_reservation_email, name="send_reservation_email"),
     url(r"^cancel/(?P<show_id>\d+)/?$", views.cancel_reservation, name="cancel_reservation"),
+    url(r"^stripe-webhooks/$", views.stripe_webhooks),
     url(r"^$", views.home, name="ticket_home"),
 ]

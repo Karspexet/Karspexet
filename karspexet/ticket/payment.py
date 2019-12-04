@@ -132,3 +132,29 @@ class StripePaymentProcess(PaymentProcess):
         except (APIConnectionError, AuthenticationError, InvalidRequestError, RateLimitError, StripeError) as error:
             logger.error(error)
             raise PaymentError from error
+
+
+def handle_stripe_webhook(event: stripe.Event):
+    logger.debug("Stripe Event: %r", event)
+
+    handled = False
+    payment_intent: stripe.PaymentIntent
+    if event.type == "payment_intent.created":
+        payment_intent = event.data.object
+        logger.info("PaymentIntent created: %s", payment_intent.id)
+        handled = True
+
+    elif event.type == "payment_intent.payment_failed":
+        payment_intent = event.data.object
+        logger.info("PaymentIntent failed: %s", payment_intent.id)
+        handled = True
+
+    elif event.type == "payment_intent.succeeded":
+        payment_intent = event.data.object
+        logger.info("PaymentIntent succeeded: %s", payment_intent.id)
+        handled = True
+
+    else:
+        logger.warning("Unexpected event type: %s", event.type)
+
+    return handled
