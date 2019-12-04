@@ -167,16 +167,15 @@ try:
     with open(BASE_DIR + "/env.json") as env_json:
         ENV = json.load(env_json)
 except FileNotFoundError:
-    import sys
-    print("""
-    ================================================================================
-    No env.json settings file found.
+    import textwrap
+    raise SystemExit(textwrap.dedent("""
+    ================ ERROR ================
+    ERROR: No env.json settings file found.
 
     Try starting with the sample one:
 
     cp env.json.sample env.json
-    """, file=sys.stderr)
-    exit(1)
+    """))
 
 EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
 PAYMENT_PROCESS = ENV.get("payment_process", "not set")
