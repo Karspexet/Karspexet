@@ -62,6 +62,18 @@ class TestSelect_seats(TestCase):
         self.assertContains(response, "Köp biljetter för Uppsättningen")
 
 
+class TestWebhooks(TestCase):
+    def test_stripe_webhooks(self):
+        payload = {"type": "unknown"}
+        url = reverse(views.stripe_webhooks)
+        response = self.client.post(url, data=payload, content_type="application/json")
+        assert response.status_code == 400
+
+        payload = {"type": "payment_intent.succeeded"}
+        response = self.client.post(url, data=payload, content_type="application/json")
+        assert response.status_code == 400
+
+
 @pytest.mark.django_db
 def test_cancelling_a_discounted_reservation_allows_voucher_for_reuse(show, user):
     seat = Seat.objects.first()

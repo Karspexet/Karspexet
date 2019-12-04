@@ -2,28 +2,30 @@
 import io
 import json
 import logging
+
 import pdfkit
 import pyqrcode
-
-
+import stripe
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
-
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.response import HttpResponse, TemplateResponse
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from karspexet.show.models import Show
-from karspexet.ticket.models import Reservation, PricingModel, InvalidVoucherException, AlreadyDiscountedException, Voucher
-from karspexet.ticket.payment import PaymentError, PaymentProcess
-from karspexet.venue.models import Seat
 from karspexet.ticket.forms import CustomerEmailForm
+from karspexet.ticket.models import (
+    AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation, Voucher,
+)
+from karspexet.ticket.payment import PaymentError, PaymentProcess, handle_stripe_webhook
 from karspexet.ticket.tasks import send_ticket_email_to_customer
+from karspexet.venue.models import Seat
 
 if settings.PAYMENT_PROCESS == "stripe":
     stripe_keys = settings.ENV["stripe"]
@@ -42,6 +44,35 @@ def home(request):
     return TemplateResponse(request, "ticket/ticket.html", {
         'upcoming_shows': upcoming_shows
     })
+
+
+@csrf_exempt
+def stripe_webhooks(request):
+    # https://stripe.com/docs/payments/handling-payment-events#build-your-own-webhook
+    # https://stripe.com/docs/webhooks/build
+
+    event = _parse_stripe_payload(request.body)
+    if event is None:
+        return HttpResponse(status=400)
+
+    if handle_stripe_webhook(event):
+        return HttpResponse(status=200)
+
+    return HttpResponse(status=400)
+
+
+def _parse_stripe_payload(body: str) -> stripe.Event:
+    # TODO: Verify signature
+    # https://stripe.com/docs/webhooks/signatures
+    try:
+        data = json.loads(body)
+    except ValueError:
+        return None
+    try:
+        return stripe.Event.construct_from(data, stripe.api_key)
+    except ValueError as e:
+        logger.exception("Invalid Stripe payload! body=%s", data)
+        return None
 
 
 @transaction.atomic
