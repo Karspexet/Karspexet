@@ -283,3 +283,39 @@ STATICFILES_FINDERS = [
     "django_assets.finders.AssetsFinder",
 ]
 STATIC_ROOT = "staticfiles"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "root": {"level": "INFO", "handlers": ["stdout"]},
+    "formatters": {
+        "default": {
+            "format": "[%(asctime)s] %(name)s: %(message)s",
+            "datefmt": "%H:%M:%S",
+        },
+        "django.server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[%(asctime)s] %(message)s",
+            "datefmt": "%H:%M:%S",
+        },
+    },
+    "handlers": {
+        "null": {"class": "logging.NullHandler"},
+        "stdout": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+            "formatter": "default",
+        },
+        "django.server": {
+            "class": "logging.StreamHandler",
+            "formatter": "django.server",
+        },
+    },
+    "loggers": {
+        "django.server": {
+            "handlers": ["django.server"],
+            "level": "INFO",
+        },
+    },
+}
