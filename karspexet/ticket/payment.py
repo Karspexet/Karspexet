@@ -11,7 +11,7 @@ from karspexet.ticket.models import Account, Reservation, Ticket
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.venue.models import Seat
 
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 stripe_keys = settings.ENV["stripe"]
 stripe.api_key = stripe_keys['secret_key']
 
@@ -130,7 +130,7 @@ class StripePaymentProcess(PaymentProcess):
 
 
 def handle_stripe_webhook(event: stripe.Event):
-    logger.debug("Stripe Event: %r", event)
+    logger.info("Stripe Event: %r", event)
 
     handled = False
     payment_intent: stripe.PaymentIntent
