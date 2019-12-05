@@ -58,6 +58,10 @@ class Reservation(models.Model):
     objects = models.Manager()
     active = ActiveReservationsManager()
 
+    def __repr__(self):
+        fields = ["id", "show_id"]
+        return "<%s(%s)>" % (type(self).__name__, ", ".join(f"{f}={getattr(self, f)}" for f in fields))
+
     def __str__(self):
         return repr(self)
 
