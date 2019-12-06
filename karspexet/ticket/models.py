@@ -57,6 +57,12 @@ class Reservation(models.Model):
     objects = models.Manager()
     active = ActiveReservationsManager()
 
+    def __str__(self):
+        return repr(self)
+
+    def get_amount(self):
+        return self.total * 100  # Price in Öre
+
     def seats(self):
         return Seat.objects.filter(pk__in=self.tickets.keys()).all()
 
