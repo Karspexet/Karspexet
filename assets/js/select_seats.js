@@ -68,7 +68,8 @@ function setupSeatMapSelection(config) {
       })
     }
     document.querySelector("#booking").innerHTML = output
-    Array.prototype.forEach.call(document.querySelectorAll("#booking select"), function(select) {
+    var select = document.querySelectorAll("#booking select")
+    Array.prototype.forEach.call(select, function(select) {
       select.addEventListener("change", selectSeatType)
     })
   }
@@ -81,35 +82,31 @@ function setupSeatMapSelection(config) {
       pricing = config.pricings[seatObject.group]
 
     function option(seatType, selectedSeatType) {
-      var selectedString = seatType === selectedSeatType ? " selected" : ""
-      return [
-        '<option value="',
-        seatType,
-        '" ',
-        selectedString,
-        ">",
-        seatType[0].toUpperCase(),
-        seatType.slice(1),
-        " (",
-        pricing[seatType],
-        "kr)",
-        "</option>",
-      ].join("")
+      var seatTypeTitle = seatType[0].toUpperCase() + seatType.slice(1)
+      var e = createElm("option", {
+        value: seatType,
+        selected: seatType === selectedSeatType,
+        textContent: seatTypeTitle + " (" + pricing[seatType] + "kr)",
+      })
+      return e.outerHTML
     }
-    return [
-      "<div><label>",
-      displayName,
-      ": ",
-      '<select name="seat_',
-      seatId,
-      '" data-id="',
-      seatId,
-      '">',
-      '<option value="">(Välj biljettyp)</option>',
-      option("normal", seatType),
-      option("student", seatType),
-      "</select></label></div>",
-    ].join("")
+
+    var selectElm = document.createElement("select")
+    selectElm.name = "seat_" + seatId
+    selectElm.setAttribute("data-id", seatId)
+    selectElm.innerHTML += "<option value=''>(Välj biljettyp)</option>"
+    selectElm.innerHTML += option("normal", seatType)
+    selectElm.innerHTML += option("student", seatType)
+
+    var d = createElm("div", {
+      children: [
+        createElm("label", {
+          textContent: displayName + ": ",
+          children: [selectElm],
+        }),
+      ],
+    })
+    return d.outerHTML
   }
 
   Object.keys(config.allSeats).forEach(function(seat) {
@@ -118,23 +115,17 @@ function setupSeatMapSelection(config) {
     var element = document.getElementById(seat),
       seatObject = config.allSeats[seat]
     element.addEventListener("mouseover", function() {
-      var pricing = config.pricings[seatObject.group],
-        info = [
-          "<div>",
-          seatObject.name,
-          "<br>",
-          "Student: ",
-          pricing["student"],
-          "kr",
-          "<br>",
-          "Fullpris: ",
-          pricing["normal"],
-          "kr",
-          "<br>",
-          "</div>",
-        ].join("")
+      var pricing = config.pricings[seatObject.group]
 
-      document.querySelector(".seat-info").innerHTML = info
+      var info = createElm("div", {
+        children: [
+          createElm("div", { textContent: seatObject.name }),
+          createElm("div", { textContent: "Student: " + pricing["student"] + "kr" }),
+          createElm("div", { textContent: "Fullpris: " + pricing["normal"] + "kr" }),
+        ],
+      })
+
+      document.querySelector(".seat-info").innerHTML = info.outerHTML
     })
 
     element.addEventListener("mouseout", function() {
@@ -142,12 +133,10 @@ function setupSeatMapSelection(config) {
     })
   })
 
-  Array.prototype.forEach.call(
-    document.querySelectorAll(".seat:not(.taken-seat)"),
-    function makeSeatAvailable(seat) {
-      seat.addEventListener("click", selectSeat)
-    },
-  )
+  var seats = document.querySelectorAll(".seat:not(.taken-seat)")
+  Array.prototype.forEach.call(seats, function makeSeatAvailable(seat) {
+    seat.addEventListener("click", selectSeat)
+  })
 }
 
 function setupFreeSeating(config) {
@@ -210,6 +199,24 @@ function setupSelectSeats(config) {
   } else {
     return setupSeatMapSelection(config)
   }
+}
+
+function createElm(type, options) {
+  options = options || {}
+  var children = options.children || []
+  delete options.children
+  var elm = document.createElement(type)
+  for (var prop in options) {
+    if (prop === "selected" && options[prop]) {
+      elm.setAttribute(prop, "")
+    } else {
+      elm[prop] = options[prop]
+    }
+  }
+  for (var i = 0, len = children.length; i < len; i++) {
+    elm.appendChild(children[i])
+  }
+  return elm
 }
 
 !(function(window) {
