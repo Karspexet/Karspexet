@@ -1,6 +1,8 @@
 import pytest
-from factories import factories as f
 from django.utils import timezone
+
+from factories import factories as f
+
 
 @pytest.fixture
 def show():
@@ -21,5 +23,3 @@ def show():
 @pytest.fixture
 def user():
     return f.CreateStaffUser(username="test", password="test")
-
-

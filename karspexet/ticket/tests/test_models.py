@@ -1,18 +1,17 @@
-import pytest
-
 from datetime import date, datetime
+from unittest.mock import patch
+
+import pytest
 from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 
-from unittest.mock import patch
-
 from factories import factories as f
-
-from karspexet.ticket.models import PricingModel, Reservation, Ticket, Voucher, Discount, AlreadyDiscountedException, InvalidVoucherException
-from karspexet.venue.models import Seat
-from django.core.exceptions import ValidationError
 from factories.fixtures import show, user
+from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
+                                     Ticket, Voucher)
+from karspexet.venue.models import Seat
 
 
 class TestReservation(TestCase):
@@ -61,7 +60,6 @@ class TestReservation(TestCase):
 
         assert reservation in Reservation.objects.all()
         assert reservation not in Reservation.active.all()
-
 
     def test_ticket_price_and_total(self):
         timestamp = timezone.now() - relativedelta(days=1)
@@ -124,6 +122,7 @@ class TestPricingModel(TestCase):
 
         assert seat.price_for_type('student') == 200
         assert seat.price_for_type('student', one_day_ago) == 150
+
 
 class TestTicket(TestCase):
     def setUp(self):
@@ -216,7 +215,6 @@ class TestDiscount:
 
         assert discount.amount == 100
         assert reservation.total == 150
-
 
     def test_a_voucher_expires_nextcoming_fifteenth_of_september(self):
         user = f.CreateStaffUser(username="test", password="test")

@@ -1,12 +1,9 @@
 # coding: utf-8
-from django.contrib.auth.models import User
-from django.http import HttpRequest
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.utils import timezone
 
 from factories import factories as f
 
-from karspexet.economy import views
 
 class TestOverview(TestCase):
     def setUp(self):
