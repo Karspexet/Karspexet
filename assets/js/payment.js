@@ -1,8 +1,9 @@
-/* global Stripe exports */
+/* global Stripe */
 function setupPayment(config) {
   if (!config || !config.payment) return
 
   var stripeKey = config.payment
+  var clientSecret = config.clientSecret
   if (stripeKey === "fake") return
 
   if (typeof Stripe == "undefined") return
@@ -18,6 +19,7 @@ function setupPayment(config) {
         color: "#31325F",
         lineHeight: "40px",
         fontWeight: 300,
+        /* eslint-disable-next-line quotes */
         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
         fontSize: "15px",
 
@@ -58,10 +60,31 @@ function setupPayment(config) {
   var paymentForm = document.getElementById("payment-form")
   paymentForm.addEventListener("submit", function(e) {
     e.preventDefault()
-    var extraDetails = {
-      name: paymentForm.querySelector("input[name=name]").value,
+    var billing = {
+      name: paymentForm.name.value,
+      phone: paymentForm.phone.value,
+      email: paymentForm.email.value,
     }
-    stripe.createToken(card, extraDetails).then(setOutcome)
+    stripe
+      .confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: billing,
+        },
+      })
+      .then(function(result) {
+        // Handle result.error or result.paymentIntent
+        if (result.error) {
+          setPaymentError(result.error.message)
+        }
+        if (result.paymentIntent) {
+          // FIXME: This should have a proper spinner
+          // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)
+          setTimeout(function() {
+            window.location.href = window.config.successUrl
+          }, 5000)
+        }
+      })
   })
 
   var discountButton = document.getElementById("enter-discount-code")
@@ -84,6 +107,20 @@ function setupPayment(config) {
     discountButton.addEventListener("click", displayDiscountForm)
   }
   cancelDiscountButton.addEventListener("click", closeDiscountForm)
+}
+
+function setPaymentError(message) {
+  // FIXME: This has no styling
+  var err = document.getElementById("fn-payment-errors")
+  err.innerHTML = null
+  err.appendChild(createWarning("Något gick fel, betalningen gick inte igenom."))
+  err.appendChild(createWarning(message))
+}
+
+function createWarning(text) {
+  var elm = document.createElement("div")
+  elm.textContent = text
+  return elm
 }
 
 !(function(window) {

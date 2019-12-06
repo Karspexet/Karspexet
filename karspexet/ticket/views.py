@@ -23,6 +23,7 @@ from karspexet.ticket.forms import CustomerEmailForm
 from karspexet.ticket.models import (
     AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation, Voucher,
 )
+from karspexet.ticket import payment
 from karspexet.ticket.payment import PaymentError, PaymentProcess, handle_stripe_webhook
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.venue.models import Seat
@@ -145,6 +146,8 @@ def booking_overview(request, show_slug):
         messages.warning(request, "Du måste välja minst en plats")
         return redirect("select_seats", show_slug=show_slug)
 
+    payment_intent = payment.get_payment_intent_from_reservation(reservation)
+
     if show.free_seating:
         reserved_seats = {}
         for seat in reservation.seats():
@@ -183,6 +186,7 @@ def booking_overview(request, show_slug):
         'seats': seats,
         'payment_partial': _payment_partial(reservation),
         'reservation': reservation,
+        'stripe_payment_indent': payment_intent,
         'stripe_key': stripe_keys['publishable_key'],
         'num_tickets': num_tickets,
     })

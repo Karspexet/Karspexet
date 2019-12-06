@@ -129,6 +129,17 @@ class StripePaymentProcess(PaymentProcess):
             raise PaymentError from error
 
 
+def get_payment_intent_from_reservation(reservation):
+    return stripe.PaymentIntent.create(
+        amount=reservation.get_amount(),
+        currency="sek",
+        payment_method_types=["card"],
+        idempotency_key=str(reservation.id),
+        statement_descriptor="Biljett Kårspexet",
+        metadata={"reservation_id": reservation.id,},
+    )
+
+
 def handle_stripe_webhook(event: stripe.Event):
     logger.info("Stripe Event: %r", event)
 
