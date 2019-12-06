@@ -20,11 +20,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  cursor: pointer;
   height: 30px;
-}
-.navbar ul li:hover {
-  color: rgb(222, 210, 95);
 }
 
 .navbar ul li.child {
@@ -33,14 +29,26 @@
   max-width: 140px;
 }
 
-.navbar ul li a {
+.navbar .nav-link {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
   text-decoration: none;
 }
 
-.navbar ul li.selected a {
+.navbar .nav-link:hover {
+  color: #c7c7c7;
+}
+
+.navbar .selected .nav-link {
   color: #fd0;
-  font-weight: bold;
+}
+
+.navbar .selected .nav-link:hover {
+  color: #c7ac00;
 }
 
 .luva {
