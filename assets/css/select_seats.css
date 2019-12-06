@@ -3,7 +3,7 @@ section.select-seats {
     flex-direction: row;
 }
 
-div.seat-info div {
+div.seat-info > * {
     border: 1px dotted;
     padding: 0.5rem;
 }
