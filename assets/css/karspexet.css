@@ -166,7 +166,7 @@ a {
 }
 
 .card .card_image img {
-  width: 300px;
+  width: 100%;
   height: auto;
 }
 
@@ -363,3 +363,11 @@ ul.show-info {
 .show-info address {
   display: inline;
 }
+
+@media screen and (max-width: 600px) {
+  .card {
+    width: 80%;
+    font-size: 1.5rem;
+  }
+}
+
