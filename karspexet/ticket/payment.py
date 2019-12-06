@@ -1,21 +1,15 @@
 # coding: utf-8
 
-import stripe
 import logging
 
+import stripe
 from django.conf import settings
 from django.db import transaction
-from stripe.error import (
-    APIConnectionError,
-    AuthenticationError,
-    InvalidRequestError,
-    RateLimitError,
-    StripeError
-)
+from stripe.error import APIConnectionError, AuthenticationError, InvalidRequestError, RateLimitError, StripeError
 
-from karspexet.ticket.models import Account, Ticket
-from karspexet.venue.models import Seat
+from karspexet.ticket.models import Account, Reservation, Ticket
 from karspexet.ticket.tasks import send_ticket_email_to_customer
+from karspexet.venue.models import Seat
 
 logger = logging.getLogger(__file__)
 stripe_keys = settings.ENV["stripe"]
@@ -151,6 +145,7 @@ def handle_stripe_webhook(event: stripe.Event):
 
     elif event.type == "payment_intent.succeeded":
         payment_intent = event.data.object
+        handle_successful_payment(payment_intent)
         logger.info("PaymentIntent succeeded: %s", payment_intent.id)
         handled = True
 
@@ -158,3 +153,37 @@ def handle_stripe_webhook(event: stripe.Event):
         logger.warning("Unexpected event type: %s", event.type)
 
     return handled
+
+
+def handle_successful_payment(payment: stripe.PaymentIntent):
+    """
+    Our honored customer has paid us money - let's send them a ticket
+    """
+    reservation_id = payment.metadata["reservation_id"]
+    reservation: Reservation = Reservation.objects.get(id=reservation_id)
+
+    billing_details = payment.charges.data[0].billing_details
+    billing = _pick(billing_details, ["name", "phone", "email"])
+
+    account = Account.objects.create(**billing)
+
+    tickets = []
+    for seat_id, ticket_type in reservation.tickets.items():
+        seat = Seat.objects.get(pk=seat_id)
+        ticket = Ticket.objects.create(
+            price=seat.price_for_type(ticket_type),
+            ticket_type=ticket_type,
+            show=reservation.show,
+            seat=seat,
+            account=account,
+        )
+        tickets.append(ticket)
+
+    reservation.finalized = True
+    reservation.save()
+
+    send_ticket_email_to_customer(reservation, account.email, account.name)
+
+
+def _pick(data, fields):
+    return {f: data[f] for f in fields}
