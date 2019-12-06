@@ -232,7 +232,7 @@ CMS_PLACEHOLDER_CONF = {
             {
                 'plugin_type': 'TextPlugin',
                 'values': {
-                    'body':'<p>Lorem ipsum dolor sit amet...</p>',
+                    'body': '<p>Lorem ipsum dolor sit amet...</p>',
                 },
             },
         ],

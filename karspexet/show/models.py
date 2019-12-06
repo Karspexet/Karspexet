@@ -30,7 +30,7 @@ class Show(models.Model):
     @staticmethod
     def ticket_coverage(show=None):
         if show is None:
-            show_ids = Show.objects.order_by("-id").values_list('id',flat=True)
+            show_ids = Show.objects.order_by("-id").values_list('id', flat=True)
         else:
             show_ids = [show.id]
 

@@ -102,7 +102,8 @@ def select_seats(request, show_slug):
             else:
                 messages.error(request, "Det finns inte tillräckligt många biljetter kvar.")
 
-        else: # Select seats from seatmap
+        else:
+            # Select seats from seatmap
             seat_params = _seat_specifications(request)
             if not _all_seats_available(taken_seats_qs, seat_params.keys()):
                 messages.error(request, "Vissa av platserna du valde har redan blivit bokade av någon annan")
@@ -113,7 +114,7 @@ def select_seats(request, show_slug):
                 reservation.save()
                 return redirect("booking_overview", show_slug=show.slug)
 
-    taken_seats = set(map(int,set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
+    taken_seats = set(map(int, set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
     pricings, seats = _build_pricings_and_seats(show.venue)
     if show.free_seating:
@@ -144,7 +145,6 @@ def booking_overview(request, show_slug):
         messages.warning(request, "Du måste välja minst en plats")
         return redirect("select_seats", show_slug=show_slug)
 
-
     if show.free_seating:
         reserved_seats = {}
         for seat in reservation.seats():
@@ -167,7 +167,7 @@ def booking_overview(request, show_slug):
         ]
         num_tickets = sum((group['count'] for (ticket_type, group) in reserved_seats.items()))
     else:
-        reserved_seats = {seat.id:seat for seat in reservation.seats()}
+        reserved_seats = {seat.id: seat for seat in reservation.seats()}
         seats = [
             "%s: %s (%s, %dkr)" % (
                 reserved_seats[int(id)].group.name,
@@ -277,16 +277,14 @@ def ticket_pdf(request, reservation_id, ticket_code):
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     template = TemplateResponse(request, "ticket_detail.html", {
-            'reservation': reservation,
-            'show': reservation.show,
-            'venue': reservation.show.venue,
-            'production': reservation.show.production,
-            'ticket': ticket,
-            'seat': ticket.seat,
-            'qr_code': _qr_code(request)
-        },
-        content_type="utf-8"
-    ).render()
+        'reservation': reservation,
+        'show': reservation.show,
+        'venue': reservation.show.venue,
+        'production': reservation.show.production,
+        'ticket': ticket,
+        'seat': ticket.seat,
+        'qr_code': _qr_code(request)
+    }, content_type="utf-8").render()
 
     pdfkit_options = {
         'page-size': 'A5',
@@ -369,20 +367,20 @@ def _all_seats_available(qs, seat_ids):
 
 def _seat_specifications(request):
     return {
-        seat.replace("seat_", ""):ticket_type
-            for seat,ticket_type in request.POST.items()
-            if seat.startswith("seat_")
+        seat.replace("seat_", ""): ticket_type
+        for seat, ticket_type in request.POST.items()
+        if seat.startswith("seat_")
     }
 
 
 def _some_seat_is_missing_ticket_type(seat_params):
-    return any(not ticket_type for ( seat,ticket_type ) in seat_params.items())
+    return any(not ticket_type for (seat, ticket_type) in seat_params.items())
 
 
 def _build_pricings_and_seats(venue):
     qs = PricingModel.objects.select_related('seating_group').filter(seating_group__venue_id=venue)
     pricings = {
-        pricing.seating_group_id : pricing.prices
+        pricing.seating_group_id: pricing.prices
         for pricing in qs.all()
     }
 

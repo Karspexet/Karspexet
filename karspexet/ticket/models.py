@@ -19,12 +19,13 @@ TICKET_TYPES = [
     ("student", "Student"),
 ]
 
-def _generate_random_code():
-    return get_random_string(allowed_chars=ascii_uppercase+digits)
+
+def _generate_random_code(length=12):
+    return get_random_string(length=length, allowed_chars=ascii_uppercase + digits)
 
 
 def _generate_voucher_code():
-    return get_random_string(length=16, allowed_chars=ascii_uppercase+digits)
+    return _generate_random_code(length=16)
 
 
 def _next_fifteenth_september():
@@ -162,6 +163,7 @@ class Voucher(models.Model):
 
     def __str__(self):
         return f"id={self.id} amount={self.amount} code={self.code}"
+
 
 class Discount(models.Model):
     """

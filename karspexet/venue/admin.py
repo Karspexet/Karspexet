@@ -36,6 +36,7 @@ class SeatingGroupAdmin(admin.ModelAdmin):
 class SeatAdmin(admin.ModelAdmin):
     pass
 
+
 admin.site.register(Venue, VenueAdmin)
 admin.site.register(Seat, SeatAdmin)
 admin.site.register(SeatingGroup, SeatingGroupAdmin)

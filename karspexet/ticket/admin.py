@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from karspexet.ticket.models import Account, Reservation, Ticket, Voucher, PricingModel
+from karspexet.ticket.models import Account, PricingModel, Reservation, Ticket, Voucher
 
 
 class ReservationAdmin(admin.ModelAdmin):
@@ -20,8 +20,10 @@ class VoucherAdmin(admin.ModelAdmin):
 class PricingModelAdmin(admin.ModelAdmin):
     list_display = ('seating_group', 'prices', 'valid_from')
 
+
 class AccountAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phone')
+
 
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Ticket, TicketAdmin)
