@@ -57,7 +57,7 @@
     color: #CFD7E0;
 }
 
-#discount-form.hidden {
+.hidden {
     display: none;
 }
 
