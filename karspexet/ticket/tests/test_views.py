@@ -1,18 +1,18 @@
 # coding: utf-8
-from django.shortcuts import reverse
-from django.contrib.sessions.middleware import SessionMiddleware
-from django.test import TestCase, RequestFactory
-from django.utils import timezone
-from factories import factories as f
-from factories.fixtures import show, user
-
-from karspexet.show.models import Show, Production
-from karspexet.ticket import views
-from karspexet.ticket.models import Seat, Voucher, Reservation, Discount
-
-from karspexet.venue.models import Venue, SeatingGroup
+from unittest import mock
 
 import pytest
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.shortcuts import reverse
+from django.test import RequestFactory, TestCase
+from django.utils import timezone
+
+from factories import factories as f
+from factories.fixtures import show, user
+from karspexet.show.models import Production, Show
+from karspexet.ticket import views
+from karspexet.ticket.models import Discount, Reservation, Seat, Voucher
+from karspexet.venue.models import SeatingGroup, Venue
 
 
 class TestHome(TestCase):
@@ -60,6 +60,33 @@ class TestSelect_seats(TestCase):
         response = self.client.get(reverse(views.select_seats, args=[show.slug]))
 
         self.assertContains(response, "Köp biljetter för Uppsättningen")
+
+
+class TestOverview(TestCase):
+    @mock.patch("karspexet.ticket.views.payment", autospec=True)
+    def test_booking_overview_with_active_session(self, mock_payment):
+        venue = f.CreateVenue()
+        group = f.CreateSeatingGroup(venue=venue)
+        f.CreatePricingModel(seating_group=group, prices={'student': 200, 'normal': 250}, valid_from=timezone.now())
+        seat = f.CreateSeat(group=group)
+        production = f.CreateProduction()
+        show = f.CreateShow(production=production, venue=venue, date=timezone.now())
+        reservation = f.CreateReservation(
+            tickets={str(seat.id): "normal"},
+            session_timeout=timezone.now(),
+            show=show,
+        )
+        session = self.client.session
+        session['show_%s' % show.id] = str(reservation.id)
+        session.save()
+        mock_payment_intent = object()
+        mock_payment.get_payment_intent_from_reservation.return_value = mock_payment_intent
+
+        url = reverse(views.booking_overview, args=[show.slug])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["reservation"], reservation)
+        self.assertEqual(response.context["stripe_payment_indent"], mock_payment_intent)
 
 
 class TestWebhooks(TestCase):

@@ -135,19 +135,18 @@ def select_seats(request, show_slug):
 @transaction.atomic
 def booking_overview(request, show_slug):
     show = Show.objects.get(slug=show_slug)
-    reservation = _get_or_create_reservation_object(request, show)
-
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_slug=show_slug)
 
     _set_session_timeout(request)
 
+    reservation = _get_or_create_reservation_object(request, show)
+    payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
+
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
         return redirect("select_seats", show_slug=show_slug)
-
-    payment_intent = payment.get_payment_intent_from_reservation(reservation)
 
     if show.free_seating:
         reserved_seats = {}
@@ -204,9 +203,7 @@ def apply_voucher(request, reservation_id):
 
     if request.method == "POST":
         try:
-            code = request.POST["voucher_code"]
-            reservation.apply_voucher(code)
-            reservation.save()
+            payment.apply_voucher(request, reservation)
         except KeyError:
             messages.error(request, "För att kunna få rabatt måste du fylla i ett presentkort")
         except InvalidVoucherException:

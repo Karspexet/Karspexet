@@ -129,15 +129,29 @@ class StripePaymentProcess(PaymentProcess):
             raise PaymentError from error
 
 
-def get_payment_intent_from_reservation(reservation):
-    return stripe.PaymentIntent.create(
+def get_payment_intent_from_reservation(request, reservation):
+    payment_intent_id = request.session.get("payment_intent_id")
+    if payment_intent_id:
+        return stripe.PaymentIntent.retrieve(payment_intent_id)
+    intent = stripe.PaymentIntent.create(
         amount=reservation.get_amount(),
         currency="sek",
         payment_method_types=["card"],
         idempotency_key=str(reservation.id),
         statement_descriptor="Biljett Kårspexet",
-        metadata={"reservation_id": reservation.id,},
+        metadata={"reservation_id": reservation.id},
     )
+    request.session["payment_intent_id"] = intent.id
+    return intent
+
+
+def apply_voucher(request, reservation):
+    # Since we have a reservation, we can assume there is also a PaymentIntent created
+    payment_intent_id = request.session["payment_intent_id"]
+    code = request.POST["voucher_code"]
+    reservation.apply_voucher(code)
+    reservation.save()
+    stripe.PaymentIntent.modify(payment_intent_id, amount=reservation.get_amount())
 
 
 def handle_stripe_webhook(event: stripe.Event):
