@@ -45,6 +45,24 @@ function setupPayment(config) {
     setOutcome(event)
   })
 
+  function showSpinner() {
+    paymentForm.querySelector(".spinner-container").classList.remove("hidden")
+  }
+
+  function hideSpinner() {
+    paymentForm.querySelector(".spinner-container").classList.add("hidden")
+  }
+
+  function disableSubmit() {
+    var button = document.querySelector(".fn-payment-submit-button")
+    button.disabled = true
+  }
+
+  function enableSubmit() {
+    var button = document.querySelector(".fn-payment-submit-button")
+    button.disabled = false
+  }
+
   function stripeTokenHandler(token) {
     // Insert the token ID into the form so it gets submitted to the server
     var form = document.getElementById("payment-form")
@@ -65,6 +83,8 @@ function setupPayment(config) {
       phone: paymentForm.phone.value,
       email: paymentForm.email.value,
     }
+    disableSubmit()
+    showSpinner()
     stripe
       .confirmCardPayment(clientSecret, {
         payment_method: {
@@ -76,9 +96,10 @@ function setupPayment(config) {
         // Handle result.error or result.paymentIntent
         if (result.error) {
           setPaymentError(result.error.message)
+          hideSpinner()
+          enableSubmit()
         }
         if (result.paymentIntent) {
-          // FIXME: This should have a proper spinner
           // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)
           setTimeout(function() {
             window.location.href = window.config.successUrl
