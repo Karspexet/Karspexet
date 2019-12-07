@@ -19,11 +19,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from karspexet.show.models import Show
-from karspexet.ticket.forms import CustomerEmailForm
-from karspexet.ticket.models import (
-    AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation, Voucher,
-)
 from karspexet.ticket import payment
+from karspexet.ticket.forms import CustomerEmailForm
+from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
+                                     Voucher)
 from karspexet.ticket.payment import PaymentError, PaymentProcess, handle_stripe_webhook
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.venue.models import Seat
@@ -307,15 +306,13 @@ def ticket_pdf(request, reservation_id, ticket_code):
     return response
 
 
+@require_POST
 def cancel_reservation(request, show_id):
-    session_key = f'show_{show_id}'
-    if request.method == "POST":
-        request.session[session_key] = None
-        request.session['reservation_timeout'] = None
+    reservation_id = request.session.pop(f"show_{show_id}", None)
+    request.session.pop("reservation_timeout", None)
+    request.session.pop("payment_intent_id", None)
 
-    reservation_id = request.session.get(session_key)
-    if reservation_id:
-        Reservation.objects.filter(pk=reservation_id).delete()
+    Reservation.objects.filter(pk=reservation_id).delete()
     return redirect("ticket_home")
 
 

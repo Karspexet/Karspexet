@@ -120,8 +120,7 @@ def test_cancelling_a_discounted_reservation_allows_voucher_for_reuse(show, user
     voucher = Voucher.objects.create(amount=100, created_by=user)
     discount = reservation.apply_voucher(voucher.code)
 
-    rf = RequestFactory()
-    request = rf.get(reverse(views.cancel_reservation, args=[show.id]))
+    request = RequestFactory().post(reverse(views.cancel_reservation, args=[show.id]))
     middleware = SessionMiddleware()
     middleware.process_request(request)
     request.session.save()
