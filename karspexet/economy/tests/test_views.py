@@ -13,7 +13,7 @@ class TestOverview(TestCase):
         response = self.client.get("/economy/")
         assert response.status_code == 302
 
-        f.CreateStaffUser("ture", "test")
+        f.CreateStaffUser(username="ture", password="test")
         assert self.client.login(username="ture", password="test")
 
         response = self.client.get("/economy/")
@@ -34,7 +34,7 @@ class TestShowDetail(TestCase):
         response = self.client.get(f"/economy/{show.id}")
         assert response.status_code == 302
 
-        f.CreateStaffUser("ture", "test")
+        f.CreateStaffUser(username="ture", password="test")
         assert self.client.login(username="ture", password="test")
 
         response = self.client.get(f"/economy/{show.id}")

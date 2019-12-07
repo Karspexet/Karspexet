@@ -1,5 +1,20 @@
-from factory.django import DjangoModelFactory
+import factory
 from django.contrib.auth.models import User
+from django.utils import timezone
+from factory.django import DjangoModelFactory
+
+
+class CreateStaffUser(DjangoModelFactory):
+    email = "ture@example.com"
+    is_staff = True
+
+    class Meta:
+        model = User
+
+    @factory.post_generation
+    def password(self, create, extracted, **kwargs):
+        self.set_password(extracted)
+        self.save()
 
 
 class CreateVenue(DjangoModelFactory):
@@ -21,6 +36,9 @@ class CreateSeat(DjangoModelFactory):
 
 
 class CreateShow(DjangoModelFactory):
+    date = timezone.now()
+    production = factory.SubFactory('factories.factories.CreateProduction')
+
     class Meta:
         model = 'show.show'
 
@@ -32,7 +50,8 @@ class CreateProduction(DjangoModelFactory):
 
 class CreateReservation(DjangoModelFactory):
     class Meta:
-        model = 'ticket.reservation'
+        model = 'ticket.Reservation'
+    session_timeout = timezone.now()
 
 
 class CreateAccount(DjangoModelFactory):
@@ -49,15 +68,10 @@ class CreateVoucher(DjangoModelFactory):
     class Meta:
         model = 'ticket.voucher'
 
+    amount = 100
+    created_by = factory.SubFactory(CreateStaffUser)
+
 
 class CreatePricingModel(DjangoModelFactory):
     class Meta:
         model = 'ticket.pricingmodel'
-
-
-def CreateStaffUser(username, password):
-    user = User.objects.create_user(username, email="ture@example.com")
-    user.set_password(password)
-    user.is_staff = True
-    user.save()
-    return user
