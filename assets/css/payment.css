@@ -87,6 +87,10 @@
   color: black;
 }
 
+.payment-form button:disabled {
+  background: gray;
+}
+
 .payment-form .outcome {
     float: left;
     width: 100%;
@@ -127,4 +131,22 @@ section.contact-details {
   padding: 1em;
   background-color: white;
   color: rgb(141, 4, 28);
+}
+
+.spinner {
+  animation: rotation 2s infinite linear;
+}
+
+.spinner-container {
+  margin-top: 1em;
+  text-align: center;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
