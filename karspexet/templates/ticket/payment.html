@@ -61,7 +61,7 @@
         </form>
     </div>
 
-  <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form">
+  <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form" {% if reservation.is_free %}data-is-free{% endif %}>
     {% csrf_token %}
     <div class="group">
       <label>

@@ -68,6 +68,9 @@ class Reservation(models.Model):
     def get_amount(self):
         return self.total * 100  # Price in Öre
 
+    def is_free(self):
+        return self.get_amount() == 0
+
     def seats(self):
         return Seat.objects.filter(pk__in=self.tickets.keys()).all()
 
