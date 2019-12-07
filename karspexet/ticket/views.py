@@ -80,6 +80,7 @@ def _parse_stripe_payload(body: str) -> stripe.Event:
 def select_seats(request, show_slug):
     show = Show.objects.get(slug=show_slug)
     reservation = _get_or_create_reservation_object(request, show)
+
     taken_seats_qs = Reservation.active.exclude(pk=reservation.pk).filter(show=show)
     _set_session_timeout(request)
 
@@ -352,7 +353,7 @@ def _get_or_create_reservation_object(request, show):
 
     if reservation_id:
         try:
-            reservation = Reservation.objects.get(pk=reservation_id)
+            reservation = Reservation.objects.get(pk=reservation_id, finalized=False)
             reservation.session_timeout = timeout
             reservation.save()
             return reservation
