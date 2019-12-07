@@ -93,3 +93,25 @@ def test_cancelling_a_discounted_reservation_allows_voucher_for_reuse(show, user
 
     assert Reservation.objects.filter(pk=reservation.id).count() == 0
     assert Discount.objects.filter(pk=discount.id).count() == 0
+
+
+@pytest.mark.django_db
+def test_select_seats__with_finalized_reservation_in_session__gives_new_reservation(show):
+    seat = Seat.objects.first()
+    tickets = {str(seat.id): 'normal'}
+    reservation = f.CreateReservation(
+        finalized=True,
+        tickets=tickets,
+        session_timeout=timezone.now(),
+        show=show
+    )
+
+    rf = RequestFactory()
+    request = rf.get(reverse(views.cancel_reservation, args=[show.id]))
+    middleware = SessionMiddleware()
+    middleware.process_request(request)
+    request.session.save()
+    request.session[f"show_{show.id}"] = reservation.id
+
+    response = views.select_seats(request, show_slug=show.slug)
+    assert response._request.session[f"show_{show.id}"] != reservation.id
