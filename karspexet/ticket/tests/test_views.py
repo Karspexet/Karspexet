@@ -62,31 +62,42 @@ class TestSelect_seats(TestCase):
         self.assertContains(response, "Köp biljetter för Uppsättningen")
 
 
-class TestOverview(TestCase):
-    @mock.patch("karspexet.ticket.views.payment", autospec=True)
-    def test_booking_overview_with_active_session(self, mock_payment):
-        venue = f.CreateVenue()
-        group = f.CreateSeatingGroup(venue=venue)
-        f.CreatePricingModel(seating_group=group, prices={'student': 200, 'normal': 250}, valid_from=timezone.now())
-        seat = f.CreateSeat(group=group)
-        production = f.CreateProduction()
-        show = f.CreateShow(production=production, venue=venue, date=timezone.now())
-        reservation = f.CreateReservation(
-            tickets={str(seat.id): "normal"},
-            session_timeout=timezone.now(),
-            show=show,
-        )
-        session = self.client.session
-        session['show_%s' % show.id] = str(reservation.id)
-        session.save()
+@pytest.mark.django_db
+def test_booking_overview_with_active_session__includes_payment_intent(show, client):
+    reservation = f.CreateReservation(show=show, tickets={str(Seat.objects.first().id): "normal"})
+    session = client.session
+    session['show_%s' % show.id] = str(reservation.id)
+    session.save()
+
+    url = reverse(views.booking_overview, args=[show.slug])
+    with mock.patch("karspexet.ticket.views.payment", autospec=True) as mock_payment:
         mock_payment_intent = object()
         mock_payment.get_payment_intent_from_reservation.return_value = mock_payment_intent
+        response = client.get(url)
+    assert response.status_code == 200
+    assert response.context["reservation"] == reservation
+    assert response.context["stripe_payment_indent"] == mock_payment_intent
 
-        url = reverse(views.booking_overview, args=[show.slug])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["reservation"], reservation)
-        self.assertEqual(response.context["stripe_payment_indent"], mock_payment_intent)
+
+@pytest.mark.django_db
+def test_apply_voucher_with_active_reservation__updates_reservation_total(client, show):
+    reservation = f.CreateReservation(show=show, tickets={str(Seat.objects.first().id): "normal"})
+    voucher = f.CreateVoucher()
+    session = client.session
+    session['show_%s' % show.id] = str(reservation.id)
+    session["payment_intent_id"] = "1"
+    session.save()
+
+    assert reservation.total == 250
+
+    url = reverse(views.apply_voucher, args=[reservation.id])
+    with mock.patch("karspexet.ticket.payment.stripe", autospec=True) as mock_stripe:
+        response = client.post(url, data={"voucher_code": voucher.code})
+    assert response.status_code == 302
+    assert mock_stripe.mock_calls == [mock.call.PaymentIntent.modify("1", amount=15000)]
+
+    reservation.refresh_from_db()
+    assert reservation.total == 150
 
 
 class TestWebhooks(TestCase):
