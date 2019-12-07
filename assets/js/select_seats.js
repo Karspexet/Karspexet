@@ -1,3 +1,4 @@
+"use strict"
 function disableSubmitButton() {
   document.querySelector("#no-seats-selected").hidden = false
   document.querySelector("#book-submit-button").disabled = true

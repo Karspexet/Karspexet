@@ -1,12 +1,18 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "env": {
     "amd": true,
     "browser": true
   },
   "extends": "eslint:recommended",
+  "plugins": ["compat"],
   "rules": {
+    "compat/compat": "error",
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": ["error", "unix"],
+    "no-prototype-builtins": "off",
     "quotes": ["error", "double"],
     "semi": ["error", "never"]
   }
