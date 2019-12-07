@@ -29,83 +29,42 @@ function setupPayment(config) {
   })
   card.mount("#card-element")
 
-  function setOutcome(result) {
+  var paymentForm = document.getElementById("payment-form")
+  var submitButton = document.querySelector(".fn-payment-submit-button")
+  var spinner = Spinner(paymentForm.querySelector(".spinner-container"))
+
+  function setError(result) {
     var errorElement = document.querySelector(".error")
     errorElement.classList.remove("visible")
-
-    if (result.token) {
-      stripeTokenHandler(result.token)
-    } else if (result.error) {
+    if (result.error) {
       errorElement.textContent = result.error.message
       errorElement.classList.add("visible")
     }
+    spinner.hide()
+    submitButton.disabled = false
   }
 
-  card.on("change", function(event) {
-    setOutcome(event)
-  })
-
-  function showSpinner() {
-    paymentForm.querySelector(".spinner-container").classList.remove("hidden")
-  }
-
-  function hideSpinner() {
-    paymentForm.querySelector(".spinner-container").classList.add("hidden")
-  }
-
-  function disableSubmit() {
-    var button = document.querySelector(".fn-payment-submit-button")
-    button.disabled = true
-  }
-
-  function enableSubmit() {
-    var button = document.querySelector(".fn-payment-submit-button")
-    button.disabled = false
-  }
-
-  function stripeTokenHandler(token) {
-    // Insert the token ID into the form so it gets submitted to the server
-    var form = document.getElementById("payment-form")
-    var hiddenInput = document.createElement("input")
-    hiddenInput.setAttribute("type", "hidden")
-    hiddenInput.setAttribute("name", "stripeToken")
-    hiddenInput.setAttribute("value", token.id)
-    form.appendChild(hiddenInput)
-
-    // Submit the form
-    form.submit()
-  }
-  var paymentForm = document.getElementById("payment-form")
   paymentForm.addEventListener("submit", function(e) {
     e.preventDefault()
-    var billing = {
-      name: paymentForm.name.value,
-      phone: paymentForm.phone.value,
-      email: paymentForm.email.value,
-    }
-    disableSubmit()
-    showSpinner()
-    stripe
-      .confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: card,
-          billing_details: billing,
-        },
-      })
-      .then(function(result) {
-        // Handle result.error or result.paymentIntent
-        if (result.error) {
-          setPaymentError(result.error.message)
-          hideSpinner()
-          enableSubmit()
-        }
-        if (result.paymentIntent) {
-          // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)
-          setTimeout(function() {
-            window.location.href = window.config.successUrl
-          }, 5000)
-        }
-      })
+    submitButton.disabled = true
+
+    var paymentDetails = getStripePaymentDetails(paymentForm, card)
+    spinner.show()
+    stripe.confirmCardPayment(clientSecret, paymentDetails).then(function(result) {
+      // Handle result.error or result.paymentIntent
+      if (window.DEBUG) {
+        console.debug(result)
+      }
+      if (result.error) {
+        setError(result)
+      }
+      if (result.paymentIntent) {
+        // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)
+        setTimeout(function() {
+          window.location.href = window.config.successUrl
+        }, 5000)
+      }
+    })
   })
 
   var discountButton = document.getElementById("enter-discount-code")
@@ -130,18 +89,40 @@ function setupPayment(config) {
   cancelDiscountButton.addEventListener("click", closeDiscountForm)
 }
 
-function setPaymentError(message) {
-  // FIXME: This has no styling
-  var err = document.getElementById("fn-payment-errors")
-  err.innerHTML = null
-  err.appendChild(createWarning("Något gick fel, betalningen gick inte igenom."))
-  err.appendChild(createWarning(message))
+function getStripePaymentDetails(form, card) {
+  var billing = {
+    name: form.name.value,
+    phone: form.phone.value,
+    email: form.email.value,
+  }
+  if (!billing.phone) {
+    // "phone" is not required, but Stripe doesn't want us sending
+    // empty strings to them
+    delete billing["phone"]
+  }
+  return {
+    payment_method: {
+      card: card,
+      billing_details: billing,
+    },
+  }
 }
 
-function createWarning(text) {
-  var elm = document.createElement("div")
-  elm.textContent = text
-  return elm
+function Spinner(elm) {
+  // Wrapper to make sure we don't flash the spinner if an error
+  // message is going to be shown right after we "show" the spinner
+  var showTimer = null
+  return {
+    show: function() {
+      showTimer = setTimeout(function() {
+        elm.classList.remove("hidden")
+      }, 50)
+    },
+    hide: function() {
+      clearTimeout(showTimer)
+      elm.classList.add("hidden")
+    },
+  }
 }
 
 !(function(window) {
