@@ -1,5 +1,5 @@
 {% extends "ticket/base.html" %}
-{% load tz %}
+{% load tz static %}
 {% block ticket_content %}
 <div class="content_container">
   <section class="contact-details">
@@ -78,7 +78,11 @@
       </label>
     </div>
     {% include payment_partial %}
-    <button type="submit">Betala {{ reservation.total }} kr</button>
+    <button class="fn-payment-submit-button" type="submit">Betala {{ reservation.total }} kr</button>
+    <div class="spinner-container hidden">
+      <span>Vänta medan vi behandlar din betalning...</span>
+      <img class="luva spinner" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
+    </div>
     <div class="outcome">
       <div class="error" role="alert"></div>
     </div>
