@@ -151,7 +151,11 @@ def apply_voucher(request, reservation):
     code = request.POST["voucher_code"]
     reservation.apply_voucher(code)
     reservation.save()
-    stripe.PaymentIntent.modify(payment_intent_id, amount=reservation.get_amount())
+    new_amount = reservation.get_amount()
+    if not new_amount:
+        stripe.PaymentIntent.cancel(payment_intent_id)
+    else:
+        stripe.PaymentIntent.modify(payment_intent_id, amount=new_amount)
 
 
 def handle_stripe_webhook(event: stripe.Event):
