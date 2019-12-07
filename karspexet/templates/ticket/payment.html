@@ -66,15 +66,15 @@
     <div class="group">
       <label>
         <span>Namn</span>
-        <input name="name" class="field" placeholder="Jane Doe" />
+        <input name="name" class="field" placeholder="Jane Doe" autocomplete="name" required />
       </label>
       <label>
         <span>Telefonnummer</span>
-        <input name="phone" class="field" placeholder="(123) 456-7890" type="tel" />
+        <input name="phone" class="field" placeholder="(123) 456-7890" type="tel" autocomplete="tel" />
       </label>
       <label>
         <span>E-postadress</span>
-        <input name="email" class="field" placeholder="" type="email" />
+        <input name="email" class="field" placeholder="" type="email" autocomplete="email" required />
       </label>
     </div>
     {% include payment_partial %}
