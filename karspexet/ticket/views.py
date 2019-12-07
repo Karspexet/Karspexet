@@ -215,6 +215,7 @@ def apply_voucher(request, reservation_id):
     return redirect("booking_overview", show_slug=show.slug)
 
 
+@require_POST
 def process_payment(request, reservation_id):
     reservation = Reservation.objects.get(pk=reservation_id)
 
@@ -222,26 +223,15 @@ def process_payment(request, reservation_id):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_slug=reservation.show.slug)
 
-    if request.method == 'POST':
-        try:
-            reservation = PaymentProcess.run(reservation, request.POST, request)
-            request.session['reservation_timeout'] = None
-            request.session[f'show_{reservation.show_id}'] = None
-            messages.success(request, "Betalningen lyckades!")
+    if not reservation.is_free():
+        # We should only end up here if the tickets are free,
+        # since otherwise we want to handle the flow using stripe webhooks
+        messages.error(request, "Något gick fel i betalningen.")
+        return redirect("booking_overview", show_slug=reservation.show.slug)
 
-            return redirect("reservation_detail", reservation_code=reservation.reservation_code)
-
-        except PaymentError as error:
-            logger.exception(error, exc_info=True, extra={
-                'request': request
-            })
-            return TemplateResponse(request, "ticket/payment.html", {
-                'reservation': reservation,
-                'seats': reservation.seats(),
-                'payment_partial': _payment_partial(reservation),
-                'stripe_key': stripe_keys['publishable_key'],
-                'payment_failed': True,
-            })
+    billing_data = request.POST
+    payment.handle_successful_payment(reservation, billing_data)
+    return redirect("reservation_detail", reservation_code=reservation.reservation_code)
 
 
 def reservation_detail(request, reservation_code):

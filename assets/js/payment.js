@@ -45,6 +45,9 @@ function setupPayment(config) {
   }
 
   paymentForm.addEventListener("submit", function(e) {
+    if (paymentForm.getAttribute("data-is-free")) {
+      return
+    }
     e.preventDefault()
     submitButton.disabled = true
 

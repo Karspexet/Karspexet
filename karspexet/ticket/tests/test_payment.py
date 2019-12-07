@@ -18,16 +18,17 @@ def test_handle_successful_payment(show):
         tickets=tickets, session_timeout=timezone.now(), show=show
     )
 
-    event = _stripe_event()
-    payment = event.data.object
-    payment.metadata["reservation_id"] = str(reservation.id)
-    handle_successful_payment(payment)
+    handle_successful_payment(reservation, {
+        "name": "Frank Hamer",
+        "email": "frank@hamer.com",
+        "profession": "Police Inspector, Adventurer, Author",
+    })
 
     reservation.refresh_from_db()
     assert reservation.finalized
 
     assert len(mail.outbox) == 1
-    assert mail.outbox[0].to == ["Agata <agata.christie@example.com>"]
+    assert mail.outbox[0].to == ["Frank Hamer <frank@hamer.com>"]
 
     assert Ticket.objects.count() == 1
 

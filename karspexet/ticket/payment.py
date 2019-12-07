@@ -151,7 +151,11 @@ def apply_voucher(request, reservation):
     code = request.POST["voucher_code"]
     reservation.apply_voucher(code)
     reservation.save()
-    stripe.PaymentIntent.modify(payment_intent_id, amount=reservation.get_amount())
+    new_amount = reservation.get_amount()
+    if not new_amount:
+        stripe.PaymentIntent.cancel(payment_intent_id)
+    else:
+        stripe.PaymentIntent.modify(payment_intent_id, amount=new_amount)
 
 
 def handle_stripe_webhook(event: stripe.Event):
@@ -171,7 +175,11 @@ def handle_stripe_webhook(event: stripe.Event):
 
     elif event.type == "payment_intent.succeeded":
         payment_intent = event.data.object
-        handle_successful_payment(payment_intent)
+
+        reservation = Reservation.objects.get(id=payment_intent.metadata["reservation_id"])
+        billing_details = payment_intent.charges.data[0].billing_details
+
+        handle_successful_payment(reservation, billing_details)
         logger.info("PaymentIntent succeeded: %s", payment_intent.id)
         handled = True
 
@@ -181,16 +189,11 @@ def handle_stripe_webhook(event: stripe.Event):
     return handled
 
 
-def handle_successful_payment(payment: stripe.PaymentIntent):
+def handle_successful_payment(reservation: Reservation, billing_data: dict):
     """
     Our honored customer has paid us money - let's send them a ticket
     """
-    reservation_id = payment.metadata["reservation_id"]
-    reservation: Reservation = Reservation.objects.get(id=reservation_id)
-
-    billing_details = payment.charges.data[0].billing_details
-    billing = _pick(billing_details, ["name", "phone", "email"])
-
+    billing = _pick(billing_data, ["name", "phone", "email"])
     account = Account.objects.create(**billing)
 
     tickets = []
@@ -212,4 +215,4 @@ def handle_successful_payment(payment: stripe.PaymentIntent):
 
 
 def _pick(data, fields):
-    return {f: data[f] for f in fields}
+    return {f: data.get(f, "") for f in fields}
