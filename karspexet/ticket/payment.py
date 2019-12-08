@@ -136,6 +136,7 @@ def get_payment_intent_from_reservation(request, reservation):
         amount = reservation.get_amount()
         if payment_intent.amount != amount:
             return stripe.PaymentIntent.modify(payment_intent_id, amount=amount)
+        return payment_intent
 
     intent = stripe.PaymentIntent.create(
         amount=reservation.get_amount(),

@@ -55,15 +55,16 @@ class TestGetPaymentIntentFromReservation:
         reservation = self._build_reservation(show)
         request = self._build_request(reservation)
 
-        request.session["payment_intent_id"] = "fake_payment_intent_id"
+        fake_intent = FakeIntent(amount=reservation.get_amount())
+        request.session["payment_intent_id"] = fake_intent.id
         with mock.patch("karspexet.ticket.payment.stripe") as mock_stripe:
-            mock_stripe.PaymentIntent.retrieve.return_value = FakeIntent(
-                id="fake_payment_intent_id"
-            )
+            mock_stripe.PaymentIntent.retrieve.return_value = fake_intent
             intent = get_payment_intent_from_reservation(request, reservation)
 
         assert mock_stripe.PaymentIntent.retrieve.called
-        assert request.session["payment_intent_id"] == "fake_payment_intent_id"
+        assert not mock_stripe.PaymentIntent.modify.called
+        assert not mock_stripe.PaymentIntent.create.called
+        assert request.session["payment_intent_id"] == fake_intent.id
 
     def test_modify_payment_intent_if_reservation_amount_changed(self, show):
         reservation = self._build_reservation(show)
@@ -84,6 +85,7 @@ class TestGetPaymentIntentFromReservation:
             )
             intent = get_payment_intent_from_reservation(request, reservation)
 
+        assert not mock_stripe.PaymentIntent.create.called
         assert mock_stripe.PaymentIntent.update.called_once_with(
             "fake_payment_intent_id",
             updated_amount,
@@ -110,7 +112,7 @@ class TestGetPaymentIntentFromReservation:
 
 
 class FakeIntent:
-    def __init__(self, id, amount=None):
+    def __init__(self, id="fake_payment_intent_id", amount=None):
         self.id = id
         self.amount = amount
 
