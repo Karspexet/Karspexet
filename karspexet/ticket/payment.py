@@ -17,11 +17,12 @@ stripe.api_key = stripe_keys['secret_key']
 def get_payment_intent_from_reservation(request, reservation):
     payment_intent_id = request.session.get("payment_intent_id")
     if payment_intent_id:
-        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+        intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         amount = reservation.get_amount()
-        if payment_intent.amount != amount:
+        if intent.amount != amount:
+            logger.info("Updated PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
             return stripe.PaymentIntent.modify(payment_intent_id, amount=amount)
-        return payment_intent
+        return intent
 
     intent = stripe.PaymentIntent.create(
         amount=reservation.get_amount(),
@@ -31,6 +32,7 @@ def get_payment_intent_from_reservation(request, reservation):
         statement_descriptor="Biljett Kårspexet",
         metadata={"reservation_id": reservation.id},
     )
+    logger.info("Created PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
     request.session["payment_intent_id"] = intent.id
     return intent
 
@@ -58,7 +60,7 @@ def handle_stripe_webhook(event: stripe.Event):
         billing_details = payment_intent.charges.data[0].billing_details
 
         handle_successful_payment(reservation, billing_details)
-        logger.info("PaymentIntent succeeded: %s", payment_intent.id)
+        logger.info("PaymentIntent=%s for Reservation=%s succeeded", payment_intent.id, reservation.id)
 
 
 def handle_successful_payment(reservation: Reservation, billing_data: dict):
