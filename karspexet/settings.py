@@ -18,6 +18,21 @@ import raven
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+try:
+    with open(BASE_DIR + "/env.json") as env_json:
+        ENV = json.load(env_json)
+except FileNotFoundError:
+    import textwrap
+    raise SystemExit(textwrap.dedent("""
+    ================ ERROR ================
+    ERROR: No env.json settings file found.
+
+    Try starting with the sample one:
+
+    cp env.json.sample env.json
+    """))
+
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "assets"),
@@ -29,12 +44,12 @@ STATICFILES_DIRS = [
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&-)aly8rq=l8-7193rj0e@p$tp571+q5&g0jyi8#)u!rt-!=b8'
+SECRET_KEY = ENV.get("SECRET_KEY", "&-)aly8rq=l8-7193rj0e@p$tp571+q5&g0jyi8#)u!rt-!=b8")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = ENV.get("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", [])
 
 
 # Application definition
@@ -87,6 +102,8 @@ MIDDLEWARE = [
     'cms.middleware.language.LanguageCookieMiddleware',
 ]
 
+APPEND_SLASH = True
+
 ROOT_URLCONF = 'karspexet.urls'
 
 TEMPLATES = [
@@ -136,11 +153,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Security
+if ENV.get("HTTPS", False):
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    X_FRAME_OPTIONS = 'SAMEORIGIN'
+    CSRF_COOKIE_HTTPONLY = True
+    SECURE_SSL_REDIRECT = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'sv'
 
 TIME_ZONE = 'Europe/Stockholm'
 
@@ -163,20 +190,6 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 
 STATIC_URL = '/static/'
 
-try:
-    with open(BASE_DIR + "/env.json") as env_json:
-        ENV = json.load(env_json)
-except FileNotFoundError:
-    import textwrap
-    raise SystemExit(textwrap.dedent("""
-    ================ ERROR ================
-    ERROR: No env.json settings file found.
-
-    Try starting with the sample one:
-
-    cp env.json.sample env.json
-    """))
-
 EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
 PAYMENT_PROCESS = ENV.get("payment_process", "not set")
 SITE_ID = 1
@@ -186,7 +199,6 @@ CMS_TEMPLATES = [
     ('content_with_hero_image.html', 'Content page template with hero image'),
 ]
 LANGUAGES = [
-    ('en', 'English'),
     ('sv', 'Swedish'),
 ]
 THUMBNAIL_HIGH_RESOLUTION = True
@@ -266,7 +278,7 @@ RAVEN_CONFIG = {
 
 WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
 
-TICKET_EMAIL_FROM_ADDRESS = "noreply@karspexet.se"
+TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
 
 ASSETS_MODULES = ["karspexet.assets"]
 ASSETS_DEBUG = DEBUG
