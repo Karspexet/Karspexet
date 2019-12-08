@@ -132,7 +132,11 @@ class StripePaymentProcess(PaymentProcess):
 def get_payment_intent_from_reservation(request, reservation):
     payment_intent_id = request.session.get("payment_intent_id")
     if payment_intent_id:
-        return stripe.PaymentIntent.retrieve(payment_intent_id)
+        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+        amount = reservation.get_amount()
+        if payment_intent.amount != amount:
+            return stripe.PaymentIntent.modify(payment_intent_id, amount=amount)
+
     intent = stripe.PaymentIntent.create(
         amount=reservation.get_amount(),
         currency="sek",
