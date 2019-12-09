@@ -67,10 +67,12 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict):
     """
     Our honored customer has paid us money - let's send them a ticket
     """
-    billing = _pick(billing_data, ["name", "phone", "email"])
-    account = Account.objects.create(**billing)
+    if reservation.finalized:
+        return
 
-    tickets = []
+    billing = _pick(billing_data, ["name", "phone", "email"])
+    account, _ = Account.objects.get_or_create(**billing)
+
     for seat_id, ticket_type in reservation.tickets.items():
         seat = Seat.objects.get(pk=seat_id)
         ticket = Ticket.objects.create(
@@ -80,12 +82,11 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict):
             seat=seat,
             account=account,
         )
-        tickets.append(ticket)
+
+    send_ticket_email_to_customer(reservation, account.email, account.name)
 
     reservation.finalized = True
     reservation.save()
-
-    send_ticket_email_to_customer(reservation, account.email, account.name)
 
 
 def _pick(data, fields):

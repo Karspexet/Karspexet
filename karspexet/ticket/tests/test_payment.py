@@ -23,11 +23,14 @@ def test_handle_successful_payment(show):
         tickets=tickets, session_timeout=timezone.now(), show=show
     )
 
-    handle_successful_payment(reservation, {
+    data = {
         "name": "Frank Hamer",
         "email": "frank@hamer.com",
         "profession": "Police Inspector, Adventurer, Author",
-    })
+    }
+    # Handle the same webhook twice to make sure we handle it idempotently
+    handle_successful_payment(reservation, data)
+    handle_successful_payment(reservation, data)
 
     reservation.refresh_from_db()
     assert reservation.finalized
