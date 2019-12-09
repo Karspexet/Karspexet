@@ -17,29 +17,38 @@ from karspexet.ticket.payment import get_payment_intent_from_reservation, handle
 
 
 @pytest.mark.django_db
-def test_handle_successful_payment(show):
-    seat = Seat.objects.first()
-    tickets = {str(seat.id): "normal"}
-    reservation = f.CreateReservation(
-        tickets=tickets, session_timeout=timezone.now(), show=show
-    )
+class PaymentSuccess:
+    def test_is_idempotent(self, show):
+        reservation = self._build_reservation(show)
+        data = {
+            "name": "Frank Hamer",
+            "email": "frank@hamer.com",
+            "profession": "Police Inspector, Adventurer, Author",
+        }
+        # Handle the same webhook twice to make sure we handle it idempotently
+        handle_successful_payment(reservation, data)
+        handle_successful_payment(reservation, data)
 
-    data = {
-        "name": "Frank Hamer",
-        "email": "frank@hamer.com",
-        "profession": "Police Inspector, Adventurer, Author",
-    }
-    # Handle the same webhook twice to make sure we handle it idempotently
-    handle_successful_payment(reservation, data)
-    handle_successful_payment(reservation, data)
+        reservation.refresh_from_db()
+        assert reservation.finalized
 
-    reservation.refresh_from_db()
-    assert reservation.finalized
+        assert len(mail.outbox) == 1
+        assert mail.outbox[0].to == ["Frank Hamer <frank@hamer.com>"]
 
-    assert len(mail.outbox) == 1
-    assert mail.outbox[0].to == ["Frank Hamer <frank@hamer.com>"]
+        assert Ticket.objects.count() == 1
 
-    assert Ticket.objects.count() == 1
+    @mock.patch("karspexet.ticket.payment.send_ticket_email_to_customer", autospec=True, side_effect=Exception)
+    def test_finalizes_reservation_even_with_email_error(self, show):
+        reservation = self._build_reservation(show)
+        with pytest.raises(Exception):
+            handle_successful_payment(reservation, {"name": "mayor", "email": "mayor"})
+        reservation.refresh_from_db()
+        assert reservation.finalized
+
+    def _build_reservation(self, show):
+        seat = Seat.objects.first()
+        tickets = {str(seat.id): "normal"}
+        return f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
 
 
 @pytest.mark.django_db
