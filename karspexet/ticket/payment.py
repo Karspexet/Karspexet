@@ -11,18 +11,22 @@ from karspexet.venue.models import Seat
 
 logger = logging.getLogger(__name__)
 stripe_keys = settings.ENV["stripe"]
-stripe.api_key = stripe_keys['secret_key']
+stripe.api_key = stripe_keys["secret_key"]
 
 
 def get_payment_intent_from_reservation(request, reservation):
     payment_intent_id = request.session.get("payment_intent_id")
     if payment_intent_id:
         intent = stripe.PaymentIntent.retrieve(payment_intent_id)
-        amount = reservation.get_amount()
-        if intent.amount != amount:
-            logger.info("Updated PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
-            return stripe.PaymentIntent.modify(payment_intent_id, amount=amount)
-        return intent
+        if intent.metadata.reservation_id == str(reservation.id):
+            amount = reservation.get_amount()
+            if intent.amount != amount:
+                logger.info("Updated PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
+                return stripe.PaymentIntent.modify(payment_intent_id, amount=amount)
+            return intent
+
+        # We have a PaymentIntent from an old reservation in the session - create a new one instead
+        logger.warning("Retrieved wrong PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
 
     intent = stripe.PaymentIntent.create(
         amount=reservation.get_amount(),

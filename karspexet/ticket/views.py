@@ -23,7 +23,7 @@ from karspexet.ticket import payment
 from karspexet.ticket.forms import CustomerEmailForm
 from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
                                      Voucher)
-from karspexet.ticket.payment import PaymentError, PaymentProcess, handle_stripe_webhook
+from karspexet.ticket.payment import handle_stripe_webhook
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.venue.models import Seat
 

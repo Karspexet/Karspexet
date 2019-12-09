@@ -1,18 +1,19 @@
 # coding: utf-8
 from unittest import mock
-from django.core import mail
+
 import pytest
 import stripe
 from django.contrib.sessions.middleware import SessionMiddleware
+from django.core import mail
 from django.shortcuts import reverse
 from django.test import RequestFactory
 from django.utils import timezone
 
 from factories import factories as f
 from factories.fixtures import show  # noqa
-from karspexet.ticket.models import Seat, Ticket
-from karspexet.ticket.payment import handle_successful_payment, get_payment_intent_from_reservation
 from karspexet.ticket import views
+from karspexet.ticket.models import Reservation, Seat, Ticket
+from karspexet.ticket.payment import get_payment_intent_from_reservation, handle_successful_payment
 
 
 @pytest.mark.django_db
@@ -45,58 +46,74 @@ def test_handle_successful_payment(show):
 class TestGetPaymentIntentFromReservation:
     def test_create_payment_intent_if_none_stored_in_session(self, show):
         reservation = self._build_reservation(show)
+        intent = FakeIntent(reservation)
         request = self._build_request(reservation)
 
         with mock.patch("karspexet.ticket.payment.stripe") as mock_stripe:
-            mock_stripe.PaymentIntent.create.return_value = FakeIntent(id="fake_payment_intent_id")
+            mock_stripe.PaymentIntent.create.return_value = intent
             intent = get_payment_intent_from_reservation(request, reservation)
 
         assert mock_stripe.PaymentIntent.create.called
-        assert request.session["payment_intent_id"] == "fake_payment_intent_id"
+        assert request.session["payment_intent_id"] == intent.id
 
     def test_retrieve_payment_intent_if_one_is_stored_in_session(self, show):
         reservation = self._build_reservation(show)
+        intent = FakeIntent(reservation)
         request = self._build_request(reservation)
+        request.session["payment_intent_id"] = intent.id
 
-        fake_intent = FakeIntent(amount=reservation.get_amount())
-        request.session["payment_intent_id"] = fake_intent.id
         with mock.patch("karspexet.ticket.payment.stripe") as mock_stripe:
-            mock_stripe.PaymentIntent.retrieve.return_value = fake_intent
+            mock_stripe.PaymentIntent.retrieve.return_value = intent
             intent = get_payment_intent_from_reservation(request, reservation)
 
         assert mock_stripe.PaymentIntent.retrieve.called
         assert not mock_stripe.PaymentIntent.modify.called
         assert not mock_stripe.PaymentIntent.create.called
-        assert request.session["payment_intent_id"] == fake_intent.id
+        assert request.session["payment_intent_id"] == intent.id
 
     def test_modify_payment_intent_if_reservation_amount_changed(self, show):
         reservation = self._build_reservation(show)
-        old_amount = reservation.get_amount()
+        intent = FakeIntent(reservation)
+
         another_seat = Seat.objects.all()[1]
         reservation.tickets[str(another_seat.id)] = "normal"
         reservation.save()
         updated_amount = reservation.get_amount()
 
         request = self._build_request(reservation)
-
-        request.session["payment_intent_id"] = "fake_payment_intent_id"
+        request.session["payment_intent_id"] = intent.id
 
         with mock.patch("karspexet.ticket.payment.stripe") as mock_stripe:
-            mock_stripe.PaymentIntent.retrieve.return_value = FakeIntent(
-                id="fake_payment_intent_id",
-                amount=old_amount
-            )
+            mock_stripe.PaymentIntent.retrieve.return_value = intent
+            mock_stripe.PaymentIntent.modify.return_value = intent
             intent = get_payment_intent_from_reservation(request, reservation)
 
         assert not mock_stripe.PaymentIntent.create.called
-        assert mock_stripe.PaymentIntent.update.called_once_with(
-            "fake_payment_intent_id",
-            updated_amount,
-        )
-        assert request.session["payment_intent_id"] == "fake_payment_intent_id"
+        mock_stripe.PaymentIntent.modify.assert_called_once_with(intent.id, amount=updated_amount)
+        assert request.session["payment_intent_id"] == intent.id
 
-    def _build_reservation(self, show):
-        seat = Seat.objects.first()
+    def test_change_payment_intent_if_incorrect_reservation_return(self, show):
+        reservation_1 = self._build_reservation(show, seat=Seat.objects.all()[0])
+        reservation_2 = self._build_reservation(show, seat=Seat.objects.all()[1])
+        intent_1 = FakeIntent(reservation_1)
+        intent_2 = FakeIntent(reservation_2)
+
+        request = self._build_request(reservation_2)
+        request.session["payment_intent_id"] = intent_1.id
+
+        with mock.patch("karspexet.ticket.payment.stripe") as mock_stripe:
+            mock_stripe.PaymentIntent.retrieve.return_value = intent_1
+            mock_stripe.PaymentIntent.create.return_value = intent_2
+            intent = get_payment_intent_from_reservation(request, reservation_2)
+
+        mock_stripe.PaymentIntent.retrieve.assert_called_once_with(intent_1.id)
+        assert not mock_stripe.PaymentIntent.modify.called
+        assert mock_stripe.PaymentIntent.create.called
+        assert request.session["payment_intent_id"] == intent.id
+
+    def _build_reservation(self, show, seat=None):
+        if seat is None:
+            seat = Seat.objects.first()
         tickets = {str(seat.id): "normal"}
         return f.CreateReservation(
             tickets=tickets, session_timeout=timezone.now(), show=show
@@ -115,9 +132,15 @@ class TestGetPaymentIntentFromReservation:
 
 
 class FakeIntent:
-    def __init__(self, id="fake_payment_intent_id", amount=None):
-        self.id = id
-        self.amount = amount
+    class Metadata:
+        reservation_id = ""
+
+    def __init__(self, reservation: Reservation) -> None:
+        self.id = "fake_payment_intent_id_%s" % reservation.id
+        self.amount = reservation.get_amount()
+        self.metadata = self.Metadata()
+        self.metadata.reservation_id = str(reservation.id)
+        self.status = "pending"
 
 
 def _stripe_event():
