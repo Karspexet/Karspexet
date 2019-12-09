@@ -89,10 +89,10 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict):
             account=account,
         )
 
-    send_ticket_email_to_customer(reservation, account.email, account.name)
-
     reservation.finalized = True
     reservation.save()
+
+    send_ticket_email_to_customer(reservation, account.email, account.name)
 
 
 def _pick(data, fields):
