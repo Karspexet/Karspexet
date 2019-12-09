@@ -17,7 +17,7 @@ from karspexet.ticket.payment import get_payment_intent_from_reservation, handle
 
 
 @pytest.mark.django_db
-class PaymentSuccess:
+class TestPaymentSuccess:
     def test_is_idempotent(self, show):
         reservation = self._build_reservation(show)
         data = {
@@ -38,7 +38,7 @@ class PaymentSuccess:
         assert Ticket.objects.count() == 1
 
     @mock.patch("karspexet.ticket.payment.send_ticket_email_to_customer", autospec=True, side_effect=Exception)
-    def test_finalizes_reservation_even_with_email_error(self, show):
+    def test_finalizes_reservation_even_with_email_error(self, _, show):
         reservation = self._build_reservation(show)
         with pytest.raises(Exception):
             handle_successful_payment(reservation, {"name": "mayor", "email": "mayor"})
@@ -124,9 +124,7 @@ class TestGetPaymentIntentFromReservation:
         if seat is None:
             seat = Seat.objects.first()
         tickets = {str(seat.id): "normal"}
-        return f.CreateReservation(
-            tickets=tickets, session_timeout=timezone.now(), show=show
-        )
+        return f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
 
     def _build_request(self, reservation):
         show = reservation.show
@@ -274,12 +272,7 @@ def _stripe_event():
                 "object": "payment_intent",
                 "on_behalf_of": None,
                 "payment_method": "pm_1FmmIZHLvgPvarOiI710yOuB",
-                "payment_method_options": {
-                    "card": {
-                        "installments": None,
-                        "request_three_d_secure": "automatic",
-                    }
-                },
+                "payment_method_options": {"card": {"installments": None, "request_three_d_secure": "automatic"}},
                 "payment_method_types": ["card"],
                 "receipt_email": None,
                 "review": None,

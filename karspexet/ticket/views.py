@@ -23,7 +23,6 @@ from karspexet.ticket import payment
 from karspexet.ticket.forms import CustomerEmailForm
 from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
                                      Voucher)
-from karspexet.ticket.payment import handle_stripe_webhook
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.venue.models import Seat
 
@@ -55,7 +54,7 @@ def stripe_webhooks(request):
     if event is None:
         return HttpResponse(status=400)
 
-    handle_stripe_webhook(event)
+    payment.handle_stripe_webhook(event)
     return HttpResponse(status=200)
 
 
