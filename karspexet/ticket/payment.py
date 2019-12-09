@@ -20,7 +20,7 @@ def get_payment_intent_from_reservation(request, reservation):
         intent = stripe.PaymentIntent.retrieve(payment_intent_id)
         if intent.metadata.reservation_id == str(reservation.id):
             amount = reservation.get_amount()
-            if intent.amount != amount:
+            if amount > 0 and intent.amount != amount:
                 logger.info("Updated PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
                 return stripe.PaymentIntent.modify(payment_intent_id, amount=amount)
             return intent
