@@ -60,7 +60,16 @@ def handle_stripe_webhook(event: stripe.Event):
     if event.type == "payment_intent.succeeded":
         payment_intent: stripe.PaymentIntent = event.data.object
 
-        reservation = Reservation.objects.get(id=payment_intent.metadata["reservation_id"])
+        reservation_id = payment_intent.metadata["reservation_id"]
+        try:
+            reservation = Reservation.objects.get(id=reservation_id)
+        except Reservation.DoesNotExist:
+            # This is not an error we can recover from, so let's log the error and return 200 OK :(
+            logger.error("Payment succeeded for missing Reservation=%s", reservation_id, extra={
+                "payment": payment_intent,
+            })
+            return
+
         billing_details = payment_intent.charges.data[0].billing_details
 
         handle_successful_payment(reservation, billing_details)
