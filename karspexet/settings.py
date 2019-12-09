@@ -183,19 +183,21 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = "staticfiles"
-
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "django_assets.finders.AssetsFinder",
 ]
 
+_static_path = lambda key, default: os.path.abspath(ENV.get(key, default))
+MEDIA_ROOT = _static_path("MEDIA_ROOT", "./uploads")
+STATIC_ROOT = _static_path("STATIC_ROOT", "./static_root")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "assets"),
-    os.path.join(BASE_DIR, "filer_public"),
-    os.path.join(BASE_DIR, "filer_public_thumbnails"),
+    os.path.join(MEDIA_ROOT, "filer_public"),
+    os.path.join(MEDIA_ROOT, "filer_public_thumbnails"),
 ]
 
 EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
@@ -223,18 +225,19 @@ FILER_STORAGES = {
         'main': {
             'ENGINE': 'filer.storage.PublicFileSystemStorage',
             'OPTIONS': {
-                'location': 'filer_public',
-                'base_url': '/static/',
+                'location': os.path.join(MEDIA_ROOT, 'filer_public/uploads'),
+                'base_url': '/uploads',
             },
             'UPLOAD_TO': 'filer.utils.generate_filename.randomized',
-            'UPLOAD_TO_PREFIX': 'filer_public',
+            'UPLOAD_TO_PREFIX': '',
         },
         'thumbnails': {
             'ENGINE': 'filer.storage.PublicFileSystemStorage',
             'OPTIONS': {
-                'location': 'filer_public_thumbnails',
-                'base_url': '/static/',
+                'location': os.path.join(MEDIA_ROOT, 'filer_public_thumbnails/uploads'),
+                'base_url': '/uploads',
             },
+            'UPLOAD_TO_PREFIX': '',
         },
     }
 }
@@ -281,7 +284,7 @@ CMS_PLACEHOLDER_CONF = {
 
 RAVEN_CONFIG = {
     'dsn': ENV.get('sentry_dsn'),
-    'release': raven.fetch_git_sha(os.path.abspath(os.path.dirname(os.path.dirname(__file__)))),
+    'release': raven.fetch_git_sha(BASE_DIR),
 }
 
 WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
