@@ -304,7 +304,7 @@ SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "root": {"level": "INFO", "handlers": ["stdout"]},
+    "root": {"level": "INFO", "handlers": ["stdout", "sentry"]},
     "formatters": {
         "default": {
             "format": "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
@@ -323,6 +323,10 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "stream": "ext://sys.stdout",
             "formatter": "default",
+        },
+        "sentry": {
+            "level": "ERROR",
+            "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
         },
         "django.server": {
             "class": "logging.StreamHandler",
