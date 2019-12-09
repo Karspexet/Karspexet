@@ -301,7 +301,7 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["stdout"]},
     "formatters": {
         "default": {
-            "format": "[%(asctime)s] %(name)s: %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
             "datefmt": "%H:%M:%S",
         },
         "django.server": {
