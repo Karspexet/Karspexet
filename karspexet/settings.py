@@ -33,13 +33,6 @@ except FileNotFoundError:
     """))
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "assets"),
-    os.path.join(BASE_DIR, "filer_public"),
-    os.path.join(BASE_DIR, "filer_public_thumbnails"),
-]
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -190,6 +183,21 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = "staticfiles"
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django_assets.finders.AssetsFinder",
+]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "assets"),
+    os.path.join(BASE_DIR, "filer_public"),
+    os.path.join(BASE_DIR, "filer_public_thumbnails"),
+]
+
 EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
 PAYMENT_PROCESS = ENV.get("payment_process", "not set")
 SITE_ID = 1
@@ -287,13 +295,6 @@ ASSETS_AUTO_BUILD = ASSETS_DEBUG
 ASSETS_URL_EXPIRE = True
 SLIMIT_MANGLE = not ASSETS_DEBUG
 SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
-
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "django_assets.finders.AssetsFinder",
-]
-STATIC_ROOT = "staticfiles"
 
 LOGGING = {
     "version": 1,
