@@ -41,6 +41,8 @@ SECRET_KEY = ENV.get("SECRET_KEY", "&-)aly8rq=l8-7193rj0e@p$tp571+q5&g0jyi8#)u!r
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENV.get("DEBUG", True)
+if DEBUG:
+    INTERNAL_IPS = ["127.0.0.1"]
 
 ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", [])
 
