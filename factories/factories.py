@@ -38,6 +38,7 @@ class CreateSeat(DjangoModelFactory):
 class CreateShow(DjangoModelFactory):
     date = timezone.now()
     production = factory.SubFactory('factories.factories.CreateProduction')
+    venue = factory.SubFactory('factories.factories.CreateVenue')
 
     class Meta:
         model = 'show.show'
@@ -55,11 +56,17 @@ class CreateReservation(DjangoModelFactory):
 
 
 class CreateAccount(DjangoModelFactory):
+    name = "Bonnie"
+    email = "bonnie@example.com"
+
     class Meta:
         model = 'ticket.account'
 
 
 class CreateTicket(DjangoModelFactory):
+    price = 200
+    account = factory.SubFactory('factories.factories.CreateAccount')
+
     class Meta:
         model = 'ticket.ticket'
 
