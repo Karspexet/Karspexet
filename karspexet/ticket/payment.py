@@ -77,7 +77,7 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict):
     billing = _pick(billing_data, ["name", "phone", "email"])
     account = Account.objects.filter(**billing).first()
     if account is None:
-        Account.objects.create(**billing)
+        account = Account.objects.create(**billing)
 
     for seat_id, ticket_type in reservation.tickets.items():
         seat = Seat.objects.get(pk=seat_id)
