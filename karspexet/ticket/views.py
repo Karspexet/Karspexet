@@ -55,10 +55,8 @@ def stripe_webhooks(request):
     if event is None:
         return HttpResponse(status=400)
 
-    if handle_stripe_webhook(event):
-        return HttpResponse(status=200)
-
-    return HttpResponse(status=400)
+    handle_stripe_webhook(event)
+    return HttpResponse(status=200)
 
 
 def _parse_stripe_payload(body: str) -> stripe.Event:
