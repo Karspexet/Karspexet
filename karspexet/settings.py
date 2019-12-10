@@ -47,6 +47,21 @@ if DEBUG:
 ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", [])
 
 
+SITE_ID = 1
+
+EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
+
+PAYMENT_PROCESS = ENV.get("payment_process", "not set")
+
+TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
+
+WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
+
+RAVEN_CONFIG = {
+    'dsn': ENV.get('sentry_dsn'),
+    'release': raven.fetch_git_sha(BASE_DIR),
+}
+
 # Application definition
 
 OUR_APPS = [
@@ -134,18 +149,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # Security
@@ -161,6 +168,10 @@ if ENV.get("HTTPS", False):
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
+
+LANGUAGES = [
+    ('sv', 'Swedish'),
+]
 
 LANGUAGE_CODE = 'sv'
 
@@ -202,17 +213,14 @@ STATICFILES_DIRS = [
     os.path.join(MEDIA_ROOT, "filer_public_thumbnails"),
 ]
 
-EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
-PAYMENT_PROCESS = ENV.get("payment_process", "not set")
-SITE_ID = 1
-CMS_TEMPLATES = [
-    ('home.html', 'Home page template'),
-    ('about.html', 'Content page template'),
-    ('content_with_hero_image.html', 'Content page template with hero image'),
-]
-LANGUAGES = [
-    ('sv', 'Swedish'),
-]
+ASSETS_MODULES = ["karspexet.assets"]
+ASSETS_DEBUG = DEBUG
+ASSETS_ROOT = "staticfiles"
+ASSETS_AUTO_BUILD = ASSETS_DEBUG
+ASSETS_URL_EXPIRE = True
+SLIMIT_MANGLE = not ASSETS_DEBUG
+SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
+
 THUMBNAIL_HIGH_RESOLUTION = True
 
 THUMBNAIL_PROCESSORS = (
@@ -244,6 +252,11 @@ FILER_STORAGES = {
     }
 }
 
+CMS_TEMPLATES = [
+    ('home.html', 'Home page template'),
+    ('about.html', 'Content page template'),
+    ('content_with_hero_image.html', 'Content page template with hero image'),
+]
 CMS_PLACEHOLDER_CONF = {
     None: {
         "plugins": ['TextPlugin', 'LinkPlugin', 'PicturePlugin'],
@@ -284,23 +297,7 @@ CMS_PLACEHOLDER_CONF = {
     },
 }
 
-RAVEN_CONFIG = {
-    'dsn': ENV.get('sentry_dsn'),
-    'release': raven.fetch_git_sha(BASE_DIR),
-}
-
-WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
-
-TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
-
-ASSETS_MODULES = ["karspexet.assets"]
-ASSETS_DEBUG = DEBUG
-ASSETS_ROOT = "staticfiles"
-ASSETS_AUTO_BUILD = ASSETS_DEBUG
-ASSETS_URL_EXPIRE = True
-SLIMIT_MANGLE = not ASSETS_DEBUG
-SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
-
+# Logging
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
