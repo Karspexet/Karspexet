@@ -82,9 +82,11 @@ target/
 # asdf
 .tool-versions
 
-#Webpack & NPM
+# NPM
 node_modules
-webpack-stats.json
+
+# Generated asset bundles
+static/bundles/
 
 filer_public/
 filer_public_thumbnails/
@@ -94,9 +96,6 @@ filer_public_thumbnails/
 
 # Some editor temp files
 *~
-
-# webassets
-.webassets-cache/
 
 # our server setup
 staticfiles/
