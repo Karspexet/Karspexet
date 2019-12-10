@@ -92,7 +92,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'raven.contrib.django.raven_compat',
     'svg',
-    'django_assets',
+    'compressor',
 ] + OUR_APPS
 
 MIDDLEWARE = [
@@ -200,27 +200,20 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "django_assets.finders.AssetsFinder",
+    "compressor.finders.CompressorFinder",
 ]
 
 _static_path = lambda key, default: os.path.abspath(ENV.get(key, default))
 MEDIA_ROOT = _static_path("MEDIA_ROOT", "./uploads")
-STATIC_ROOT = _static_path("STATIC_ROOT", "./static_root")
+STATIC_ROOT = _static_path("STATIC_ROOT", "./static")
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "assets"),
     os.path.join(MEDIA_ROOT, "filer_public"),
     os.path.join(MEDIA_ROOT, "filer_public_thumbnails"),
 ]
 
-ASSETS_MODULES = ["karspexet.assets"]
-ASSETS_DEBUG = DEBUG
-ASSETS_ROOT = "staticfiles"
-ASSETS_AUTO_BUILD = ASSETS_DEBUG
-ASSETS_URL_EXPIRE = True
-SLIMIT_MANGLE = not ASSETS_DEBUG
-SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
+COMPRESS_ENABLED = not DEBUG
+COMPRESS_OFFLINE = not DEBUG
 
 THUMBNAIL_HIGH_RESOLUTION = True
 
