@@ -1,0 +1,24 @@
+{
+  "name": "karspexet",
+  "version": "1.0.0",
+  "main": "assets/js/index.js",
+  "repository": "git@github.com:Karspexet/Karspexet.git",
+  "author": "it@karspexet.se",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel static/js/app.js --no-hmr --public-url /static/bundles/ --out-dir static/bundles",
+    "build": "parcel build static/js/app.js --no-hmr --public-url /static/bundles/ --out-dir static/bundles"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
