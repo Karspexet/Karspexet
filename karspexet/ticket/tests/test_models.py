@@ -8,7 +8,6 @@ from django.test import TestCase
 from django.utils import timezone
 
 from factories import factories as f
-from factories.fixtures import show, user
 from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
                                      Ticket, Voucher)
 from karspexet.venue.models import Seat

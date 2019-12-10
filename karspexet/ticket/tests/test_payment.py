@@ -10,7 +10,6 @@ from django.test import RequestFactory
 from django.utils import timezone
 
 from factories import factories as f
-from factories.fixtures import show  # noqa
 from karspexet.ticket import views
 from karspexet.ticket.models import Reservation, Seat, Ticket
 from karspexet.ticket.payment import get_payment_intent_from_reservation, handle_successful_payment
