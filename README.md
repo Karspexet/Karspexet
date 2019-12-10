@@ -25,6 +25,8 @@ För att installera alla appens beroenden körs kommandot:
 ```sh
 pip install -U pipenv
 pipenv install --dev
+npm install -g yarn
+yarn install
 ```
 
 För datalagring används en Postgres server som förväntas finnas på port `5432`.
@@ -35,6 +37,15 @@ python3 manage.py runserver
 ```
 
 Rikta sedan din favoritwebläsare mot `localhost:8000` för att se hemsidan.
+
+## Bygg frontend-assets
+
+För att bygga JavaScript, CSS, osv behöver du köra parcel. Parcel är
+konfigurerat att köras av `yarn`, som du installerade alldeles nyss.
+
+``` sh
+yarn dev
+```
 
 ## Tester
 
