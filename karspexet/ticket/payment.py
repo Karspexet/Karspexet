@@ -41,7 +41,7 @@ def get_payment_intent_from_reservation(request, reservation):
     return intent
 
 
-def apply_voucher(request, reservation):
+def apply_voucher(request, reservation: Reservation) -> None:
     # Since we have a reservation, we can assume there is also a PaymentIntent created
     payment_intent_id = request.session["payment_intent_id"]
     code = request.POST["voucher_code"]
