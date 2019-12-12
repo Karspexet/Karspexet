@@ -2,13 +2,15 @@
 engines:
   prospector:
     enabled: false
+
   pylint:
-    enabled: true
+    enabled: false
     python_version: 3
     exclude_paths:
       - tests/
       - karspexet/**/migrations/**/*
       - karspexet/**/test_*.py
+
   bandit:
     enabled: true
     exclude_paths:
