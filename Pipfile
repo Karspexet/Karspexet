@@ -12,6 +12,7 @@ pytest-cov = "*"
 pytest-django = "*"
 pytest = "*"
 factory-boy = "*"
+flake8 = "*"
 
 [packages]
 psycopg2-binary = "==2.7.7"
