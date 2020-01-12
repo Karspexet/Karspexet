@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.shortcuts import reverse
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from factories import factories as f
@@ -35,6 +35,7 @@ class TestTicketViews(TestCase):
 
 
 @pytest.mark.django_db
+@override_settings(PAYMENT_PROCESS="stripe")
 def test_booking_overview_with_active_session__includes_payment_intent(show, client):
     reservation = _reservation(show)
     session = client.session
@@ -49,6 +50,21 @@ def test_booking_overview_with_active_session__includes_payment_intent(show, cli
     assert response.status_code == 200
     assert response.context["reservation"] == reservation
     assert response.context["stripe_payment_indent"] == mock_payment_intent
+
+@pytest.mark.django_db
+@override_settings(PAYMENT_PROCESS="fake")
+def test_booking_overview_with_active_session__with_fake_intent(show, client):
+    reservation = _reservation(show)
+    session = client.session
+    session["show_%s" % show.id] = str(reservation.id)
+    session.save()
+
+    url = reverse(views.booking_overview, args=[show.slug])
+    with mock.patch("karspexet.ticket.views.payment", autospec=True):
+        response = client.get(url)
+    assert response.status_code == 200
+    assert response.context["reservation"] == reservation
+    assert "fake" in response.context["payment_partial"]
 
 
 class TestWebhooks(TestCase):
