@@ -80,8 +80,7 @@ def handle_stripe_webhook(event: stripe.Event):
 
 def get_reference_from_payment(payment_method_id):
     try:
-        reference = stripe.PaymentMethod.retrieve(payment_method_id).metadata["reference"]
-        return reference
+        return stripe.PaymentMethod.retrieve(payment_method_id).metadata.get("reference")
     except stripe.error.StripeError:
         # TODO: Better handling of error? Should we store payment_method_id instead?
         return None
