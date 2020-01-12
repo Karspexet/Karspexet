@@ -78,6 +78,13 @@
       </label>
     </div>
     {% include payment_partial %}
+    <p>Var det en av våra medlemmar som fick dig att köpa dina biljetter? Fyll i så fall gärna i dess namn som referens!</p>
+    <div class="group">
+      <label>
+        <span>Referens</span>
+        <input type="text" class="field" name="reference" autocomplete="name"/>
+      </label>
+    </div>
     <button class="fn-payment-submit-button" type="submit">Betala {{ reservation.total }} kr</button>
     <div class="spinner-container hidden">
       <span>Vänta medan vi behandlar din betalning...</span>

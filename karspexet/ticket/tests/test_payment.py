@@ -49,6 +49,16 @@ class TestPaymentSuccess:
         tickets = {str(seat.id): "normal"}
         return f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
 
+    def test_stores_reference_if_passed(self, show):
+        reservation = self._build_reservation(show)
+        data = {
+            "name": "Frank Hamer",
+            "email": "frank@hamer.com",
+            "profession": "Police Inspector, Adventurer, Author",
+        }
+        handle_successful_payment(reservation, data, reference="Hank Framer")
+        assert Ticket.objects.first().reference == "Hank Framer"
+
 
 @pytest.mark.django_db
 class TestGetPaymentIntentFromReservation:
