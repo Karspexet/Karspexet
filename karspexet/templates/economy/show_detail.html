@@ -42,6 +42,7 @@
       <th><a href="?{% order_by request 'account__phone' %}">Telefonnummer</a></th>
       <th><a href="?{% order_by request 'account__email' %}">E-postadress</a></th>
       <th><a href="?{% order_by request 'ticket_type' %}">Biljettyp</a></th>
+      <th><a href="?{% order_by request 'reference' %}">Referens</a></th>
     </tr>
   </thead>
   <tbody>
@@ -53,6 +54,7 @@
       <td class="number">{{ ticket.account.phone }}</td>
       <td>{{ ticket.account.email }}</td>
       <td>{{ ticket.ticket_type }}</td>
+      <td>{{ ticket.reference }}</td>
     </tr>
     {% endfor %}
   </tbody>
