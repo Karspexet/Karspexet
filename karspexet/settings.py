@@ -68,20 +68,13 @@ OUR_APPS = [
     'karspexet.show',
     'karspexet.ticket',
     'karspexet.venue',
-    'cms',
-    'menus',
-    'treebeard',
-    'sekizai',
-    'filer',
-    'easy_thumbnails',
-    'mptt',
-    'djangocms_text_ckeditor',
-    'djangocms_picture',
-    'djangocms_link',
 ]
 
 INSTALLED_APPS = [
     'djangocms_admin_style',
+    'djangocms_text_ckeditor',
+    'djangocms_picture',
+    'djangocms_link',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -91,8 +84,15 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.postgres',
     'raven.contrib.django.raven_compat',
-    'svg',
+    'cms',
+    'menus',
+    'treebeard',
+    'sekizai',
+    'filer',
+    'easy_thumbnails',
+    'mptt',
     'django_assets',
+    'svg',
 ] + OUR_APPS
 
 MIDDLEWARE = [
