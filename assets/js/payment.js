@@ -99,7 +99,7 @@ function getStripePaymentDetails(form, card) {
     email: form.email.value,
   };
 
-  const metadata = {
+  var metadata = {
     reference: form.reference.value
   };
   if (!billing.phone) {
