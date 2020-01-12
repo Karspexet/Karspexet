@@ -138,7 +138,10 @@ def booking_overview(request, show_slug):
     _set_session_timeout(request)
 
     reservation = _get_or_create_reservation_object(request, show)
-    payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
+    if settings.PAYMENT_PROCESS == "stripe":
+        payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
+    else:
+        payment_intent = {"client_secret": "not_stripe"}
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
@@ -220,7 +223,7 @@ def process_payment(request, reservation_id):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_slug=reservation.show.slug)
 
-    if not reservation.is_free():
+    if not reservation.is_free() and settings.PAYMENT_PROCESS == "stripe":
         # We should only end up here if the tickets are free,
         # since otherwise we want to handle the flow using stripe webhooks
         messages.error(request, "Något gick fel i betalningen.")
