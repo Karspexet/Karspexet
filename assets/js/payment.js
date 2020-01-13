@@ -97,11 +97,12 @@ function getStripePaymentDetails(form, card) {
     name: form.name.value,
     phone: form.phone.value,
     email: form.email.value,
-  };
+  }
 
   var metadata = {
     reference: form.reference.value
-  };
+  }
+
   if (!billing.phone) {
     // "phone" is not required, but Stripe doesn't want us sending
     // empty strings to them
