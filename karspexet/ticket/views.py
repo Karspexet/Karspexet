@@ -230,7 +230,7 @@ def process_payment(request, reservation_id):
         return redirect("booking_overview", show_slug=reservation.show.slug)
 
     billing_data = request.POST
-    reference = request.POST.get("reference")
+    reference = request.POST.get("reference", "")
     payment.handle_successful_payment(reservation, billing_data, reference)
     return redirect("reservation_detail", reservation_code=reservation.reservation_code)
 
