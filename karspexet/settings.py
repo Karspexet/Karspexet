@@ -21,6 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 try:
     with open(BASE_DIR + "/env.json") as env_json:
         ENV = json.load(env_json)
+    ENV.update(os.environ)
 except FileNotFoundError:
     import textwrap
     raise SystemExit(textwrap.dedent("""
@@ -57,9 +58,14 @@ TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
 
 WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
 
+try:
+    with open(BASE_DIR + "/RELEASE.txt") as f:
+        RELEASE = f.read()
+except FileNotFoundError:
+    RELEASE = raven.fetch_git_sha(BASE_DIR)
 RAVEN_CONFIG = {
     'dsn': ENV.get('sentry_dsn'),
-    'release': raven.fetch_git_sha(BASE_DIR),
+    'release': RELEASE,
 }
 
 # Application definition
@@ -71,6 +77,7 @@ OUR_APPS = [
 ]
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
     'djangocms_picture',
@@ -96,6 +103,7 @@ INSTALLED_APPS = [
 ] + OUR_APPS
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'cms.middleware.utils.ApphookReloadMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
