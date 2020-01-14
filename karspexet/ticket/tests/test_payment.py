@@ -12,11 +12,26 @@ from django.utils import timezone
 from factories import factories as f
 from karspexet.ticket import views
 from karspexet.ticket.models import Reservation, Seat, Ticket
-from karspexet.ticket.payment import get_payment_intent_from_reservation, handle_successful_payment
+from karspexet.ticket.payment import get_payment_intent_from_reservation, handle_successful_payment, handle_stripe_webhook
 
 
 @pytest.mark.django_db
 class TestPaymentSuccess:
+    def test_handle_success_webhook(self, show):
+        reservation = self._build_reservation(show)
+        intent = FakeIntent(reservation)
+
+        with mock.patch("karspexet.ticket.payment.stripe") as mock_stripe:
+            mock_stripe.PaymentMethod.retrieve.return_value = intent
+            handle_stripe_webhook(_stripe_event(metadata={"reservation_id": reservation.id}))
+        reservation.refresh_from_db()
+        assert reservation.finalized
+
+    def test_handle_missing_reservations_without_crashing(self, show):
+        r_id = 1
+        assert not Reservation.objects.filter(id=r_id).exists()
+        handle_stripe_webhook(_stripe_event(metadata={"reservation_id": r_id}))
+
     def test_is_idempotent(self, show):
         reservation = self._build_reservation(show)
         data = {
@@ -151,6 +166,9 @@ class FakeIntent:
     class Metadata:
         reservation_id = ""
 
+        def get(self, key, default):
+            return getattr(self, key, default)
+
     def __init__(self, reservation: Reservation) -> None:
         self.id = "fake_payment_intent_id_%s" % reservation.id
         self.amount = reservation.get_amount()
@@ -159,7 +177,7 @@ class FakeIntent:
         self.status = "pending"
 
 
-def _stripe_event():
+def _stripe_event(metadata={}):
     data = {
         "api_version": "2019-12-03",
         "created": 1575659828,
@@ -276,7 +294,7 @@ def _stripe_event():
                 "invoice": None,
                 "last_payment_error": None,
                 "livemode": False,
-                "metadata": {},
+                "metadata": metadata,
                 "next_action": None,
                 "object": "payment_intent",
                 "on_behalf_of": None,
