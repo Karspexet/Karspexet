@@ -1,0 +1,12 @@
+# Tip: Use the `docker-show-context` tool to find large files not ignored yet!
+**/__pycache__/
+**/.mypy_cache/
+**/.cache/
+
+.circleci/
+.git/
+node_modules/
+static/bundles/
+staticfiles/
+
+!staticfiles/.gitignore

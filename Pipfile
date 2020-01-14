@@ -33,6 +33,8 @@ slimit = "==0.8.1"
 Django = "==1.11.28"
 django_sendmail_backend = "==0.1.2"
 PyQRCode = "*"
+uwsgi = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.6"
