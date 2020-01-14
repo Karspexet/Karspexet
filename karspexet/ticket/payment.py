@@ -70,13 +70,24 @@ def handle_stripe_webhook(event: stripe.Event):
             })
             return
 
-        billing_details = payment_intent.charges.data[0].billing_details
+        charge = payment_intent.charges.data[0]
+        billing_details = charge.billing_details
+        reference = get_reference_from_payment(charge.payment_method)
 
-        handle_successful_payment(reservation, billing_details)
+        handle_successful_payment(reservation, billing_details, reference)
         logger.info("PaymentIntent=%s for Reservation=%s succeeded", payment_intent.id, reservation.id)
 
 
-def handle_successful_payment(reservation: Reservation, billing_data: dict):
+def get_reference_from_payment(payment_method_id):
+    try:
+        return stripe.PaymentMethod.retrieve(payment_method_id).metadata.get("reference", "")
+    except stripe.error.StripeError:
+        # TODO: Better handling of error? Should we store payment_method_id instead?
+        logger.exception("Failed to get reference from payment_method")
+        return None
+
+
+def handle_successful_payment(reservation: Reservation, billing_data: dict, reference=""):
     """
     Our honored customer has paid us money - let's send them a ticket
     """
@@ -96,6 +107,7 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict):
             show=reservation.show,
             seat=seat,
             account=account,
+            reference=reference
         )
 
     reservation.finalized = True

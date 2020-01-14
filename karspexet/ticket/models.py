@@ -136,6 +136,7 @@ class Ticket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
     ticket_code = models.CharField(unique=True, max_length=16, default=_generate_random_code)
+    reference = models.CharField(max_length=255, null=False, blank=True, default="")
 
     class Meta:
         unique_together = ('show', 'seat')
