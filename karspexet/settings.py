@@ -205,7 +205,7 @@ STATICFILES_FINDERS = [
 
 _static_path = lambda key, default: os.path.abspath(ENV.get(key, default))
 MEDIA_ROOT = _static_path("MEDIA_ROOT", "./uploads")
-STATIC_ROOT = _static_path("STATIC_ROOT", "./static_root")
+STATIC_ROOT = _static_path("STATIC_ROOT", "./staticfiles")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -216,7 +216,7 @@ STATICFILES_DIRS = [
 
 ASSETS_MODULES = ["karspexet.assets"]
 ASSETS_DEBUG = DEBUG
-ASSETS_ROOT = "staticfiles"
+ASSETS_ROOT = "assets"
 ASSETS_AUTO_BUILD = ASSETS_DEBUG
 ASSETS_URL_EXPIRE = True
 SLIMIT_MANGLE = not ASSETS_DEBUG
