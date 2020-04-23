@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0f33ef9669ed59dae558d0d0ec514381fddbc471af0cbecdc2f9f89ada4be739"
+            "sha256": "26e2f3191dd1136464b1dc5f895f2c070b341ff9dcfb71746da3641c0f5be7a8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -149,10 +149,10 @@
         },
         "djangocms-link": {
             "hashes": [
-                "sha256:b550bbcf572437e408e1a9b956c7c6e2fd498d868c402424395eea8d40d9cfa0"
+                "sha256:e3b97856b319bcbff1d13d22fa4386e3ff90d1af9b1de9fc7cc41e830cd11d3d"
             ],
             "index": "pypi",
-            "version": "==2.5.0"
+            "version": "==2.6.0"
         },
         "djangocms-picture": {
             "hashes": [
@@ -337,10 +337,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:2f3db8b19923a873b3e5256dc9c2dedfa883e33d87c690d9c7913e1f40673cdc",
-                "sha256:87716c2d2a7121198ebcb7ce7cccf6ce5e9ba539041cfbaeecfb641dc0bf6acc"
+                "sha256:3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527",
+                "sha256:88206b0eb87e6d677d424843ac5209e3fb9d0190d0ee169599165ec25e9d9115"
             ],
-            "version": "==1.25.8"
+            "version": "==1.25.9"
         },
         "webassets": {
             "hashes": [
@@ -660,10 +660,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:2f3db8b19923a873b3e5256dc9c2dedfa883e33d87c690d9c7913e1f40673cdc",
-                "sha256:87716c2d2a7121198ebcb7ce7cccf6ce5e9ba539041cfbaeecfb641dc0bf6acc"
+                "sha256:3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527",
+                "sha256:88206b0eb87e6d677d424843ac5209e3fb9d0190d0ee169599165ec25e9d9115"
             ],
-            "version": "==1.25.8"
+            "version": "==1.25.9"
         },
         "wcwidth": {
             "hashes": [
