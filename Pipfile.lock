@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1d320e527448db8a6f75b5ec3b1e94cd511a38275812f1310d1d96aef1ff7f3f"
+            "sha256": "9a7e42160c36a0d3dfc3dc0cec4e6ddc654cc327dd71ab3b0b1406d7016414bd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -196,10 +196,10 @@
         },
         "pdfkit": {
             "hashes": [
-                "sha256:ef1da35b78d534197e7ce4a604a4a190e9aa769e56634957535f3479a50d8cd1",
-                "sha256:a315a665c266db28fb751891d0661fe5e750ced812cb4eadb3ce63afba9a7475",
+                "sha256:05f1c631e8d9ab877886955da825e48b459e097886a21448ab17b34c60cfd66c",
                 "sha256:6a866c9659e62a81abd72cdb32b400762d76085b964beb0b15106d573a539677",
-                "sha256:05f1c631e8d9ab877886955da825e48b459e097886a21448ab17b34c60cfd66c"
+                "sha256:a315a665c266db28fb751891d0661fe5e750ced812cb4eadb3ce63afba9a7475",
+                "sha256:ef1da35b78d534197e7ce4a604a4a190e9aa769e56634957535f3479a50d8cd1"
             ],
             "index": "pypi",
             "version": "==0.6.1"
@@ -317,6 +317,14 @@
             ],
             "markers": "python_version >= '3.0'",
             "version": "==2.24.0"
+        },
+        "sentry-sdk": {
+            "hashes": [
+                "sha256:2f023ff348359ec5f0b73a840e8b08e6a8d3b2613a98c57d11c222ef43879237",
+                "sha256:380a280cfc7c4ade5912294e6d9aa71ce776b5fca60a3782e9331b0bcd2866bf"
+            ],
+            "index": "pypi",
+            "version": "==0.16.1"
         },
         "six": {
             "hashes": [
@@ -537,11 +545,11 @@
         },
         "isort": {
             "hashes": [
-                "sha256:46bd31573158ac69e598a2ab14b207e6a43a2b2872009d2ad0f62f179876037a",
-                "sha256:6bc0b408d7c62e331d355085914dd28fd352635f6babd5e4605702ff3b6d9c09"
+                "sha256:0c49a1aca717e29e8e53d6b557669edf324fcf2de85712a7fc3972aa340922c0",
+                "sha256:7c4bd2f833a402dff55cb30c7e570ac4f14ec94d571e2eac56a48ee3856faf48"
             ],
             "index": "pypi",
-            "version": "==5.0.7"
+            "version": "==5.0.8"
         },
         "jedi": {
             "hashes": [
