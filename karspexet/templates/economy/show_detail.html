@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block content %}
 <h2>Föreställningsöversikt: {{show.production.name}} {{ show.short_description }} {{show.date|date:"Y-m-d H:i:s" }}</h2>
 <em>{{show.venue}}</em>
