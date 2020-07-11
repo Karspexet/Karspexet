@@ -30,24 +30,23 @@ jobs:
       id: pip-cache
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('Pipfile.lock') }}-v2
-        restore-keys: ${{ runner.os }}-pip-
+        key: ${{ runner.os }}-pip-3.6-${{ hashFiles('Pipfile.lock') }}-v3
+        restore-keys: ${{ runner.os }}-pip-3.6-
 
     - name: Pipenv cache
       uses: actions/cache@v1
       id: pipenv-cache
       with:
         path: ~/.cache/pipenv
-        key: ${{ runner.os }}-pipenv-${{ hashFiles('Pipfile.lock') }}-v2
-        restore-keys: ${{ runner.os }}-pipenv-
+        key: ${{ runner.os }}-pipenv-3.6-${{ hashFiles('Pipfile.lock') }}-v3
+        restore-keys: ${{ runner.os }}-pipenv-3.6-
 
     - name: Virtualenv cache
       uses: actions/cache@v1
       id: virtualenv-cache
       with:
         path: ~/.local/share/virtualenvs
-        key: ${{ runner.os }}-virtualenvs-3.6-v2
-        restore-keys: ${{ runner.os }}-virtualenvs-
+        key: ${{ runner.os }}-virtualenvs-3.6-v3
 
     - name: Install pipenv
       uses: dschep/install-pipenv-action@v1
