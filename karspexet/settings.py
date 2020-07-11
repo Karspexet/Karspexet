@@ -9,11 +9,14 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-
-import os
-import dj_database_url
 import json
-import raven
+import logging
+import os
+
+import dj_database_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,11 +65,17 @@ try:
     with open(BASE_DIR + "/RELEASE.txt") as f:
         RELEASE = f.read()
 except FileNotFoundError:
-    RELEASE = raven.fetch_git_sha(BASE_DIR)
-RAVEN_CONFIG = {
-    'dsn': ENV.get('sentry_dsn'),
-    'release': RELEASE,
-}
+    RELEASE = ""
+
+sentry_sdk.init(
+    dsn=ENV.get('sentry_dsn'),
+    release=RELEASE,
+    integrations=[
+        DjangoIntegration(),
+        # Capture info and above as breadcrumbs, send errors as events
+        LoggingIntegration(level=logging.INFO, event_level=logging.ERROR)
+    ],
+)
 
 # Application definition
 
@@ -90,7 +99,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.postgres',
-    'raven.contrib.django.raven_compat',
     'cms',
     'menus',
     'treebeard',
@@ -310,7 +318,7 @@ CMS_PLACEHOLDER_CONF = {
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "root": {"level": "INFO", "handlers": ["stdout", "sentry"]},
+    "root": {"level": "INFO", "handlers": ["stdout"]},
     "formatters": {
         "default": {
             "format": "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
@@ -329,10 +337,6 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "stream": "ext://sys.stdout",
             "formatter": "default",
-        },
-        "sentry": {
-            "level": "ERROR",
-            "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
         },
         "django.server": {
             "class": "logging.StreamHandler",

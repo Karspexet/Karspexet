@@ -35,6 +35,7 @@ django_sendmail_backend = "==0.1.2"
 PyQRCode = "*"
 uwsgi = "*"
 whitenoise = "*"
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.6"
