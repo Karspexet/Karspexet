@@ -8,3 +8,4 @@ services:
     environment:
       POSTGRES_USER: karspexet
       POSTGRES_DB: karspexet
+      POSTGRES_HOST_AUTH_METHOD: trust
