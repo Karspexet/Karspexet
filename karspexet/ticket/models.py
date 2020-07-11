@@ -11,8 +11,7 @@ from django.utils.crypto import get_random_string
 from django.urls import reverse
 from datetime import date
 
-from karspexet.show.models import Show
-from karspexet.venue.models import Seat, SeatingGroup
+from karspexet.venue.models import Seat
 
 TICKET_TYPES = [
     ("normal", "Fullpris"),
@@ -45,7 +44,7 @@ class ActiveReservationsManager(models.Manager):
 
 
 class Reservation(models.Model):
-    show = models.ForeignKey(Show, null=False)
+    show = models.ForeignKey("show.Show", null=False, on_delete=models.CASCADE)
     ticket_price = models.PositiveIntegerField()
     total = models.PositiveIntegerField()
     tickets = HStoreField()
@@ -130,9 +129,9 @@ class Account(models.Model):
 class Ticket(models.Model):
     price = models.PositiveIntegerField()
     ticket_type = models.CharField(max_length=10, choices=TICKET_TYPES, default="normal")
-    show = models.ForeignKey(Show, null=False)
-    seat = models.ForeignKey(Seat, null=False)
-    account = models.ForeignKey(Account, null=False)
+    show = models.ForeignKey("show.Show", null=False, on_delete=models.PROTECT)
+    seat = models.ForeignKey("venue.Seat", null=False, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, null=False, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
     ticket_code = models.CharField(unique=True, max_length=16, default=_generate_random_code)
@@ -160,7 +159,7 @@ class Voucher(models.Model):
     amount = models.PositiveIntegerField(help_text="Rabatt i SEK")
     code = models.CharField(unique=True, max_length=16, null=False, default=_generate_voucher_code)
     expiry_date = models.DateField(null=False, default=_next_fifteenth_september)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
     note = models.CharField(max_length=255, null=False, default="")
@@ -183,8 +182,8 @@ class Discount(models.Model):
     Reservation can only ever have one single Discount applied.
     """
     amount = models.PositiveIntegerField(validators=[MinValueValidator(100), MaxValueValidator(5000)], null=False)
-    reservation = models.OneToOneField(Reservation, null=False, unique=True)
-    voucher = models.OneToOneField(Voucher, null=False, unique=True)
+    reservation = models.OneToOneField(Reservation, null=False, unique=True, on_delete=models.CASCADE)
+    voucher = models.OneToOneField(Voucher, null=False, unique=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
@@ -204,7 +203,7 @@ class PricingModel(models.Model):
     A pricing model for a seating group.
     """
 
-    seating_group = models.ForeignKey(SeatingGroup, null=False)
+    seating_group = models.ForeignKey("venue.SeatingGroup", null=False, on_delete=models.PROTECT)
     prices = HStoreField(null=False)
     valid_from = models.DateTimeField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
