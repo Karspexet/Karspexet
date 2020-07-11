@@ -1,4 +1,3 @@
-# coding: utf-8
 from unittest import mock
 
 import pytest
@@ -50,6 +49,7 @@ def test_booking_overview_with_active_session__includes_payment_intent(show, cli
     assert response.status_code == 200
     assert response.context["reservation"] == reservation
     assert response.context["stripe_payment_indent"] == mock_payment_intent
+
 
 @pytest.mark.django_db
 @override_settings(PAYMENT_PROCESS="fake")
