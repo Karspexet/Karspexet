@@ -473,10 +473,10 @@
         },
         "curtsies": {
             "hashes": [
-                "sha256:95c533811d80f20c82c17564a5b28e843235875a573b2a738533aaa1a7c334ec",
-                "sha256:d528742a9a6a705a7f40b90e5300c8501808d32f59e266a91c91790eff3f7eb8"
+                "sha256:068db8e5d8a2f23b765d648a66dfa9445cf2412177126ae946a7357ade992640",
+                "sha256:4ca543998d8bbba7185db099f8b7bb30baeb47426f7ac1a271e4d9ca8bbb2b05"
             ],
-            "version": "==0.3.3"
+            "version": "==0.3.4"
         },
         "factory-boy": {
             "hashes": [
@@ -540,11 +540,11 @@
         },
         "isort": {
             "hashes": [
-                "sha256:3d8e0d7678b66af1e3a6936f2a380a5d4f3faf4b1b38c6aaa4bed6695c6bdcde",
-                "sha256:639b8084644ceb13a806f42d690273b9d844793ac2f515fbc575ba65dc044de0"
+                "sha256:1590a5f707fa72a12d91152f2f930c648ebc8b455405fade20716fbb939d5fbd",
+                "sha256:b19b7ebce5e292507afa8fab30dd666011dd5ae8f4ef2a2d431751dc84c22140"
             ],
             "index": "pypi",
-            "version": "==5.0.9"
+            "version": "==5.1.0"
         },
         "jedi": {
             "hashes": [
