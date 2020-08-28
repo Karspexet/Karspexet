@@ -70,9 +70,10 @@
         },
         "django-classy-tags": {
             "hashes": [
-                "sha256:ad6a25fc2b58a098f00d86bd5e5dad47922f5ca4e744bc3cccb7b4be5bc35eb1"
+                "sha256:25eb4f95afee396148683bfb4811b83b3f5729218d73ad0a3399271a6f9fcc49",
+                "sha256:d59d98bdf96a764dcf7a2929a86439d023b283a9152492811c7e44fc47555bc9"
             ],
-            "version": "==1.0.0"
+            "version": "==2.0.0"
         },
         "django-cms": {
             "hashes": [
@@ -126,9 +127,10 @@
         },
         "django-sekizai": {
             "hashes": [
-                "sha256:e2f6e666d4dd9d3ecc27284acb85ef709e198014f5d5af8c6d54ed04c2d684d9"
+                "sha256:5c5e16845d37ce822fc655ce79ec02715191b3d03330b550997bcb842cf24fdf",
+                "sha256:e829f09b0d6bf01ee5cde05de1fb3faf2fbc5df66dc4dc280fbaac224ca4336f"
             ],
-            "version": "==1.1.0"
+            "version": "==2.0.0"
         },
         "django-sendmail-backend": {
             "hashes": [
@@ -145,9 +147,10 @@
         },
         "djangocms-admin-style": {
             "hashes": [
-                "sha256:47d9868aa448e593ce90059d6542a4d907c120d357cd0561c586f5557e3ba316"
+                "sha256:080f55fe2b643cf608ee8feeb1407bf20e1e76c0f2c058a1bf360b4aa0c90cf4",
+                "sha256:78c64b4e2adba59a7c2e4d5b34e68dc32ab3e2d677f8a94403a2ae9d211aa212"
             ],
-            "version": "==1.5.0"
+            "version": "==2.0.0"
         },
         "djangocms-attributes-field": {
             "hashes": [
@@ -323,11 +326,11 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:09cbc253c827a88064c5ed548d24fb4294568bfe9b1816a857fa5a423d4ce762",
-                "sha256:1d654ac57be9967dae67545fb759f6e7594de07f487c21a276e6466dd52e83f1"
+                "sha256:2c770e7bf72d6419bb82b3bb950f3789fc24bd6a0ba191369607a96289acd63b",
+                "sha256:ad2c514aab9ed40d3f9f3245675727f672ea3d85b3b7a5956af93f405ba7aee0"
             ],
             "index": "pypi",
-            "version": "==0.17.0"
+            "version": "==0.17.1"
         },
         "six": {
             "hashes": [
@@ -585,10 +588,10 @@
         },
         "more-itertools": {
             "hashes": [
-                "sha256:68c70cc7167bdf5c7c9d8f6954a7837089c6a36bf565383919bb595efb8a17e5",
-                "sha256:b78134b2063dd214000685165d81c154522c3ee0a1c0d4d113c80361c234c5a2"
+                "sha256:6f83822ae94818eae2612063a5101a7311e68ae8002005b5e05f03fd74a86a20",
+                "sha256:9b30f12df9393f0d28af9210ff8efe48d10c94f73e5daf886f10c4b0b0b4f03c"
             ],
-            "version": "==8.4.0"
+            "version": "==8.5.0"
         },
         "packaging": {
             "hashes": [
