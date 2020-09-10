@@ -154,9 +154,10 @@
         },
         "djangocms-attributes-field": {
             "hashes": [
-                "sha256:33e00b28b2f3cb4d09a1423cb613d1ab467e8df78446a04df77e725ac1db05a4"
+                "sha256:525f1a94de38c446e2746ff307dbc0ec7b157ca1e10c1350bc43b3eace9065d6",
+                "sha256:ebd7d3ef9e7a2a3413f02512cd13638e3eab0b15ab9eea44b3f002405ac77c7c"
             ],
-            "version": "==1.2.0"
+            "version": "==2.0.0"
         },
         "djangocms-link": {
             "hashes": [
@@ -408,10 +409,10 @@
     "develop": {
         "attrs": {
             "hashes": [
-                "sha256:0ef97238856430dcf9228e07f316aefc17e8939fc8507e18c6501b761ef1a42a",
-                "sha256:2867b7b9f8326499ab5b0e2d12801fa5c98842d2cbd22b35112ae04bf85b4dff"
+                "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594",
+                "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"
             ],
-            "version": "==20.1.0"
+            "version": "==20.2.0"
         },
         "blessings": {
             "hashes": [
@@ -565,11 +566,11 @@
         },
         "isort": {
             "hashes": [
-                "sha256:60a1b97e33f61243d12647aaaa3e6cc6778f5eb9f42997650f1cc975b6008750",
-                "sha256:d488ba1c5a2db721669cc180180d5acf84ebdc5af7827f7aaeaa75f73cf0e2b8"
+                "sha256:171c5f365791073426b5ed3a156c2081a47f88c329161fd28228ff2da4c97ddb",
+                "sha256:ba91218eee31f1e300ecc079ef0c524cea3fc41bfbb979cbdf5fd3a889e3cfed"
             ],
             "index": "pypi",
-            "version": "==5.4.2"
+            "version": "==5.5.2"
         },
         "jedi": {
             "hashes": [
