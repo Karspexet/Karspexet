@@ -161,11 +161,11 @@
         },
         "djangocms-link": {
             "hashes": [
-                "sha256:1e14cb0172f04b6f917a383331582095ace61bba1c23207c44e401ef06b2d290",
-                "sha256:9a1135c815367e74bbc665eb656e34740fd7f0cb862dd5b7754433b32297f789"
+                "sha256:2a53b5d397f85abecc3e423c608e6a2205d14268c8c7af1a158e8114e20a6a67",
+                "sha256:b3121a7fc48ce46dbcdaa5be9e138154cd01661f27532208626b5a5d482ffb36"
             ],
             "index": "pypi",
-            "version": "==2.6.1"
+            "version": "==3.0.0"
         },
         "djangocms-picture": {
             "hashes": [
