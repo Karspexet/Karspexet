@@ -56,6 +56,8 @@ SITE_ID = 1
 EMAIL_BACKEND = ENV.get("email_backend", 'django.core.mail.backends.smtp.EmailBackend')
 
 PAYMENT_PROCESS = ENV.get("payment_process", "not set")
+STRIPE_SECRET_KEY = ENV.get("STRIPE_SECRET_KEY", "fake")
+STRIPE_PUBLISHABLE_KEY = ENV.get("STRIPE_PUBLISHABLE_KEY", "fake")
 
 TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
 
