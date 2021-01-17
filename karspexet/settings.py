@@ -209,6 +209,7 @@ SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = "/static/"
+MEDIA_URL = "/uploads/"
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -219,6 +220,7 @@ STATICFILES_FINDERS = [
 _static_path = lambda key, default: os.path.abspath(ENV.get(key, default))
 MEDIA_ROOT = _static_path("MEDIA_ROOT", "./uploads")
 STATIC_ROOT = _static_path("STATIC_ROOT", "./staticfiles")
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -250,7 +252,7 @@ FILER_STORAGES = {
             "ENGINE": "filer.storage.PublicFileSystemStorage",
             "OPTIONS": {
                 "location": os.path.join(MEDIA_ROOT, "filer_public/uploads"),
-                "base_url": "/uploads",
+                "base_url": "/uploads/filer_public/uploads/",
             },
             "UPLOAD_TO": "filer.utils.generate_filename.randomized",
             "UPLOAD_TO_PREFIX": "",
@@ -259,7 +261,7 @@ FILER_STORAGES = {
             "ENGINE": "filer.storage.PublicFileSystemStorage",
             "OPTIONS": {
                 "location": os.path.join(MEDIA_ROOT, "filer_public_thumbnails/uploads"),
-                "base_url": "/uploads",
+                "base_url": "/uploads/filer_public_thumbnails/uploads/",
             },
             "UPLOAD_TO_PREFIX": "",
         },
