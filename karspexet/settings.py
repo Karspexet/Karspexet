@@ -11,6 +11,7 @@ import contextlib
 import json
 import logging
 import os
+import contextlib
 
 import dj_database_url
 import sentry_sdk
@@ -34,7 +35,7 @@ ENV: dict = {}
 with contextlib.suppress(FileNotFoundError):
     with open(BASE_DIR + "/env.json") as env_json:
         ENV = json.load(env_json)
-    ENV.update(os.environ)
+ENV.update(os.environ)
 
 
 # Quick-start development settings - unsuitable for production
@@ -225,8 +226,6 @@ STATIC_ROOT = _static_path("STATIC_ROOT", "./staticfiles")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "assets"),
-    os.path.join(MEDIA_ROOT, "filer_public"),
-    os.path.join(MEDIA_ROOT, "filer_public_thumbnails"),
 ]
 
 ASSETS_MODULES = ["karspexet.assets"]

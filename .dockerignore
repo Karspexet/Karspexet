@@ -8,5 +8,10 @@
 node_modules/
 static/bundles/
 staticfiles/
+uploads/
 
 !staticfiles/.gitignore
+
+*.sql
+.env
+env.json
