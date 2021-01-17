@@ -20,34 +20,32 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-try:
+
+def to_bool(value: str) -> bool:
+    value = value.lower()
+    if value == "true":
+        return True
+    if value == "false":
+        return False
+    raise ValueError(value)
+
+
+ENV: dict = {}
+with contextlib.suppress(FileNotFoundError):
     with open(BASE_DIR + "/env.json") as env_json:
         ENV = json.load(env_json)
     ENV.update(os.environ)
-except FileNotFoundError:
-    import textwrap
-    raise SystemExit(textwrap.dedent("""
-    ================ ERROR ================
-    ERROR: No env.json settings file found.
-
-    Try starting with the sample one:
-
-    cp env.json.sample env.json
-    """))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ENV.get("SECRET_KEY", "&-)aly8rq=l8-7193rj0e@p$tp571+q5&g0jyi8#)u!rt-!=b8")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = ENV.get("DEBUG", True)
+DEBUG = to_bool(ENV.get("DEBUG", "True"))
 if DEBUG:
     INTERNAL_IPS = ["127.0.0.1"]
 
-ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", [])
+ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", "").split(",")
 
 
 SITE_ID = 1
@@ -172,7 +170,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Security
-if ENV.get("HTTPS", False):
+if to_bool(ENV.get("HTTPS", "False")):
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     SESSION_COOKIE_SECURE = True
