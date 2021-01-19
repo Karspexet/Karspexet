@@ -177,10 +177,11 @@
         },
         "djangocms-text-ckeditor": {
             "hashes": [
-                "sha256:905fa0cfbd244fb3a12657f89b083bfb57554ba35f4358972eebc6d78f8d8c3d"
+                "sha256:3af9ffecd1ecce3b632bc9121385aaa6183c1afcd9e668439c3990d3bd1e1771",
+                "sha256:fdae918b267baec66811bdd9cd49d961016449d2e6d148823586b99dc595e072"
             ],
             "index": "pypi",
-            "version": "==3.10.0"
+            "version": "==4.0.0"
         },
         "easy-thumbnails": {
             "hashes": [
