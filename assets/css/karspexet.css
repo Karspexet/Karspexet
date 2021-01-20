@@ -49,6 +49,8 @@ a {
 }
 
 .poster_container {
+  display: flex;
+  justify-content: center;
   width: 100%;
   position: relative;
 }
@@ -58,13 +60,6 @@ a {
   height: inherit;
   object-fit: cover;
   object-position: 0 14%;
-}
-
-.poster_image img{
-  width: inherit;
-  height: inherit;
-  object-fit: cover;
-  object-position: 0 50%;
 }
 
 .poster_image::after {
