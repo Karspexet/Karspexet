@@ -55,13 +55,6 @@ a {
   position: relative;
 }
 
-.poster_image {
-  width: inherit;
-  height: inherit;
-  object-fit: cover;
-  object-position: 0 14%;
-}
-
 .poster_image::after {
   display: block;
   position: absolute;
@@ -75,7 +68,6 @@ a {
 
 .poster_title {
   position: absolute;
-  left: 10%;
   bottom: 10%;
   text-shadow: 2px 2px 4px #000000;
   font-size: 1.5em;
@@ -94,7 +86,6 @@ a {
 
 .poster_title {
   position: absolute;
-  left: 10%;
   bottom: 10%;
   text-shadow: 2px 2px 4px #000000;
   font-size: 1.5em;
