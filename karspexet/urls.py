@@ -13,3 +13,5 @@ urlpatterns = [
 ]
 
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=settings.DEBUG) + urlpatterns
+urlpatterns = static(settings.MEDIA_THUMBS_URL, document_root=settings.MEDIA_THUMBS_ROOT, show_indexes=settings.DEBUG) + urlpatterns
+urlpatterns = static(settings.MEDIA_FILER_URL, document_root=settings.MEDIA_FILER_ROOT, show_indexes=settings.DEBUG) + urlpatterns

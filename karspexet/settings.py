@@ -11,7 +11,7 @@ import contextlib
 import json
 import logging
 import os
-import contextlib
+from urllib.parse import urljoin
 
 import dj_database_url
 import sentry_sdk
@@ -216,10 +216,8 @@ STATICFILES_FINDERS = [
     "django_assets.finders.AssetsFinder",
 ]
 
-_static_path = lambda key, default: os.path.abspath(ENV.get(key, default))
-MEDIA_ROOT = _static_path("MEDIA_ROOT", "./uploads")
-STATIC_ROOT = _static_path("STATIC_ROOT", "./staticfiles")
-
+STATIC_ROOT = os.path.abspath("./staticfiles")
+MEDIA_ROOT = os.path.abspath("./uploads")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -243,13 +241,22 @@ THUMBNAIL_PROCESSORS = (
     "easy_thumbnails.processors.filters",
 )
 
+
+MEDIA_FILER_LOC = os.path.join(MEDIA_ROOT, "filer_public/uploads/")
+MEDIA_FILER_ROOT = os.path.join(MEDIA_ROOT, "filer_public/uploads/")
+MEDIA_FILER_URL = urljoin(MEDIA_URL, "filer_public/")
+
+MEDIA_THUMBS_LOC = os.path.join(MEDIA_ROOT, "filer_public_thumbnails/uploads/")
+MEDIA_THUMBS_ROOT = os.path.join(MEDIA_ROOT, "filer_public_thumbnails/uploads/filer_public_thumbnails/")
+MEDIA_THUMBS_URL = urljoin(MEDIA_URL, "filer_public_thumbnails/")
+
 FILER_STORAGES = {
     "public": {
         "main": {
             "ENGINE": "filer.storage.PublicFileSystemStorage",
             "OPTIONS": {
-                "location": os.path.join(MEDIA_ROOT, "filer_public/uploads"),
-                "base_url": "/uploads/filer_public/uploads/",
+                "location": MEDIA_FILER_LOC,
+                "base_url": "/uploads/filer_public/",
             },
             "UPLOAD_TO": "filer.utils.generate_filename.randomized",
             "UPLOAD_TO_PREFIX": "",
@@ -257,8 +264,8 @@ FILER_STORAGES = {
         "thumbnails": {
             "ENGINE": "filer.storage.PublicFileSystemStorage",
             "OPTIONS": {
-                "location": os.path.join(MEDIA_ROOT, "filer_public_thumbnails/uploads"),
-                "base_url": "/uploads/filer_public_thumbnails/uploads/",
+                "location": MEDIA_THUMBS_LOC,
+                "base_url": "/uploads/",
             },
             "UPLOAD_TO_PREFIX": "",
         },
