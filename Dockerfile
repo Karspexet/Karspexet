@@ -36,4 +36,4 @@ RUN python manage.py assets build \
   && python manage.py collectstatic --noinput \
   && chown -R app:app /app
 
-CMD ["uwsgi", "--ini", "/app/karspexet/uwsgi.ini"]
+CMD ["gunicorn", "karspexet.wsgi", "--bind", "0.0.0.0:8000"]
