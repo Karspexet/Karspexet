@@ -23,8 +23,8 @@ Skapa en `env.json`-fil med följande för att få stripe-integrationen att fung
 För att installera alla appens beroenden körs kommandot:
 
 ```sh
-pip install -U pipenv
-pipenv install --dev
+pip install -U poetry
+poetry install
 ```
 
 För datalagring används en Postgres server som förväntas finnas på port `5432`.
