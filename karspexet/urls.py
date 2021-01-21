@@ -11,4 +11,5 @@ urlpatterns = [
     url(r"^500/", TemplateView.as_view(template_name="500.html")),
     url(r"^", include("cms.urls")),
 ]
-urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + urlpatterns
+
+urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=settings.DEBUG) + urlpatterns
