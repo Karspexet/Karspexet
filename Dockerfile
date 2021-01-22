@@ -28,12 +28,12 @@ RUN pip install --upgrade pip wheel pipenv \
 
 
 FROM builder as runner
+USER app:app
+EXPOSE 8000
+CMD ["gunicorn", "karspexet.wsgi", "--bind", "0.0.0.0:8000"]
+
 COPY --chown=app --from=deps $VIRTUAL_ENV $VIRTUAL_ENV
 COPY --chown=app . /app
-ARG RELEASE=""
-RUN echo "$RELEASE" > RELEASE.txt
 RUN python manage.py assets build \
   && python manage.py collectstatic --noinput \
   && chown -R app:app /app
-
-CMD ["gunicorn", "karspexet.wsgi", "--bind", "0.0.0.0:8000"]
