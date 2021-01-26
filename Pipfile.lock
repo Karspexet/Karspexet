@@ -518,10 +518,15 @@
         },
         "curtsies": {
             "hashes": [
-                "sha256:068db8e5d8a2f23b765d648a66dfa9445cf2412177126ae946a7357ade992640",
-                "sha256:4ca543998d8bbba7185db099f8b7bb30baeb47426f7ac1a271e4d9ca8bbb2b05"
+                "sha256:a587ff3335667a32be7afed163f60a1c82c5d9c848d8297534a06fd29de20dbd"
             ],
-            "version": "==0.3.4"
+            "version": "==0.3.5"
+        },
+        "cwcwidth": {
+            "hashes": [
+                "sha256:042cdf80d80a836935f700d8e1c34270f82a627fc07f7b5ec1e8cec486e1d755"
+            ],
+            "version": "==0.1.1"
         },
         "factory-boy": {
             "hashes": [
@@ -533,10 +538,10 @@
         },
         "faker": {
             "hashes": [
-                "sha256:0f8198d876bc65edd3699e2542c6ae13cc93fbc4a478c17db190d5d9b6ce790e",
-                "sha256:8fe22be90c0db35d830464918f84beb50f970f4caacae4d88e92692857b78aa7"
+                "sha256:1a40c9696830342e67d30057753323478b848e89334e97e0a64b442b18ae7ece",
+                "sha256:dd98418eceb374c475e85bd49ae826a9b304dabcd794640f35a1d185f4767dd9"
             ],
-            "version": "==5.6.5"
+            "version": "==5.7.0"
         },
         "flake8": {
             "hashes": [
@@ -697,11 +702,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:1969f797a1a0dbd8ccf0fecc80262312729afea9c17f1d70ebf85c5e76c6f7c8",
-                "sha256:66e419b1899bc27346cb2c993e12c5e5e8daba9073c1fbce33b9807abc95c306"
+                "sha256:9d1edf9e7d0b84d72ea3dbcdfd22b35fb543a5e8f2a60092dd578936bf63d7f9",
+                "sha256:b574b57423e818210672e07ca1fa90aaf194a4f63f3ab909a2c67ebb22913839"
             ],
             "index": "pypi",
-            "version": "==6.2.1"
+            "version": "==6.2.2"
         },
         "pytest-cov": {
             "hashes": [
