@@ -55,6 +55,10 @@ a {
   position: relative;
 }
 
+.poster_image {
+  position: relative;
+}
+
 .poster_image::after {
   display: block;
   position: absolute;
@@ -71,6 +75,9 @@ a {
   bottom: 10%;
   text-shadow: 2px 2px 4px #000000;
   font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .poster_title h1 {

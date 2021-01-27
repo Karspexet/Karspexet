@@ -36,6 +36,7 @@ slimit = "==0.8.1"
 stripe = "*"
 uwsgi = "*"
 whitenoise = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"

@@ -10,8 +10,7 @@ from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.venue.models import Seat
 
 logger = logging.getLogger(__name__)
-stripe_keys = settings.ENV["stripe"]
-stripe.api_key = stripe_keys["secret_key"]
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def get_payment_intent_from_reservation(request, reservation):

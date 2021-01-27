@@ -26,12 +26,6 @@ from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherE
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.venue.models import Seat
 
-if settings.PAYMENT_PROCESS == "stripe":
-    stripe_keys = settings.ENV["stripe"]
-else:
-    stripe_keys = {"publishable_key": "fake", "secret_key": "fake"}
-
-
 SESSION_TIMEOUT_MINUTES = 30
 
 logger = logging.getLogger(__name__)
@@ -186,7 +180,7 @@ def booking_overview(request, show_slug):
         'payment_partial': _payment_partial(reservation),
         'reservation': reservation,
         'stripe_payment_indent': payment_intent,
-        'stripe_key': stripe_keys['publishable_key'],
+        'stripe_key': settings.STRIPE_PUBLISHABLE_KEY,
         'num_tickets': num_tickets,
     })
 
