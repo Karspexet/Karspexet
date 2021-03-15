@@ -377,11 +377,11 @@
         },
         "stripe": {
             "hashes": [
-                "sha256:97431dbc6d25b94816816a3606f75045d79f101db4cf27e79ac4e039e4971d73",
-                "sha256:e32c68194a47522a10945eb893218e5cb5ee65e3a3c2c4df7efca117a6bf1902"
+                "sha256:2ff904fb8dee0d25f135059468a876852d24dc8cbe0b45d7aff56a028045777c",
+                "sha256:6c685eeadf9e3608315b6d84b4f5f2da2909179b65633ce20f296be22ed21a98"
             ],
             "index": "pypi",
-            "version": "==2.55.2"
+            "version": "==2.56.0"
         },
         "unidecode": {
             "hashes": [
