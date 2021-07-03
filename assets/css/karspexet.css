@@ -59,6 +59,10 @@ a {
   position: relative;
 }
 
+.poster_image img {
+  max-width: 100%;
+}
+
 .poster_image::after {
   display: block;
   position: absolute;
