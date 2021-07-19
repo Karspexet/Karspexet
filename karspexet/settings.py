@@ -46,7 +46,7 @@ DEBUG = to_bool(ENV.get("DEBUG", "True"))
 if DEBUG:
     INTERNAL_IPS = ["127.0.0.1"]
 
-ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", "localhost").split(",")
 
 
 SITE_ID = 1
@@ -153,22 +153,21 @@ WSGI_APPLICATION = "karspexet.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
 DATABASE_URL = ENV.get("DATABASE_URL", "postgres://karspexet@127.0.0.1/karspexet")
 DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL),
 }
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 
 # Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+
 
 # Security
 CSRF_COOKIE_HTTPONLY = True
@@ -180,33 +179,22 @@ if to_bool(ENV.get("HTTPS", "False")):
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
-
 LANGUAGES = [
     ("sv", "Swedish"),
 ]
-
 LANGUAGE_CODE = "sv"
-
 TIME_ZONE = "Europe/Stockholm"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 DATE_FORMAT = "Y-m-d"
-
 DATETIME_FORMAT = "c"
-
 SHORT_DATE_FORMAT = "Y-m-d"
-
 SHORT_DATETIME_FORMAT = "Y-m-d H-i-s"
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
 MEDIA_URL = "/uploads/"
 

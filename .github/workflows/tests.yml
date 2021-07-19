@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     services:
       postgres:
@@ -18,55 +18,39 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
-    - name: Set up Python 3.6
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.6
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-    - name: Pip Cache
-      uses: actions/cache@v1
-      id: pip-cache
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-3.6-${{ hashFiles('Pipfile.lock') }}-v3
-        restore-keys: ${{ runner.os }}-pip-3.6-
+      - name: Install Poetry
+        run: |
+          pip install --upgrade pip setuptools wheel poetry
 
-    - name: Pipenv cache
-      uses: actions/cache@v1
-      id: pipenv-cache
-      with:
-        path: ~/.cache/pipenv
-        key: ${{ runner.os }}-pipenv-3.6-${{ hashFiles('Pipfile.lock') }}-v3
-        restore-keys: ${{ runner.os }}-pipenv-3.6-
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
 
-    - name: Virtualenv cache
-      uses: actions/cache@v1
-      id: virtualenv-cache
-      with:
-        path: ~/.local/share/virtualenvs
-        key: ${{ runner.os }}-virtualenvs-3.6-v3
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
 
-    - name: Install pipenv
-      uses: dschep/install-pipenv-action@v1
+      - name: Copy sample config
+        run: cp env.json{.sample,} || /bin/true
 
-    - name: Install dependencies
-      if: steps.pipenv-cache.outputs.cache-hit != 'true'
-      run: |
-        pipenv install --dev
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-    - name: Copy sample config
-      run: cp env.json{.sample,} || /bin/true
-
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        pipenv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        pipenv run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    - name: Test with pytest
-      env:
-        DATABASE_URL: "postgresql://postgres:kaka@localhost/test_karspexet"
-      run: pipenv run pytest
+      - name: Test with pytest
+        env:
+          DATABASE_URL: "postgresql://postgres:kaka@localhost/test_karspexet"
+        run: poetry run pytest

@@ -9,3 +9,10 @@ services:
       POSTGRES_USER: karspexet
       POSTGRES_DB: karspexet
       POSTGRES_HOST_AUTH_METHOD: trust
+
+  backend:
+    build: .
+    ports:
+      - 1000:8000
+    environment:
+      DATABASE_URL: postgres://karspexet@postgres/karspexet
