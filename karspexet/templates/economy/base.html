@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Kårspexet{% endblock %}
 {% block content %}
-<div>
+  <div>
     <span>Meny</span>
     <ul>
-        <li><a href="{% url 'economy_overview' %}">Beläggning</a></li>
-        <li><a href="{% url 'economy_vouchers' %}">Presentkort</a></li>
-        <li><a href="{% url 'economy_discounts' %}">Utnyttjade presentkort</a></li>
+      <li><a href="{% url 'economy_overview' %}">Beläggning</a></li>
+      <li><a href="{% url 'economy_vouchers' %}">Presentkort</a></li>
+      <li><a href="{% url 'economy_discounts' %}">Utnyttjade presentkort</a></li>
     </ul>
-</div>
+  </div>
 
-{% block economy_content %}
-{% endblock %}
+  {% block economy_content %}
+  {% endblock %}
 {% endblock %}

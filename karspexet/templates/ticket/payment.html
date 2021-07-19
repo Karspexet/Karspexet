@@ -1,113 +1,113 @@
 {% extends "ticket/base.html" %}
 {% load tz static %}
 {% block ticket_content %}
-<div class="content_container">
-  <section class="contact-details">
-    <h2>Bokning</h2>
-    <dl>
-      <dt>Föreställning</dt>
-      <dd>{{ reservation.show }}</dd>
-      <dt>Antal biljetter</dt>
-      <dd>{{num_tickets}}</dd>
-    {% if reservation.discount %}
-      <dt>Presentkort</dt>
-      <dd>{{ reservation.discount.voucher.code }}</dd>
-    {% endif %}
-      <dt>Platser</dt>
-      <dd>
-        <ul>
-          {% for seat in seats %}
-          <li>{{ seat }}</li>
-          {% endfor %}
-        </ul>
-      </dd>
-    </dl>
-    <p class="fn-session-timeout">Dina platsreservationer är giltiga i <span class="fn-session-timeout-output">30 minuter</span><br/>(till <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"Y-m-d H:i" }}</time>)
+  <div class="content_container">
+    <section class="contact-details">
+      <h2>Bokning</h2>
+      <dl>
+        <dt>Föreställning</dt>
+        <dd>{{ reservation.show }}</dd>
+        <dt>Antal biljetter</dt>
+        <dd>{{num_tickets}}</dd>
+        {% if reservation.discount %}
+          <dt>Presentkort</dt>
+          <dd>{{ reservation.discount.voucher.code }}</dd>
+        {% endif %}
+        <dt>Platser</dt>
+        <dd>
+          <ul>
+            {% for seat in seats %}
+              <li>{{ seat }}</li>
+            {% endfor %}
+          </ul>
+        </dd>
+      </dl>
+      <p class="fn-session-timeout">Dina platsreservationer är giltiga i <span class="fn-session-timeout-output">30 minuter</span><br/>(till <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"Y-m-d H:i" }}</time>)
 
-    {% if payment_failed %}
-    <div>
-      <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
-    </div>
-    {% endif %}
+        {% if payment_failed %}
+          <div>
+            <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
+          </div>
+        {% endif %}
 
-    <h2>Betalning / Presentkort</h2>
+        <h2>Betalning / Presentkort</h2>
 
 
-    <p>För att betala dina biljetter, fyll i dina kortuppgifter här nedanför.</p>
-    <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!</p>
+        <p>För att betala dina biljetter, fyll i dina kortuppgifter här nedanför.</p>
+        <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!</p>
 
-    {% if not reservation.discount %}
-    <button id="enter-discount-code">Presentkort</button>
-    {% endif %}
+        {% if not reservation.discount %}
+          <button id="enter-discount-code">Presentkort</button>
+        {% endif %}
 
-    <div id="discount-form" class="hidden" data-discount-code="{{ reservation.discount.voucher.code }}">
-        <button id="cancel-discount">Tillbaka</button>
+        <div id="discount-form" class="hidden" data-discount-code="{{ reservation.discount.voucher.code }}">
+          <button id="cancel-discount">Tillbaka</button>
 
-        <p>Om du har ett presentkort måste du använda den innan du kan betala. Detta för att vi behöver räkna om ditt biljettpris efter att du valt att använda din presentkortskod. Annars kommer du betala hela biljettpriset.</p>
+          <p>Om du har ett presentkort måste du använda den innan du kan betala. Detta för att vi behöver räkna om ditt biljettpris efter att du valt att använda din presentkortskod. Annars kommer du betala hela biljettpriset.</p>
 
-        <p>För att använda ett presentkort, fyll i koden nedan och klicka sedan på "Använd Presentkort"</p>
+          <p>För att använda ett presentkort, fyll i koden nedan och klicka sedan på "Använd Presentkort"</p>
 
-        <form method="POST" action="{% url "apply_voucher" reservation.id %}" class="payment-form" id="discount-form">
+          <form method="POST" action="{% url "apply_voucher" reservation.id %}" class="payment-form" id="discount-form">
             {% csrf_token %}
             <div class="group">
-                <label>
-                    <span>Presentkort</span>
-                    <input type="text" class="field" name="voucher_code"/>
-                </label>
+              <label>
+                <span>Presentkort</span>
+                <input type="text" class="field" name="voucher_code"/>
+              </label>
             </div>
             <button type="submit">Använd presentkort!</button>
-        </form>
-    </div>
+          </form>
+        </div>
 
-  <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form" {% if reservation.is_free %}data-is-free{% endif %}>
-    {% csrf_token %}
-    <div class="group">
-      <label>
-        <span>Namn</span>
-        <input name="name" class="field" placeholder="Jane Doe" autocomplete="name" required />
-      </label>
-      <label>
-        <span>Telefonnummer</span>
-        <input name="phone" class="field" placeholder="(123) 456-7890" type="tel" autocomplete="tel" />
-      </label>
-      <label>
-        <span>E-postadress</span>
-        <input name="email" class="field" placeholder="" type="email" autocomplete="email" required />
-      </label>
+        <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form" {% if reservation.is_free %}data-is-free{% endif %}>
+          {% csrf_token %}
+          <div class="group">
+            <label>
+              <span>Namn</span>
+              <input name="name" class="field" placeholder="Jane Doe" autocomplete="name" required />
+            </label>
+            <label>
+              <span>Telefonnummer</span>
+              <input name="phone" class="field" placeholder="(123) 456-7890" type="tel" autocomplete="tel" />
+            </label>
+            <label>
+              <span>E-postadress</span>
+              <input name="email" class="field" placeholder="" type="email" autocomplete="email" required />
+            </label>
+          </div>
+          {% include payment_partial %}
+          <p>Var det en av våra medlemmar som fick dig att köpa dina biljetter? Fyll i så fall gärna i dess namn som referens!</p>
+          <div class="group">
+            <label>
+              <span>Referens</span>
+              <input type="text" class="field" name="reference" autocomplete="name"/>
+            </label>
+          </div>
+          <button class="fn-payment-submit-button" type="submit">Betala {{ reservation.total }} kr</button>
+          <div class="spinner-container hidden">
+            <span>Vänta medan vi behandlar din betalning...</span>
+            <img class="luva spinner" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
+          </div>
+          <div class="outcome">
+            <div class="error" role="alert"></div>
+          </div>
+        </form>
+        <div>
+          <span>eller</span>
+          <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
+            {% csrf_token %}
+            <input type="submit" id="cancel-reservation-button" value="avbryt bokning">
+            <div id="fn-payment-errors"></div>
+          </form>
+        </div>
+      </section>
+      {% if reservation.total > 0 %}
+        <script>
+          window.config = window.config || {}
+          window.config.payment = '{{ stripe_key }}'
+          window.config.clientSecret = '{{ stripe_payment_indent.client_secret }}'
+          window.config.successUrl = '{{ reservation.get_absolute_url }}'
+        </script>
+      {% endif %}
     </div>
-    {% include payment_partial %}
-    <p>Var det en av våra medlemmar som fick dig att köpa dina biljetter? Fyll i så fall gärna i dess namn som referens!</p>
-    <div class="group">
-      <label>
-        <span>Referens</span>
-        <input type="text" class="field" name="reference" autocomplete="name"/>
-      </label>
-    </div>
-    <button class="fn-payment-submit-button" type="submit">Betala {{ reservation.total }} kr</button>
-    <div class="spinner-container hidden">
-      <span>Vänta medan vi behandlar din betalning...</span>
-      <img class="luva spinner" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
-    </div>
-    <div class="outcome">
-      <div class="error" role="alert"></div>
-    </div>
-  </form>
-  <div>
-  <span>eller</span>
-  <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
-    {% csrf_token %}
-    <input type="submit" id="cancel-reservation-button" value="avbryt bokning">
-    <div id="fn-payment-errors"></div>
-  </form>
-  </div>
-  </section>
-  {% if reservation.total > 0 %}
-  <script>
-    window.config = window.config || {}
-    window.config.payment = '{{ stripe_key }}'
-    window.config.clientSecret = '{{ stripe_payment_indent.client_secret }}'
-    window.config.successUrl = '{{ reservation.get_absolute_url }}'
-  </script>
-  {% endif %}
-</div>
 {% endblock %}

@@ -11,10 +11,10 @@
     <script src="https://js.stripe.com/v3/" async></script>
 
     {% assets "js_all" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
     {% assets "css_all" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}">
+      <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
 
     {% render_block "js" %}
