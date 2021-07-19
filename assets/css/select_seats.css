@@ -1,44 +1,44 @@
 section.select-seats {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 div.seat-info > * {
-    border: 1px dotted;
-    padding: 0.5rem;
+  padding: 0.5rem;
+  border: 1px dotted;
 }
 
 .theater-seat-map svg {
-    border: 1px solid grey;
+  border: 1px solid grey;
 }
 
 .theater-seat-map svg rect.stage {
-    stroke-width: 1;
-    fill: none;
-    stroke: grey;
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
 }
 
 .theater-seat-map svg text.stage-text {
-    font-size: 14;
-    text-anchor: middle;
-    fill: white;
+  fill: white;
+  font-size: 14;
+  text-anchor: middle;
 }
 
 .seat {
-    fill: grey;
+  fill: grey;
 }
 
 .taken-seat {
-    fill: #ff173d;
-    fill: rgb(141, 4, 28);
+  fill: #ff173d;
+  fill: rgb(141, 4, 28);
 }
 
 .selected-seat {
-    fill: #fd0;
+  fill: #fd0;
 }
 
 .seat:not(.taken-seat) {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .select-seats aside {
@@ -46,15 +46,15 @@ div.seat-info > * {
 }
 
 #book-submit-button {
+  display: inline-block;
+  padding: 1em;
+  border: 0;
+  border-style: outset;
+  margin: 1em 0;
   background-color: hsl(349, 94.5%, 28.4%);
+  border-radius: 10px;
   color: #fd0;
   font-weight: bold;
-  padding: 1em;
-  border-radius: 10px;
-  display: inline-block;
-  border-style: outset;
-  border: 0;
-  margin: 1em 0;
 }
 
 #book-submit-button:disabled {
@@ -63,12 +63,12 @@ div.seat-info > * {
 }
 
 #cancel-reservation-button {
+  padding: 0;
+  border: none;
   background-color: black;
   color: #fd0;
-  border: none;
-  padding: 0;
-  font: inherit;
   cursor: pointer;
+  font: inherit;
 }
 
 @media screen and (min-device-width: 960px) {
