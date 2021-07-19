@@ -6,7 +6,8 @@ from django.template.defaulttags import register
 from django.template.response import TemplateResponse
 
 from karspexet.show.models import Show
-from karspexet.ticket.models import Ticket, Voucher, Discount
+from karspexet.ticket.models import Discount, Ticket, Voucher
+
 # Create your views here.
 
 

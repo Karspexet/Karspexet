@@ -36,7 +36,7 @@ class SeatingGroupInline(admin.TabularInline):
         if not obj.pk:
             return ""
         url = _admin_change_link(obj)
-        return format_html(u'<a href="{}">Edit: {}</a>', url, obj)
+        return format_html('<a href="{}">Edit: {}</a>', url, obj)
 
 
 class SeatInline(admin.TabularInline):

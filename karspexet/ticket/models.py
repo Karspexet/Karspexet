@@ -1,15 +1,16 @@
-from string import ascii_uppercase, digits
+from datetime import date
 from functools import reduce
-from django.core.validators import MinValueValidator, MaxValueValidator
+from string import ascii_uppercase, digits
+
 from django.conf import settings
 from django.contrib.postgres.fields import HStoreField
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-from django.urls import reverse
-from datetime import date
 
 from karspexet.venue.models import Seat
 

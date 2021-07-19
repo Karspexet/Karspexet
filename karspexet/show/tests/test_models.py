@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
 
-from karspexet.show.models import Show, Production
+from karspexet.show.models import Production, Show
 from karspexet.venue.models import Venue
 
 
