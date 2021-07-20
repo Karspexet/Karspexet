@@ -28,6 +28,7 @@ jobs:
       - name: Install Poetry
         run: |
           pip install --upgrade pip setuptools wheel poetry
+          poetry install
 
       - name: Copy sample config
         run: cp env.json{.sample,} || /bin/true
