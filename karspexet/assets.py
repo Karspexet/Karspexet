@@ -5,7 +5,6 @@ js = Bundle(
     "js/select_seats.js",
     "js/booking_overview.js",
     "js/app.js",
-    filters="slimit",
     output="js/app-%(version)s.js",
 )
 css = Bundle(
