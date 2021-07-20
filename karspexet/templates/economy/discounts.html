@@ -1,35 +1,35 @@
 {% extends "economy/base.html" %}
 {% load static %}
 {% block economy_content %}
-<h2>Utnyttjade presentkort</h2>
+  <h2>Utnyttjade presentkort</h2>
 
-<h3>Inloggad som: {{ user }}</h3>
+  <h3>Inloggad som: {{ user }}</h3>
 
-<table>
-  <thead>
+  <table>
+    <thead>
       <tr>
-          <th rowspan="2">Kod</th>
-          <th colspan="3">Summa</th>
-          <th rowspan="2">Bokningskod</th>
-          <th rowspan="2">Använt datum</th>
+        <th rowspan="2">Kod</th>
+        <th colspan="3">Summa</th>
+        <th rowspan="2">Bokningskod</th>
+        <th rowspan="2">Använt datum</th>
       </tr>
-    <tr>
-      <th>Presentkort</th>
-      <th>Utnyttjat</th>
-      <th>Outnyttjat</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for discount in discounts %}
-    <tr>
-      <td>{{ discount.voucher.code }}</td>
-      <td class="right">{{ discount.voucher.amount }}</td>
-      <td class="right">{{ discount.amount }}</td>
-      <td class="right">{{ discount.unused_amount }}</td>
-      <td>{{ discount.reservation.reservation_code }}</td>
-      <td>{{ discount.created_at|date }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+      <tr>
+        <th>Presentkort</th>
+        <th>Utnyttjat</th>
+        <th>Outnyttjat</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for discount in discounts %}
+        <tr>
+          <td>{{ discount.voucher.code }}</td>
+          <td class="right">{{ discount.voucher.amount }}</td>
+          <td class="right">{{ discount.amount }}</td>
+          <td class="right">{{ discount.unused_amount }}</td>
+          <td>{{ discount.reservation.reservation_code }}</td>
+          <td>{{ discount.created_at|date }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

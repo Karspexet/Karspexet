@@ -4,11 +4,11 @@
   Köp biljett - Kårspexet
 {% endblock %}
 {% block ticket_content %}
-    <div>
+  <div>
     <h2>Köp biljetter för {{ show }}</h2>
 
     {% if show.production.description %}
-    <p>{{ show.production.description }}</p>
+      <p>{{ show.production.description }}</p>
     {% endif %}
 
     {% if show.free_seating %}
@@ -18,12 +18,12 @@
     {% endif %}
 
     <script>
-     window.config = window.config || {}
-     window.config.seatSelection = {
+      window.config = window.config || {}
+      window.config.seatSelection = {
         allSeats: {{ seats|safe }},
         pricings: {{ pricings|safe }},
         freeSeating: {{ show.free_seating|yesno:"true,false" }}
-     }
+      }
     </script>
-    </div>
+  </div>
 {% endblock %}

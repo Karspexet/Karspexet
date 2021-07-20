@@ -1,31 +1,31 @@
 {% extends "economy/base.html" %}
 {% load static %}
 {% block economy_content %}
-<h2>Föreställningsöversikt</h2>
+  <h2>Föreställningsöversikt</h2>
 
-<h3>Inloggad som: {{ user }}</h3>
-<table>
-  <thead>
-    <tr>
-      <th>Föreställning</th>
-      <th>Datum</th>
-      <th>Teater</th>
-      <th>Sålda biljetter</th>
-      <th>Antal platser</th>
-      <th>Beläggning (%)</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for show in shows %}
-    <tr>
-      <td><a href="{% url 'economy_show_detail' show.id %}">{{ show.production_name }} {{ show.short_description }}</a></td>
-      <td>{{ show.date|date:"Y-m-d H:i"  }}</td>
-      <td>{{ show.venue_name}}</td>
-      <td class="number">{{ show.ticket_count }}</td>
-      <td class="number">{{ show.seat_count }}</td>
-      <td class="number">{{ show.sales_percentage|floatformat }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <h3>Inloggad som: {{ user }}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Föreställning</th>
+        <th>Datum</th>
+        <th>Teater</th>
+        <th>Sålda biljetter</th>
+        <th>Antal platser</th>
+        <th>Beläggning (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for show in shows %}
+        <tr>
+          <td><a href="{% url 'economy_show_detail' show.id %}">{{ show.production_name }} {{ show.short_description }}</a></td>
+          <td>{{ show.date|date:"Y-m-d H:i"  }}</td>
+          <td>{{ show.venue_name}}</td>
+          <td class="number">{{ show.ticket_count }}</td>
+          <td class="number">{{ show.seat_count }}</td>
+          <td class="number">{{ show.sales_percentage|floatformat }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

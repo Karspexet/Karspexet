@@ -1,62 +1,62 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h2>Föreställningsöversikt: {{show.production.name}} {{ show.short_description }} {{show.date|date:"Y-m-d H:i:s" }}</h2>
-<em>{{show.venue}}</em>
+  <h2>Föreställningsöversikt: {{show.production.name}} {{ show.short_description }} {{show.date|date:"Y-m-d H:i:s" }}</h2>
+  <em>{{show.venue}}</em>
 
-<h3>Inloggad som: {{ user }}</h3>
+  <h3>Inloggad som: {{ user }}</h3>
 
-<h3>Sålda biljetter</h3>
+  <h3>Sålda biljetter</h3>
 
-<table>
-  <tr>
-    <th>Student</th>
-    <th>Fullpris</th>
-    <th>Totalt</th>
-    <th>Antal platser</th>
-    <th>Beläggning</th>
-  </tr>
-  <tr>
-    <td>{{ number_students }}</td>
-    <td>{{ number_normal }}</td>
-    <td>{{ coverage.ticket_count }}</td>
-    <td>{{ coverage.seat_count }}</td>
-    <td>{{ coverage.sales_percentage|floatformat }}%</td>
-  </tr>
-</table>
+  <table>
+    <tr>
+      <th>Student</th>
+      <th>Fullpris</th>
+      <th>Totalt</th>
+      <th>Antal platser</th>
+      <th>Beläggning</th>
+    </tr>
+    <tr>
+      <td>{{ number_students }}</td>
+      <td>{{ number_normal }}</td>
+      <td>{{ coverage.ticket_count }}</td>
+      <td>{{ coverage.seat_count }}</td>
+      <td>{{ coverage.sales_percentage|floatformat }}%</td>
+    </tr>
+  </table>
 
-<h3>Platskarta</h3>
+  <h3>Platskarta</h3>
 
-<span class="theater-seat-map">
+  <span class="theater-seat-map">
     {% include "seat_map.svg" with venue=show.venue taken_seats=taken_seats %}
-</span>
+  </span>
 
-<h3>Besökare</h3>
+  <h3>Besökare</h3>
 
-<table class="costumer-table-data">
-  <thead>
-    <tr>
-      <th><a href="?{% order_by request 'seat__group__name' %}">Sektion</a></th>
-      <th><a href="?{% order_by request 'seat__name' %}">Plats</a></th>
-      <th><a href="?{% order_by request 'account__name' %}">Namn</a></th>
-      <th><a href="?{% order_by request 'account__phone' %}">Telefonnummer</a></th>
-      <th><a href="?{% order_by request 'account__email' %}">E-postadress</a></th>
-      <th><a href="?{% order_by request 'ticket_type' %}">Biljettyp</a></th>
-      <th><a href="?{% order_by request 'reference' %}">Referens</a></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for ticket in tickets %}
-    <tr>
-      <td>{{ ticket.seat.group.name }}</td>
-      <td>{{ ticket.seat.name  }}</td>
-      <td>{{ ticket.account.name }}</td>
-      <td class="number">{{ ticket.account.phone }}</td>
-      <td>{{ ticket.account.email }}</td>
-      <td>{{ ticket.ticket_type }}</td>
-      <td>{{ ticket.reference }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <table class="costumer-table-data">
+    <thead>
+      <tr>
+        <th><a href="?{% order_by request 'seat__group__name' %}">Sektion</a></th>
+        <th><a href="?{% order_by request 'seat__name' %}">Plats</a></th>
+        <th><a href="?{% order_by request 'account__name' %}">Namn</a></th>
+        <th><a href="?{% order_by request 'account__phone' %}">Telefonnummer</a></th>
+        <th><a href="?{% order_by request 'account__email' %}">E-postadress</a></th>
+        <th><a href="?{% order_by request 'ticket_type' %}">Biljettyp</a></th>
+        <th><a href="?{% order_by request 'reference' %}">Referens</a></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ticket in tickets %}
+        <tr>
+          <td>{{ ticket.seat.group.name }}</td>
+          <td>{{ ticket.seat.name  }}</td>
+          <td>{{ ticket.account.name }}</td>
+          <td class="number">{{ ticket.account.phone }}</td>
+          <td>{{ ticket.account.email }}</td>
+          <td>{{ ticket.ticket_type }}</td>
+          <td>{{ ticket.reference }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

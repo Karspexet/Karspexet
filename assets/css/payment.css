@@ -1,80 +1,80 @@
 .payment-form {
-    width: 480px;
-    margin: 20px auto;
+  width: 480px;
+  margin: 20px auto;
 }
 
 .payment-form .group {
-    background: white;
-    box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10), 0 3px 6px 0 rgba(0,0,0,0.08);
-    border-radius: 4px;
-    margin-bottom: 20px;
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
 }
 
 .payment-form label {
-    position: relative;
-    color: black;
-    font-weight: 300;
-    height: 40px;
-    line-height: 40px;
-    margin-left: 20px;
-    display: block;
-    text-align: left;
-    font-size: small;
+  position: relative;
+  display: block;
+  height: 40px;
+  margin-left: 20px;
+  color: black;
+  font-size: small;
+  font-weight: 300;
+  line-height: 40px;
+  text-align: left;
 }
 
 .payment-form .group label:not(:last-child) {
-    border-bottom: 1px solid #F0F5FA;
+  border-bottom: 1px solid #f0f5fa;
 }
 
 .payment-form label > span {
-    width: 20%;
-    float: left;
+  width: 20%;
+  float: left;
 }
 
 .payment-form .field {
-    background: transparent;
-    font-weight: 300;
-    border: 0;
-    color: black;
-    outline: none;
-    padding-right: 10px;
-    padding-left: 10px;
-    cursor: text;
-    width: 70%;
-    height: 40px;
-    float: right;
+  width: 70%;
+  height: 40px;
+  padding-right: 10px;
+  padding-left: 10px;
+  border: 0;
+  background: transparent;
+  color: black;
+  cursor: text;
+  float: right;
+  font-weight: 300;
+  outline: none;
 }
 
 .payment-form .field::-webkit-input-placeholder {
-    color: #CFD7E0;
+  color: #cfd7e0;
 }
 
 .payment-form .field::-moz-placeholder {
-    color: #CFD7E0;
+  color: #cfd7e0;
 }
 
 .payment-form .field:-ms-input-placeholder {
-    color: #CFD7E0;
+  color: #cfd7e0;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .payment-form button {
-    display: block;
-    background: rgb(141, 4, 28);
-    color: #fd0;
-    box-shadow: 0 7px 14px 0 rgba(49,49,93,0.10), 0 3px 6px 0 rgba(0,0,0,0.08);
-    border-radius: 4px;
-    border: 0;
-    margin-top: 20px;
-    font-size: 15px;
-    font-weight: 400;
-    width: 100%;
-    height: 40px;
-    line-height: 38px;
-    outline: none;
+  display: block;
+  width: 100%;
+  height: 40px;
+  border: 0;
+  margin-top: 20px;
+  background: rgb(141, 4, 28);
+  border-radius: 4px;
+  box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+  color: #fd0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 38px;
+  outline: none;
 }
 
 .payment-form button:focus {
@@ -92,39 +92,41 @@
 }
 
 .payment-form .outcome {
-    float: left;
-    width: 100%;
-    padding-top: 8px;
-    min-height: 24px;
-    text-align: center;
+  width: 100%;
+  min-height: 24px;
+  padding-top: 8px;
+  float: left;
+  text-align: center;
 }
 
-.payment-form .success, .error {
-    display: none;
-    font-size: 13px;
+.payment-form .success,
+.error {
+  display: none;
+  font-size: 13px;
 }
 
-.payment-form .success.visible, .error.visible {
-    display: inline;
+.payment-form .success.visible,
+.error.visible {
+  display: inline;
 }
 
 .payment-form .error {
-    color: #E4584C;
+  color: #e4584c;
 }
 
 .payment-form .success {
-    color: #666EE8;
+  color: #666ee8;
 }
 
 .payment-form .success .token {
-    font-weight: 500;
-    font-size: 13px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 section.contact-details {
-    width: 480px;
-    margin-left: auto;
-    margin-right: auto;
+  width: 480px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .payment-error-message {
@@ -146,6 +148,7 @@ section.contact-details {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(359deg);
   }

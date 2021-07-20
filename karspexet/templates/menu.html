@@ -1,17 +1,18 @@
 {% load static %}
 {% for child in children %}
-    <li class="child{% if child.selected %} selected{% endif %}{% if child.ancestor %} ancestor{% endif %}{% if child.sibling %} sibling{% endif %}{% if child.descendant %} descendant{% endif %}">
-        <a class="nav-link"href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
-    </li>
-    {% if not forloop.last %}
-        {% if forloop.counter == forloop.revcounter|add:"-1" %}
-    <li>
-      <a href="/">
-        <img class="luva" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
-      </a>
-    </li>
-        {% else %}
-            <li><span class="list_decorator icon-circle"></span></li>
-        {% endif %}
+  <li class="child{% if child.selected %} selected{% endif %}{% if child.ancestor %} ancestor{% endif %}{% if child.sibling %} sibling{% endif %}{% if child.descendant %} descendant{% endif %}">
+    <a class="nav-link"href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+  </li>
+  {% if not forloop.last %}
+    {% if forloop.counter == forloop.revcounter|add:"-1" %}
+      <li>
+        <a href="/">
+          <img class="luva luva-mobile" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
+        </a>
+      </li>
+    {% else %}
+      <li class="list-decorator">
+        <span class="list_decorator icon-circle"></span></li>
     {% endif %}
+  {% endif %}
 {% endfor %}

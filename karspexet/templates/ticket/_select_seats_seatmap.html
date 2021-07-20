@@ -13,24 +13,24 @@
 </ol>
 
 <section class="select-seats">
-    <main>
-        <span class="theater-seat-map">
-            {% include "seat_map.svg" with venue=venue taken_seats=taken_seats %}
-        </span>
-    </main>
-    <aside>
-        <h2>Dina valda platser</h2>
-        <p id="no-seats-selected">Du måste välja minst en plats i platskartan till vänster</p>
-        <form method="post" action="{% url "select_seats" show.slug %}">
-            {% csrf_token %}
-            <div id="booking"></div>
-            <input type="submit" id="book-submit-button" disabled="disabled" value="Till betalning!">
-        </form>
-        <span>eller</span>
-        <form method="post" action="{% url 'cancel_reservation' show.id %}">
-          {% csrf_token %}
-          <input type="submit" id="cancel-reservation-button" value="Avbryt bokning">
-        </form>
-        <div class="seat-info"></div>
-    </aside>
+  <main>
+    <span class="theater-seat-map">
+      {% include "seat_map.svg" with venue=venue taken_seats=taken_seats %}
+    </span>
+  </main>
+  <aside>
+    <h2>Dina valda platser</h2>
+    <p id="no-seats-selected">Du måste välja minst en plats i platskartan till vänster</p>
+    <form method="post" action="{% url "select_seats" show.slug %}">
+      {% csrf_token %}
+      <div id="booking"></div>
+      <input type="submit" id="book-submit-button" disabled="disabled" value="Till betalning!">
+    </form>
+    <span>eller</span>
+    <form method="post" action="{% url 'cancel_reservation' show.id %}">
+      {% csrf_token %}
+      <input type="submit" id="cancel-reservation-button" value="Avbryt bokning">
+    </form>
+    <div class="seat-info"></div>
+  </aside>
 </section>

@@ -1,8 +1,8 @@
-from django.utils.crypto import get_random_string
+from datetime import datetime
 
 from django.db import models
-from datetime import datetime
 from django.utils import timezone
+from django.utils.crypto import get_random_string
 
 
 class Production(models.Model):

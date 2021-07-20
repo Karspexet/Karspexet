@@ -2,6 +2,7 @@
   text-align: left;
 }
 
-.costumer-table-data th, .costumer-table-data td {
+.costumer-table-data th,
+.costumer-table-data td {
   padding-right: 15px;
 }

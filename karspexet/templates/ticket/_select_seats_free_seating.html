@@ -11,29 +11,29 @@
     <h2>Priser</h2>
     <dl>
       {% if pricings.student %}
-      <dt>Student:</dt><dd>{{ pricings.student }}</dd>
+        <dt>Student:</dt><dd>{{ pricings.student }}</dd>
       {% endif %}
       {% if pricings.normal %}
-      <dt>Fullpris:</dt><dd>{{ pricings.normal }}</dd>
+        <dt>Fullpris:</dt><dd>{{ pricings.normal }}</dd>
       {% endif %}
       <dt>Antal platser kvar:</dt><dd>{{ num_available_seats }}</dd>
     </dl>
     <form method="post" action="{% url "select_seats" show.slug %}">
       {% if pricings.normal %}
-      <div>
-        <label for="number-of-normal-seats">
-          Antal fullpris
-          <input type="number" name="normal" id="number-of-normal-seats" class="number-of-seats" min="0">
-        </label>
-      </div>
+        <div>
+          <label for="number-of-normal-seats">
+            Antal fullpris
+            <input type="number" name="normal" id="number-of-normal-seats" class="number-of-seats" min="0">
+          </label>
+        </div>
       {% endif %}
       {% if pricings.student %}
-      <div>
-        <label for="number-of-student-seats">
-          Antal student
-          <input type="number" name="student" id="number-of-student-seats" class="number-of-seats" min="0">
-        </label>
-      </div>
+        <div>
+          <label for="number-of-student-seats">
+            Antal student
+            <input type="number" name="student" id="number-of-student-seats" class="number-of-seats" min="0">
+          </label>
+        </div>
       {% endif %}
       <p id="no-seats-selected">Du måste välja minst en biljett för att kunna gå vidare</p>
       {% csrf_token %}

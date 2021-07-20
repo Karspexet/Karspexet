@@ -1,36 +1,36 @@
 {% extends "ticket/base.html" %}
 {% load cms_tags %}
 {% block ticket_content %}
-<div class="poster_container">
-  <div class="poster_image">
-    {% placeholder "hero_image" %}
-    <div class="poster_title">
-      <h1>{% placeholder "Show Title" %}</h1>
-      <p>{% placeholder "eller-titel" %}</p>
+  <div class="poster_container">
+    <div class="poster_image">
+      {% placeholder "hero_image" %}
+      <div class="poster_title">
+        <h1>{% placeholder "Show Title" %}</h1>
+        <p>{% placeholder "eller-titel" %}</p>
+      </div>
     </div>
   </div>
-</div>
-<div class="card_container select_show">
-  {% for show in upcoming_shows %}
-  <a class="show-card" href="{% url "select_seats" show.slug %}">
-    <article class="card">
-        <h1>{{ show.production.name }}</h1>
-        <p class="alt-name">{{ show.production.alt_name }}</p>
-        {% if show.short_description %}
-        <p>{{ show.short_description }}</p>
-        {% endif %}
-        <ul class="show-info">
-          <li>
-            <i class="icon-calendar"></i> <em>{{ show.date|date:"Y-m-d" }}</em>
-            <i class="icon-clock"></i> <em>{{ show.date|date:"H:i" }}</em>
-          </li>
-          <li>
+  <div class="card_container select_show">
+    {% for show in upcoming_shows %}
+      <a class="show-card" href="{% url "select_seats" show.slug %}">
+        <article class="card">
+          <h1>{{ show.production.name }}</h1>
+          <p class="alt-name">{{ show.production.alt_name }}</p>
+          {% if show.short_description %}
+            <p>{{ show.short_description }}</p>
+          {% endif %}
+          <ul class="show-info">
+            <li>
+              <i class="icon-calendar"></i> <em>{{ show.date|date:"Y-m-d" }}</em>
+              <i class="icon-clock"></i> <em>{{ show.date|date:"H:i" }}</em>
+            </li>
+            <li>
 
-            <i class="icon-map-marker"></i
-            <em><address>{{ show.venue.name }}</address></em>
-        </ul>
-    </article>
-  </a>
-  {% endfor %}
-</div>
+              <i class="icon-map-marker"></i
+                <em><address>{{ show.venue.name }}</address></em>
+              </ul>
+            </article>
+          </a>
+    {% endfor %}
+  </div>
 {% endblock %}
