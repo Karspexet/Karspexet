@@ -59,8 +59,6 @@ STRIPE_PUBLISHABLE_KEY = ENV.get("STRIPE_PUBLISHABLE_KEY", "fake")
 
 TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
 
-WKHTMLTOPDF_PATH = ENV.get("wkhtmltopdf_path")
-
 try:
     with open(BASE_DIR + "/RELEASE.txt") as f:
         RELEASE = f.read()

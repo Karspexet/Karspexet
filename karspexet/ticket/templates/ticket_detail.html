@@ -1,73 +1,66 @@
-{% load static svg %}
 <html lang="sv">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Kårspexet - Biljett</title>
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <style>
       body {
-        position: relative;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: white;
-        width: 14.8cm;
-        height: 21cm;
-        padding: 1em;
+        font-family: sans-serif;
       }
 
-      .logo {
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
+      dt, dd {
+        padding: 0;
+        margin: 0;
       }
 
-      h1.title {
-        margin-bottom: 0;
+      dt {
+        font-weight: 300;
       }
 
-      h1.title::before {
-        content: "Kårspexet ";
+      dd {
+        margin-bottom: 1rem;
       }
 
-      em.alt-name {
-        margin-top: 0;
+      main {
+        margin-bottom: 2rem;
       }
 
-      em.alt-name::before {
-        content: "...eller ";
+      .thin {
+        font-weight: 300;
       }
-
-      aside.qrcode {
-        position: absolute;
-        bottom: 1em;
-        right: 1em;
-      }
-
     </style>
   </head>
-  <body class="ticket-pdf">
-    <div class="logo">
-      {% svg 'luva' %}
+  <body style="text-align: center;">
+    <table style="width: 600px;" cellspacing="0" cellpadding="5">
+      <tr>
+        <td colspan=2 class="thin" style="color: gray; text-align: center; padding-bottom: 2rem; font-weight: 300;">
+            KÅRSPEXET - BILJETT
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-right: 3rem; vertical-align: top; text-align: left;">
+          <h1>{{ production }}</h1>
+          {% if production.alt_name %}
+          <em>eller {{ production.alt_name }}</em>
+          {% endif %}
+          <main class="info">
+            <dl>
+              <dt>DATUM</dt>
+              <dd><strong>{{ show.date|date:"Y-m-d H:i" }}</strong></dd>
+              <dt>PLATS</dt>
+              <dd><strong>{{ seat.group.name }}: {{ seat.name }}</strong></dd>
+              <dt>TEATER</dt>
+              <dd>{{ venue }}</dd>
+              <dt>ADDRESS</dt>
+              <dd>{{ venue.address }}</dd>
+            </dl>
+          </main>
+        </td>
+        <td style="vertical-align: top; text-align: right;">
+          <aside class="qrcode">
+            <img src="{{ qr_code|safe }}" alt="" width="250" height="250" />
+          </aside>
+        </td>
+      </tr>
     </div>
-    <em>Biljett till:</em>
-    <h1 class="title">{{ production }}</h1>
-    <em class="alt-name">{{ production.alt_name }}</em>
-
-    <main class="info">
-      <dl>
-        <dt>Datum</dt>
-        <dd><strong>{{ show.date|date:"Y-m-d H:i" }}</strong></dd>
-        <dt>Plats</dt>
-        <dd><strong>{{ seat.group.name }}: {{ seat.name }}</strong></dd>
-        <dt>Teater</dt>
-        <dd>{{ venue }}</dd>
-        <dt>Address</dt>
-        <dd>{{ venue.address }}</dd>
-      </dl>
-    </main>
-    <aside class="qrcode">
-      {{ qr_code|safe }}
-    </aside>
   </body>
 </html>
