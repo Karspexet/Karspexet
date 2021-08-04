@@ -22,14 +22,23 @@
   </head>
   <body>
     {% cms_toolbar %}
-    <div class="navbar">
-      <ul>
-        {% show_menu 0 100 100 0 "menu.html" %}
-      </ul>
-    </div>
-    {% block content %}
-    {% endblock content %}
-    <div class="footer">
+    <header class="navbar">
+      <img class="luva luva-mobile" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
+      <input type="checkbox" class="nav-toggle" id="nav-toggle" />
+      <label for="nav-toggle" class="nav-toggle-label">
+        <span></span>
+      </label>
+      <nav class="nav">
+        <ul>
+          {% show_menu 0 100 100 0 "menu.html" %}
+        </ul>
+      </nav>
+    </header>
+    <main>
+      {% block content %}
+      {% endblock content %}
+    </main>
+    <footer class="footer">
       <div class="relatedLinks">
         <a href="http://ths.kth.se/"><img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" alt="THS Logotyp"/></a>
       </div>
@@ -42,6 +51,6 @@
         <a href="https://www.facebook.com/karspexet.kth/" class="icon-facebook"></a>
         <a href="https://www.instagram.com/karspexet/" class="icon-instagram"></a>
       </div>
-    </div>
+    </footer>
   </body>
 </html>

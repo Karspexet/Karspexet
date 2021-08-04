@@ -1,58 +1,91 @@
+/* stylelint-disable no-descending-specificity */
 html {
   height: 100%;
 }
 
 body {
+  display: flex;
+  width: 100%;
+  max-width: 1058px;
+  min-height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0 auto;
   background-color: black;
   color: white;
-
-  display: flex;
-
-  flex-direction: column;
-  font-family: 'Roboto', sans-serif;
-  justify-content: center;
-
-  margin: 0 auto;
-  padding: 0;
-
-  max-width: 1058px;
-  min-width: 800px;
-  min-height: 100%;
-  width: 100%;
-  padding-top: 62px;
-  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
 
-#page {
-  padding-top: 70px;
+main {
+  position: relative;
   display: flex;
-  flex-shrink: 0;
-  min-height: 100%;
   flex-direction: column;
-  flex: 1;
+  flex-grow: 1;
 }
 
 a {
   color: #fd0;
-  text-decoration: underline;
   font-weight: bold;
+  text-decoration: underline;
+}
+
+.footer {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  box-sizing: border-box;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background-color: rgb(141, 4, 28);
+  font-size: 14px;
+}
+
+.secondary-menu {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.footer .thsLogo {
+  width: auto;
+  height: 40px;
+}
+
+.footer .secondary-menu a,
+.footer .secondary-menu a:visited {
+  margin: 0;
+  margin-right: 0.5em;
+  color: white;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.footer .secondary-menu a:hover {
+  text-decoration: underline;
+}
+
+.socialMedia a {
+  text-decoration: none;
 }
 
 .fa {
-  font-size: 1.1em;
-  color: rgb(222, 210, 95);
   margin-right: 2px;
+  color: rgb(222, 210, 95);
+  font-size: 1.1em;
 }
 
 .list_decorator {
-  font-size: small
+  font-size: small;
 }
 
 .poster_container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
   position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 .poster_image {
@@ -63,67 +96,41 @@ a {
   max-width: 100%;
 }
 
-.poster_image::after {
-  display: block;
-  position: absolute;
-  background-image: linear-gradient(to bottom, transparent 0%, black 100%);
-  bottom: 0px;
-  height: 150px;
-  width: 100%;
-  content: '';
-  pointer-events: none;
-}
-
 .poster_title {
   position: absolute;
+  z-index: 1;
   bottom: 10%;
-  text-shadow: 2px 2px 4px #000000;
-  font-size: 1.5em;
   display: flex;
-  justify-content: center;
   width: 100%;
+  justify-content: center;
+  font-size: 1.5em;
+  text-shadow: 2px 2px 4px #000;
 }
 
 .poster_title h1 {
   margin: 0;
-  font-family: "Trajan Pro Regular";
+  font-family: "Trajan Pro Regular", serif;
   font-weight: normal;
 }
 
 .poster_title p {
   margin: 0;
-  font-family: "Trajan Pro Regular";
-}
-
-.poster_title {
-  position: absolute;
-  bottom: 10%;
-  text-shadow: 2px 2px 4px #000000;
-  font-size: 1.5em;
-  z-index: 1;
-}
-
-.poster_title h1 {
-  margin: 0;
-}
-
-.poster_title p {
-  margin: 0;
+  font-family: "Trajan Pro Regular", serif;
 }
 
 .poster_shadow {
   position: absolute;
+  bottom: 0;
   width: 100%;
   height: 80px;
-  bottom: 0;
-  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1));
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
 }
 
 .running_shows {
   display: flex;
   justify-content: space-around;
-  font-size: 12px;
   padding: 6px;
+  font-size: 12px;
 }
 
 .running_shows [class^="icon-"],
@@ -132,22 +139,13 @@ a {
   color: #fd0;
 }
 
-.navbar ul {
-  padding-left: 0;
-}
-
-.navbar ul li:last-child {
-  background-color: rgb(141, 4, 28);
-  border-radius: 5px;
-}
-
 .card_container {
   display: flex;
   flex: 1 0 auto;
-  flex-shrink: 0;
   flex-flow: row wrap;
-  justify-content: space-around;
+  flex-shrink: 0;
   align-items: flex-start;
+  justify-content: space-around;
 }
 
 .card_container.select_show {
@@ -155,10 +153,10 @@ a {
 }
 
 .card {
-  width: 300px;
-  padding: 30px 10px;
   display: block;
+  width: 300px;
   justify-content: center;
+  padding: 30px 10px;
 }
 
 .card .card_image img {
@@ -166,38 +164,38 @@ a {
   height: auto;
 }
 
-.card .card_title p{
-  font-size: 1.5em;
+.card .card_title {
+  font-size: 1.125em;
   font-weight: bold;
-  margin: 1em 0 0 0;
+  text-align: center;
 }
 
-.card .card_text p{
-  font-size: 1em;
+.card .card_text p {
   margin: 0.5em 0 0.5em 0;
-}
-
-.card .card_link a{
   font-size: 1em;
+}
+
+.card .card_link a {
   float: right;
+  font-size: 1em;
 }
 
-.card .card_link a:link{
+.card .card_link a:link {
   color: rgb(222, 210, 95);
   text-decoration: none;
 }
 
-.card .card_link a:visited{
+.card .card_link a:visited {
   color: rgb(222, 210, 95);
   text-decoration: none;
 }
 
-.card .card_link a:hover{
+.card .card_link a:hover {
   color: rgb(222, 210, 95);
   text-decoration: underline;
 }
 
-.card .card_link a:active{
+.card .card_link a:active {
   color: rgb(222, 210, 95);
   text-decoration: none;
 }
@@ -207,8 +205,8 @@ a {
 }
 
 .select_show .show-card {
-  box-shadow: 0 0 6px 1px rgba(255, 221, 0, 0.5);
   margin-top: 2em;
+  box-shadow: 0 0 6px 1px rgba(255, 221, 0, 0.5);
 }
 
 .show-card:hover {
@@ -221,7 +219,7 @@ a {
 
 .show-card em,
 .show-card address {
-  color: white
+  color: white;
 }
 
 .ticket_list {
@@ -232,41 +230,43 @@ a {
   font-size: 1em;
 }
 
-.ticket_list a:link{
+.ticket_list a:link {
   color: rgb(222, 210, 95);
   text-decoration: none;
 }
 
-.ticket_list a:visited{
+.ticket_list a:visited {
   color: rgb(222, 210, 95);
   text-decoration: none;
 }
 
-.ticket_list a:hover{
+.ticket_list a:hover {
   color: rgb(222, 210, 95);
   text-decoration: underline;
 }
 
-.ticket_list a:active{
+.ticket_list a:active {
   color: rgb(222, 210, 95);
   text-decoration: none;
 }
 
-.cms-placeholder{
+.cms-placeholder {
   display: none;
 }
 
 .partnersContainer {
   width: 100%;
-  background-color: white;
-  padding-bottom: 25px;
   flex: 0;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-top: 2rem;
+  background-color: white;
   color: black;
 }
 
 .partnersContainer h1 {
-  margin: 0;
   padding-bottom: 20px;
+  margin: 0;
 }
 
 .ourPartners {
@@ -276,9 +276,9 @@ a {
 
 .partnerPictures {
   display: flex;
-  justify-content: center;
-  align-items: space-around;
   flex-flow: row wrap;
+  align-items: space-around;
+  justify-content: center;
 }
 
 .partnerPictures img {
@@ -299,53 +299,13 @@ a {
   border: none;
 }
 
-.footer {
-  display: flex;
-  flex-direction: row;
-  font-size: 14px;
-  margin: auto;
-  margin-bottom: 0;
-  height: 80px;
-  width: 100%;
-  background-color: rgb(141, 4, 28);
-  align-items: center;
-  justify-content: space-between;
-}
-
-.footer div {
-  padding: 0 40px;
-  line-height: 40px;
-}
-
-.footer .thsLogo {
-  width: auto;
-  height: 40px;
-}
-
-.footer .secondary-menu a,
-.footer .secondary-menu a:visited {
-  color: white;
-  font-weight: normal;
-  text-decoration: none;
-  margin: 0;
-  margin-right: 0.5em;
-}
-
-.footer .secondary-menu a:hover {
-  text-decoration: underline;
-}
-
-.socialMedia a {
-  text-decoration: none;
-}
-
 .alt-name {
-  font-style: italic;
   margin-top: 0;
+  font-style: italic;
 }
 
 .alt-name::before {
-  content: "...eller "
+  content: "...eller ";
 }
 
 .ticket-detail-header h1 {
@@ -363,6 +323,5 @@ ul.show-info {
 @media screen and (max-width: 600px) {
   .card {
     width: 80%;
-    font-size: 1.5rem;
   }
 }
