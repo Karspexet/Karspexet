@@ -23,6 +23,7 @@ from karspexet.ticket.forms import CustomerEmailForm
 from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
                                      Voucher)
 from karspexet.ticket.tasks import send_ticket_email_to_customer
+from karspexet.ticket.utils import qr_code_as_png_data_url
 from karspexet.venue.models import Seat
 
 SESSION_TIMEOUT_MINUTES = 30
@@ -247,46 +248,37 @@ def ticket_detail(request, reservation_id, ticket_code):
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
     return TemplateResponse(request, "ticket_detail.html", {
-        'reservation': reservation,
-        'show': reservation.show,
-        'venue': reservation.show.venue,
-        'production': reservation.show.production,
-        'ticket': ticket,
-        'seat': ticket.seat,
-        'qr_code': _qr_code(request)
+        "reservation": reservation,
+        "show": reservation.show,
+        "venue": reservation.show.venue,
+        "production": reservation.show.production,
+        "ticket": ticket,
+        "seat": ticket.seat,
+        "qr_code": qr_code_as_png_data_url(request),
     })
 
 
 def ticket_pdf(request, reservation_id, ticket_code):
+    from xhtml2pdf import pisa
+
     reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
-    template = TemplateResponse(request, "ticket_detail.html", {
-        'reservation': reservation,
-        'show': reservation.show,
-        'venue': reservation.show.venue,
-        'production': reservation.show.production,
-        'ticket': ticket,
-        'seat': ticket.seat,
-        'qr_code': _qr_code(request)
-    }, content_type="utf-8").render()
+    html = TemplateResponse(request, "ticket_detail.html", {
+        "reservation": reservation,
+        "show": reservation.show,
+        "venue": reservation.show.venue,
+        "production": reservation.show.production,
+        "ticket": ticket,
+        "seat": ticket.seat,
+        "qr_code": qr_code_as_png_data_url(request),
+    }, content_type="utf-8").render().content.decode()
 
-    pdfkit_options = {
-        'page-size': 'A5',
-        'dpi': '300',
-    }
-
-    content = template.rendered_content
-
-    if settings.WKHTMLTOPDF_PATH:
-        pdfkit_config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_PATH)
-        pdf = pdfkit.from_string(content, False, pdfkit_options, configuration=pdfkit_config)
-    else:
-        pdf = pdfkit.from_string(content, False, pdfkit_options)
-
-    response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'inline;filename=karspexet-bokning-{}-{}.pdf'.format(reservation_id, ticket_code)
-
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = "inline;filename=karspexet-bokning-{}-{}.pdf".format(reservation_id, ticket_code)
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        raise Exception(pisa_status)
     return response
 
 
@@ -382,10 +374,3 @@ def _payment_partial(reservation):
         return "_stripe_payment.html"
     else:
         return "_fake_payment.html"
-
-
-def _qr_code(request):
-    url = pyqrcode.create(request.build_absolute_uri())
-    buffer = io.BytesIO()
-    url.svg(buffer, scale=4)
-    return buffer.getvalue()
