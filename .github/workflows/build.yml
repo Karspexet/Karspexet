@@ -44,4 +44,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
       - run: |
-          ssh karspexet.se -C make restart
+          ssh dan@karspexet.se -C make restart
