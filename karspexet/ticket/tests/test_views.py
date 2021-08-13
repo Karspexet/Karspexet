@@ -28,7 +28,7 @@ class TestTicketViews(TestCase):
 
     def test_select_seats(self):
         show = f.CreateShow(production__name="Uppsättningen")
-        response = self.client.get(reverse(views.select_seats, args=[show.slug]))
+        response = self.client.get(reverse(views.select_seats, args=[show.id]))
 
         self.assertContains(response, "Köp biljetter för Uppsättningen")
 
@@ -41,7 +41,7 @@ def test_booking_overview_with_active_session__includes_payment_intent(show, cli
     session["show_%s" % show.id] = str(reservation.id)
     session.save()
 
-    url = reverse(views.booking_overview, args=[show.slug])
+    url = reverse(views.booking_overview, args=[show.id])
     with mock.patch("karspexet.ticket.views.payment", autospec=True) as mock_payment:
         mock_payment_intent = object()
         mock_payment.get_payment_intent_from_reservation.return_value = mock_payment_intent
@@ -59,7 +59,7 @@ def test_booking_overview_with_active_session__with_fake_intent(show, client):
     session["show_%s" % show.id] = str(reservation.id)
     session.save()
 
-    url = reverse(views.booking_overview, args=[show.slug])
+    url = reverse(views.booking_overview, args=[show.id])
     with mock.patch("karspexet.ticket.views.payment", autospec=True):
         response = client.get(url)
     assert response.status_code == 200
@@ -139,16 +139,16 @@ class TestSelectSeats:
     def test_creates_reservation_and_redirects_to_booking_overview(self, show):
         seat = Seat.objects.first()
 
-        response = _post(views.select_seats, show.slug, data={f"seat_{seat.id}": "normal"})
+        response = _post(views.select_seats, show.id, data={f"seat_{seat.id}": "normal"})
         assert response.status_code == 302
-        assert response["Location"] == reverse(views.booking_overview, args=[show.slug])
+        assert response["Location"] == reverse(views.booking_overview, args=[show.id])
         reservation = Reservation.objects.get()
         assert reservation.tickets == {str(seat.id): "normal"}
 
     def test_select_seats__with_finalized_reservation_in_session__gives_new_reservation(self, show):
         reservation = _reservation(show, finalized=True)
 
-        response = _get(views.select_seats, show.slug, session={f"show_{show.id}": reservation.id})
+        response = _get(views.select_seats, show.id, session={f"show_{show.id}": reservation.id})
         assert response._request.session[f"show_{show.id}"] != reservation.id
 
 

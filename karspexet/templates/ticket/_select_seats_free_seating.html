@@ -18,7 +18,7 @@
       {% endif %}
       <dt>Antal platser kvar:</dt><dd>{{ num_available_seats }}</dd>
     </dl>
-    <form method="post" action="{% url "select_seats" show.slug %}">
+    <form method="post" action="{% url "select_seats" show.id %}">
       {% if pricings.normal %}
         <div>
           <label for="number-of-normal-seats">

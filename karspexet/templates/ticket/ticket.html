@@ -12,7 +12,7 @@
   </div>
   <div class="card_container select_show">
     {% for show in upcoming_shows %}
-      <a class="show-card" href="{% url "select_seats" show.slug %}">
+      <a class="show-card" href="{% url "select_seats" show.id %}">
         <article class="card">
           <h1>{{ show.production.name }}</h1>
           <p class="alt-name">{{ show.production.alt_name }}</p>

@@ -152,7 +152,7 @@ class TestGetPaymentIntentFromReservation:
 
     def _build_request(self, reservation):
         show = reservation.show
-        url = reverse(views.booking_overview, args=[show.slug])
+        url = reverse(views.booking_overview, args=[show.id])
         request = RequestFactory().post(url)
         middleware = SessionMiddleware()
         middleware.process_request(request)
