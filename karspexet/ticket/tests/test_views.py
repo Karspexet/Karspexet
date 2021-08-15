@@ -160,8 +160,7 @@ class TestTickets:
         response = _get(views.ticket_detail, reservation.id, ticket.ticket_code)
         assert response.status_code == 200
 
-    @mock.patch("karspexet.ticket.views.pdfkit", autospec=True)
-    def test_ticket_pdf(self, _, show):
+    def test_ticket_pdf(self, show):
         reservation = _reservation(show)
         ticket = f.CreateTicket(show=show, seat_id=list(reservation.tickets.keys())[0])
         response = _get(views.ticket_pdf, reservation.id, ticket.ticket_code)
