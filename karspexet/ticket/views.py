@@ -1,9 +1,6 @@
-import io
 import json
 import logging
 
-import pdfkit
-import pyqrcode
 import stripe
 from dateutil import parser
 from dateutil.relativedelta import relativedelta

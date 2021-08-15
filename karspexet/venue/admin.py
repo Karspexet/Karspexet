@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
-from django.shortcuts import reverse
+from django.shortcuts import redirect, reverse
 from django.utils.html import format_html
 
 from karspexet.venue.models import Seat, SeatingGroup, Venue
@@ -47,6 +47,14 @@ class SeatInline(admin.TabularInline):
 @admin.register(Venue)
 class VenueAdmin(admin.ModelAdmin):
     inlines = [SeatingGroupInline]
+
+    actions = ["add_seats"]
+
+    @admin.display(description="Lägg till platser")
+    def add_seats(self, request, queryset):
+        if len(queryset) != 1:
+            return redirect("admin:venue_venue_changelist")
+        return redirect("manage_seats", venue_id=queryset[0].id)
 
 
 @admin.register(SeatingGroup)

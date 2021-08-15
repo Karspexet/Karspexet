@@ -1,0 +1,47 @@
+:root {
+  --border-style: 1px solid gray;
+}
+
+.number-input {
+  display: inline-flex;
+}
+
+.number-input input[type="number"] {
+  width: 2rem;
+  padding: 0.25rem;
+  border: 0;
+  border-top: var(--border-style);
+  border-bottom: var(--border-style);
+  text-align: center;
+}
+
+.number-input input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+}
+
+.number-input button {
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  background-color: white;
+  color: black;
+}
+
+.number-input button[disabled] {
+  background-color: #cacaca;
+}
+
+.number-input button:not([disabled]) {
+  cursor: pointer;
+}
+
+.number-input :first-child {
+  border: var(--border-style);
+  border-bottom-left-radius: 25%;
+  border-top-left-radius: 25%;
+}
+
+.number-input :last-child {
+  border: var(--border-style);
+  border-bottom-right-radius: 25%;
+  border-top-right-radius: 25%;
+}

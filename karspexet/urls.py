@@ -8,6 +8,7 @@ urlpatterns = [
     path("500/", TemplateView.as_view(template_name="500.html")),
     path("admin/", admin.site.urls),
     path("economy/", include("karspexet.economy.urls")),
+    path("venue/", include("karspexet.venue.urls")),
     path("ticket/", include("karspexet.ticket.urls")),
     # Important to keep this last
     path("", include("cms.urls")),
