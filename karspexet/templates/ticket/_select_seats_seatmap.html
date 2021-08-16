@@ -21,7 +21,7 @@
   <aside>
     <h2>Dina valda platser</h2>
     <p id="no-seats-selected">Du måste välja minst en plats i platskartan till vänster</p>
-    <form method="post" action="{% url "select_seats" show.slug %}">
+    <form method="post" action="{% url "select_seats" show.id %}">
       {% csrf_token %}
       <div id="booking"></div>
       <input type="submit" id="book-submit-button" disabled="disabled" value="Till betalning!">

@@ -1,13 +1,10 @@
 from django.contrib import admin
 from django.contrib.admin.options import IncorrectLookupParameters
-from django.shortcuts import reverse
+from django.shortcuts import redirect
 from django.utils.html import format_html
 
+from karspexet.utils import admin_change_url
 from karspexet.venue.models import Seat, SeatingGroup, Venue
-
-
-def _admin_change_link(obj):
-    return reverse("admin:%s_%s_change" % (obj._meta.app_label, obj._meta.model_name), args=[obj.id])
 
 
 class VenueFilter(admin.SimpleListFilter):
@@ -35,7 +32,7 @@ class SeatingGroupInline(admin.TabularInline):
     def admin_link(cls, obj):
         if not obj.pk:
             return ""
-        url = _admin_change_link(obj)
+        url = admin_change_url(obj)
         return format_html('<a href="{}">Edit: {}</a>', url, obj)
 
 
@@ -47,6 +44,14 @@ class SeatInline(admin.TabularInline):
 @admin.register(Venue)
 class VenueAdmin(admin.ModelAdmin):
     inlines = [SeatingGroupInline]
+
+    actions = ["add_seats"]
+
+    @admin.display(description="Lägg till platser")
+    def add_seats(self, request, queryset):
+        if len(queryset) != 1:
+            return redirect("admin:venue_venue_changelist")
+        return redirect("manage_seats", venue_id=queryset[0].id)
 
 
 @admin.register(SeatingGroup)

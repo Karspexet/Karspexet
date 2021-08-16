@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Kårspexet{% endblock %}
+{% block content %}
+  <style type="text/css" media="screen">
+    main {
+      padding: 1rem;
+    }
+  </style>
+  <style type="text/css">
+    {% include "venue/number-input.css" %}
+  </style>
+  <script charset="utf-8">
+    {% include "venue/number-input.js" %}
+  </script>
+
+  <div>
+    <h1>{{ venue }}</h1>
+  </div>
+
+  <div>
+    <h2>Grupper</h2>
+    {% for group in groups %}
+      <div>
+        <h3>{{ group }}</h3>
+        <form action="." method="post">
+          {% csrf_token %}
+          <input type="hidden" name="group" value="{{ group.id }}"/>
+          Lägg till platser:
+          <input type="number" class="fn-number-input" name="num_seats" value="1" min="1"/>
+          <button type="submit">Spara</button>
+        </form>
+      </div>
+
+      <div>
+        <h4>Platser</h4>
+        <ul>
+          {% for seat in group.seat_set.all %}
+            <li>
+              {{ seat.name }}: x{{ seat.x_pos }},y{{ seat.y_pos }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    {% endfor %}
+  </div>
+
+
+{% endblock %}

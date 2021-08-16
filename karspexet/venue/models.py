@@ -1,5 +1,21 @@
 from django.contrib.postgres.fields import HStoreField
+from django.core.exceptions import ValidationError
 from django.db import models
+
+
+def validate_dimensions(value):
+    required = {
+        "height",
+        "stage_height",
+        "stage_width",
+        "stage_x",
+        "stage_y",
+        "width",
+    }
+    filled = set(value.keys())
+    missing = required - filled
+    if missing:
+        raise ValidationError("Värdena %s behöver fyllas i" % ", ".join(missing))
 
 
 class Venue(models.Model):
@@ -7,7 +23,7 @@ class Venue(models.Model):
     description = models.TextField(blank=True)
     address = models.TextField(blank=True)
     map_address = models.CharField(blank=True, max_length=255)
-    seat_map_dimensions = HStoreField(null=False, default=dict)
+    seat_map_dimensions = HStoreField(null=False, default=dict, blank=True, validators=[validate_dimensions])
 
     def __str__(self):
         return self.name

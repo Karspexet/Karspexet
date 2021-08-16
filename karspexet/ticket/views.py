@@ -1,9 +1,6 @@
-import io
 import json
 import logging
 
-import pdfkit
-import pyqrcode
 import stripe
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
@@ -67,8 +64,8 @@ def _parse_stripe_payload(body: str) -> stripe.Event:
 
 
 @transaction.atomic
-def select_seats(request, show_slug):
-    show = Show.objects.get(slug=show_slug)
+def select_seats(request, show_id: int):
+    show: Show = Show.objects.get(id=show_id)
     reservation = _get_or_create_reservation_object(request, show)
 
     taken_seats_qs = Reservation.active.exclude(pk=reservation.pk).filter(show=show)
@@ -90,7 +87,7 @@ def select_seats(request, show_slug):
 
                 reservation.build_tickets(student=student_seats, normal=normal_seats)
                 reservation.save()
-                return redirect("booking_overview", show_slug=show.slug)
+                return redirect("booking_overview", show_id=show.id)
             else:
                 messages.error(request, "Det finns inte tillräckligt många biljetter kvar.")
 
@@ -104,7 +101,7 @@ def select_seats(request, show_slug):
             else:
                 reservation.tickets = seat_params
                 reservation.save()
-                return redirect("booking_overview", show_slug=show.slug)
+                return redirect("booking_overview", show_id=show.id)
 
     taken_seats = set(map(int, set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
 
@@ -123,11 +120,11 @@ def select_seats(request, show_slug):
 
 
 @transaction.atomic
-def booking_overview(request, show_slug):
-    show = Show.objects.get(slug=show_slug)
+def booking_overview(request, show_id: int):
+    show: Show = Show.objects.get(id=show_id)
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_slug=show_slug)
+        return redirect("select_seats", show_id=show.id)
 
     _set_session_timeout(request)
 
@@ -139,7 +136,7 @@ def booking_overview(request, show_slug):
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
-        return redirect("select_seats", show_slug=show_slug)
+        return redirect("select_seats", show_id=show.id)
 
     if show.free_seating:
         reserved_seats = {}
@@ -192,7 +189,7 @@ def apply_voucher(request, reservation_id):
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_slug=show.slug)
+        return redirect("select_seats", show_id=show.id)
 
     if request.method == "POST":
         try:
@@ -206,7 +203,7 @@ def apply_voucher(request, reservation_id):
         except Voucher.DoesNotExist:
             messages.error(request, "Ogiltigt presentkort")
 
-    return redirect("booking_overview", show_slug=show.slug)
+    return redirect("booking_overview", show_id=show.id)
 
 
 @require_POST
@@ -215,13 +212,13 @@ def process_payment(request, reservation_id):
 
     if _session_expired(request):
         messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
-        return redirect("select_seats", show_slug=reservation.show.slug)
+        return redirect("select_seats", show_id=reservation.show.id)
 
     if not reservation.is_free() and settings.PAYMENT_PROCESS == "stripe":
         # We should only end up here if the tickets are free,
         # since otherwise we want to handle the flow using stripe webhooks
         messages.error(request, "Något gick fel i betalningen.")
-        return redirect("booking_overview", show_slug=reservation.show.slug)
+        return redirect("booking_overview", show_id=reservation.show.id)
 
     billing_data = request.POST
     reference = request.POST.get("reference", "")
