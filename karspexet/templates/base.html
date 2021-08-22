@@ -1,5 +1,4 @@
 {% load menu_tags cms_tags sekizai_tags static svg %}
-{% load assets %}
 <!doctype html>
 <html lang="sv">
   <head>
@@ -8,16 +7,9 @@
     <meta name="description" content="{% page_attribute 'meta_description' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css" media="screen" >
     <script src="https://js.stripe.com/v3/" async></script>
-
-    {% assets "js_all" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-    {% assets "css_all" %}
-      <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
-
-    {% render_block "js" %}
+    <style type="text/css" media="screen">{% include "_fonts.css" %}</style>
     {% render_block "css" %}
   </head>
   <body>
@@ -52,5 +44,8 @@
         <a href="https://www.instagram.com/karspexet/" class="icon-instagram"></a>
       </div>
     </footer>
+
+    {% render_block "js" %}
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
   </body>
 </html>
