@@ -1,0 +1,12 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "sass": "^1.38.0",
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "build": "parcel build assets/js/index.ts assets/css/index.scss",
+    "watch": "parcel watch assets/js/index.ts assets/css/index.scss"
+  }
+}

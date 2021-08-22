@@ -104,7 +104,6 @@ INSTALLED_APPS = [
     "filer",
     "easy_thumbnails",
     "mptt",
-    "django_assets",
     "svg",
 ] + OUR_APPS
 
@@ -199,24 +198,19 @@ MEDIA_URL = "/uploads/"
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "django_assets.finders.AssetsFinder",
 ]
 
 STATIC_ROOT = os.path.abspath("./staticfiles")
 MEDIA_ROOT = os.path.abspath("./uploads")
 
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "dist"),
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "assets"),
 ]
 
-ASSETS_MODULES = ["karspexet.assets"]
-ASSETS_DEBUG = DEBUG
-ASSETS_ROOT = "assets"
-ASSETS_AUTO_BUILD = ASSETS_DEBUG
-ASSETS_URL_EXPIRE = True
-SLIMIT_MANGLE = not ASSETS_DEBUG
-SLIMIT_MANGLE_TOPLEVEL = not ASSETS_DEBUG
+if not DEBUG:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 THUMBNAIL_HIGH_RESOLUTION = True
 

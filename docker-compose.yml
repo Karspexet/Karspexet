@@ -13,6 +13,6 @@ services:
   backend:
     build: .
     ports:
-      - 1000:8000
+      - 8000:8000
     environment:
       DATABASE_URL: postgres://karspexet@postgres/karspexet
