@@ -53,7 +53,15 @@ class VoucherAdmin(admin.ModelAdmin):
 
 @admin.register(PricingModel)
 class PricingModelAdmin(admin.ModelAdmin):
-    list_display = ("seating_group", "prices", "valid_from")
+    list_display = ("_venue", "_from", "prices")
+
+    @admin.display(description="Venue / Group")
+    def _venue(self, obj):
+        return f"{obj.seating_group.venue} / {obj.seating_group}"
+
+    @admin.display(description="Valid from")
+    def _from(self, obj):
+        return f"{obj.valid_from:%Y-%m-%d %H:%M}"
 
 
 @admin.register(Account)
