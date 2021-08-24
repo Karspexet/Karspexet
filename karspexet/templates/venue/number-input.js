@@ -16,11 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
       incrButton.disabled = elm.max && elm.value >= elm.max;
     }
     checkBounds();
-    decrButton.addEventListener("click", () => elm.stepDown() || checkBounds());
-    incrButton.addEventListener("click", () => elm.stepUp() || checkBounds());
-    elm.addEventListener("input", () => {
-      checkBounds();
+    decrButton.addEventListener("click", () => {
+      elm.stepDown();
+      elm.dispatchEvent(new Event("change"));
     });
+    incrButton.addEventListener("click", () => {
+      elm.stepUp();
+      elm.dispatchEvent(new Event("change"));
+    });
+    elm.addEventListener("change", checkBounds);
+    elm.addEventListener("input", checkBounds);
   });
 });
 
