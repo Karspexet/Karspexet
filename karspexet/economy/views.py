@@ -1,4 +1,5 @@
 from urllib.parse import urlencode
+from collections import defaultdict
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
@@ -26,16 +27,16 @@ def show_detail(request, show_id):
     order_by = request.GET.get('order_by', 'created_at')
     tickets = show.ticket_set.select_related('seat', 'account').all().order_by(order_by)
     taken_seats = Ticket.objects.filter(show=show).values_list('seat_id', flat=True)
-    number_students = tickets.filter(ticket_type="student").count()
-    number_normal = tickets.filter(ticket_type="normal").count()
+    ticket_counts: dict[str, int] = defaultdict(int)
+    for t in tickets:
+        ticket_counts[t.ticket_type] += 1
     [coverage] = Show.ticket_coverage(show)
 
     return TemplateResponse(request, "economy/show_detail.html", context={
         "show": show,
         "taken_seats": taken_seats,
         "tickets": tickets,
-        "number_students": number_students,
-        "number_normal": number_normal,
+        "ticket_counts": ticket_counts,
         "coverage": coverage,
         "user": request.user,
     })

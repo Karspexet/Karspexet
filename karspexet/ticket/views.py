@@ -18,7 +18,7 @@ from karspexet.show.models import Show
 from karspexet.ticket import payment
 from karspexet.ticket.forms import CustomerEmailForm
 from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
-                                     Voucher)
+                                     Voucher, TICKET_TYPES)
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.ticket.utils import qr_code_as_png_data_url
 from karspexet.venue.models import Seat
@@ -72,20 +72,23 @@ def select_seats(request, show_id: int):
     _set_session_timeout(request)
 
     seats_in_venue = Seat.objects.filter(group__venue=show.venue).all()
-    available_seats = seats_in_venue.exclude(id__in=show.ticket_set.values_list('seat_id')).all()
+    available_seats = list(seats_in_venue.exclude(id__in=show.ticket_set.values_list('seat_id')).all())
 
     if request.POST:
         if show.free_seating:
-            num_available_seats = available_seats.count()
-            requested_normal_seats = int(request.POST.get('normal', 0))
-            requested_student_seats = int(request.POST.get('student', 0))
+            prices = [t[0] for t in TICKET_TYPES]
+            requested_seats: dict = {
+                price: int(request.POST.get(price, 0)) for price in prices
+            }
+            num_requested_seats = sum(requested_seats.values())
+            if num_requested_seats <= len(available_seats):
+                seats = {}
+                idx = 0
+                for price, num_seats in requested_seats.items():
+                    seats[price] = available_seats[idx:idx + num_seats]
+                    idx = idx + num_seats
 
-            num_requested_seats = requested_student_seats + requested_normal_seats
-            if num_requested_seats <= num_available_seats:
-                student_seats = available_seats[0:requested_student_seats]
-                normal_seats = available_seats[requested_student_seats:num_requested_seats]
-
-                reservation.build_tickets(student=student_seats, normal=normal_seats)
+                reservation.build_tickets(seats)
                 reservation.save()
                 return redirect("booking_overview", show_id=show.id)
             else:

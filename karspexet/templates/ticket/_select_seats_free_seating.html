@@ -16,9 +16,20 @@
       {% if pricings.normal %}
         <dt>Fullpris:</dt><dd>{{ pricings.normal }}</dd>
       {% endif %}
+      {% if pricings.sponsor %}
+        <dt>Sponsor:</dt><dd>{{ pricings.sponsor }}</dd>
+      {% endif %}
       <dt>Antal platser kvar:</dt><dd>{{ num_available_seats }}</dd>
     </dl>
     <form method="post" action="{% url "select_seats" show.id %}">
+      {% if pricings.sponsor %}
+        <div>
+          <label for="number-of-sponsor-seats">
+            Antal sponsor
+            <input type="number" name="sponsor" id="number-of-sponsor-seats" class="number-of-seats" min="0">
+          </label>
+        </div>
+      {% endif %}
       {% if pricings.normal %}
         <div>
           <label for="number-of-normal-seats">

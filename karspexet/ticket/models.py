@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import date
 from functools import reduce
 from string import ascii_uppercase, digits
@@ -17,6 +19,7 @@ from karspexet.venue.models import Seat
 TICKET_TYPES = [
     ("normal", "Fullpris"),
     ("student", "Student"),
+    ("sponsor", "Sponsor"),
 ]
 
 
@@ -103,14 +106,13 @@ class Reservation(models.Model):
     def get_absolute_url(self):
         return reverse('reservation_detail', kwargs={'reservation_code': self.reservation_code})
 
-    def build_tickets(self, student, normal):
+    def build_tickets(self, seats: dict[str, list[Seat]]) -> None:
         tickets = {}
-        for seat in student:
-            tickets[str(seat.id)] = 'student'
-        for seat in normal:
-            tickets[str(seat.id)] = 'normal'
+        for price, price_seats in seats.items():
+            for seat in price_seats:
+                tickets[str(seat.id)] = price
 
-        if not len(tickets) == len(student) + len(normal):
+        if not len(tickets) == sum(map(len, seats.values())):
             raise MultipleTicketTypeException("One seat may not have multiple ticket types")
 
         self.tickets = tickets

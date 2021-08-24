@@ -12,13 +12,15 @@
     <tr>
       <th>Student</th>
       <th>Fullpris</th>
+      <th>Sponsor</th>
       <th>Totalt</th>
       <th>Antal platser</th>
       <th>Beläggning</th>
     </tr>
     <tr>
-      <td>{{ number_students }}</td>
-      <td>{{ number_normal }}</td>
+      <td>{{ ticket_counts.student }}</td>
+      <td>{{ ticket_counts.normal }}</td>
+      <td>{{ ticket_counts.sponsor }}</td>
       <td>{{ coverage.ticket_count }}</td>
       <td>{{ coverage.seat_count }}</td>
       <td>{{ coverage.sales_percentage|floatformat }}%</td>

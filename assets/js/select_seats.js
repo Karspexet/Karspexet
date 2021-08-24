@@ -1,3 +1,12 @@
+function toPositive(x) {
+  x = Number(x);
+  return Math.max(x, 0);
+}
+
+function qAll(selector) {
+  return Array.prototype.slice.call(document.querySelectorAll(selector));
+}
+
 function disableSubmitButton() {
   document.querySelector("#no-seats-selected").hidden = false;
   document.querySelector("#book-submit-button").disabled = true;
@@ -68,8 +77,7 @@ function setupSeatMapSelection(config) {
       });
     }
     document.querySelector("#booking").innerHTML = output;
-    var select = document.querySelectorAll("#booking select");
-    Array.prototype.forEach.call(select, function (select) {
+    qAll("#booking select").forEach(function (select) {
       select.addEventListener("change", selectSeatType);
     });
   }
@@ -140,53 +148,48 @@ function setupSeatMapSelection(config) {
 }
 
 function setupFreeSeating(config) {
-  var booking = {
-    student: 0,
-    normal: 0,
-  };
+  var booking = {};
+  for (var price in config.pricings) {
+    booking[price] = 0;
+  }
 
-  function setNumberOfSeats(seatType, numberOfSeats) {
-    var saneNumberOfSeats = Number(numberOfSeats) < 0 ? 0 : Number(numberOfSeats);
-    booking[seatType] = saneNumberOfSeats;
+  function getTotalPrice() {
+    var sum = 0;
+    for (var price in booking) {
+      sum += (booking[price] || 0) * (config.pricings[price] || 0);
+    }
+    return sum;
+  }
+
+  function getTicketCount() {
+    var sum = 0;
+    for (var price in booking) {
+      sum += booking[price];
+    }
+    return sum;
   }
 
   function renderBooking() {
     var bookingElement = document.getElementById("booking");
-    if (booking.student === 0 && booking.normal === 0) {
+
+    if (getTicketCount() === 0) {
       disableSubmitButton();
       bookingElement.innerText = "";
-
       return;
     }
-
     enableSubmitButton();
-    var studentTotal = (booking.student || 0) * (config.pricings.student || 0);
-    var normalTotal = (booking.normal || 0) * (config.pricings.normal || 0);
-    var totalPrice = studentTotal + normalTotal;
-    bookingElement.innerText = "Totalsumma: " + totalPrice;
+    bookingElement.innerText = "Totalsumma: " + getTotalPrice();
   }
 
-  function setupChangeNumberOfSeats(seatType) {
-    return function changeSeats(event) {
-      var numberOfSeats = Number(event.target.value);
-      if (numberOfSeats < 0) {
-        numberOfSeats = 0;
-      }
-
-      setNumberOfSeats(seatType, numberOfSeats);
-      renderBooking();
-    };
-  }
-
-  var numberOfSeatsElements = document.getElementsByClassName("number-of-seats");
-  Array.prototype.forEach.call(numberOfSeatsElements, function setupEventListeners(field) {
+  qAll(".number-of-seats").forEach(function setupEventListeners(field) {
     var seatType = field.getAttribute("name");
-    setNumberOfSeats(seatType, field.value);
-    if (typeof field.value !== "number") {
-      field.value = 0;
+    function changeSeats() {
+      booking[seatType] = toPositive(field.value);
+      renderBooking();
     }
-    renderBooking();
-    field.addEventListener("change", setupChangeNumberOfSeats(seatType));
+    field.value = field.value || 0;
+    field.addEventListener("change", changeSeats);
+    changeSeats();
   });
 }
 
