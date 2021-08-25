@@ -1,6 +1,4 @@
-:root {
-  --border-style: 1px solid gray;
-}
+$border-style: 1px solid gray;
 
 .number-input {
   display: inline-flex;
@@ -10,8 +8,8 @@
   width: 2rem;
   padding: 0.25rem;
   border: 0;
-  border-top: var(--border-style);
-  border-bottom: var(--border-style);
+  border-top: $border-style;
+  border-bottom: $border-style;
   text-align: center;
 }
 
@@ -35,13 +33,13 @@
 }
 
 .number-input :first-child {
-  border: var(--border-style);
+  border: $border-style;
   border-bottom-left-radius: 25%;
   border-top-left-radius: 25%;
 }
 
 .number-input :last-child {
-  border: var(--border-style);
+  border: $border-style;
   border-bottom-right-radius: 25%;
   border-top-right-radius: 25%;
 }

@@ -4,8 +4,10 @@
   Köp biljett - Kårspexet
 {% endblock %}
 {% block ticket_content %}
-  <div>
+  <div style="padding: 1rem;">
     <h2>Köp biljetter för {{ show }}</h2>
+
+    {# TODO: Add poster image #}
 
     {% if show.production.description %}
       <p>{{ show.production.description }}</p>

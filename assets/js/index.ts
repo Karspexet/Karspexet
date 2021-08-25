@@ -1,4 +1,5 @@
-import './app'
-import './booking_overview'
-import './payment'
-import './select_seats'
+import "./app";
+import "./booking_overview";
+import "./payment";
+import "./select_seats";
+import "./number-input";

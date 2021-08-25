@@ -4,24 +4,34 @@
   <div class="content_container">
     <section class="contact-details">
       <h2>Bokning</h2>
-      <dl>
-        <dt>Föreställning</dt>
-        <dd>{{ reservation.show }}</dd>
-        <dt>Antal biljetter</dt>
-        <dd>{{num_tickets}}</dd>
+
+      <table>
+        <tr>
+          <th>FÖRESTÄLLNING</th>
+          <td>{{ reservation.show }}</td>
+        </tr>
+        <tr>
+          <th>ANTAL BILJETTER</th>
+          <td>{{ num_tickets }}</td>
+        </tr>
         {% if reservation.discount %}
-          <dt>Presentkort</dt>
-          <dd>{{ reservation.discount.voucher.code }}</dd>
+          <tr>
+            <th>PRESENTKORT</th>
+            <td>{{ reservation.discount.voucher.code }}</td>
+          </tr>
         {% endif %}
-        <dt>Platser</dt>
-        <dd>
-          <ul>
-            {% for seat in seats %}
-              <li>{{ seat }}</li>
-            {% endfor %}
-          </ul>
-        </dd>
-      </dl>
+        <tr>
+          <th>PLATSER</th>
+          <td>
+            <ul>
+              {% for seat in seats %}
+                <li>{{ seat }}</li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      </table>
+
       <p class="fn-session-timeout">Dina platsreservationer är giltiga i <span class="fn-session-timeout-output">30 minuter</span><br/>(till <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"Y-m-d H:i" }}</time>)
 
         {% if payment_failed %}
@@ -32,9 +42,8 @@
 
         <h2>Betalning / Presentkort</h2>
 
-
         <p>För att betala dina biljetter, fyll i dina kortuppgifter här nedanför.</p>
-        <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalnigar!</p>
+        <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalningar!</p>
 
         {% if not reservation.discount %}
           <button id="enter-discount-code">Presentkort</button>
