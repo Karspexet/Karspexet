@@ -22,18 +22,6 @@
   content: "\e901";
 }
 
-.icon-map-marker::before {
-  content: "\e902";
-}
-
-.icon-clock::before {
-  content: "\e903";
-}
-
-.icon-calendar::before {
-  content: "\e904";
-}
-
 .icon-circle::before {
   content: "\e905";
 }

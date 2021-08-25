@@ -207,6 +207,7 @@ a {
 .select_show .show-card {
   margin-top: 2em;
   box-shadow: 0 0 6px 1px rgba(255, 221, 0, 0.5);
+  text-decoration: none;
 }
 
 .show-card:hover {
