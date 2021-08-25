@@ -1,3 +1,4 @@
+// stylelint-disable at-rule-no-unknown
 .flex {
   display: flex;
 }
@@ -14,12 +15,33 @@
   justify-content: center;
 }
 
-.h-4 {
-  height: 1rem;
-}
+$scale: 16;
+$css-shortnames: (
+  padding: p,
+  margin: m,
+  left: l,
+  right: r,
+  top: t,
+  bottom: b,
+  height: h,
+  width: w,
+);
 
-.w-4 {
-  width: 1rem;
+@each $prop in "width", "height" {
+  $spacing-size: auto;
+  $i: auto;
+
+  .#{map-get($css-shortnames, $prop)}-#{$i} {
+    #{$prop}: $spacing-size;
+  }
+
+  @for $i from 0 through $scale {
+    $spacing-size: #{$i * 0.25}rem;
+
+    .#{map-get($css-shortnames, $prop)}-#{$i} {
+      #{$prop}: $spacing-size;
+    }
+  }
 }
 
 .mr-1 {
@@ -40,4 +62,9 @@
 
 .leading-none {
   line-height: 1;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }

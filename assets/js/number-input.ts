@@ -1,4 +1,3 @@
-// NOTE: Currently only used in admin pages so no need for transpiling or IE support
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".fn-number-input").forEach((elm) => {
     const decrButton = button({ textContent: "➖" });

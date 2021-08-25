@@ -1,4 +1,5 @@
 // stylelint-disable at-rule-no-unknown
+@use './reset';
 @use './helpers';
 @use './karspexet';
 @use './icons';
@@ -6,3 +7,4 @@
 @use './payment';
 @use './select_seats';
 @use './tables';
+@use './number-input';
