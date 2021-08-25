@@ -13,3 +13,4 @@ class ShowAdmin(admin.ModelAdmin):
     list_display = ("production", "slug", "date_string")
     list_filter = ("production",)
     exclude = ("slug",)
+    ordering = ("-pk",)

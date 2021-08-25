@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 
@@ -66,6 +67,9 @@ class Show(models.Model):
     def __str__(self):
         short = f"({self.short_description}) " if self.short_description else ""
         return f"{self.production.name} {short}{self.date_string()}"
+
+    def get_absolute_url(self):
+        return reverse("select_seats", args=[self.id])
 
     class Meta:
         ordering = ('date',)
