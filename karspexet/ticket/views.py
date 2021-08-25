@@ -17,8 +17,8 @@ from django.views.decorators.http import require_POST
 from karspexet.show.models import Show
 from karspexet.ticket import payment
 from karspexet.ticket.forms import CustomerEmailForm
-from karspexet.ticket.models import (AlreadyDiscountedException, InvalidVoucherException, PricingModel, Reservation,
-                                     Voucher, TICKET_TYPES)
+from karspexet.ticket.models import (TICKET_TYPES, AlreadyDiscountedException, InvalidVoucherException, PricingModel,
+                                     Reservation, Voucher)
 from karspexet.ticket.tasks import send_ticket_email_to_customer
 from karspexet.ticket.utils import qr_code_as_png_data_url
 from karspexet.venue.models import Seat

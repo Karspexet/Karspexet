@@ -2,6 +2,7 @@
 
 import django.contrib.postgres.fields.hstore
 from django.db import migrations
+
 import karspexet.venue.models
 
 

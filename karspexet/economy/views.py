@@ -1,5 +1,5 @@
-from urllib.parse import urlencode
 from collections import defaultdict
+from urllib.parse import urlencode
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
