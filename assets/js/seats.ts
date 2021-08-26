@@ -1,5 +1,7 @@
 import $ from "cash-dom";
 
+const SPONSOR_TYPE = "sponsor";
+
 function disableSubmitButton() {
   $("#no-seats-selected").show();
   $("#book-submit-button").prop("disabled", true);
@@ -157,6 +159,7 @@ function setupFreeSeating(config: { pricings: any }) {
       bookingElement.text("Totalsumma: " + getTotalPrice());
     }
   }
+  const luva = createHappyLuva();
 
   $(".number-of-seats").each((_, field: any) => {
     let seatType = field.getAttribute("name");
@@ -165,8 +168,15 @@ function setupFreeSeating(config: { pricings: any }) {
       renderBooking();
     }
     field.value = field.value || 0;
-    field.addEventListener("change", changeSeats);
     changeSeats();
+
+    field.addEventListener("change", () => {
+      changeSeats();
+
+      if (seatType === SPONSOR_TYPE) {
+        luva.dance();
+      }
+    });
   });
 }
 
@@ -197,4 +207,41 @@ function createElm(type: any, options: any) {
     elm.appendChild(children[i]);
   }
   return elm;
+}
+
+function createHappyLuva() {
+  let spins = 0;
+  const img = $("[data-sponsor-luva]");
+  const spinClasses = ["spin-once", "shake"];
+  function animate(type?: string) {
+    img.addClass(type || randomChoice(spinClasses));
+    img.data("is-animated", true);
+  }
+  function dance() {
+    spins += 1;
+    if (!img.data("is-animated")) {
+      animate();
+    }
+  }
+  img.on("animationend", (e) => {
+    img.data("is-animated", false);
+    img.removeClass(spinClasses.join(" "));
+    spins -= 1;
+    if (img.hasClass("animate-fast")) {
+      spins = 0;
+      img.removeClass("animate-fast");
+    }
+    if (spins > 0) {
+      img.addClass("animate-fast");
+      setTimeout(() => animate("spin-once"), 0);
+    }
+  });
+  return {
+    dance,
+  };
+}
+
+function randomChoice<T>(choice: T[]): T {
+  var index = Math.floor(Math.random() * choice.length);
+  return choice[index];
 }
