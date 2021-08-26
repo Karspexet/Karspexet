@@ -44,31 +44,24 @@ a {
   font-size: 14px;
 }
 
-.secondary-menu {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
 .footer .thsLogo {
   width: auto;
   height: 40px;
 }
 
-.footer .secondary-menu a,
-.footer .secondary-menu a:visited {
+.secondary-menu a,
+.secondary-menu a:visited {
   margin: 0;
   margin-right: 0.5em;
   color: white;
   font-weight: normal;
-  text-decoration: none;
 }
 
-.footer .secondary-menu a:hover {
-  text-decoration: underline;
-}
-
-.socialMedia a {
-  text-decoration: none;
+footer a {
+  &,
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .fa {

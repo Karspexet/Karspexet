@@ -31,6 +31,10 @@ $css-shortnames: (
   $spacing-size: auto;
   $i: auto;
 
+  .#{map-get($css-shortnames, $prop)}-full {
+    #{$prop}: 100%;
+  }
+
   .#{map-get($css-shortnames, $prop)}-#{$i} {
     #{$prop}: $spacing-size;
   }
@@ -44,16 +48,21 @@ $css-shortnames: (
   }
 }
 
-.mr-1 {
-  margin-right: 0.25rem;
-}
+@each $dir in "top", "right", "bottom", "left" {
+  $spacing-size: auto;
+  $i: auto;
 
-.mr-2 {
-  margin-right: 0.5rem;
-}
+  .m#{map-get($css-shortnames, $dir)}-#{$i} {
+    margin-#{$dir}: $spacing-size;
+  }
 
-.mb-1 {
-  margin-bottom: 0.25rem;
+  @for $i from 0 through $scale {
+    $spacing-size: #{$i * 0.25}rem;
+
+    .m#{map-get($css-shortnames, $dir)}-#{$i} {
+      margin-#{$dir}: $spacing-size;
+    }
+  }
 }
 
 .text-gold {
@@ -67,4 +76,16 @@ $css-shortnames: (
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
+}
+
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border-width: 0;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }

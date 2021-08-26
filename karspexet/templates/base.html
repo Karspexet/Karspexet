@@ -7,9 +7,6 @@
     <meta name="description" content="{% page_attribute 'meta_description' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css" media="screen" >
-    <script src="https://js.stripe.com/v3/" async></script>
-    <style type="text/css" media="screen">{% include "_fonts.css" %}</style>
     {% render_block "css" %}
   </head>
   <body>
@@ -34,18 +31,72 @@
       <div class="relatedLinks">
         <a href="http://ths.kth.se/"><img class="thsLogo footerElement" src="{% static 'ths_logo.png' %}" alt="THS Logotyp"/></a>
       </div>
+      <span class="secondary-menu flex items-center h-full ml-4 mr-auto">
+        <a href="/foretag">Företag</a>
+        <a href="/kontakt">Kontakt</a>
+      </span>
       <div class="socialMedia footerElement">
-        <span class="secondary-menu">
-          <a href="/foretag">Företag</a>
-          <a href="/kontakt">Kontakt</a>
+        <span class="flex items-center">
+          <span class="mr-1">
+            Följ oss!
+          </span>
+          <a href="https://www.facebook.com/karspexet.kth/" class="text-gold inline-flex h-8 w-8 ml-4 mr-4">
+            {% include "icons/facebook-square.svg" %}
+            <span class="sr-only">Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/karspexet/" class="text-gold inline-flex h-8 w-8">
+            {% include "icons/instagram.svg" %}
+            <span class="sr-only">Instagram</span>
+          </a>
         </span>
-        Följ oss på sociala medier:
-        <a href="https://www.facebook.com/karspexet.kth/" class="icon-facebook"></a>
-        <a href="https://www.instagram.com/karspexet/" class="icon-instagram"></a>
       </div>
     </footer>
 
     {% render_block "js" %}
-    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
   </body>
 </html>
+{% addtoblock "js" %}<script type="text/javascript" src="{% static 'js/index.js' %}"></script>{% endaddtoblock %}
+{% addtoblock "js" %}<script src="https://js.stripe.com/v3/" async></script>{% endaddtoblock %}
+{% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">{% endaddtoblock %}
+{% addtoblock "css" strip %}
+<style type="text/css" media="screen">
+/* latin-ext */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto"), local("Roboto-Regular"), url({% static "fonts/Roboto.woff2" %}) format("woff2");
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local("Roboto"),
+    local("Roboto-Regular"),
+    url({% static "fonts/Roboto-Regular.woff2" %}) format("woff2");
+  unicode-range:
+    U+0000-00FF,
+    U+0131,
+    U+0152-0153,
+    U+02C6,
+    U+02DA,
+    U+02DC,
+    U+2000-206F,
+    U+2074,
+    U+20AC,
+    U+2212,
+    U+2215;
+}
+
+@font-face {
+  font-family: "Trajan Pro Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Trajan Pro Regular"), url({% static "fonts/Trajan-Pro-Regular.ttf" %}) format("ttf");
+}
+</style>
+{% endaddtoblock %}
