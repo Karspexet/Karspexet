@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import logging
 
@@ -141,8 +143,9 @@ def booking_overview(request, show_id: int):
         messages.warning(request, "Du måste välja minst en plats")
         return redirect("select_seats", show_id=show.id)
 
+    seats: list[tuple[str, str, int]] = []
     if show.free_seating:
-        reserved_seats = {}
+        reserved_seats: dict = {}
         for seat in reservation.seats():
             ticket_type = reservation.tickets[str(seat.id)]
             tickets = reserved_seats.get(ticket_type, {
@@ -153,26 +156,22 @@ def booking_overview(request, show_id: int):
             tickets['count'] += 1
             reserved_seats[ticket_type] = tickets
 
-        seats = [
-            "%d x %s (à %dkr)" % (
-                ticket_group['count'],
-                ticket_group['group'],
+        for (ticket_type, ticket_group) in reserved_seats.items():
+            seats.append((
+                "%d x %s" % (ticket_group['count'], ticket_group['group']),
+                ticket_type,
                 ticket_group['price'],
-            )
-            for (ticket_type, ticket_group) in reserved_seats.items()
-        ]
+            ))
         num_tickets = sum((group['count'] for (ticket_type, group) in reserved_seats.items()))
     else:
         reserved_seats = {seat.id: seat for seat in reservation.seats()}
-        seats = [
-            "%s: %s (%s, %dkr)" % (
-                reserved_seats[int(id)].group.name,
-                reserved_seats[int(id)].name,
+        for (id, ticket_type) in reservation.tickets.items():
+            seat = reserved_seats[int(id)]
+            seats.append((
+                "%s: %s" % (seat.group.name, seat.name),
                 ticket_type,
-                reserved_seats[int(id)].price_for_type(ticket_type)
-            )
-            for (id, ticket_type) in reservation.tickets.items()
-        ]
+                seat.price_for_type(ticket_type),
+            ))
         num_tickets = len(seats)
 
     return TemplateResponse(request, 'ticket/payment.html', {
