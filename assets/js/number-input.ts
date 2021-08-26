@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".fn-number-input").forEach((elm) => {
+  document.querySelectorAll<HTMLInputElement>(".fn-number-input").forEach((elm) => {
     const decrButton = button({ textContent: "➖" });
     const incrButton = button({ textContent: "➕" });
 
@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.appendChild(incrButton);
 
     function checkBounds() {
-      decrButton.disabled = elm.min && elm.value <= elm.min;
-      incrButton.disabled = elm.max && elm.value >= elm.max;
+      decrButton.disabled = !!(elm.min && elm.value <= elm.min);
+      incrButton.disabled = !!(elm.max && elm.value >= elm.max);
     }
     checkBounds();
     decrButton.addEventListener("click", () => {
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-function button({ textContent }) {
+function button({ textContent }: { textContent: string }) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.textContent = textContent;
