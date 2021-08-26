@@ -1,3 +1,5 @@
+import $, { Cash } from "cash-dom";
+
 declare var DEBUG: boolean;
 declare var Stripe: (key: string) => {
   elements: (config: any) => any;
@@ -10,14 +12,10 @@ type Config = {
   clientSecret: any;
 };
 
-function q<T extends HTMLElement = HTMLElement>(selector: string): T {
-  return document.querySelector<T>(selector)!;
-}
-
 export function setupPayment(config?: Config) {
   if (!config || !config.payment) return;
 
-  let paymentForm = q<HTMLFormElement>("#payment-form")!;
+  let paymentForm = $("#payment-form")!;
   setupDiscountForm(paymentForm);
 
   let stripeKey = config.payment;
@@ -47,28 +45,28 @@ export function setupPayment(config?: Config) {
   });
   card.mount("#card-element");
 
-  let submitButton = q<HTMLButtonElement>(".fn-payment-submit-button")!;
+  let submitButton = $(".fn-payment-submit-button")!;
   let spinner = Spinner(paymentForm);
 
   function setError(result: { error: { message: string } }) {
-    let errorElement = document.querySelector(".error")!;
-    errorElement.classList.remove("visible");
+    let errorElement = $(".error")!;
+    errorElement.removeClass("visible");
     if (result.error) {
-      errorElement.textContent = result.error.message;
-      errorElement.classList.add("visible");
+      errorElement.text(result.error.message);
+      errorElement.addClass("visible");
     }
     spinner.hide();
-    submitButton.disabled = false;
+    submitButton.prop("disabled", false);
   }
 
-  paymentForm.addEventListener("submit", (e) => {
-    if (paymentForm.getAttribute("data-is-free")) {
+  paymentForm.on("submit", (e) => {
+    if (paymentForm.attr("data-is-free")) {
       return;
     }
     e.preventDefault();
-    submitButton.disabled = true;
+    submitButton.prop("disabled", true);
 
-    let paymentDetails = getStripePaymentDetails(paymentForm, card);
+    let paymentDetails = getStripePaymentDetails(paymentForm.get(0) as HTMLFormElement, card);
     spinner.show();
     stripe.confirmCardPayment(clientSecret, paymentDetails).then((result: any) => {
       // Handle result.error or result.paymentIntent
@@ -88,25 +86,23 @@ export function setupPayment(config?: Config) {
   });
 }
 
-function setupDiscountForm(paymentForm: HTMLFormElement) {
-  let discountForm = q<HTMLFormElement>("#discount-form")!;
-  let discountButton = q<HTMLButtonElement>("#enter-discount-code");
-  let cancelDiscountButton = discountForm.querySelector<HTMLButtonElement>("#cancel-discount");
-  if (discountButton && cancelDiscountButton) {
-    discountButton.addEventListener("click", () => {
-      if (discountForm.dataset.discountCode === "") {
-        discountForm.classList.remove("hidden");
-        discountForm.hidden = false;
-        discountButton.hidden = true;
-        paymentForm.hidden = true;
-      }
-    });
-    cancelDiscountButton.addEventListener("click", () => {
-      discountButton.hidden = false;
-      discountForm.hidden = true;
-      paymentForm.hidden = false;
-    });
-  }
+function setupDiscountForm(paymentForm: Cash) {
+  let discountForm = $("#discount-form")!;
+  let discountButton = $("#enter-discount-code");
+  let cancelDiscountButton = discountForm.find("#cancel-discount");
+  discountButton.on("click", () => {
+    if (discountForm.data("discountCode") === "") {
+      discountForm.removeClass("hidden");
+      discountForm.show();
+      discountButton.hide();
+      paymentForm.hide();
+    }
+  });
+  cancelDiscountButton.on("click", () => {
+    discountButton.show();
+    discountForm.hide();
+    paymentForm.show();
+  });
 }
 
 function getStripePaymentDetails(form: HTMLFormElement, card: HTMLElement) {
@@ -135,18 +131,30 @@ function getStripePaymentDetails(form: HTMLFormElement, card: HTMLElement) {
   };
 }
 
-function Spinner(container: HTMLElement) {
+function Spinner(container: Cash) {
   // Wrapper to make sure we don't flash the spinner if an error
   // message is going to be shown right after we "show" the spinner
-  let elm = container.querySelector(".spinner-container")!;
-  let showTimer: number = 0;
+  let elm = container.find(".spinner-container")!;
+  const showTimer = timeout(() => elm.removeClass("hidden"));
   return {
     show() {
-      showTimer = setTimeout(() => elm.classList.remove("hidden"), 50);
+      showTimer.queue(50);
     },
     hide() {
-      clearTimeout(showTimer);
-      elm.classList.add("hidden");
+      showTimer.cancel();
+      elm.addClass("hidden");
+    },
+  };
+}
+
+function timeout(func: Function) {
+  let timer: number = 0;
+  return {
+    queue: (t: number) => {
+      setTimeout(func, t);
+    },
+    cancel: () => {
+      clearTimeout(timer);
     },
   };
 }

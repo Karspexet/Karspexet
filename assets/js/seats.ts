@@ -1,20 +1,13 @@
-function toPositive(x: any) {
-  x = Number(x);
-  return Math.max(x, 0);
-}
-
-function qAll(selector: string) {
-  return Array.prototype.slice.call(document.querySelectorAll(selector));
-}
+import $ from "cash-dom";
 
 function disableSubmitButton() {
-  document.querySelector<HTMLElement>("#no-seats-selected")!.hidden = false;
-  document.querySelector<HTMLButtonElement>("#book-submit-button")!.disabled = true;
+  $("#no-seats-selected").show();
+  $("#book-submit-button").prop("disabled", true);
 }
 
 function enableSubmitButton() {
-  document.querySelector<HTMLElement>("#no-seats-selected")!.hidden = true;
-  document.querySelector<HTMLButtonElement>("#book-submit-button")!.disabled = false;
+  $("#no-seats-selected").hide();
+  $("#book-submit-button").prop("disabled", false);
 }
 
 function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
@@ -33,24 +26,14 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
 
   function addSeat(seat: string) {
     let seatId = seat.replace("seat-", "");
-    let seatElement = document.querySelector("#" + seat)!;
-    let classes = seatElement.getAttribute("class");
     booking[seat] = { id: seatId, value: null };
-
-    seatElement.setAttribute("class", classes + " selected-seat");
+    $("#" + seat).addClass("selected-seat");
     renderBooking();
   }
 
   function removeSeat(seat: string) {
     delete booking[seat];
-    let seatElement = document.querySelector("#" + seat)!;
-    let classes = seatElement.getAttribute("class")!;
-    let newClasses = classes
-      .split(" ")
-      .filter((x) => x != "selected-seat")
-      .join(" ");
-
-    seatElement.setAttribute("class", newClasses);
+    $("#" + seat).removeClass("selected-seat");
     renderBooking();
   }
 
@@ -74,10 +57,8 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
         output += renderSeatForm(booking[seatId]);
       });
     }
-    document.querySelector("#booking")!.innerHTML = output;
-    qAll("#booking select").forEach((select) => {
-      select.addEventListener("change", selectSeatType);
-    });
+    $("#booking").html(output);
+    $("#booking select").on("change", selectSeatType);
   }
 
   function renderSeatForm(seat: any) {
@@ -118,29 +99,29 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
   Object.keys(config.allSeats).forEach((seat) => {
     if (isMobile) return;
 
-    let seatInfoElm = document.querySelector(".seat-info")!;
-    let element = document.getElementById(seat)!;
-    let seatObject = config.allSeats[seat];
-    element.addEventListener("mouseover", () => {
-      let pricing = config.pricings[seatObject.group];
+    let seatInfoElm = $(".seat-info");
+    let element = $(seat);
+    const { group, name } = config.allSeats[seat];
+    element.on("mouseover", () => {
+      let pricing = config.pricings[group];
 
       let info = createElm("div", {
         children: [
-          createElm("div", { textContent: seatObject.name }),
+          createElm("div", { textContent: name }),
           createElm("div", { textContent: "Student: " + pricing["student"] + "kr" }),
           createElm("div", { textContent: "Fullpris: " + pricing["normal"] + "kr" }),
         ],
       });
 
-      seatInfoElm.innerHTML = info.outerHTML;
+      seatInfoElm.html(info.outerHTML);
     });
 
-    element.addEventListener("mouseout", () => {
-      seatInfoElm.innerHTML = "";
+    element.on("mouseout", () => {
+      seatInfoElm.html("");
     });
   });
 
-  qAll(".seat:not(.taken-seat)").forEach((seat) => seat.addEventListener("click", selectSeat));
+  $(".seat:not(.taken-seat)").on("click", selectSeat);
 }
 
 function setupFreeSeating(config: { pricings: any }) {
@@ -166,21 +147,21 @@ function setupFreeSeating(config: { pricings: any }) {
   }
 
   function renderBooking() {
-    let bookingElement = document.getElementById("booking")!;
+    let bookingElement = $("booking");
 
     if (getTicketCount() === 0) {
       disableSubmitButton();
-      bookingElement.innerText = "";
+      bookingElement.text("");
     } else {
       enableSubmitButton();
-      bookingElement.innerText = "Totalsumma: " + getTotalPrice();
+      bookingElement.text("Totalsumma: " + getTotalPrice());
     }
   }
 
-  qAll(".number-of-seats").forEach(function setupEventListeners(field) {
+  $(".number-of-seats").each((_, field: any) => {
     let seatType = field.getAttribute("name");
     function changeSeats() {
-      booking[seatType] = toPositive(field.value);
+      booking[seatType] = Math.max(Number(field.value), 0);
       renderBooking();
     }
     field.value = field.value || 0;
