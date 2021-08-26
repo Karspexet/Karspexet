@@ -1,3 +1,4 @@
+{% load static %}
 <section class="select-seats">
   <div style="margin-bottom: 1rem;">
     <div>
@@ -13,18 +14,26 @@
       {% if pricings.sponsor %}
         <li>
           <div class="flex h-16 items-center">
-            <div class="mr-2">
-              <div class="text-lg"> <strong>Sponsor</strong> </div>
+            <div class="mr-2 ticket-name">
+              <div class="text-lg"> <strong>Stödbiljett</strong> </div>
               <div>{{ pricings.sponsor }} SEK</div>
             </div>
             <div> <input type="number" name="sponsor" class="number-of-seats fn-number-input" min="0"> </div>
+          </div>
+          <div class="ml-2" style="width: 40ch;">
+            <p class="flex gap-2">
+              <img class="luva" src="{% static 'svg/luva-inkscape.svg' %}" alt="" data-sponsor-luva>
+              <em>
+                Tack till dig som väljer att sponsra Kårspexet med denna typ av biljett!
+              </em>
+            </p>
           </div>
         </li>
       {% endif %}
       {% if pricings.normal %}
         <li>
           <div class="flex h-16 items-center">
-            <div class="mr-2">
+            <div class="mr-2 ticket-name">
               <div class="text-lg"> <strong>Fullpris</strong> </div>
               <div>{{ pricings.normal }} SEK</div>
             </div>
@@ -35,7 +44,7 @@
       {% if pricings.student %}
         <li>
           <div class="flex h-16 items-center">
-            <div class="mr-2">
+            <div class="mr-2 ticket-name">
               <div class="text-lg"> <strong>Student</strong> </div>
               <div>{{ pricings.student }} SEK</div>
             </div>

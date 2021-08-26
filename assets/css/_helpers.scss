@@ -65,6 +65,14 @@ $css-shortnames: (
   }
 }
 
+@for $i from 0 through $scale {
+  $spacing-size: #{$i * 0.25}rem;
+
+  .gap-#{$i} {
+    gap: $spacing-size;
+  }
+}
+
 .text-gold {
   color: gold;
 }

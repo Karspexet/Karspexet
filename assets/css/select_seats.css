@@ -79,3 +79,7 @@ div.seat-info > * {
     text-decoration: underline;
   }
 }
+
+.ticket-name {
+  width: 6rem;
+}
