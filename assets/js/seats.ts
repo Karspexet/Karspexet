@@ -2,6 +2,18 @@ import $ from "cash-dom";
 
 const SPONSOR_TYPE = "sponsor";
 
+type PriceConfig = {
+  seatSelection: { freeSeating?: any; pricings: any; allSeats: any };
+};
+export function setupSelectSeats(config: PriceConfig) {
+  if (!config.seatSelection) return;
+  if (config.seatSelection.freeSeating) {
+    return setupFreeSeating(config.seatSelection);
+  } else {
+    return setupSeatMapSelection(config.seatSelection);
+  }
+}
+
 function disableSubmitButton() {
   $("#no-seats-selected").show();
   $("#book-submit-button").prop("disabled", true);
@@ -178,17 +190,6 @@ function setupFreeSeating(config: { pricings: any }) {
       }
     });
   });
-}
-
-export function setupSelectSeats(config: any) {
-  if (!config || !config.seatSelection) return;
-  config = config.seatSelection;
-
-  if (config.freeSeating) {
-    return setupFreeSeating(config);
-  } else {
-    return setupSeatMapSelection(config);
-  }
 }
 
 function createElm(type: any, options: any) {
