@@ -3,10 +3,17 @@ import { setupPayment } from "./payment";
 import { setupSelectSeats } from "./seats";
 import "./number-input";
 
-declare var config: any;
+declare global {
+  interface Window {
+    config: any;
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupSelectSeats(config);
-  setupPayment(config);
+  const { config } = window;
+  if (config) {
+    setupSelectSeats(config);
+    setupPayment(config);
+  }
   setupBookingOverview();
 });

@@ -1,14 +1,22 @@
 {
+  "browserslist": ["defaults", "IE 11"],
   "dependencies": {
     "cash-dom": "^8.1.0"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.5",
-    "sass": "^1.38.0",
+    "@parcel/transformer-sass": "^2.0.0-rc.0",
+    "autoprefixer": "^10.3.3",
+    "parcel": "^2.0.0-rc.0",
+    "postcss": "^8.3.6",
+    "postcss-custom-properties": "^11.0.0",
+    "postcss-selector-parser": "^6.0.6",
+    "sass": "1.38.1",
+    "tailwindcss": "^2.2.7",
     "typescript": "^4.3.5"
   },
+  "source": ["assets/js/index.ts", "assets/css/index.scss"],
   "scripts": {
-    "build": "parcel build assets/js/index.ts assets/css/index.scss",
-    "watch": "parcel watch assets/js/index.ts assets/css/index.scss"
+    "build": "parcel build --no-source-maps",
+    "watch": "parcel watch"
   }
 }

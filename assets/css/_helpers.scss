@@ -1,99 +1,18 @@
 // stylelint-disable at-rule-no-unknown
-.flex {
-  display: flex;
-}
+@tailwind utilities;
 
-.inline-flex {
-  display: inline-flex;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-$scale: 16;
-$css-shortnames: (
-  padding: p,
-  margin: m,
-  left: l,
-  right: r,
-  top: t,
-  bottom: b,
-  height: h,
-  width: w,
-);
-
-@each $prop in "width", "height" {
-  $spacing-size: auto;
-  $i: auto;
-
-  .#{map-get($css-shortnames, $prop)}-full {
-    #{$prop}: 100%;
-  }
-
-  .#{map-get($css-shortnames, $prop)}-#{$i} {
-    #{$prop}: $spacing-size;
-  }
-
-  @for $i from 0 through $scale {
-    $spacing-size: #{$i * 0.25}rem;
-
-    .#{map-get($css-shortnames, $prop)}-#{$i} {
-      #{$prop}: $spacing-size;
-    }
-  }
-}
-
-@each $dir in "top", "right", "bottom", "left" {
-  $spacing-size: auto;
-  $i: auto;
-
-  .m#{map-get($css-shortnames, $dir)}-#{$i} {
-    margin-#{$dir}: $spacing-size;
-  }
-
-  @for $i from 0 through $scale {
-    $spacing-size: #{$i * 0.25}rem;
-
-    .m#{map-get($css-shortnames, $dir)}-#{$i} {
-      margin-#{$dir}: $spacing-size;
-    }
-  }
-}
-
-@for $i from 0 through $scale {
-  $spacing-size: #{$i * 0.25}rem;
-
-  .gap-#{$i} {
-    gap: $spacing-size;
-  }
-}
+$red-dark: rgb(141, 4, 28);
+$red-darker: #590313;
+$gold: gold;
 
 .text-gold {
-  color: gold;
+  color: $gold;
 }
 
-.leading-none {
-  line-height: 1;
+.bg-red-darker {
+  background-color: $red-darker;
 }
 
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
-.sr-only {
-  position: absolute;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  border-width: 0;
-  margin: -1px;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+.text-red-darker {
+  color: $red-darker;
 }

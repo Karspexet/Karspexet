@@ -1,17 +1,20 @@
 # Tip: Use the `docker-show-context` tool to find large files not ignored yet!
-**/__pycache__/
-**/.mypy_cache/
 **/.cache/
-
+**/.mypy_cache/
+**/__pycache__/
+*.sql
 .circleci/
+.coverage
+.env
 .git/
+.github/
+.parcel-cache/
+.vscode/
+dist/
+env.json
 node_modules/
 static/bundles/
 staticfiles/
 uploads/
 
 !staticfiles/.gitignore
-
-*.sql
-.env
-env.json

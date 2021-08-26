@@ -12,16 +12,13 @@ type Config = {
   clientSecret: any;
 };
 
-export function setupPayment(config?: Config) {
-  if (!config || !config.payment) return;
+export function setupPayment(config: Config) {
+  const { payment: stripeKey, clientSecret } = config;
 
   let paymentForm = $("#payment-form")!;
   setupDiscountForm(paymentForm);
 
-  let stripeKey = config.payment;
-  let clientSecret = config.clientSecret;
   if (stripeKey === "fake") return;
-
   if (typeof Stripe == "undefined") return;
 
   let stripe = Stripe(stripeKey);

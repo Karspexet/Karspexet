@@ -1,0 +1,10 @@
+{
+  "plugins": {
+    "postcss-custom-properties": {
+      "preserve": false
+    },
+    "autoprefixer": {},
+    "tailwindcss": {},
+    "tailwindcss/nesting": {}
+  }
+}

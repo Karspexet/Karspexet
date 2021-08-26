@@ -1,0 +1,77 @@
+.card_container {
+  display: flex;
+  flex: 1 0 auto;
+  flex-flow: row wrap;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.card_container.select_show {
+  flex: 0 0 auto;
+}
+
+.card {
+  display: block;
+  width: 300px;
+  justify-content: center;
+  padding: 30px 10px;
+}
+
+.card .card_image img {
+  width: 100%;
+  height: auto;
+}
+
+.card .card_title {
+  font-size: 1.125em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card .card_text p {
+  margin: 0.5em 0 0.5em 0;
+  font-size: 1em;
+}
+
+.card .card_link a {
+  float: right;
+  font-size: 1em;
+}
+
+.card .card_link a:link {
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:visited {
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.card .card_link a:hover {
+  color: rgb(222, 210, 95);
+  text-decoration: underline;
+}
+
+.card .card_link a:active {
+  color: rgb(222, 210, 95);
+  text-decoration: none;
+}
+
+.show_card {
+  border-radius: 10px;
+}
+
+.show-card:hover {
+  background-color: #222;
+}
+
+.show-card .alt-name {
+  color: white;
+}
+
+.show-card em,
+.show-card address {
+  color: white;
+}
