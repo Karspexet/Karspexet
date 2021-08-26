@@ -1,3 +1,5 @@
+@use "helpers" as *;
+
 div.seat-info > * {
   padding: 0.5rem;
   border: 1px dotted;
@@ -24,8 +26,7 @@ div.seat-info > * {
 }
 
 .taken-seat {
-  fill: #ff173d;
-  fill: rgb(141, 4, 28);
+  fill: $red-dark;
 }
 
 .selected-seat {
