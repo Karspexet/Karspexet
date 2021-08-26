@@ -32,7 +32,7 @@ raven = "^6.10.0"
 sentry-sdk = "^0.19.5"
 stripe = "^2.55.1"
 whitenoise = "^5.2.0"
-pypng = "^0.0.20"
+pypng = "^0.0.21"
 xhtml2pdf = "^0.2.5"
 
 [tool.poetry.dev-dependencies]
