@@ -15,12 +15,10 @@ export function setupSelectSeats(config: PriceConfig) {
 }
 
 function disableSubmitButton() {
-  $("#no-seats-selected").show();
   $("#book-submit-button").prop("disabled", true);
 }
 
 function enableSubmitButton() {
-  $("#no-seats-selected").hide();
   $("#book-submit-button").prop("disabled", false);
 }
 

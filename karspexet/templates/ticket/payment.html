@@ -5,23 +5,23 @@
     <section class="contact-details">
       <h2>Bokning</h2>
 
-      <table class="p-3 bg-black bg-red-darker w-full rounded-md">
+      <table class="p-3 bg-black bg-red-darker w-full rounded-md text-left">
         <tr>
-          <th class="text-sm text-gold p-1">FÖRESTÄLLNING</th>
+          <th class="text-sm text-gold w-32 p-1">FÖRESTÄLLNING</th>
           <td>{{ reservation.show }}</td>
         </tr>
         <tr>
-          <th class="text-sm text-gold p-1">ANTAL BILJETTER</th>
+          <th class="text-sm text-gold w-32 p-1">ANTAL BILJETTER</th>
           <td>{{ num_tickets }}</td>
         </tr>
         {% if reservation.discount %}
           <tr>
-            <th class="text-sm text-gold p-1">PRESENTKORT</th>
-            <td>{{ reservation.discount.voucher.code }}</td>
+            <th class="text-sm text-gold w-32 p-1">PRESENTKORT</th>
+            <td class="w-100">{{ reservation.discount.voucher.code }}</td>
           </tr>
         {% endif %}
         <tr>
-          <th class="text-sm text-gold p-1">PLATSER</th>
+          <th class="text-sm text-gold w-32 p-1">PLATSER</th>
           <td>
             <ul>
               {% for seat in seats %}
