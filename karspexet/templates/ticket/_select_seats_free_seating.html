@@ -74,9 +74,9 @@
     <input type="submit" id="book-submit-button" disabled="disabled" value="Till betalning!">
   </form>
 
-  <span>eller</span>
   <form method="post" action="{% url 'cancel_reservation' show.id %}">
     {% csrf_token %}
-    <input type="submit" id="cancel-reservation-button" value="Avbryt bokning"/>
+    <span>eller</span>
+    <input type="submit" id="cancel-reservation-button" value="Avbryt bokningen"/>
   </form>
 </section>

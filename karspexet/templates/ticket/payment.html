@@ -2,8 +2,8 @@
 {% load tz static %}
 {% block ticket_content %}
   <div class="content_container">
-    <section class="contact-details">
-      <h2>Bokning</h2>
+    <section class="contact-details pb-4">
+      <h2 class="uppercase text-center">Bokning</h2>
 
       <table class="p-3 bg-black bg-red-darker w-full rounded-md text-left">
         <tr>
@@ -109,10 +109,11 @@
         </div>
       </form>
       <div>
-        <span>eller</span>
+
         <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
           {% csrf_token %}
-          <input type="submit" id="cancel-reservation-button" value="avbryt bokning">
+          <span>eller</span>
+          <input type="submit" id="cancel-reservation-button" value="Avbryt bokningen">
           <div id="fn-payment-errors"></div>
         </form>
       </div>
