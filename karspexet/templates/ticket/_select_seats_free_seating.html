@@ -4,23 +4,27 @@
     <div>
       Platser kvar:
     </div>
-    <div style="font-size: 24pt;">
+    <div class="text-4xl">
       {{ num_available_seats }}
     </div>
   </div>
 
-  <form method="post" action="{% url "select_seats" show.id %}">
+  <form method="post" action="{% url 'select_seats' show.id %}">
     <ul>
       {% if pricings.sponsor %}
         <li>
           <div class="flex h-16 items-center">
             <div class="mr-2 ticket-name">
-              <div class="text-lg"> <strong>Guldbiljett</strong> </div>
+              <div class="text-lg">
+                <strong>Guldbiljett</strong>
+              </div>
               <div>{{ pricings.sponsor }} SEK</div>
             </div>
-            <div> <input type="number" name="sponsor" class="number-of-seats fn-number-input" min="0"> </div>
+            <div>
+              <input type="number" name="sponsor" class="number-of-seats fn-number-input" min="0">
+            </div>
           </div>
-          <div class="ml-2" style="width: 40ch;">
+          <div class="ml-2 w-96">
             <p class="flex gap-2">
               <img class="luva" src="{% static 'svg/luva-inkscape.svg' %}" alt="" data-sponsor-luva>
               <em>
@@ -34,10 +38,14 @@
         <li>
           <div class="flex h-16 items-center">
             <div class="mr-2 ticket-name">
-              <div class="text-lg"> <strong>Fullpris</strong> </div>
+              <div class="text-lg">
+                <strong>Fullpris</strong>
+              </div>
               <div>{{ pricings.normal }} SEK</div>
             </div>
-            <div> <input type="number" name="normal" class="number-of-seats fn-number-input" min="0"> </div>
+            <div>
+              <input type="number" name="normal" class="number-of-seats fn-number-input" min="0">
+            </div>
           </div>
         </li>
       {% endif %}
@@ -45,10 +53,14 @@
         <li>
           <div class="flex h-16 items-center">
             <div class="mr-2 ticket-name">
-              <div class="text-lg"> <strong>Student</strong> </div>
+              <div class="text-lg">
+                <strong>Student</strong>
+              </div>
               <div>{{ pricings.student }} SEK</div>
             </div>
-            <div> <input type="number" name="student" class="number-of-seats fn-number-input" min="0"> </div>
+            <div>
+              <input type="number" name="student" class="number-of-seats fn-number-input" min="0">
+            </div>
           </div>
         </li>
       {% endif %}
@@ -65,6 +77,6 @@
   <span>eller</span>
   <form method="post" action="{% url 'cancel_reservation' show.id %}">
     {% csrf_token %}
-    <input type="submit" id="cancel-reservation-button" value="Avbryt bokning" />
+    <input type="submit" id="cancel-reservation-button" value="Avbryt bokning"/>
   </form>
 </section>

@@ -88,7 +88,7 @@ def select_seats(request, show_id: int):
                 idx = 0
                 for price, num_seats in requested_seats.items():
                     seats[price] = available_seats[idx:idx + num_seats]
-                    idx = idx + num_seats
+                    idx += num_seats
 
                 reservation.build_tickets(seats)
                 reservation.save()
