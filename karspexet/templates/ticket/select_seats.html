@@ -6,7 +6,7 @@
 {% block ticket_content %}
   <div class="pt-4 border-0 border-b border-gray-600 border-solid">
     <h1 class="text-lg text-gold text-center p-0 m-0">BOKNING</h1>
-    <p class="text-center p-0 m-0 pt-2 pb-4">{{ show.production.description }}</p>
+    <div class="text-center p-4 py-2 m-0">{{ show.production.description|linebreaks }}</div>
   </div>
 
   <div class="p-4">
