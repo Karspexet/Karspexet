@@ -186,7 +186,7 @@ def booking_overview(request, show_id: int):
 
 
 @transaction.atomic
-def apply_voucher(request, reservation_id):
+def apply_voucher(request, reservation_id: int):
     reservation = Reservation.objects.get(pk=reservation_id)
     show = reservation.show
 
@@ -211,7 +211,7 @@ def apply_voucher(request, reservation_id):
 
 
 @require_POST
-def process_payment(request, reservation_id):
+def process_payment(request, reservation_id: int):
     reservation = Reservation.objects.get(pk=reservation_id)
 
     if _session_expired(request):
@@ -231,7 +231,7 @@ def process_payment(request, reservation_id):
     return redirect("reservation_detail", reservation_code=reservation.reservation_code)
 
 
-def reservation_detail(request, reservation_code):
+def reservation_detail(request, reservation_code: str):
     reservation = Reservation.objects.get(reservation_code=reservation_code)
     email_form = CustomerEmailForm()
 
@@ -245,7 +245,7 @@ def reservation_detail(request, reservation_code):
     })
 
 
-def ticket_detail(request, reservation_id, ticket_code):
+def ticket_detail(request, reservation_id: int, ticket_code):
     reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
@@ -260,7 +260,7 @@ def ticket_detail(request, reservation_id, ticket_code):
     })
 
 
-def ticket_pdf(request, reservation_id, ticket_code):
+def ticket_pdf(request, reservation_id: int, ticket_code):
     from xhtml2pdf import pisa
 
     reservation = Reservation.objects.get(pk=reservation_id)
@@ -285,7 +285,7 @@ def ticket_pdf(request, reservation_id, ticket_code):
 
 
 @require_POST
-def cancel_reservation(request, show_id):
+def cancel_reservation(request, show_id: int):
     reservation_id = request.session.pop(f"show_{show_id}", None)
     request.session.pop("reservation_timeout", None)
     request.session.pop("payment_intent_id", None)
@@ -295,7 +295,7 @@ def cancel_reservation(request, show_id):
 
 
 @require_POST
-def send_reservation_email(request, reservation_code):
+def send_reservation_email(request, reservation_code: str):
     reservation = get_object_or_404(Reservation, reservation_code=reservation_code)
     form = CustomerEmailForm(data=request.POST)
     if form.is_valid():
