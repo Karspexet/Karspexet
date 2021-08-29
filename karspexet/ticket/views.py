@@ -128,7 +128,8 @@ def select_seats(request, show_id: int):
 def booking_overview(request, show_id: int):
     show: Show = Show.objects.get(id=show_id)
     if _session_expired(request):
-        messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
+        messages.warning(
+            request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_id=show.id)
 
     _set_session_timeout(request)
@@ -190,7 +191,8 @@ def apply_voucher(request, reservation_id):
     show = reservation.show
 
     if _session_expired(request):
-        messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
+        messages.warning(
+            request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_id=show.id)
 
     if request.method == "POST":
@@ -213,7 +215,8 @@ def process_payment(request, reservation_id):
     reservation = Reservation.objects.get(pk=reservation_id)
 
     if _session_expired(request):
-        messages.warning(request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
+        messages.warning(
+            request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
         return redirect("select_seats", show_id=reservation.show.id)
 
     if not reservation.is_free() and settings.PAYMENT_PROCESS == "stripe":
@@ -312,7 +315,8 @@ def _session_expired(request):
 
 
 def _set_session_timeout(request):
-    request.session['reservation_timeout'] = (timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
+    request.session['reservation_timeout'] = (
+        timezone.now() + relativedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
 
 
 def _get_or_create_reservation_object(request, show):

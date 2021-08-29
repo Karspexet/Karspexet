@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import date
-from functools import reduce
 from string import ascii_uppercase, digits
 
 from django.conf import settings
@@ -86,7 +85,8 @@ class Reservation(models.Model):
 
     def apply_voucher(self, code):
         if Discount.objects.filter(reservation=self).exists():
-            raise AlreadyDiscountedException("This reservation already has a discount: reservation_id=%d existing_discount_code=%s new_code=%s" % (self.id, self.discount.voucher.code, code))
+            raise AlreadyDiscountedException("This reservation already has a discount: reservation_id=%d existing_discount_code=%s new_code=%s" % (
+                self.id, self.discount.voucher.code, code))
         if Discount.objects.filter(Q(voucher__code=code)).exists():
             raise InvalidVoucherException("Voucher has already been used: code=%s" % code)
         voucher = Voucher.objects.get(code=code)
@@ -97,7 +97,7 @@ class Reservation(models.Model):
         return discount
 
     def calculate_ticket_price_and_total(self):
-        self.ticket_price = reduce((lambda acc, seat: acc + int(seat.price_for_type(self.tickets[str(seat.id)]))), self.seats(), 0)
+        self.ticket_price = sum(int(seat.price_for_type(self.tickets[str(seat.id)])) for seat in self.seats())
         try:
             self.total = self.ticket_price - self.discount.amount
         except ObjectDoesNotExist:
@@ -112,7 +112,7 @@ class Reservation(models.Model):
             for seat in price_seats:
                 tickets[str(seat.id)] = price
 
-        if not len(tickets) == sum(map(len, seats.values())):
+        if len(tickets) != sum(map(len, seats.values())):
             raise MultipleTicketTypeException("One seat may not have multiple ticket types")
 
         self.tickets = tickets

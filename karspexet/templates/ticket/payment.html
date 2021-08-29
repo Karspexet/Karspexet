@@ -108,8 +108,8 @@
           <div class="error" role="alert"></div>
         </div>
       </form>
-      <div>
 
+      <div>
         <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
           {% csrf_token %}
           <span>eller</span>
@@ -118,6 +118,7 @@
         </form>
       </div>
     </section>
+
     {% if reservation.total > 0 %}
       <script>
         window.config = window.config || {}
