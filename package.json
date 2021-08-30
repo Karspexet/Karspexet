@@ -1,5 +1,8 @@
 {
-  "browserslist": ["defaults", "IE 11"],
+  "browserslist": [
+    "defaults",
+    "IE 11"
+  ],
   "dependencies": {
     "cash-dom": "^8.1.0"
   },
@@ -14,7 +17,10 @@
     "tailwindcss": "^2.2.7",
     "typescript": "^4.3.5"
   },
-  "source": ["assets/js/index.ts", "assets/css/index.scss"],
+  "source": [
+    "assets/js/index.ts",
+    "assets/css/index.scss"
+  ],
   "scripts": {
     "build": "parcel build --no-source-maps",
     "watch": "parcel watch"
