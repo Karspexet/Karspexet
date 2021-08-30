@@ -29,12 +29,12 @@ class TestShowDetail(TestCase):
         seating_group = f.CreateSeatingGroup(venue=venue)
         seat = f.CreateSeat(group=seating_group)
         show = f.CreateShow(date=timezone.now(), production=production, venue=venue)
+        staff = f.CreateStaffUser(username="ture", password="test")
 
-        response = self.client.get(f"/economy/{show.id}")
+        response = self.client.get(f"/economy/{show.id}/")
         assert response.status_code == 302
 
-        f.CreateStaffUser(username="ture", password="test")
-        assert self.client.login(username="ture", password="test")
+        self.client.force_login(staff)
 
-        response = self.client.get(f"/economy/{show.id}")
-        assert "Föreställningsöversikt" in response.content.decode("utf-8")
+        response = self.client.get(f"/economy/{show.id}/")
+        self.assertContains(response, "Föreställningsöversikt")

@@ -27,10 +27,9 @@ class TestTicketViews(TestCase):
         assert invisible_show not in shows
 
     def test_select_seats(self):
-        show = f.CreateShow(production__name="Uppsättningen")
+        show = f.CreateShow(production__description="Uppsättningen")
         response = self.client.get(reverse(views.select_seats, args=[show.id]))
-
-        self.assertContains(response, "Köp biljetter för Uppsättningen")
+        self.assertContains(response, "Uppsättningen")
 
 
 @pytest.mark.django_db
