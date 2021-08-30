@@ -1,0 +1,42 @@
+.form-group {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+
+  label {
+    position: relative;
+    display: block;
+    height: 40px;
+    margin-left: 20px;
+    color: black;
+    font-size: small;
+    font-weight: 300;
+    line-height: 40px;
+    text-align: left;
+  }
+
+  label:not(:last-child) {
+    border-bottom: 1px solid #e1e6eb;
+  }
+
+  label > span {
+    display: inline-block;
+    width: 14ch;
+  }
+
+  input {
+    height: 40px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border: 0;
+    background: transparent;
+    color: black;
+    cursor: text;
+    font-weight: 300;
+    outline: none;
+  }
+
+  input::placeholder {
+    color: #afabac;
+  }
+}
