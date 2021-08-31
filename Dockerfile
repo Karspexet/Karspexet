@@ -16,7 +16,7 @@ COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-dev --no-interaction --no-root
 
 
-FROM node:16.2.0-alpine AS deps-js
+FROM node:16.2.0 AS deps-js
 WORKDIR /app
 COPY package-lock.json package.json /app/
 RUN npm ci --no-optional && npm cache clean --force
