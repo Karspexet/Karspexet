@@ -21,7 +21,9 @@ WORKDIR /app
 COPY package-lock.json package.json /app/
 RUN npm ci --no-optional && npm cache clean --force
 
-COPY assets /app/assets/
+COPY assets/ /app/assets/
+COPY karspexet/templates/ /app/karspexet/templates/
+COPY tailwind.config.js .postcssrc /app/
 RUN npm run build
 
 
