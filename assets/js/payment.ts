@@ -8,12 +8,12 @@ declare var Stripe: (key: string) => {
 
 type Config = {
   successUrl: string;
-  payment: string;
+  stripeKey: string;
   clientSecret: any;
 };
 
 export function setupPayment(config: Config) {
-  const { payment: stripeKey, clientSecret } = config;
+  const { stripeKey, clientSecret } = config;
 
   let paymentForm = $("#payment-form")!;
   setupDiscountForm(paymentForm);

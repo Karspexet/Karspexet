@@ -7,8 +7,6 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
-import contextlib
-import json
 import logging
 import os
 from urllib.parse import urljoin
@@ -32,9 +30,6 @@ def to_bool(value: str) -> bool:
 
 
 ENV: dict = {}
-with contextlib.suppress(FileNotFoundError):
-    with open(BASE_DIR + "/env.json") as env_json:
-        ENV = json.load(env_json)
 ENV.update(os.environ)
 
 
@@ -53,7 +48,7 @@ SITE_ID = 1
 
 EMAIL_BACKEND = ENV.get("email_backend", "django.core.mail.backends.smtp.EmailBackend")
 
-PAYMENT_PROCESS = ENV.get("payment_process", "not set")
+PAYMENT_PROCESS = ENV.get("PAYMENT_PROCESS", "not set")
 STRIPE_SECRET_KEY = ENV.get("STRIPE_SECRET_KEY", "fake")
 STRIPE_PUBLISHABLE_KEY = ENV.get("STRIPE_PUBLISHABLE_KEY", "fake")
 
