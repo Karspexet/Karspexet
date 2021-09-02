@@ -55,8 +55,8 @@
     {% render_block "js" %}
   </body>
 </html>
+{% addtoblock "js" %}<script src="https://js.stripe.com/v3/"></script>{% endaddtoblock %}
 {% addtoblock "js" %}<script type="text/javascript" src="{% static 'js/index.js' %}"></script>{% endaddtoblock %}
-{% addtoblock "js" %}<script src="https://js.stripe.com/v3/" async></script>{% endaddtoblock %}
 {% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">{% endaddtoblock %}
 {% addtoblock "css" strip %}
   <style type="text/css" media="screen">

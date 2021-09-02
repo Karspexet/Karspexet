@@ -1,9 +1,10 @@
 // stylelint-disable at-rule-no-unknown
 @tailwind utilities;
 
+$gold: gold;
+$red-2: #8d041c;
 $red-dark: rgb(141, 4, 28);
 $red-darker: #590313;
-$gold: gold;
 
 .text-gold {
   color: $gold;
@@ -15,4 +16,12 @@ $gold: gold;
 
 .text-red-darker {
   color: $red-darker;
+}
+
+.bg-red-2 {
+  background-color: $red-2;
+}
+
+.fg-red-2 {
+  color: $red-2;
 }

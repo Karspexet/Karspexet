@@ -19,6 +19,7 @@ export function setupPayment(config: Config) {
   setupDiscountForm(paymentForm);
 
   if (stripeKey === "fake") return;
+  if (!stripeKey) return;
   if (typeof Stripe == "undefined") return;
 
   let stripe = Stripe(stripeKey);
@@ -67,7 +68,7 @@ export function setupPayment(config: Config) {
     spinner.show();
     stripe.confirmCardPayment(clientSecret, paymentDetails).then((result: any) => {
       // Handle result.error or result.paymentIntent
-      if (DEBUG) {
+      if ((window as any).DEBUG) {
         console.debug(result);
       }
       if (result.error) {
@@ -111,7 +112,7 @@ function getStripePaymentDetails(form: HTMLFormElement, card: HTMLElement) {
   };
 
   let metadata = {
-    reference: form.reference.value,
+    reference: form.reference?.value,
   };
 
   if (!billing.phone) {

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 import stripe
@@ -113,5 +115,5 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict, refe
     send_ticket_email_to_customer(reservation, account.email, account.name)
 
 
-def _pick(data, fields):
-    return {f: data.get(f, "") for f in fields}
+def _pick(data: dict, fields: list[str]) -> dict[str, str]:
+    return {f: data.get(f, "") or "" for f in fields}
