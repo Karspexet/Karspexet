@@ -201,12 +201,16 @@ footer a {
 
 .content_container {
   flex: 1 0 auto;
-}
 
-.content_container table,
-.content_container table th,
-.content_container table td {
-  border: none;
+  h1 > img {
+    width: 100%;
+  }
+
+  table,
+  table th,
+  table td {
+    border: none;
+  }
 }
 
 .alt-name {
