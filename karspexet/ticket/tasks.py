@@ -34,10 +34,13 @@ def send_ticket_email_to_customer(reservation, email, name=None):
         'url': reservation_url,
     })
 
-    send_mail(
-        subject,
-        body,
-        settings.TICKET_EMAIL_FROM_ADDRESS,
-        [to_address],
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            subject,
+            body,
+            settings.TICKET_EMAIL_FROM_ADDRESS,
+            [to_address],
+            fail_silently=False,
+        )
+    except Exception as e:
+        logger.exception("Failed to send Email to %s", to_address)
