@@ -10,16 +10,16 @@
           <th class="text-sm text-gold w-32 p-1">FÖRESTÄLLNING</th>
           <td>{{ reservation.show }}</td>
         </tr>
-        <tr>
-          <th class="text-sm text-gold w-32 p-1">ANTAL BILJETTER</th>
-          <td>{{ num_tickets }}</td>
-        </tr>
         {% if reservation.discount %}
           <tr>
             <th class="text-sm text-gold w-32 p-1">PRESENTKORT</th>
             <td class="w-100">{{ reservation.discount.voucher.code }}</td>
           </tr>
         {% endif %}
+        <tr>
+          <th class="text-sm text-gold w-32 p-1">ANTAL BILJETTER</th>
+          <td>{{ num_tickets }}</td>
+        </tr>
         <tr>
           <th class="text-sm text-gold w-32 p-1">PLATSER</th>
           <td>
@@ -32,6 +32,10 @@
               {% endfor %}
             </ul>
           </td>
+        </tr>
+        <tr>
+          <th class="text-sm text-gold w-32 p-1">TOTALT</th>
+          <td>{{ reservation.total }} kr</td>
         </tr>
       </table>
 
