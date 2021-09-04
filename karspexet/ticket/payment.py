@@ -3,7 +3,6 @@ from __future__ import annotations
 import logging
 
 import stripe
-from django.conf import settings
 
 from karspexet.ticket.models import Account, Reservation, Ticket
 from karspexet.ticket.tasks import send_ticket_email_to_customer
@@ -13,8 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 def get_payment_intent_from_reservation(request, reservation) -> dict:
-    if settings.PAYMENT_PROCESS != "stripe":
-        return {"client_secret": "not_stripe"}
     payment_intent_id = request.session.get("payment_intent_id")
     if payment_intent_id:
         intent = stripe.PaymentIntent.retrieve(payment_intent_id)

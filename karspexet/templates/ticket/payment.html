@@ -33,24 +33,26 @@
       </div>
     </div>
 
-    <h2 class="text-gold m-0 p-0 mb-1 mt-6">Presentkort</h2>
-    <div id="discount-form" data-discount-code="{{ reservation.discount.voucher.code }}">
-      <p class="m-0 p-0">
-        För att använda ett presentkort, fyll i koden här och klicka sedan på
-        "Använd Presentkort", <strong>innan</strong> du betalar med kort.
-      </p>
+    {% if not reservation.discount %}
+      <h2 class="text-gold m-0 p-0 mb-1 mt-6">Presentkort</h2>
+      <div id="discount-form" data-discount-code="{{ reservation.discount.voucher.code }}">
+        <p class="m-0 p-0">
+          För att använda ett presentkort, fyll i koden här och klicka sedan på
+          "Använd Presentkort", <strong>innan</strong> du betalar med kort.
+        </p>
 
-      <form method="POST" action="{% url "apply_voucher" reservation.id %}" class="payment-form" id="discount-form">
-        {% csrf_token %}
-        <div class="group my-2">
-          <label>
-            <span>Presentkort</span>
-            <input type="text" class="field" name="voucher_code" data-voucher-code />
-          </label>
-        </div>
-        <button type="submit">Använd presentkort!</button>
-      </form>
-    </div>
+        <form method="POST" action="{% url "apply_voucher" reservation.id %}" class="payment-form" id="discount-form">
+          {% csrf_token %}
+          <div class="group my-2">
+            <label>
+              <span>Presentkort</span>
+              <input type="text" class="field" name="voucher_code" data-voucher-code />
+            </label>
+          </div>
+          <button type="submit">Använd presentkort!</button>
+        </form>
+      </div>
+    {% endif %}
 
     <h2 class="text-gold m-0 p-0 mb-1 mt-6">Betalning</h2>
     <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form" {% if reservation.is_free %}data-is-free{% endif %}>

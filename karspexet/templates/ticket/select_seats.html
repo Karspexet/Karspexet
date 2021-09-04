@@ -12,7 +12,7 @@
   <div class="p-4">
 
     <section class="select-seats">
-      <form method="post" action="{% url 'select_seats' show.id %}">
+      <form method="post" action="{% url 'select_seats' show.id %}" data-select-seats-form>
         {% csrf_token %}
 
         {% if show.free_seating %}

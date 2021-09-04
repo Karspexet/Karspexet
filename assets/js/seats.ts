@@ -158,15 +158,16 @@ function setupFreeSeating(config: { pricings: any }) {
     return sum;
   }
 
-  function renderBooking() {
-    let bookingElement = $("booking");
+  const requiredFields = $("[data-select-seats-form]").find("[required]");
+  requiredFields.on("input", renderBooking);
 
-    if (getTicketCount() === 0) {
-      disableSubmitButton();
-      bookingElement.text("");
-    } else {
+  function renderBooking() {
+    $("[data-sum-total]").text(getTicketCount() === 0 ? "" : `Totalsumma: ${getTotalPrice()} SEK`);
+
+    if (getTicketCount() > 0 && !!requiredFields.val()) {
       enableSubmitButton();
-      bookingElement.text("Totalsumma: " + getTotalPrice());
+    } else {
+      disableSubmitButton();
     }
   }
   const luva = createHappyLuva();

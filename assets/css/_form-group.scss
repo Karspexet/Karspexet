@@ -2,6 +2,7 @@
 
 .form-group {
   @apply px-4 rounded-md;
+
   box-sizing: border-box;
   background: white;
   box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
@@ -28,17 +29,17 @@
   }
 
   input {
+    width: 100%;
     box-sizing: border-box;
     padding-right: 10px;
     padding-left: 10px;
     border: 0;
+    margin: 2px;
     background: transparent;
     color: black;
     cursor: text;
     font-weight: 300;
     outline: none;
-    width: 100%;
-    margin: 2px;
   }
 
   input::placeholder {

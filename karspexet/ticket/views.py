@@ -144,7 +144,10 @@ def booking_overview(request, show_id: int):
     _set_session_timeout(request)
 
     reservation = _get_or_create_reservation_object(request, show)
-    payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
+    if settings.PAYMENT_PROCESS != "stripe":
+        payment_intent = {"client_secret": "not_stripe"}
+    else:
+        payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
