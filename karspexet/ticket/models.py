@@ -74,10 +74,10 @@ class Reservation(models.Model):
     def get_absolute_url(self) -> str:
         return reverse("reservation_detail", kwargs={"reservation_code": self.reservation_code})
 
-    def get_amount(self):
+    def get_amount(self) -> int:
         return self.total * 100  # Price in Öre
 
-    def is_free(self):
+    def is_free(self) -> bool:
         return self.get_amount() == 0
 
     def seats(self):
@@ -89,7 +89,7 @@ class Reservation(models.Model):
     def num_tickets(self) -> int:
         return len(self.tickets.keys())
 
-    def apply_voucher(self, code):
+    def apply_voucher(self, code) -> Discount:
         if Discount.objects.filter(reservation=self).exists():
             raise AlreadyDiscountedException("This reservation already has a discount: reservation_id=%d existing_discount_code=%s new_code=%s" % (
                 self.id, self.discount.voucher.code, code))
@@ -102,7 +102,7 @@ class Reservation(models.Model):
 
         return discount
 
-    def calculate_ticket_price_and_total(self):
+    def calculate_ticket_price_and_total(self) -> None:
         self.ticket_price = sum(int(seat.price_for_type(self.tickets[str(seat.id)])) for seat in self.seats())
         try:
             self.total = self.ticket_price - self.discount.amount
@@ -197,7 +197,7 @@ class Discount(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
-    def unused_amount(self):
+    def unused_amount(self) -> int:
         return self.voucher.amount - self.amount
 
 
@@ -221,7 +221,7 @@ class PricingModel(models.Model):
 
     objects = ActivePricingModelManager()
 
-    def price_for(self, ticket_type):
+    def price_for(self, ticket_type) -> int:
         return int(self.prices[ticket_type])
 
     def __repr__(self):
