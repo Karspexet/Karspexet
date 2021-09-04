@@ -67,6 +67,13 @@ class Reservation(models.Model):
     def __str__(self):
         return repr(self)
 
+    def save(self, *args, **kwargs) -> None:
+        self.calculate_ticket_price_and_total()
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self) -> str:
+        return reverse("reservation_detail", kwargs={"reservation_code": self.reservation_code})
+
     def get_amount(self):
         return self.total * 100  # Price in Öre
 
@@ -78,10 +85,6 @@ class Reservation(models.Model):
 
     def ticket_set(self):
         return Ticket.objects.filter(show=self.show).filter(seat_id__in=self.tickets.keys())
-
-    def save(self, *args, **kwargs):
-        self.calculate_ticket_price_and_total()
-        super().save(*args, **kwargs)
 
     def apply_voucher(self, code):
         if Discount.objects.filter(reservation=self).exists():
@@ -102,9 +105,6 @@ class Reservation(models.Model):
             self.total = self.ticket_price - self.discount.amount
         except ObjectDoesNotExist:
             self.total = self.ticket_price
-
-    def get_absolute_url(self):
-        return reverse('reservation_detail', kwargs={'reservation_code': self.reservation_code})
 
     def build_tickets(self, seats: dict[str, list[Seat]]) -> None:
         tickets = {}
@@ -141,7 +141,7 @@ class Ticket(models.Model):
     reference = models.CharField(max_length=255, null=False, blank=True, default="")
 
     class Meta:
-        unique_together = ('show', 'seat')
+        unique_together = ("show", "seat")
 
     def __repr__(self):
         return "<Ticket %s | %s | %s>" % (self.ticket_type, self.show, self.seat)

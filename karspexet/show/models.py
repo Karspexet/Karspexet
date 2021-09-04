@@ -24,6 +24,16 @@ class Show(models.Model):
     short_description = models.CharField(null=False, blank=True, default="", max_length=255)
     free_seating = models.BooleanField(default=False, null=False, help_text="Fri placering")
 
+    class Meta:
+        ordering = ("date",)
+
+    def __str__(self) -> str:
+        short = f"({self.short_description}) " if self.short_description else ""
+        return f"{self.production.name} {short}{self.date_string()}"
+
+    def get_absolute_url(self) -> str:
+        return reverse("select_seats", args=[self.id])
+
     @staticmethod
     def upcoming():
         return Show.objects.filter(date__gte=timezone.make_aware(datetime.today()))
@@ -63,13 +73,3 @@ class Show(models.Model):
 
     def date_string(self):
         return timezone.localtime(self.date).strftime("%Y-%m-%d %H:%M")
-
-    def __str__(self):
-        short = f"({self.short_description}) " if self.short_description else ""
-        return f"{self.production.name} {short}{self.date_string()}"
-
-    def get_absolute_url(self):
-        return reverse("select_seats", args=[self.id])
-
-    class Meta:
-        ordering = ('date',)
