@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from django.contrib.postgres.fields import HStoreField
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -40,11 +42,20 @@ class SeatingGroup(models.Model):
         return self.pricingmodel_set.active(timestamp).filter(seating_group_id=self.id).first()
 
 
+class SeatManager(models.Manager):
+    def available_seats(self, show) -> list[Seat]:
+        taken_seats = show.ticket_set.values_list("seat_id")
+        seats = Seat.objects.filter(group__venue=show.venue).exclude(id__in=taken_seats)
+        return list(seats)
+
+
 class Seat(models.Model):
     group = models.ForeignKey(SeatingGroup, on_delete=models.CASCADE)
     name = models.CharField(max_length=40, help_text='Till exempel "Rad 17, Stol 5011"')
     x_pos = models.IntegerField()
     y_pos = models.IntegerField()
+
+    objects = SeatManager()
 
     def __str__(self):
         return self.name
