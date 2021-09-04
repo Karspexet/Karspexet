@@ -69,6 +69,15 @@ class TicketAdmin(admin.ModelAdmin):
 class VoucherAdmin(admin.ModelAdmin):
     list_display = ("amount", "code", "expiry_date", "created_by")
     list_filter = ("expiry_date", "created_by")
+    fields = (
+        ("code", "expiry_date"),
+        "created_by",
+        "amount",
+        "note",
+    )
+
+    def get_changeform_initial_data(self, request):
+        return {"created_by": request.user}
 
 
 @admin.register(PricingModel)
