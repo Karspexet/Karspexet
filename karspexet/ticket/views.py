@@ -65,9 +65,13 @@ def _parse_stripe_payload(body: str) -> stripe.Event:
         return None
 
 
+def show_redirect(request, show_id: int):
+    return redirect("select_seats", show_id=show_id)
+
+
 @transaction.atomic
 def select_seats(request, show_id: int):
-    show: Show = Show.objects.get(id=show_id)
+    show: Show = get_object_or_404(Show, id=show_id)
     reservation = _get_or_create_reservation_object(request, show)
 
     taken_seats_qs = Reservation.active.exclude(pk=reservation.pk).filter(show=show)
@@ -126,7 +130,7 @@ def select_seats(request, show_id: int):
 
 @transaction.atomic
 def booking_overview(request, show_id: int):
-    show: Show = Show.objects.get(id=show_id)
+    show: Show = get_object_or_404(Show, id=show_id)
     if _session_expired(request):
         messages.warning(
             request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
@@ -135,10 +139,7 @@ def booking_overview(request, show_id: int):
     _set_session_timeout(request)
 
     reservation = _get_or_create_reservation_object(request, show)
-    if settings.PAYMENT_PROCESS == "stripe":
-        payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
-    else:
-        payment_intent = {"client_secret": "not_stripe"}
+    payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")

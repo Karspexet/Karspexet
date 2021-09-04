@@ -13,6 +13,7 @@ from urllib.parse import urljoin
 
 import dj_database_url
 import sentry_sdk
+import stripe
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
 
@@ -49,8 +50,8 @@ SITE_ID = 1
 EMAIL_BACKEND = ENV.get("email_backend", "django.core.mail.backends.smtp.EmailBackend")
 
 PAYMENT_PROCESS = ENV.get("PAYMENT_PROCESS", "not set")
-STRIPE_SECRET_KEY = ENV.get("STRIPE_SECRET_KEY", "fake")
 STRIPE_PUBLISHABLE_KEY = ENV.get("STRIPE_PUBLISHABLE_KEY", "fake")
+stripe.api_key = ENV.get("STRIPE_SECRET_KEY", "fake")
 
 TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
 
