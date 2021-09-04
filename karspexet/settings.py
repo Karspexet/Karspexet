@@ -55,15 +55,8 @@ stripe.api_key = ENV.get("STRIPE_SECRET_KEY", "fake")
 
 TICKET_EMAIL_FROM_ADDRESS = "Kårspexet <biljett@karspexet.se>"
 
-try:
-    with open(BASE_DIR + "/RELEASE.txt") as f:
-        RELEASE = f.read()
-except FileNotFoundError:
-    RELEASE = ""
-
 sentry_sdk.init(
     dsn=ENV.get("sentry_dsn"),
-    release=RELEASE,
     integrations=[
         DjangoIntegration(),
         # Capture info and above as breadcrumbs, send errors as events
