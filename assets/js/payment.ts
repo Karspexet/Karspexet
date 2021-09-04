@@ -104,20 +104,25 @@ function setupDiscountForm(paymentForm: Cash) {
 }
 
 function getStripePaymentDetails(form: HTMLFormElement, card: HTMLElement) {
-  let billing = {
+  let billing: Record<string, string> = {
     // @ts-expect-error
     name: form.name.value,
     phone: form.phone.value,
     email: form.email.value,
   };
 
+  for (let key in billing) {
+    if (!billing[key]) {
+      // Stripe doesn't want us sending empty strings to them
+      delete billing[key]
+    }
+  }
+
   let metadata = {
     reference: form.reference?.value,
   };
 
   if (!billing.phone) {
-    // "phone" is not required, but Stripe doesn't want us sending
-    // empty strings to them
     delete billing["phone"];
   }
   return {
