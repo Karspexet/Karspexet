@@ -10,7 +10,7 @@ class CustomerEmailForm(forms.Form):
 
 
 class ContactDetailsForm(forms.Form):
-    name = forms.CharField(required=True)
-    phone = forms.CharField(required=False)
     email = forms.EmailField(required=True)
+    name = forms.CharField(required=False)
+    phone = forms.CharField(required=False)
     reference = forms.CharField(required=False)
