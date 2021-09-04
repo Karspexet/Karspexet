@@ -239,3 +239,12 @@ ul.show-info {
     width: 80%;
   }
 }
+
+.styled-form {
+  input {
+    @apply p-2 w-full box-border;
+  }
+  button {
+    @apply p-2 rounded-md bg-red-2 text-gold border-0 w-full;
+  }
+}

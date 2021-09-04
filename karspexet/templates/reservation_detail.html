@@ -43,7 +43,7 @@
       </ul>
     </section>
   {% endif %}
-  <main class="pb-4 max-w-prose">
+  <main class="pb-4 max-w-prose reservation-details">
     <h2>Här finner du dina biljetter</h2>
 
     <ul>
@@ -67,12 +67,12 @@
       biljetterna härifrån på en gång, eller sparar en länk till denna sida.
     </p>
 
-    <form action="{% url 'send_reservation_email' reservation.reservation_code %}" method="post" class="w-56">
+    <form action="{% url 'send_reservation_email' reservation.reservation_code %}" method="post" class="w-56 styled-form">
       {% csrf_token %}
       <div class="mb-2">
         {{ email_form.email }}
       </div>
-      <button type="submit" class="p-3 rounded-md bg-red-2 text-gold border-0 w-full">
+      <button type="submit">
         Skicka bokningen via E-post
       </button>
     </form>
