@@ -5,21 +5,25 @@ from karspexet.ticket.models import Account, PricingModel, Reservation, Ticket, 
 from karspexet.utils import admin_change_url
 
 
-def show_link(self, obj=None):
+def admin_change_link(obj) -> str:
     if obj is None:
         return ""
-    return format_html('<a href="{}">{}</a>', admin_change_url(obj.show), obj.show)
+    return format_html('<a href="{}">{}</a>', admin_change_url(obj), obj)
+
+
+def show_link(self, obj=None):
+    return admin_change_link(obj.show if obj else None)
 
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
     fields = (
         "show_link",
+        "related_tickets",
         "reservation_code",
         "finalized",
         ("ticket_price", "total"),
         "session_timeout",
-        "related_tickets",
         "tickets",
     )
     list_display = ("reservation_code", "show", "finalized", "ticket_price", "total", "session_timeout", "tickets")
@@ -27,6 +31,9 @@ class ReservationAdmin(admin.ModelAdmin):
     readonly_fields = ("show_link", "reservation_code", "related_tickets")
 
     show_link = show_link
+
+    def has_add_permission(self, obj):
+        return False
 
     def related_tickets(self, obj=None):
         if obj is None:
@@ -37,12 +44,25 @@ class ReservationAdmin(admin.ModelAdmin):
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
-    fields = ("show_link", "ticket_code", ("ticket_type", "price"), "seat", "account")
+    fields = (
+        "show_link",
+        "reservation",
+        "ticket_code",
+        ("ticket_type", "price"),
+        "seat",
+        "account",
+    )
     list_display = ("ticket_code", "show", "price", "ticket_type", "seat", "account")
     raw_id_fields = ("account", "seat")
-    readonly_fields = ("show_link", "ticket_code")
+    readonly_fields = ("show_link", "reservation", "ticket_code")
 
     show_link = show_link
+
+    def has_add_permission(self, obj):
+        return False
+
+    def reservation(self, obj=None):
+        return admin_change_link(obj.get_reservation() if obj else None)
 
 
 @admin.register(Voucher)

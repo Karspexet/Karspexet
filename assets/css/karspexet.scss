@@ -242,8 +242,9 @@ ul.show-info {
 
 .styled-form {
   input {
-    @apply p-2 w-full box-border;
+    @apply p-2 w-full box-border border-0 rounded;
   }
+
   button {
     @apply p-2 rounded-md bg-red-2 text-gold border-0 w-full;
   }

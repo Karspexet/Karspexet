@@ -2,10 +2,10 @@
 {% load static svg %}
 {% block content %}
   {% if messages %}
-    <section>
+    <section class="max-w-md mx-auto">
       <ul class="messages">
         {% for message in messages %}
-          <li>{{ message }}</li>
+          <li class="bg-gray-700 p-4 rounded text-center text-red w-full box-border">{{ message }}</li>
         {% endfor %}
       </ul>
     </section>

@@ -11,13 +11,46 @@
 
   <div class="p-4">
 
-    {# TODO: Add poster image #}
+    <section class="select-seats mx-auto max-w-md">
+      <form method="post" action="{% url 'select_seats' show.id %}" data-select-seats-form>
+        {% csrf_token %}
 
-    {% if show.free_seating %}
-      {% include "ticket/_select_seats_free_seating.html" %}
-    {% else %}
-      {% include "ticket/_select_seats_seatmap.html" %}
-    {% endif %}
+        {% if show.free_seating %}
+          {% include "ticket/_select_seats_free_seating.html" %}
+        {% else %}
+          {% include "ticket/_select_seats_seatmap.html" %}
+        {% endif %}
+
+        <div class="py-4">
+          <h2 class="text-gold m-0 p-0 mb-2">Referens</h2>
+          <p class="text-sm mt-1">
+            Var det en av våra medlemmar som fick dig att köpa dina biljetter? Fyll i så
+            fall gärna i dess namn som referens!
+          </p>
+          <div class="form-group">
+            <label>
+              <span>Referens</span>
+              <input type="text" class="field" name="reference" autocomplete="name" />
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <h2 class="text-gold m-0 p-0 mb-2">Kontaktuppgifter</h2>
+          {% include "ticket/_contact_details.html" %}
+        </div>
+
+        <button type="submit" id="book-submit-button" disabled="disabled" class="w-full">
+          Till betalning!
+        </button>
+      </form>
+
+      <form method="post" action="{% url 'cancel_reservation' show.id %}">
+        {% csrf_token %}
+        <span>eller</span>
+        <input type="submit" id="cancel-reservation-button" value="Avbryt bokningen"/>
+      </form>
+    </section>
 
     <script>
       window.config = window.config || {}

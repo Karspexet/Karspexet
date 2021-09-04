@@ -18,7 +18,7 @@ from django.views.decorators.http import require_POST
 
 from karspexet.show.models import Show
 from karspexet.ticket import payment
-from karspexet.ticket.forms import CustomerEmailForm
+from karspexet.ticket.forms import ContactDetailsForm, CustomerEmailForm
 from karspexet.ticket.models import (TICKET_TYPES, AlreadyDiscountedException, InvalidVoucherException, PricingModel,
                                      Reservation, Voucher)
 from karspexet.ticket.tasks import send_ticket_email_to_customer
@@ -80,7 +80,12 @@ def select_seats(request, show_id: int):
     seats_in_venue = Seat.objects.filter(group__venue=show.venue).all()
     available_seats = list(seats_in_venue.exclude(id__in=show.ticket_set.values_list('seat_id')).all())
 
+    contact_form = ContactDetailsForm(data=request.POST or None)
+
     if request.POST:
+        if contact_form.is_valid():
+            request.session["contact_details"] = contact_form.cleaned_data
+
         if show.free_seating:
             prices = [t[0] for t in TICKET_TYPES]
             requested_seats: dict = {
@@ -139,7 +144,10 @@ def booking_overview(request, show_id: int):
     _set_session_timeout(request)
 
     reservation = _get_or_create_reservation_object(request, show)
-    payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
+    if settings.PAYMENT_PROCESS != "stripe":
+        payment_intent = {"client_secret": "not_stripe"}
+    else:
+        payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
@@ -164,7 +172,6 @@ def booking_overview(request, show_id: int):
                 ticket_type,
                 ticket_group['price'],
             ))
-        num_tickets = sum((group['count'] for (ticket_type, group) in reserved_seats.items()))
     else:
         reserved_seats = {seat.id: seat for seat in reservation.seats()}
         for (id, ticket_type) in reservation.tickets.items():
@@ -174,15 +181,16 @@ def booking_overview(request, show_id: int):
                 ticket_type,
                 seat.price_for_type(ticket_type),
             ))
-        num_tickets = len(seats)
+
+    contact_details = request.session.get("contact_details")
 
     return TemplateResponse(request, 'ticket/payment.html', {
         'seats': seats,
-        'payment_partial': _payment_partial(reservation),
         'reservation': reservation,
+        'payment_partial': _payment_partial(reservation),
+        'contact_details': contact_details,
         'stripe_payment_indent': payment_intent,
         'stripe_key': settings.STRIPE_PUBLISHABLE_KEY,
-        'num_tickets': num_tickets,
     })
 
 
