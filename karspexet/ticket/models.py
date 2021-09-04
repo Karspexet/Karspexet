@@ -155,6 +155,10 @@ class Ticket(models.Model):
         else:
             return f"{self.show}, {self.seat.group}, {self.seat}"
 
+    def get_reservation(self) -> Reservation | None:
+        qs = Reservation.objects.filter(show=self.show, finalized=True)
+        return qs.filter(tickets__keys__overlap=[self.seat_id]).first()
+
 
 class Voucher(models.Model):
     """
