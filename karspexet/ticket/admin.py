@@ -1,7 +1,14 @@
 from django.contrib import admin
 from django.utils.html import format_html, format_html_join
 
-from karspexet.ticket.models import Account, PricingModel, Reservation, Ticket, Voucher
+from karspexet.ticket.models import (
+    Account,
+    Discount,
+    PricingModel,
+    Reservation,
+    Ticket,
+    Voucher,
+)
 from karspexet.utils import admin_change_url
 
 
@@ -72,12 +79,22 @@ class VoucherAdmin(admin.ModelAdmin):
     fields = (
         ("code", "expiry_date"),
         "created_by",
-        "amount",
+        ("amount"),
         "note",
+        "used_by",
     )
+    readonly_fields = ("used_by",)
 
     def get_changeform_initial_data(self, request):
         return {"created_by": request.user}
+
+    def used_by(self, obj):
+        if not obj:
+            return ""
+        discount = Discount.objects.filter(voucher__code=obj.code).first()
+        if not discount:
+            return ""
+        return admin_change_link(discount.reservation)
 
 
 @admin.register(PricingModel)
