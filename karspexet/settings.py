@@ -53,7 +53,7 @@ PAYMENT_PROCESS = ENV.get("PAYMENT_PROCESS", "not set")
 STRIPE_PUBLISHABLE_KEY = ENV.get("STRIPE_PUBLISHABLE_KEY", "fake")
 stripe.api_key = ENV.get("STRIPE_SECRET_KEY", "fake")
 
-TICKET_EMAIL_FROM_ADDRESS = "biljett@karspexet.se"
+TICKET_EMAIL_FROM_ADDRESS = "Kårspexet <biljett@karspexet.se>"
 
 try:
     with open(BASE_DIR + "/RELEASE.txt") as f:
