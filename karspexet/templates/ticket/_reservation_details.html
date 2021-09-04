@@ -1,0 +1,33 @@
+<table class="details-table">
+  <tr>
+    <th>FÖRESTÄLLNING</th>
+    <td>{{ reservation.show }}</td>
+  </tr>
+  {% if reservation.discount %}
+    <tr>
+      <th>PRESENTKORT</th>
+      <td class="w-100">{{ reservation.discount.voucher.code }}</td>
+    </tr>
+  {% endif %}
+  <tr>
+    <th>ANTAL BILJETTER</th>
+    <td>{{ reservation.num_tickets }}</td>
+  </tr>
+  <tr>
+    <th>PLATSER</th>
+    <td>
+      <ul>
+        {% for seat in seats %}
+          <li>
+            {{ seat.0 }}
+            <span class="text-gray-200">(à {{ seat.2 }} SEK)</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <th>TOTALT</th>
+    <td>{{ reservation.total }} kr</td>
+  </tr>
+</table>

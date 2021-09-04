@@ -86,6 +86,9 @@ class Reservation(models.Model):
     def ticket_set(self):
         return Ticket.objects.filter(show=self.show).filter(seat_id__in=self.tickets.keys())
 
+    def num_tickets(self) -> int:
+        return len(self.tickets.keys())
+
     def apply_voucher(self, code):
         if Discount.objects.filter(reservation=self).exists():
             raise AlreadyDiscountedException("This reservation already has a discount: reservation_id=%d existing_discount_code=%s new_code=%s" % (

@@ -164,7 +164,6 @@ def booking_overview(request, show_id: int):
                 ticket_type,
                 ticket_group['price'],
             ))
-        num_tickets = sum((group['count'] for (ticket_type, group) in reserved_seats.items()))
     else:
         reserved_seats = {seat.id: seat for seat in reservation.seats()}
         for (id, ticket_type) in reservation.tickets.items():
@@ -174,7 +173,6 @@ def booking_overview(request, show_id: int):
                 ticket_type,
                 seat.price_for_type(ticket_type),
             ))
-        num_tickets = len(seats)
 
     return TemplateResponse(request, 'ticket/payment.html', {
         'seats': seats,
@@ -182,7 +180,6 @@ def booking_overview(request, show_id: int):
         'reservation': reservation,
         'stripe_payment_indent': payment_intent,
         'stripe_key': settings.STRIPE_PUBLISHABLE_KEY,
-        'num_tickets': num_tickets,
     })
 
 

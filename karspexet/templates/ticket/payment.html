@@ -2,42 +2,12 @@
 {% load tz static %}
 {% block ticket_content %}
   <div class="content_container">
-    <section class="contact-details pb-4">
+    <section class="contact-details pb-4 px-2">
       <h2 class="uppercase text-center">Bokning</h2>
 
-      <table class="p-3 bg-black bg-red-darker w-full rounded-md text-left">
-        <tr>
-          <th class="text-sm text-gold w-32 p-1">FÖRESTÄLLNING</th>
-          <td>{{ reservation.show }}</td>
-        </tr>
-        {% if reservation.discount %}
-          <tr>
-            <th class="text-sm text-gold w-32 p-1">PRESENTKORT</th>
-            <td class="w-100">{{ reservation.discount.voucher.code }}</td>
-          </tr>
-        {% endif %}
-        <tr>
-          <th class="text-sm text-gold w-32 p-1">ANTAL BILJETTER</th>
-          <td>{{ num_tickets }}</td>
-        </tr>
-        <tr>
-          <th class="text-sm text-gold w-32 p-1">PLATSER</th>
-          <td>
-            <ul>
-              {% for seat in seats %}
-                <li>
-                  {{ seat.0 }}
-                  <span class="text-gray-200">(à {{ seat.2 }} SEK)</span>
-                </li>
-              {% endfor %}
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <th class="text-sm text-gold w-32 p-1">TOTALT</th>
-          <td>{{ reservation.total }} kr</td>
-        </tr>
-      </table>
+      <div data-reservation-details>
+        {% include "ticket/_reservation_details.html" %}
+      </div>
 
       <p class="fn-session-timeout text-sm text-gray-200">
         Din reservation är giltig till
@@ -122,7 +92,9 @@
 
         {% include payment_partial %}
 
-        <button class="fn-payment-submit-button" type="submit">Betala {{ reservation.total }} kr</button>
+        <button class="fn-payment-submit-button" type="submit">
+          Betala {{ reservation.total }} kr
+        </button>
         <div class="spinner-container hidden">
           <span>Vänta medan vi behandlar din betalning...</span>
           <img class="luva spinner" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
