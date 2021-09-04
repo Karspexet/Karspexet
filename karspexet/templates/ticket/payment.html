@@ -1,126 +1,155 @@
 {% extends "ticket/base.html" %}
 {% load tz static %}
 {% block ticket_content %}
-  <div class="content_container">
-    <section class="contact-details pb-4 px-2">
-      <h2 class="uppercase text-center">Bokning</h2>
+  <section class="contact-details pb-4 px-2 max-w-md">
+    <h1 class="uppercase text-center text-gold">Bokning</h1>
 
-      <div data-reservation-details>
-        {% include "ticket/_reservation_details.html" %}
+    <div data-reservation-details>
+      {% include "ticket/_reservation_details.html" %}
+    </div>
+
+    <p class="fn-session-timeout text-sm text-gray-200">
+      Din reservation är giltig till
+      <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"H:i" }}</time>
+      (<span class="fn-session-timeout-output">30 minuter</span> kvar)
+    </p>
+
+    {% if payment_failed %}
+      <div>
+        <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
       </div>
+    {% endif %}
 
-      <p class="fn-session-timeout text-sm text-gray-200">
-        Din reservation är giltig till
-        <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"H:i" }}</time>
-        (<span class="fn-session-timeout-output">30 minuter</span> kvar)
+    <div {% if contact_details %}hidden{% endif %}>
+      <p>
+        Var det en av våra medlemmar som fick dig att köpa dina biljetter? Fyll i så
+        fall gärna i dess namn som referens!
+      </p>
+      <div class="form-group">
+        <label>
+          <span>Referens</span>
+          <input type="text" class="field" name="reference" autocomplete="name"/>
+        </label>
+      </div>
+    </div>
+
+    <h2 class="text-gold m-0 p-0 mb-1 mt-6">Presentkort</h2>
+    <div id="discount-form" data-discount-code="{{ reservation.discount.voucher.code }}">
+      <p class="m-0 p-0">
+        För att använda ett presentkort, fyll i koden här och klicka sedan på
+        "Använd Presentkort", <strong>innan</strong> du betalar med kort.
       </p>
 
-      {% if payment_failed %}
-        <div>
-          <span class="payment-error-message">Betalningen gick inte igenom. Försök igen.</span>
-        </div>
-      {% endif %}
-
-      <div>
-        <p>Var det en av våra medlemmar som fick dig att köpa dina biljetter? Fyll i så fall gärna i dess namn som referens!</p>
-        <div class="form-group">
+      <form method="POST" action="{% url "apply_voucher" reservation.id %}" class="payment-form" id="discount-form">
+        {% csrf_token %}
+        <div class="group my-2">
           <label>
-            <span>Referens</span>
-            <input type="text" class="field" name="reference" autocomplete="name"/>
+            <span>Presentkort</span>
+            <input type="text" class="field" name="voucher_code" data-voucher-code />
           </label>
         </div>
-      </div>
+        <button type="submit">Använd presentkort!</button>
+      </form>
+    </div>
 
-      <h2>Betalning / Presentkort</h2>
+    <h2 class="text-gold m-0 p-0 mb-1 mt-6">Betalning</h2>
+    <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form" {% if reservation.is_free %}data-is-free{% endif %}>
+      {% csrf_token %}
 
-      <p>För att betala dina biljetter, fyll i dina kortuppgifter här nedanför.</p>
-      <p>Tänk på att du kan behöva låsa upp ditt kort för internetbetalningar!</p>
-
-      {% if not reservation.discount %}
-        <button id="enter-discount-code">Presentkort</button>
-      {% endif %}
-
-      <div id="discount-form" class="hidden" data-discount-code="{{ reservation.discount.voucher.code }}">
-        <button id="cancel-discount">Tillbaka</button>
-
-        <p>Om du har ett presentkort måste du använda den innan du kan betala. Detta för att vi behöver räkna om ditt biljettpris efter att du valt att använda din presentkortskod. Annars kommer du betala hela biljettpriset.</p>
-
-        <p>För att använda ett presentkort, fyll i koden nedan och klicka sedan på "Använd Presentkort"</p>
-
-        <form method="POST" action="{% url "apply_voucher" reservation.id %}" class="payment-form" id="discount-form">
-          {% csrf_token %}
-          <div class="group">
-            <label>
-              <span>Presentkort</span>
-              <input type="text" class="field" name="voucher_code"/>
-            </label>
-          </div>
-          <button type="submit">Använd presentkort!</button>
-        </form>
-      </div>
-
-      <form action="{% url "process_payment" reservation.id %}" method="post" id="payment-form" class="payment-form" {% if reservation.is_free %}data-is-free{% endif %}>
-        {% csrf_token %}
-        <div class="group">
+      <div {% if contact_details %}hidden{% endif %}>
+        <div class="form-group">
           <label>
             <span>Namn</span>
-            <input name="name" class="field" placeholder="Frank Hamer" autocomplete="name" required/>
+            <input
+              name="name"
+              type="text"
+              autocomplete="name"
+              class="field"
+              placeholder="Frank Hamer"
+              required
+              value="{{ contact_details.name }}"
+            />
           </label>
           <label>
             <span>Telefonnummer</span>
-            <input name="phone" class="field" placeholder="070-1740605" type="tel" autocomplete="tel"/>
+            <input
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              class="field"
+              placeholder="070-1740605"
+              value="{{ contact_details.phone }}"
+            />
           </label>
           <label>
             <span>E-postadress</span>
-            <input name="email" class="field" placeholder="" type="email" autocomplete="email" required/>
+            <input
+              name="email"
+              type="text"
+              autocomplete="email"
+              class="field"
+              placeholder=""
+              type="email"
+              required
+              value="{{ contact_details.email }}"
+            />
           </label>
         </div>
 
+        <input name="reference" hidden type="text" value="{{ contact_details.reference }}" />
+
         <p>Din e-post används endast för att skicka bokningsbekräftelse och information gällande föreställningen.</p>
-
-        <div class="bg-red-darker p-4 my-4 rounded">
-          <h2 class="p-0 m-0 pb-2">
-            Avbokningsregler
-            <span class="text-gold float-right">{% include "icons/exclamation.svg" %}</span>
-          </h2>
-          <p class="p-0 m-0">
-            Om Covid-restriktionen för evenemang av den här typen sänks till under nuvarande 300 personer
-            kommer evenemanget att ställas in. Om detta sker efter 1/10 kommer tyvärr inte några biljetter
-            att återbetalas pga de avtal vi har med biografen. Hoppas ni har överseende med detta.
-          </p>
-        </div>
-
-        {% include payment_partial %}
-
-        <button class="fn-payment-submit-button" type="submit">
-          Betala {{ reservation.total }} kr
-        </button>
-        <div class="spinner-container hidden">
-          <span>Vänta medan vi behandlar din betalning...</span>
-          <img class="luva spinner" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
-        </div>
-        <div class="outcome">
-          <div class="error" role="alert"></div>
-        </div>
-      </form>
-
-      <div>
-        <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
-          {% csrf_token %}
-          <span>eller</span>
-          <input type="submit" id="cancel-reservation-button" value="Avbryt bokningen">
-          <div id="fn-payment-errors"></div>
-        </form>
       </div>
-    </section>
 
-    {% if reservation.total > 0 %}
-      <script>
-        window.config = window.config || {}
-        window.config.stripeKey = '{{ stripe_key }}'
-        window.config.clientSecret = '{{ stripe_payment_indent.client_secret }}'
-        window.config.successUrl = '{{ reservation.get_absolute_url }}'
-      </script>
-    {% endif %}
-  </div>
+      <div class="bg-red-darker p-4 rounded">
+        <h3 class="p-0 m-0 pb-2 uppercase">
+          Avbokningsregler
+          <span class="text-gold float-right">{% include "icons/exclamation.svg" %}</span>
+        </h3>
+        <p class="p-0 m-0">
+          Om Covid-restriktionen för evenemang av den här typen sänks till under
+          nuvarande 300 personer kommer evenemanget att ställas in. Om detta sker efter
+          1/10 kommer tyvärr inte några biljetter att återbetalas pga de avtal vi har
+          med biografen. <br>
+          Hoppas ni har överseende med detta.
+        </p>
+      </div>
+
+      <p>
+        För att betala dina biljetter, fyll i dina kortuppgifter här nedanför. Tänk på
+        att du kan behöva låsa upp ditt kort för internetbetalningar!
+      </p>
+
+      {% include payment_partial %}
+
+      <button class="fn-payment-submit-button mt-4" type="submit" data-payment-submit-button>
+        Betala {{ reservation.total }} kr
+      </button>
+      <div class="spinner-container hidden">
+        <span>Vänta medan vi behandlar din betalning...</span>
+        <img class="luva spinner" src="{% static 'svg/luva-inkscape.svg' %}" alt="">
+      </div>
+      <div class="outcome">
+        <div class="error" role="alert"></div>
+      </div>
+    </form>
+
+    <div>
+      <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
+        {% csrf_token %}
+        <span>eller</span>
+        <input type="submit" id="cancel-reservation-button" value="Avbryt bokningen">
+        <div id="fn-payment-errors"></div>
+      </form>
+    </div>
+  </section>
+
+  {% if reservation.total > 0 %}
+    <script>
+      window.config = window.config || {}
+      window.config.stripeKey = '{{ stripe_key }}'
+      window.config.clientSecret = '{{ stripe_payment_indent.client_secret }}'
+      window.config.successUrl = '{{ reservation.get_absolute_url }}'
+    </script>
+  {% endif %}
 {% endblock %}

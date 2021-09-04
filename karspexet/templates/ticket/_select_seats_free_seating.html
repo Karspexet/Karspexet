@@ -1,82 +1,65 @@
 {% load static %}
-<section class="select-seats">
-  <div style="margin-bottom: 1rem;">
-    <div>
-      Platser kvar:
-    </div>
-    <div class="text-4xl">
-      {{ num_available_seats }}
-    </div>
+<div style="margin-bottom: 1rem;">
+  <div>
+    Platser kvar:
   </div>
+  <div class="text-4xl">
+    {{ num_available_seats }}
+  </div>
+</div>
 
-  <form method="post" action="{% url 'select_seats' show.id %}">
-    <ul>
-      {% if pricings.sponsor %}
-        <li>
-          <div class="flex h-16 items-center">
-            <div class="mr-2 ticket-name">
-              <div class="text-lg">
-                <strong>Guldbiljett</strong>
-              </div>
-              <div>{{ pricings.sponsor }} SEK</div>
-            </div>
-            <div>
-              <input type="number" name="sponsor" class="number-of-seats fn-number-input" min="0">
-            </div>
+<ul>
+  {% if pricings.sponsor %}
+    <li>
+      <div class="flex h-16 items-center">
+        <div class="mr-2 ticket-name">
+          <div class="text-lg">
+            <strong>Guldbiljett</strong>
           </div>
-          <div class="ml-2 w-96">
-            <p class="flex gap-2">
-              <img class="luva" src="{% static 'svg/luva-inkscape.svg' %}" alt="" data-sponsor-luva>
-              <em>
-                Guldbiljetten sponsar kårspexet med 110 kr, stort tack!
-              </em>
-            </p>
+          <div>{{ pricings.sponsor }} SEK</div>
+        </div>
+        <div>
+          <input type="number" name="sponsor" class="number-of-seats fn-number-input" min="0">
+        </div>
+      </div>
+      <div class="ml-2 max-w-sm">
+        <p class="flex gap-2">
+          <img class="luva" src="{% static 'svg/luva-inkscape.svg' %}" alt="" data-sponsor-luva>
+          <em>
+            Guldbiljetten sponsar kårspexet med 110 kr, stort tack!
+          </em>
+        </p>
+      </div>
+    </li>
+  {% endif %}
+  {% if pricings.normal %}
+    <li>
+      <div class="flex h-16 items-center">
+        <div class="mr-2 ticket-name">
+          <div class="text-lg">
+            <strong>Fullpris</strong>
           </div>
-        </li>
-      {% endif %}
-      {% if pricings.normal %}
-        <li>
-          <div class="flex h-16 items-center">
-            <div class="mr-2 ticket-name">
-              <div class="text-lg">
-                <strong>Fullpris</strong>
-              </div>
-              <div>{{ pricings.normal }} SEK</div>
-            </div>
-            <div>
-              <input type="number" name="normal" class="number-of-seats fn-number-input" min="0">
-            </div>
+          <div>{{ pricings.normal }} SEK</div>
+        </div>
+        <div>
+          <input type="number" name="normal" class="number-of-seats fn-number-input" min="0">
+        </div>
+      </div>
+    </li>
+  {% endif %}
+  {% if pricings.student %}
+    <li>
+      <div class="flex h-16 items-center">
+        <div class="mr-2 ticket-name">
+          <div class="text-lg">
+            <strong>Student</strong>
           </div>
-        </li>
-      {% endif %}
-      {% if pricings.student %}
-        <li>
-          <div class="flex h-16 items-center">
-            <div class="mr-2 ticket-name">
-              <div class="text-lg">
-                <strong>Student</strong>
-              </div>
-              <div>{{ pricings.student }} SEK</div>
-            </div>
-            <div>
-              <input type="number" name="student" class="number-of-seats fn-number-input" min="0">
-            </div>
-          </div>
-        </li>
-      {% endif %}
-    </ul>
-
-    {# TODO: Improve total cost #}
-
-    {% csrf_token %}
-
-    <div id="booking" style="margin-top: 1rem;"></div>
-    <input type="submit" id="book-submit-button" disabled="disabled" value="Till betalning!">
-  </form>
-
-  <form method="post" action="{% url 'cancel_reservation' show.id %}">
-    {% csrf_token %}
-    <span>eller</span>
-    <input type="submit" id="cancel-reservation-button" value="Avbryt bokningen"/>
-  </form>
-</section>
+          <div>{{ pricings.student }} SEK</div>
+        </div>
+        <div>
+          <input type="number" name="student" class="number-of-seats fn-number-input" min="0">
+        </div>
+      </div>
+    </li>
+  {% endif %}
+</ul>

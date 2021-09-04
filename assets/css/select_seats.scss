@@ -45,12 +45,17 @@ div.seat-info > * {
   display: inline-block;
   padding: 1em;
   border: 0;
+  cursor: pointer;
   border-style: outset;
   margin: 1em 0;
   background-color: hsl(349, 94.5%, 28.4%);
   border-radius: 10px;
   color: #fd0;
   font-weight: bold;
+}
+
+#book-submit-button:hover {
+  background-color: hsl(349, 94.5%, 30%);
 }
 
 #book-submit-button:disabled {
@@ -70,10 +75,6 @@ div.seat-info > * {
 @media screen and (min-device-width: 960px) {
   .seat:not(.taken-seat):hover {
     fill: #fd0;
-  }
-
-  #book-submit-button:hover {
-    background-color: hsl(349, 94.5%, 30%);
   }
 
   #Cancel-reservation-button:hover {
