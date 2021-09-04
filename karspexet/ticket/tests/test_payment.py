@@ -11,8 +11,11 @@ from django.utils import timezone
 from factories import factories as f
 from karspexet.ticket import views
 from karspexet.ticket.models import Reservation, Seat, Ticket
-from karspexet.ticket.payment import (get_payment_intent_from_reservation, handle_stripe_webhook,
-                                      handle_successful_payment)
+from karspexet.ticket.payment import (
+    get_payment_intent_from_reservation,
+    handle_stripe_webhook,
+    handle_successful_payment,
+)
 
 
 @pytest.mark.django_db

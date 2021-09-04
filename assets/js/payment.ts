@@ -114,7 +114,7 @@ function getStripePaymentDetails(form: HTMLFormElement, card: HTMLElement) {
   for (let key in billing) {
     if (!billing[key]) {
       // Stripe doesn't want us sending empty strings to them
-      delete billing[key]
+      delete billing[key];
     }
   }
 
