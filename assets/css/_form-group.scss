@@ -1,11 +1,12 @@
 .form-group {
+  box-sizing: border-box;
   background: white;
   border-radius: 4px;
   box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
 
   label {
     position: relative;
-    display: block;
+    display: flex;
     height: 40px;
     margin-left: 20px;
     color: black;
@@ -21,11 +22,13 @@
 
   label > span {
     display: inline-block;
-    width: 14ch;
+    width: 8ch;
+    flex-grow: 0;
   }
 
   input {
     height: 40px;
+    box-sizing: border-box;
     padding-right: 10px;
     padding-left: 10px;
     border: 0;
