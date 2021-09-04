@@ -47,7 +47,7 @@
               <dt>DATUM</dt>
               <dd><strong>{{ show.date|date:"Y-m-d H:i" }}</strong></dd>
               <dt>PLATS</dt>
-              <dd><strong>{{ seat.group.name }}: {{ seat.name }}</strong></dd>
+              <dd><strong>{{ seat.group.name }}{% if not show.free_seating %}: {{ seat.name }}{% endif %}</strong></dd>
               <dt>TEATER</dt>
               <dd>{{ venue }}</dd>
               <dt>ADDRESS</dt>
