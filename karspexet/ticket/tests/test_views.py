@@ -31,6 +31,30 @@ class TestTicketViews(TestCase):
         response = self.client.get(reverse(views.select_seats, args=[show.id]))
         self.assertContains(response, "Uppsättningen")
 
+    def test_select_seats_picks_automatic_seats_with_free_seating(self):
+        show = f.CreateShow(free_seating=True, venue__num_seats=4)
+
+        # Frank will get three seats randomly assigned to them
+        url = reverse(views.select_seats, args=[show.id])
+        data = {
+            "normal": 1,
+            "student": 2,
+            "email": "frank@example.com",
+        }
+        response = self.client.post(url, data=data, follow=False)
+        self.assertEqual(response.status_code, 302)
+        reservation = Reservation.objects.get()
+        self.assertEqual(len(reservation.tickets), 3)
+
+        # Bonnie can't buy their tickets since there aren't enough left in the venue for the order
+        data = {
+            "student": 2,
+            "email": "bonnie@example.com",
+        }
+        response = self.client.post(url, data=data, follow=False)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Det finns inte tillräckligt många biljetter kvar.")
+
 
 @pytest.mark.django_db
 @override_settings(PAYMENT_PROCESS="stripe")

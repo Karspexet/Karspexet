@@ -1,6 +1,7 @@
 import factory
 from django.contrib.auth.models import User
 from django.utils import timezone
+from factory import LazyAttribute, post_generation
 from factory.django import DjangoModelFactory
 
 
@@ -19,7 +20,16 @@ class CreateStaffUser(DjangoModelFactory):
 
 class CreateVenue(DjangoModelFactory):
     class Meta:
-        model = 'venue.venue'
+        model = 'venue.Venue'
+
+    @post_generation
+    def num_seats(self, create, num_seats, **kwargs):
+        if not num_seats:
+            return
+        group = CreateSeatingGroup(venue=self)
+        CreatePricingModel(seating_group=group, prices={"student": 200, "normal": 250})
+        for i in range(num_seats):
+            CreateSeat(group=group)
 
 
 class CreateSeatingGroup(DjangoModelFactory):
@@ -81,4 +91,6 @@ class CreateVoucher(DjangoModelFactory):
 
 class CreatePricingModel(DjangoModelFactory):
     class Meta:
-        model = 'ticket.pricingmodel'
+        model = "ticket.PricingModel"
+
+    valid_from = LazyAttribute(lambda a: timezone.now())

@@ -44,7 +44,10 @@ class SeatingGroup(models.Model):
 
 class SeatManager(models.Manager):
     def available_seats(self, show) -> list[Seat]:
-        taken_seats = show.ticket_set.values_list("seat_id")
+        taken_seats = set(show.ticket_set.values_list("seat_id"))
+        reserved_seats = show.reservation_set(manager="active").values_list("tickets", flat=True)
+        for tickets in reserved_seats:
+            taken_seats.update(map(int, tickets.keys()))
         seats = Seat.objects.filter(group__venue=show.venue).exclude(id__in=taken_seats)
         return list(seats)
 
