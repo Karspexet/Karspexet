@@ -3,7 +3,7 @@ engines:
   prospector:
     enabled: false
   pylint:
-    enabled: true
+    enabled: false
     python_version: 3
     exclude_paths:
       - tests/
@@ -15,8 +15,7 @@ engines:
       - tests/
       - karspexet/**/migrations/**/*
       - karspexet/**/test_*.py
-
   eslint:
-    enabled: true
+    enabled: false
     exclude_paths:
       - assets/fonts/icomoon/**/*
