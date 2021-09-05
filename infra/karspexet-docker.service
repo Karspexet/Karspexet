@@ -1,0 +1,16 @@
+[Unit]
+Description=Karspexet Docker
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop karspexet
+ExecStartPre=-/usr/bin/docker rm karspexet
+ExecStart=/usr/bin/docker run --name karspexet \
+        --env-file /srv/karspexet/env.list \
+        --user root \
+        --network=host \
+        --expose=8000 \
+        --mount type=bind,source=/var/spool/postfix,target=/var/spool/postfix \
+        -v /srv/karspexet/shared/uploads:/app/uploads \
+        ghcr.io/karspexet/karspexet
