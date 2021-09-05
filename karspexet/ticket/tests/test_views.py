@@ -32,7 +32,8 @@ class TestTicketViews(TestCase):
         self.assertContains(response, "Uppsättningen")
 
     def test_select_seats_picks_automatic_seats_with_free_seating(self):
-        show = f.CreateShow(free_seating=True, venue__num_seats=4)
+        show = f.CreateShow(free_seating=True, venue__num_seats=5)
+        f.CreateTicket(seat=Seat.objects.first(), show=show)
 
         # Frank will get three seats randomly assigned to them
         url = reverse(views.select_seats, args=[show.id])

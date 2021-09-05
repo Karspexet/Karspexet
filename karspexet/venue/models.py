@@ -44,7 +44,7 @@ class SeatingGroup(models.Model):
 
 class SeatManager(models.Manager):
     def available_seats(self, show) -> list[Seat]:
-        taken_seats = set(show.ticket_set.values_list("seat_id"))
+        taken_seats = set(show.ticket_set.values_list("seat_id", flat=True))
         reserved_seats = show.reservation_set(manager="active").values_list("tickets", flat=True)
         for tickets in reserved_seats:
             taken_seats.update(map(int, tickets.keys()))
