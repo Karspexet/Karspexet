@@ -1,64 +1,76 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static sekizai_tags %}
 {% block content %}
-  <h2>Föreställningsöversikt: {{show.production.name}} {{ show.short_description }} {{show.date|date:"Y-m-d H:i:s" }}</h2>
-  <em>{{show.venue}}</em>
 
-  <h3>Inloggad som: {{ user }}</h3>
+  <div class="mx-4">
 
-  <h3>Sålda biljetter</h3>
+    <h1>Föreställningsöversikt: {{ show.production.name }} {{show.date|date:"Y-m-d H:i" }}</h1>
+    <em>{{ show.venue }}</em>
 
-  <table>
-    <tr>
-      <th>Student</th>
-      <th>Fullpris</th>
-      <th>Sponsor</th>
-      <th>Totalt</th>
-      <th>Antal platser</th>
-      <th>Beläggning</th>
-    </tr>
-    <tr>
-      <td>{{ ticket_counts.student }}</td>
-      <td>{{ ticket_counts.normal }}</td>
-      <td>{{ ticket_counts.sponsor }}</td>
-      <td>{{ coverage.ticket_count }}</td>
-      <td>{{ coverage.seat_count }}</td>
-      <td>{{ coverage.sales_percentage|floatformat }}%</td>
-    </tr>
-  </table>
+    <h2>Sålda biljetter</h2>
 
-  <h3>Platskarta</h3>
-
-  <span class="theater-seat-map">
-    {% include "seat_map.svg" with venue=show.venue taken_seats=taken_seats %}
-  </span>
-
-  <h3>Besökare</h3>
-
-  <table class="costumer-table-data">
-    <thead>
+    <table class="details-table">
       <tr>
-        <th><a href="?{% order_by request 'seat__group__name' %}">Sektion</a></th>
-        <th><a href="?{% order_by request 'seat__name' %}">Plats</a></th>
-        <th><a href="?{% order_by request 'account__name' %}">Namn</a></th>
-        <th><a href="?{% order_by request 'account__phone' %}">Telefonnummer</a></th>
-        <th><a href="?{% order_by request 'account__email' %}">E-postadress</a></th>
-        <th><a href="?{% order_by request 'ticket_type' %}">Biljettyp</a></th>
-        <th><a href="?{% order_by request 'reference' %}">Referens</a></th>
+        <th>Platser</th>
+        <th>Totalt Sålda</th>
+        <th>Beläggning</th>
+        <th>Student</th>
+        <th>Fullpris</th>
+        <th>Sponsor</th>
       </tr>
-    </thead>
-    <tbody>
-      {% for ticket in tickets %}
+      <tr>
+        <td>{{ coverage.seat_count }}</td>
+        <td>{{ coverage.ticket_count }}</td>
+        <td>{{ coverage.sales_percentage|floatformat }}%</td>
+        <td>{{ ticket_counts.student }}</td>
+        <td>{{ ticket_counts.normal }}</td>
+        <td>{{ ticket_counts.sponsor }}</td>
+      </tr>
+    </table>
+
+    {% if not show.free_seating %}
+      <h2>Platskarta</h2>
+      <span class="theater-seat-map">
+        {% include "seat_map.svg" with venue=show.venue taken_seats=taken_seats %}
+      </span>
+    {% endif %}
+
+    <h3>Besökare</h3>
+
+    <table class="costumer-table-data" data-tablesort>
+      <thead>
         <tr>
-          <td>{{ ticket.seat.group.name }}</td>
-          <td>{{ ticket.seat.name  }}</td>
-          <td>{{ ticket.account.name }}</td>
-          <td class="number">{{ ticket.account.phone }}</td>
-          <td>{{ ticket.account.email }}</td>
-          <td>{{ ticket.ticket_type }}</td>
-          <td>{{ ticket.reference }}</td>
+          <th class="cursor-pointer text-gold underline">Sektion</th>
+          <th class="cursor-pointer text-gold underline">Plats</th>
+          <th class="cursor-pointer text-gold underline">Namn</th>
+          <th class="cursor-pointer text-gold underline">Telefonnummer</th>
+          <th class="cursor-pointer text-gold underline">E-postadress</th>
+          <th class="cursor-pointer text-gold underline">Biljettyp</th>
+          <th class="cursor-pointer text-gold underline">Referens</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+          <tr>
+            <td>{{ ticket.seat.group.name }}</td>
+            <td>{{ ticket.seat.name  }}</td>
+            <td>{{ ticket.account.name }}</td>
+            <td class="number">{{ ticket.account.phone }}</td>
+            <td>{{ ticket.account.email }}</td>
+            <td>{{ ticket.ticket_type }}</td>
+            <td>{{ ticket.reference }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% addtoblock "js" %}<script type="text/javascript" src="https://unpkg.com/tablesort"></script>{% endaddtoblock %}
+  {% addtoblock "js" %}
+    <script charset="utf-8">
+      document.querySelectorAll('[data-tablesort]').forEach((el) => {
+        Tablesort(el, {})
+      })
+    </script>
+  {% endaddtoblock %}
 {% endblock %}
