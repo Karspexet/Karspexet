@@ -25,8 +25,13 @@ def get_payment_intent_from_reservation(request, reservation) -> dict:
         # We have a PaymentIntent from an old reservation in the session - create a new one instead
         logger.warning("Retrieved wrong PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
 
+    amount = reservation.get_amount()
+    if amount < 1:
+        logger.warning("Ignored reservation=%s with price=0", reservation.id)
+        return {}
+
     intent = stripe.PaymentIntent.create(
-        amount=reservation.get_amount(),
+        amount=amount,
         currency="sek",
         payment_method_types=["card"],
         idempotency_key=str(reservation.id),
