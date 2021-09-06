@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% load static sekizai_tags %}
+{% extends "base_backstage.html" %}
+{% load static %}
 {% block content %}
 
   <div class="mx-4">
@@ -64,13 +64,4 @@
       </tbody>
     </table>
   </div>
-
-  {% addtoblock "js" %}<script type="text/javascript" src="https://unpkg.com/tablesort"></script>{% endaddtoblock %}
-  {% addtoblock "js" %}
-    <script charset="utf-8">
-      document.querySelectorAll('[data-tablesort]').forEach((el) => {
-        Tablesort(el, {})
-      })
-    </script>
-  {% endaddtoblock %}
 {% endblock %}
