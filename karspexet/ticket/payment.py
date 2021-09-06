@@ -103,7 +103,12 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict, refe
 
     for seat_id, ticket_type in reservation.tickets.items():
         seat = Seat.objects.get(pk=seat_id)
-        # TODO: Handle uniqueness error
+        # TODO: Prevent / handle uniqueness error better
+        if Ticket.objects.filter(show=reservation.show, seat=seat).exists():
+            raise Exception(
+                f"Payment succeeded for Reservation={reservation.id}, but seat={seat.id} is occupied",
+            )
+
         ticket = Ticket.objects.create(
             price=seat.price_for_type(ticket_type),
             ticket_type=ticket_type,
