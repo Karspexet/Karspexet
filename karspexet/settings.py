@@ -47,7 +47,7 @@ ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", "localhost").split(",")
 
 SITE_ID = 1
 
-EMAIL_BACKEND = ENV.get("email_backend", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_BACKEND = ENV.get("email_backend", "django.core.mail.backends.console.EmailBackend")
 
 PAYMENT_PROCESS = ENV.get("PAYMENT_PROCESS", "not set")
 STRIPE_PUBLISHABLE_KEY = ENV.get("STRIPE_PUBLISHABLE_KEY", "fake")
