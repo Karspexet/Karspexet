@@ -42,7 +42,7 @@ class ReservationAdmin(admin.ModelAdmin):
     def has_add_permission(self, obj):
         return False
 
-    def lookup_allowed(self, key):
+    def lookup_allowed(self, key, value):
         return True
 
     def related_tickets(self, obj=None):
@@ -71,7 +71,7 @@ class TicketAdmin(admin.ModelAdmin):
     def has_add_permission(self, obj):
         return False
 
-    def lookup_allowed(self, key):
+    def lookup_allowed(self, key, value):
         return True
 
     def reservation(self, obj=None):
@@ -91,7 +91,7 @@ class VoucherAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("used_by",)
 
-    def lookup_allowed(self, key):
+    def lookup_allowed(self, key, value):
         return True
 
     def get_changeform_initial_data(self, request):
