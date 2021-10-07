@@ -33,6 +33,7 @@ class ReservationAdmin(admin.ModelAdmin):
         "session_timeout",
         "tickets",
     )
+    search_fields = ("reservation_code",)
     list_display = ("reservation_code", "show", "finalized", "ticket_price", "total", "session_timeout", "tickets")
     list_filter = ("finalized", "show")
     readonly_fields = ("show_link", "reservation_code", "related_tickets")
@@ -62,6 +63,7 @@ class TicketAdmin(admin.ModelAdmin):
         "seat",
         "account",
     )
+    search_fields = ("reservation__reservation_code", "ticket_code")
     list_display = ("ticket_code", "show", "price", "ticket_type", "seat", "account")
     raw_id_fields = ("account", "seat")
     readonly_fields = ("show_link", "reservation", "ticket_code")

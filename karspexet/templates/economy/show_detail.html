@@ -53,7 +53,11 @@
         {% for ticket in tickets %}
           <tr>
             <td>{{ ticket.seat.group.name }}</td>
-            <td>{{ ticket.seat.name  }}</td>
+            <td>
+              <a href="{% url 'admin:ticket_ticket_change' ticket.id %}">
+                {{ ticket.seat.name }}
+              </a>
+            </td>
             <td>{{ ticket.account.name }}</td>
             <td class="number">{{ ticket.account.phone }}</td>
             <td>{{ ticket.account.email }}</td>
