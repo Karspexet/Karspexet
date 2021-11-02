@@ -15,7 +15,7 @@ description = ""
 authors = ["Kårspexet <webmaster@karspexet.se>"]
 
 [tool.poetry.dependencies]
-django = "^3.1.5"
+django = "^3.2.9"
 pyqrcode = "^1.2.1"
 cssmin = "^0.2.0"
 dj-database-url = "^0.5.0"
