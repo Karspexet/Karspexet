@@ -131,12 +131,18 @@ def select_seats(request, show_id: int):
     if show.free_seating:
         pricings = next(iter(pricings.values()), {})
 
+    seat_selection_json = json.dumps({
+        "allSeats": seats,
+        "pricings": pricings,
+        "freeSeating": show.free_seating,
+    })
+
     return TemplateResponse(request, "ticket/select_seats.html", {
         'taken_seats': list(taken_seats),
         'show': show,
         'venue': show.venue,
         'pricings': pricings,
-        'seats': json.dumps(seats),
+        'seatSelection': seat_selection_json,
         'num_available_seats': len(available_seats),
     })
 

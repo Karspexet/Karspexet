@@ -1,4 +1,4 @@
-{% load static %}
+{% load static ticket_tags %}
 <div style="margin-bottom: 1rem;">
   <div>
     Platser kvar:
@@ -25,9 +25,12 @@
       <div class="ml-2 max-w-sm">
         <p class="flex gap-2">
           <img class="luva" src="{% static 'svg/luva.svg' %}" alt="" data-sponsor-luva>
-          <em>
-            Guldbiljetten sponsar kårspexet med 110 kr, stort tack!
-          </em>
+          {% if pricings.normal %}
+            <em>
+              Guldbiljetten sponsrar oss med {{ pricings.sponsor|subtract:pricings.normal }} kr, <br>
+              stort tack för din gåva!
+            </em>
+          {% endif %}
         </p>
       </div>
     </li>

@@ -3,6 +3,7 @@ from django.contrib.admin.options import IncorrectLookupParameters
 from django.shortcuts import redirect
 from django.utils.html import format_html
 
+from karspexet.ticket.models import PricingModel
 from karspexet.utils import admin_change_url
 from karspexet.venue.models import Seat, SeatingGroup, Venue
 
@@ -36,6 +37,20 @@ class SeatingGroupInline(admin.TabularInline):
         return format_html('<a href="{}">Edit: {}</a>', url, obj)
 
 
+class PricingModelInline(admin.TabularInline):
+    model = PricingModel
+    extra = 0
+    fields = ["admin_link"]
+    readonly_fields = ["admin_link"]
+
+    @classmethod
+    def admin_link(cls, obj):
+        if not obj.pk:
+            return ""
+        url = admin_change_url(obj)
+        return format_html('<a href="{}">Edit: {}</a>', url, obj)
+
+
 class SeatInline(admin.TabularInline):
     model = Seat
     extra = 0
@@ -56,7 +71,7 @@ class VenueAdmin(admin.ModelAdmin):
 
 @admin.register(SeatingGroup)
 class SeatingGroupAdmin(admin.ModelAdmin):
-    inlines = [SeatInline]
+    inlines = [PricingModelInline, SeatInline]
     raw_id_fields = ("venue",)
 
 

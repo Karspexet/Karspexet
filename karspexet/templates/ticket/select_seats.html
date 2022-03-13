@@ -54,11 +54,7 @@
 
     <script>
       window.config = window.config || {}
-      window.config.seatSelection = {
-        allSeats: {{ seats|safe }},
-        pricings: {{ pricings|safe }},
-        freeSeating: {{ show.free_seating|yesno:"true,false" }}
-      }
+      window.config.seatSelection = {{ seatSelection|safe }}
     </script>
   </div>
 {% endblock %}

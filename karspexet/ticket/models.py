@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import enum
 from datetime import date
 from string import ascii_uppercase, digits
 
@@ -15,10 +16,20 @@ from django.utils.crypto import get_random_string
 
 from karspexet.venue.models import Seat
 
+
+class TicketType(str, enum.Enum):
+    normal = "normal"
+    student = "student"
+    sponsor = "sponsor"
+
+    def __str__(self) -> str:
+        return self.value
+
+
 TICKET_TYPES = [
-    ("normal", "Fullpris"),
-    ("student", "Student"),
-    ("sponsor", "Sponsor"),
+    (TicketType.normal, "Fullpris"),
+    (TicketType.student, "Student"),
+    (TicketType.sponsor, "Sponsor"),
 ]
 
 
@@ -221,9 +232,6 @@ class PricingModel(models.Model):
 
     objects = ActivePricingModelManager()
 
-    def price_for(self, ticket_type) -> int:
-        return int(self.prices[ticket_type])
-
     def __repr__(self):
         return "<PricingModel(id={}, prices={}, seating_group={}, valid_from={})>".format(
             self.id,
@@ -234,6 +242,16 @@ class PricingModel(models.Model):
 
     def __str__(self):
         return f"PricingModel {self.id} {self.valid_from} {self.prices} {self.seating_group}"
+
+    def price_for(self, ticket_type) -> int:
+        return int(self.prices[ticket_type])
+
+    def save(self, **kwargs):
+        if not self.prices:
+            self.prices = {}
+        for type in TicketType:
+            self.prices.setdefault(type, None)
+        super().save(**kwargs)
 
 
 class InvalidVoucherException(Exception):

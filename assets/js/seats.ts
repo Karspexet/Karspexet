@@ -3,14 +3,21 @@ import $ from "cash-dom";
 const SPONSOR_TYPE = "sponsor";
 
 type PriceConfig = {
-  seatSelection: { freeSeating?: any; pricings: any; allSeats: any };
+  seatSelection: SeatSelection;
+};
+type SeatSelection = {
+  freeSeating?: any;
+  pricings: Record<string, number | null>;
+  allSeats: any;
 };
 export function setupSelectSeats(config: PriceConfig) {
-  if (!config.seatSelection) return;
-  if (config.seatSelection.freeSeating) {
-    return setupFreeSeating(config.seatSelection);
+  const { seatSelection } = config || {};
+  if (!seatSelection) return;
+
+  if (seatSelection.freeSeating) {
+    return setupFreeSeating(seatSelection);
   } else {
-    return setupSeatMapSelection(config.seatSelection);
+    return setupSeatMapSelection(seatSelection);
   }
 }
 
@@ -136,7 +143,7 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
   $(".seat:not(.taken-seat)").on("click", selectSeat);
 }
 
-function setupFreeSeating(config: { pricings: any }) {
+function setupFreeSeating(config: SeatSelection) {
   let booking: Record<string, number> = {};
   for (let price in config.pricings) {
     booking[price] = 0;
@@ -223,7 +230,7 @@ function createHappyLuva() {
       animate();
     }
   }
-  img.on("animationend", (e) => {
+  img.on("animationend", (_) => {
     img.data("is-animated", false);
     img.removeClass(spinClasses.join(" "));
     spins -= 1;
