@@ -3,7 +3,6 @@
 {% block economy_content %}
   <h2>Föreställningsöversikt</h2>
 
-  <h3>Inloggad som: {{ user }}</h3>
   <table>
     <thead>
       <tr>
@@ -19,11 +18,11 @@
       {% for show in shows %}
         <tr>
           <td><a href="{% url 'economy_show_detail' show.id %}">{{ show.production.name }} {{ show.short_description }}</a></td>
-          <td>{{ show.date|date:"Y-m-d H:i"  }}</td>
+          <td class="whitespace-nowrap">{{ show.date|date:"Y-m-d H:i"  }}</td>
           <td>{{ show.venue.name }}</td>
-          <td class="number">{{ show.ticket_count }}</td>
-          <td class="number">{{ show.venue.seat_count }}</td>
-          <td class="number">{{ show.sales_percentage|floatformat }}</td>
+          <td class="text-right">{{ show.ticket_count }}</td>
+          <td class="text-right">{{ show.venue.seat_count }}</td>
+          <td class="text-right">{{ show.sales_percentage|floatformat:"0" }}%</td>
         </tr>
       {% endfor %}
     </tbody>
