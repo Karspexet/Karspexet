@@ -6,6 +6,7 @@ export default defineConfig({
     outdir: "dist",
     rollupOptions: {
       input: {
+        "backstage.js": "./assets/js/backstage.ts",
         "index.css": "./assets/css/index.scss",
         "index.js": "./assets/js/index.ts",
       },
