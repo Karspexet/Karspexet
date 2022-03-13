@@ -13,7 +13,6 @@
   max-width: 1058px;
   justify-content: space-around;
   background: $red-dark;
-  color: #fc0;
   list-style: none;
   text-align: center;
   text-decoration: none;
@@ -24,15 +23,15 @@
   }
 
   .nav-link:hover {
-    color: #c7c7c7;
+    color: $gold-3;
   }
 
   .selected .nav-link {
-    color: #fd0;
+    color: $gold;
   }
 
   .selected .nav-link:hover {
-    color: #c7ac00;
+    color: $gold-3;
   }
 }
 

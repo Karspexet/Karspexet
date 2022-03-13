@@ -64,7 +64,7 @@
     background: $red-dark;
     border-radius: 4px;
     box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
-    color: #fd0;
+    color: $gold;
     font-size: 15px;
     font-weight: 400;
     line-height: 38px;
@@ -72,49 +72,17 @@
   }
 
   button:focus {
-    background: #fd0;
+    background: $gold;
     color: black;
   }
 
   button:active {
-    background: #fd0;
+    background: $gold;
     color: black;
   }
 
   button:disabled {
     background: $gray;
-  }
-
-  .outcome {
-    width: 100%;
-    min-height: 24px;
-    padding-top: 8px;
-    float: left;
-    text-align: center;
-  }
-
-  .success,
-  .error {
-    display: none;
-    font-size: 13px;
-  }
-
-  .success.visible,
-  .error.visible {
-    display: inline;
-  }
-
-  .error {
-    color: #e4584c;
-  }
-
-  .success {
-    color: #666ee8;
-  }
-
-  .success .token {
-    font-size: 13px;
-    font-weight: 500;
   }
 }
 

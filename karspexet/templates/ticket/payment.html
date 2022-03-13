@@ -103,9 +103,9 @@
       </div>
 
       <div class="bg-red-darker p-4 rounded">
-        <h3 class="p-0 m-0 pb-2 uppercase">
+        <h3 class="flex p-0 m-0 pb-2 uppercase">
+          <span class="text-gold">{% include "icons/exclamation.svg" %}</span>
           Avbokningsregler
-          <span class="text-gold float-right">{% include "icons/exclamation.svg" %}</span>
         </h3>
         <p class="p-0 m-0">
           Om Covid-restriktionen för evenemang av den här typen sänks till under
@@ -129,9 +129,6 @@
       <div class="spinner-container hidden">
         <span>Vänta medan vi behandlar din betalning...</span>
         <img class="luva spinner" src="{% static 'svg/luva.svg' %}" alt="">
-      </div>
-      <div class="outcome">
-        <div class="error" role="alert"></div>
       </div>
     </form>
 

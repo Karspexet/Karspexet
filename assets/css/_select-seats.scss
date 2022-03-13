@@ -30,7 +30,7 @@ div.seat-info > * {
 }
 
 .selected-seat {
-  fill: #fd0;
+  fill: $gold;
 }
 
 .seat:not(.taken-seat) {
@@ -49,7 +49,7 @@ div.seat-info > * {
   margin: 1em 0;
   background-color: hsl(349, 94.5%, 28.4%);
   border-radius: 10px;
-  color: #fd0;
+  color: $gold;
   cursor: pointer;
   font-weight: 700;
 }
@@ -67,14 +67,14 @@ div.seat-info > * {
   padding: 0;
   border: none;
   background-color: black;
-  color: #fd0;
+  color: $gold;
   cursor: pointer;
   font: inherit;
 }
 
 @media screen and (min-device-width: 960px) {
   .seat:not(.taken-seat):hover {
-    fill: #fd0;
+    fill: $gold;
   }
 
   #Cancel-reservation-button:hover {

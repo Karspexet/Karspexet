@@ -9,10 +9,6 @@
   font-weight: 400;
 }
 
-.list_decorator {
-  font-size: small;
-}
-
 .poster_container {
   position: relative;
   display: flex;
@@ -99,7 +95,7 @@
 
 .ticket-detail [class^="icon-"] {
   margin: 0 2px;
-  color: #fd0;
+  color: $gold;
 }
 
 .ticket-detail-header h1 {
