@@ -47,12 +47,15 @@ jobs:
           ssh dan@karspexet.se -C make restart
 
   sentry:
-    - uses: actions/checkout@v2
-    - name: Create Sentry release
-      uses: getsentry/action-release@v1
-      env:
-        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        SENTRY_ORG: karspexet-ly
-        SENTRY_PROJECT: django
-      with:
-        environment: production
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/master' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: karspexet-ly
+          SENTRY_PROJECT: django
+        with:
+          environment: production
