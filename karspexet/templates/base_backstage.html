@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static sekizai_tags %}
 {% block main_js %}
-{{ block.super }}
-{% addtoblock "js" %}<script type="text/javascript" src="{% static 'js/backstage.js' %}"></script>{% endaddtoblock %}
+  {{ block.super }}
+  {% addtoblock "js" %}<script type="text/javascript" src="{% static 'js/backstage.js' %}"></script>{% endaddtoblock %}
 {% endblock %}
