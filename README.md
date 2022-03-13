@@ -2,28 +2,32 @@
 
 Detta repo innehåller koden för https://kårspexet.se/.
 
-## Setup
+## Installation
 
-För att installera alla appens beroenden körs kommandot:
+För att installera alla appens beroenden kör du dessa kommandon i en
+terminal:
 
 ```sh
 pip install -U poetry
 poetry install
+npm install
 ```
 
-Starta den databas som behövs i bakgrunden med `docker`, och kör sedan
-databasmigreringar för att sätta upp den.
+Starta sedan databasen i bakgrunden med `docker`, och initialisera dess
+tabeller:
 
 ```sh
 docker-compose up -d postgres
 
-poetry run python manage.py migrate
+poetry run manage.py migrate
 ```
+
+## Användning
 
 Sätt sedan igång byggandet av CSS- & JS-filer i en terminal med:
 
 ```sh
-npm run watch
+npm start
 ```
 
 Och starta servern i en annan terminal med:
@@ -36,7 +40,7 @@ Nu kan du gå till http://localhost:8000 för att se hemsidan.
 
 ## Tester
 
-Se till att databasen är igång som i steget ovan, och kör sedan testerna
+Se till att databasen är igång som beskrivet ovan, och kör sedan testerna
 med:
 
 ```sh
