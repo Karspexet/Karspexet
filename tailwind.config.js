@@ -1,5 +1,5 @@
 module.exports = {
-  purge: [
+  content: [
     // Keep CSS classes defined in our JS and HTML
     "./assets/**/*",
     "./karspexet/**/*",

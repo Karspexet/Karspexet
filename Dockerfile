@@ -1,4 +1,4 @@
-FROM python:3.9-slim as builder
+FROM python:3.10-slim as builder
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/virtualenv
@@ -13,25 +13,33 @@ RUN apt-get update && \
     postfix=3.5.6-1+b1 \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+#
+# Python Venv
+#
 FROM builder as deps-py
-
 RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel poetry
-
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-dev --no-interaction --no-root
 
 
-FROM node:16.2.0 AS deps-js
+#
+# Frontend bundle
+#
+FROM node:16.14.0 AS deps-js
 WORKDIR /app
 COPY package-lock.json package.json /app/
 RUN npm ci --no-optional && npm cache clean --force
 
 COPY assets/ /app/assets/
 COPY karspexet/templates/ /app/karspexet/templates/
-COPY tailwind.config.js .postcssrc /app/
+COPY vite.config.js tailwind.config.js .postcssrc /app/
 RUN npm run build
 
 
+#
+# App
+#
 FROM builder as runner
 USER app:app
 EXPOSE 8000
