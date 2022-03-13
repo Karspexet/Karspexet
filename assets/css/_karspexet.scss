@@ -6,13 +6,7 @@
   margin: 0;
   margin-right: 0.5em;
   color: white;
-  font-weight: normal;
-}
-
-.fa {
-  margin-right: 2px;
-  color: rgb(222, 210, 95);
-  font-size: 1.1em;
+  font-weight: 400;
 }
 
 .list_decorator {
@@ -45,61 +39,22 @@
   text-shadow: 2px 2px 4px #000;
 }
 
-.poster_title h1 {
-  margin: 0;
-  font-family: "Trajan Pro Regular", serif;
-  font-weight: normal;
-}
+.poster_title {
+  h1 {
+    margin: 0;
+    font-family: $font-trajan;
+    font-weight: 400;
+  }
 
-.poster_title p {
-  margin: 0;
-  font-family: "Trajan Pro Regular", serif;
-}
-
-.poster_shadow {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-}
-
-.ticket-detail [class^="icon-"] {
-  margin: 0 2px;
-  color: #fd0;
+  p {
+    margin: 0;
+    font-family: $font-trajan;
+  }
 }
 
 .select_show .show-card {
   margin-top: 2em;
   box-shadow: 0 0 6px 1px rgba(255, 221, 0, 0.5);
-  text-decoration: none;
-}
-
-.ticket_list {
-  list-style: none;
-}
-
-.ticket_list a {
-  font-size: 1em;
-}
-
-.ticket_list a:link {
-  color: rgb(222, 210, 95);
-  text-decoration: none;
-}
-
-.ticket_list a:visited {
-  color: rgb(222, 210, 95);
-  text-decoration: none;
-}
-
-.ticket_list a:hover {
-  color: rgb(222, 210, 95);
-  text-decoration: underline;
-}
-
-.ticket_list a:active {
-  color: rgb(222, 210, 95);
   text-decoration: none;
 }
 
@@ -142,6 +97,15 @@
   padding: 0 40px;
 }
 
+.ticket-detail [class^="icon-"] {
+  margin: 0 2px;
+  color: #fd0;
+}
+
+.ticket-detail-header h1 {
+  margin-bottom: 0;
+}
+
 .content_container {
   flex: 1 0 auto;
 
@@ -163,10 +127,6 @@
 
 .alt-name::before {
   content: "...eller ";
-}
-
-.ticket-detail-header h1 {
-  margin-bottom: 0;
 }
 
 ul.show-info {

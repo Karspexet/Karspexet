@@ -18,6 +18,22 @@
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+
+  .nav-link {
+    color: white;
+  }
+
+  .nav-link:hover {
+    color: #c7c7c7;
+  }
+
+  .selected .nav-link {
+    color: #fd0;
+  }
+
+  .selected .nav-link:hover {
+    color: #c7ac00;
+  }
 }
 
 .nav {
@@ -28,21 +44,21 @@
   width: 100%;
   background: $red-dark;
   text-align: left;
-}
 
-.nav a {
-  text-decoration: none;
-}
+  a {
+    text-decoration: none;
+  }
 
-.nav ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
 
-.nav li {
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  li {
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+  }
 }
 
 .nav-toggle {
@@ -62,51 +78,35 @@
   height: 100%;
   align-items: center;
   margin-left: 1em;
-}
 
-.nav-toggle-label span,
-.nav-toggle-label span::before,
-.nav-toggle-label span::after {
-  position: relative;
-  display: block;
-  width: 1.5rem;
-  height: 2px;
-  background: white;
-  border-radius: 2px;
-}
+  span,
+  span::before,
+  span::after {
+    position: relative;
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+  }
 
-.nav-toggle-label span::before,
-.nav-toggle-label span::after {
-  position: absolute;
-  content: " ";
-}
+  span::before,
+  span::after {
+    position: absolute;
+    content: " ";
+  }
 
-.nav-toggle-label span::before {
-  top: 5px;
-}
+  span::before {
+    top: 5px;
+  }
 
-.nav-toggle-label span::after {
-  bottom: 5px;
+  span::after {
+    bottom: 5px;
+  }
 }
 
 .list-decorator {
   display: none;
-}
-
-.navbar .nav-link {
-  color: white;
-}
-
-.navbar .nav-link:hover {
-  color: #c7c7c7;
-}
-
-.navbar .selected .nav-link {
-  color: #fd0;
-}
-
-.navbar .selected .nav-link:hover {
-  color: #c7ac00;
 }
 
 @media screen and (min-width: 800px) {

@@ -2,11 +2,16 @@
 @tailwind utilities;
 
 $gold: #fd0;
+$gold-2: rgb(222, 210, 95);
 $red-2: #8d041c;
 $red-dark: rgb(141, 4, 28);
 $red-darker: #590313;
 $gray: #9d9c9c;
 $light-gray: #afabac;
+
+$font-trajan: "Trajan Pro Regular", serif;
+$font-spex: "Pergament";
+$font-roboto: "Roboto", sans-serif;
 
 .text-gold {
   color: $gold;
@@ -24,6 +29,6 @@ $light-gray: #afabac;
   background-color: $red-2;
 }
 
-.fg-red-2 {
+.text-red-2 {
   color: $red-2;
 }

@@ -1,3 +1,5 @@
+@use "helpers" as *;
+
 .card_container {
   display: flex;
   flex: 1 0 auto;
@@ -16,51 +18,41 @@
   width: 300px;
   justify-content: center;
   padding: 30px 10px;
-}
 
-.card .card_image img {
-  width: 100%;
-  height: auto;
-}
+  .card_image img {
+    width: 100%;
+    height: auto;
+  }
 
-.card .card_title {
-  font-size: 1.125em;
-  font-weight: bold;
-  text-align: center;
-}
+  .card_title {
+    font-size: 1.125em;
+    font-weight: 700;
+    text-align: center;
+  }
 
-.card .card_text p {
-  margin: 0.5em 0 0.5em 0;
-  font-size: 1em;
-}
+  .card_text p {
+    margin: 0.5em 0 0.5em 0;
+    font-size: 1em;
+  }
 
-.card .card_link a {
-  float: right;
-  font-size: 1em;
-}
+  .card_link {
+    a {
+      float: right;
+      text-decoration: none;
+      font-size: 1em;
 
-.card .card_link a:link {
-  color: rgb(222, 210, 95);
-  text-decoration: none;
-}
+      &:link,
+      &:visited,
+      &:hover,
+      &:active {
+        color: $gold-2;
+      }
 
-.card .card_link a:visited {
-  color: rgb(222, 210, 95);
-  text-decoration: none;
-}
-
-.card .card_link a:hover {
-  color: rgb(222, 210, 95);
-  text-decoration: underline;
-}
-
-.card .card_link a:active {
-  color: rgb(222, 210, 95);
-  text-decoration: none;
-}
-
-.show_card {
-  border-radius: 10px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
 .show-card:hover {
