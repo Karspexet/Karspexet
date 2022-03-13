@@ -793,18 +793,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "raven"
-version = "6.10.0"
-description = "Raven is a client for Sentry (https://getsentry.com)"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.extras]
-flask = ["Flask (>=0.8)", "blinker (>=1.1)"]
-tests = ["bottle", "celery (>=2.5)", "coverage (<4)", "exam (>=0.5.2)", "flake8 (==3.5.0)", "logbook", "mock", "nose", "pytz", "pytest (>=3.2.0,<3.3.0)", "pytest-timeout (==1.2.1)", "pytest-xdist (==1.18.2)", "pytest-pythonpath (==0.7.2)", "pytest-cov (==2.5.1)", "pytest-flake8 (==1.0.0)", "requests", "tornado (>=4.1,<5.0)", "tox", "webob", "webtest", "wheel", "anyjson", "zconfig", "Flask (>=0.8)", "blinker (>=1.1)", "Flask-Login (>=0.2.0)", "blinker (>=1.1)", "sanic (>=0.7.0)", "aiohttp"]
-
-[[package]]
 name = "reportlab"
 version = "3.6.8"
 description = "The Reportlab Toolkit"
@@ -1014,7 +1002,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f61784f258b21e74bec4ebe351f8c0c888295b6fcfd50599eb0bf89bdcbd4614"
+content-hash = "e43dd7e6e9ebef7f92f90ab93900acc4cee52283dd525b8cce9922ee58e10cc7"
 
 [metadata.files]
 arabic-reshaper = [
@@ -1548,10 +1536,6 @@ pytz = [
 pyxdg = [
     {file = "pyxdg-0.27-py2.py3-none-any.whl", hash = "sha256:2d6701ab7c74bbab8caa6a95e0a0a129b1643cf6c298bf7c569adec06d0709a0"},
     {file = "pyxdg-0.27.tar.gz", hash = "sha256:80bd93aae5ed82435f20462ea0208fb198d8eec262e831ee06ce9ddb6b91c5a5"},
-]
-raven = [
-    {file = "raven-6.10.0-py2.py3-none-any.whl", hash = "sha256:44a13f87670836e153951af9a3c80405d36b43097db869a36e92809673692ce4"},
-    {file = "raven-6.10.0.tar.gz", hash = "sha256:3fa6de6efa2493a7c827472e984ce9b020797d0da16f1db67197bcc23c8fae54"},
 ]
 reportlab = [
     {file = "reportlab-3.6.8-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:02a67c8caaf669c63f0c410525137b162d2ade43b43e10bf1ac19b1919f6aa95"},
