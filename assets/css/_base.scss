@@ -1,0 +1,23 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0 auto;
+  background-color: black;
+  color: white;
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  color: #fd0;
+  font-weight: bold;
+  text-decoration: underline;
+}

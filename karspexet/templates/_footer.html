@@ -1,0 +1,27 @@
+{% load static %}
+<footer class="max-w-screen-lg mx-auto footer">
+  <div class="max-w-screen-lg w-full mx-auto flex items-center justify-between">
+    <div class="relatedLinks">
+      <a href="http://ths.kth.se/"><img class="thsLogo" src="{% static 'ths_logo.png' %}" alt="THS Logotyp"/></a>
+    </div>
+    <span class="secondary-menu flex items-center h-full ml-4 mr-auto">
+      <a href="/foretag">Företag</a>
+      <a href="/kontakt">Kontakt</a>
+    </span>
+    <div class="socialMedia">
+      <span class="flex items-center">
+        <span class="mr-1">
+          Följ oss!
+        </span>
+        <a href="https://www.facebook.com/karspexet.kth/" class="text-gold inline-flex h-8 w-8 ml-4 mr-4">
+          {% include "icons/facebook-square.svg" %}
+          <span class="sr-only">Facebook</span>
+        </a>
+        <a href="https://www.instagram.com/karspexet/" class="text-gold inline-flex h-8 w-8">
+          {% include "icons/instagram.svg" %}
+          <span class="sr-only">Instagram</span>
+        </a>
+      </span>
+    </div>
+  </div>
+</footer>

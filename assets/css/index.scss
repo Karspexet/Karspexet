@@ -1,5 +1,7 @@
 // stylelint-disable at-rule-no-unknown
 @use './reset';
+@use './base';
+@use './layout';
 @use './animation';
 @use './helpers';
 @use './karspexet';
