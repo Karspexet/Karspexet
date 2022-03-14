@@ -20,7 +20,7 @@ class CreateStaffUser(DjangoModelFactory):
 
 class CreateVenue(DjangoModelFactory):
     class Meta:
-        model = 'venue.Venue'
+        model = "venue.Venue"
 
     @post_generation
     def num_seats(self, create, num_seats, **kwargs):
@@ -34,7 +34,7 @@ class CreateVenue(DjangoModelFactory):
 
 class CreateSeatingGroup(DjangoModelFactory):
     class Meta:
-        model = 'venue.seatinggroup'
+        model = "venue.seatinggroup"
 
 
 class CreateSeat(DjangoModelFactory):
@@ -42,26 +42,28 @@ class CreateSeat(DjangoModelFactory):
     y_pos = 0
 
     class Meta:
-        model = 'venue.seat'
+        model = "venue.Seat"
 
 
 class CreateShow(DjangoModelFactory):
     date = timezone.now()
-    production = factory.SubFactory('factories.factories.CreateProduction')
-    venue = factory.SubFactory('factories.factories.CreateVenue')
+    production = factory.SubFactory("factories.factories.CreateProduction")
+    venue = factory.SubFactory("factories.factories.CreateVenue")
 
     class Meta:
-        model = 'show.show'
+        model = "show.Show"
 
 
 class CreateProduction(DjangoModelFactory):
     class Meta:
-        model = 'show.production'
+        model = "show.Production"
 
 
 class CreateReservation(DjangoModelFactory):
     class Meta:
-        model = 'ticket.Reservation'
+        model = "ticket.Reservation"
+
+    show = factory.SubFactory("factories.factories.CreateShow")
     session_timeout = timezone.now()
 
 
@@ -70,23 +72,31 @@ class CreateAccount(DjangoModelFactory):
     email = "bonnie@example.com"
 
     class Meta:
-        model = 'ticket.account'
+        model = "ticket.Account"
 
 
 class CreateTicket(DjangoModelFactory):
     price = 200
-    account = factory.SubFactory('factories.factories.CreateAccount')
+    account = factory.SubFactory("factories.factories.CreateAccount")
 
     class Meta:
-        model = 'ticket.ticket'
+        model = "ticket.Ticket"
 
 
 class CreateVoucher(DjangoModelFactory):
     class Meta:
-        model = 'ticket.voucher'
+        model = "ticket.Voucher"
 
     amount = 100
     created_by = factory.SubFactory(CreateStaffUser)
+
+
+class CreateDiscount(DjangoModelFactory):
+    class Meta:
+        model = "ticket.Discount"
+
+    amount = 100
+    voucher = factory.SubFactory(CreateVoucher)
 
 
 class CreatePricingModel(DjangoModelFactory):
