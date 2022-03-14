@@ -4,26 +4,12 @@
 {% block economy_content %}
   <h2>Presentkort</h2>
 
-  <h3>Inloggad som: {{ user }}</h3>
-
-  <form method="POST" action="{% url 'economy_create_voucher' %}">
+  <form method="POST" action=".">
     {% csrf_token %}
     <fieldset>
       <legend>Lägg till presentkort</legend>
-      <div>
-        <label>
-          Summa
-          <input type="number" name="amount" required/>
-        </label>
-      </div>
-
-      <div>
-        <label>
-          Anteckning (Vem har köpt denna?)
-          <input type="text" name="note" required/>
-        </label>
-      </div>
-      <input type="submit" value="Lägg till!">
+      {{ form.as_p }}
+      <button type="submit">Lägg till!</button>
     </fieldset>
   </form>
 
