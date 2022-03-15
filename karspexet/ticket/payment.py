@@ -45,11 +45,11 @@ def get_payment_intent_from_reservation(request, reservation) -> dict:
 
 def apply_voucher(request, reservation):
     # Since we have a reservation, we can assume there is also a PaymentIntent created
-    payment_intent_id = request.session["payment_intent_id"]
     code = request.POST["voucher_code"]
     reservation.apply_voucher(code)
     reservation.save()
     new_amount = reservation.get_amount()
+    payment_intent_id = request.session["payment_intent_id"]
     if not new_amount:
         stripe.PaymentIntent.cancel(payment_intent_id)
     else:

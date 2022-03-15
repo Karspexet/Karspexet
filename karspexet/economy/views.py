@@ -3,8 +3,8 @@ from collections import defaultdict
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.views.decorators.http import require_POST
 
+from karspexet.economy.forms import VoucherForm
 from karspexet.show.models import Show
 from karspexet.ticket.models import Discount, Ticket, Voucher
 
@@ -12,10 +12,14 @@ from karspexet.ticket.models import Discount, Ticket, Voucher
 @staff_member_required
 def overview(request):
     shows = Show.objects.order_by("-date").annotate_ticket_coverage()
-    return TemplateResponse(request, "economy/overview.html", context={
-        "shows": shows,
-        "user": request.user,
-    })
+    return TemplateResponse(
+        request,
+        "economy/overview.html",
+        context={
+            "shows": shows,
+            "user": request.user,
+        },
+    )
 
 
 @staff_member_required
@@ -29,39 +33,46 @@ def show_detail(request, show_id):
     for t in tickets:
         ticket_counts[t.ticket_type] += 1
 
-    return TemplateResponse(request, "economy/show_detail.html", context={
-        "show": show,
-        "taken_seats": taken_seats,
-        "tickets": tickets,
-        "ticket_counts": ticket_counts,
-        "user": request.user,
-    })
-
-
-@staff_member_required
-def vouchers(request):
-    vouchers = Voucher.active()
-
-    return TemplateResponse(request, "economy/vouchers.html", context={
-        "vouchers": vouchers,
-    })
+    return TemplateResponse(
+        request,
+        "economy/show_detail.html",
+        context={
+            "show": show,
+            "taken_seats": taken_seats,
+            "tickets": tickets,
+            "ticket_counts": ticket_counts,
+            "user": request.user,
+        },
+    )
 
 
 @staff_member_required
 def discounts(request):
     discounts = Discount.objects.select_related("reservation", "voucher").all()
 
-    return TemplateResponse(request, "economy/discounts.html", context={
-        "discounts": discounts,
-    })
-
-
-@require_POST
-@staff_member_required
-def create_voucher(request):
-    Voucher.objects.create(
-        created_by=request.user,
-        amount=request.POST["amount"],
-        note=request.POST["note"],
+    return TemplateResponse(
+        request,
+        "economy/discounts.html",
+        context={
+            "discounts": discounts,
+        },
     )
-    return redirect("economy_vouchers")
+
+
+@staff_member_required
+def vouchers(request):
+    vouchers = Voucher.objects.active().order_by("-created_at")
+
+    form = VoucherForm(data=request.POST or None, created_by=request.user)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect("economy_vouchers")
+
+    return TemplateResponse(
+        request,
+        "economy/vouchers.html",
+        context={
+            "form": form,
+            "vouchers": vouchers,
+        },
+    )

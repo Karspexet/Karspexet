@@ -171,6 +171,11 @@ class Ticket(models.Model):
         return qs.filter(tickets__keys__overlap=[self.seat_id]).first()
 
 
+class VoucherQuerySet(models.QuerySet):
+    def active(self):
+        return self.exclude(id__in=Discount.objects.values_list("id", flat=True))
+
+
 class Voucher(models.Model):
     """
     A voucher valid for getting a discount on one single Reservation.
@@ -184,6 +189,8 @@ class Voucher(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
     note = models.CharField(max_length=255, null=False, default="")
+
+    objects = VoucherQuerySet.as_manager()
 
     @staticmethod
     def active():

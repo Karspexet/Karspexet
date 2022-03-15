@@ -80,18 +80,34 @@ class TicketAdmin(admin.ModelAdmin):
         return admin_change_link(obj.get_reservation() if obj else None)
 
 
+class IsUsedFilter(admin.SimpleListFilter):
+    title = "used"
+    parameter_name = "used"
+
+    def lookups(self, request, model_admin):
+        return (("used", "Used"), ("unused", "Unused"))
+
+    def queryset(self, request, queryset):
+        if self.value() == "used":
+            return queryset.filter(discount__isnull=False)
+        elif self.value() == "unused":
+            return queryset.filter(discount__isnull=True)
+        return queryset
+
+
 @admin.register(Voucher)
 class VoucherAdmin(admin.ModelAdmin):
-    list_display = ("amount", "code", "expiry_date", "created_by")
-    list_filter = ("expiry_date", "created_by")
+    list_display = ("code", "amount", "note", "is_used")
+    list_filter = (IsUsedFilter, "expiry_date")
+    list_select_related = ("discount",)
     fields = (
-        ("code", "expiry_date"),
+        ("is_used", "used_by"),
+        ("note", "amount"),
+        "code",
+        "expiry_date",
         "created_by",
-        ("amount"),
-        "note",
-        "used_by",
     )
-    readonly_fields = ("used_by",)
+    readonly_fields = ("used_by", "is_used")
 
     def lookup_allowed(self, key, value):
         return True
@@ -99,13 +115,21 @@ class VoucherAdmin(admin.ModelAdmin):
     def get_changeform_initial_data(self, request):
         return {"created_by": request.user}
 
+    @admin.display(boolean=True)
+    def is_used(self, obj):
+        if not obj:
+            return False
+        try:
+            return bool(obj.discount)
+        except Discount.DoesNotExist:
+            return False
+
     def used_by(self, obj):
         if not obj:
             return ""
-        discount = Discount.objects.filter(voucher__code=obj.code).first()
-        if not discount:
+        if not obj.discount:
             return ""
-        return admin_change_link(discount.reservation)
+        return admin_change_link(obj.discount.reservation)
 
 
 @admin.register(PricingModel)
