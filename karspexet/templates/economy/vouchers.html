@@ -27,7 +27,8 @@
     <tbody>
       {% for voucher in vouchers %}
         <tr>
-          <td>{{ voucher.code }}</td>
+          {% url "admin:ticket_voucher_change" voucher.pk as admin_url %}
+          <td><a href="{{ admin_url }}">{{ voucher.code }}</a></td>
           <td>{{ voucher.amount }}</td>
           <td>{{ voucher.created_at|date }}</td>
           <td>{{ voucher.created_by }}</td>
