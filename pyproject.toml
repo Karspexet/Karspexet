@@ -40,7 +40,7 @@ pyqrcode = "^1.2.1"
 python = "^3.9"
 python-dateutil = "^2.8.1"
 sentry-sdk = "1.5.8"
-stripe = "^2.55.1"
+stripe = "^2.68.0"
 whitenoise = "6.0.0"
 xhtml2pdf = "^0.2.5"
 
