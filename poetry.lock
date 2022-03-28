@@ -233,14 +233,14 @@ django = ">=2.2"
 
 [[package]]
 name = "django-cms"
-version = "3.9.0"
+version = "3.10.0"
 description = "Lean enterprise content management powered by Django."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 
 [package.dependencies]
-Django = ">=2.2"
+Django = ">=2.2,<4.0"
 django-classy-tags = ">=0.7.2"
 django-formtools = ">=2.1"
 django-sekizai = ">=0.7"
@@ -1111,7 +1111,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ee115b923354270b10f9b676f17b74c66d10a5903c03daf646a91a651c06f0f4"
+content-hash = "983f15d429e92d30406b53a269ffa642bdd3b3126930ed403472474b12733642"
 
 [metadata.files]
 arabic-reshaper = [
@@ -1261,7 +1261,7 @@ django-classy-tags = [
     {file = "django_classy_tags-3.0.1-py3-none-any.whl", hash = "sha256:0e4a03462b29bd94c8da8160d514cb93e4b4c858752437c082a3efeca94b9f51"},
 ]
 django-cms = [
-    {file = "django_cms-3.9.0-py2.py3-none-any.whl", hash = "sha256:6feaa6f3b7f225e08f221cf33d6135a1e268e9b781dae4bf916239c3f54e7b27"},
+    {file = "django_cms-3.10.0-py2.py3-none-any.whl", hash = "sha256:372e7b51a5336714d39c6eed062bddb3ad6e6c61a3a685a2c246cef183c3d85f"},
 ]
 django-filer = [
     {file = "django-filer-2.1.2.tar.gz", hash = "sha256:50f9da3b40e106de084dc6e18c19a7a54397fbee60b7ddd2568b1281ed2a24b4"},
