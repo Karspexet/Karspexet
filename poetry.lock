@@ -249,16 +249,16 @@ djangocms-admin-style = ">=1.2"
 
 [[package]]
 name = "django-filer"
-version = "2.1.2"
+version = "2.2"
 description = "A file management application for django that makes handling of files and images a breeze."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-django = ">=2.2,<4.0"
-django-mptt = ">=0.6,<1.0"
-django-polymorphic = ">=2,<3.1"
+django = ">=2.2,<4.1"
+django-mptt = "*"
+django-polymorphic = "*"
 easy-thumbnails = ">=2.8.0"
 Unidecode = ">=0.04,<1.2"
 
@@ -1111,7 +1111,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ee115b923354270b10f9b676f17b74c66d10a5903c03daf646a91a651c06f0f4"
+content-hash = "882921530b77e14195fe8462f358a8ceaa73efb3e65c84087802eb595ed6c415"
 
 [metadata.files]
 arabic-reshaper = [
@@ -1264,8 +1264,8 @@ django-cms = [
     {file = "django_cms-3.9.0-py2.py3-none-any.whl", hash = "sha256:6feaa6f3b7f225e08f221cf33d6135a1e268e9b781dae4bf916239c3f54e7b27"},
 ]
 django-filer = [
-    {file = "django-filer-2.1.2.tar.gz", hash = "sha256:50f9da3b40e106de084dc6e18c19a7a54397fbee60b7ddd2568b1281ed2a24b4"},
-    {file = "django_filer-2.1.2-py3-none-any.whl", hash = "sha256:d48e7b4b86f23d4877e2d94dfcd4f233dc14406026f28c4cfcfc93e622cf406a"},
+    {file = "django-filer-2.2.tar.gz", hash = "sha256:2343c9276796dfee3d9a715d0a0ed4f5b38e3fc3ad1d73707acf2bc38d810702"},
+    {file = "django_filer-2.2-py3-none-any.whl", hash = "sha256:ddfb48c2e38064d02294e066441ff73b86409ddcad0054190862a582ab7066cc"},
 ]
 django-formtools = [
     {file = "django-formtools-2.3.tar.gz", hash = "sha256:9663b6eca64777b68d6d4142efad8597fe9a685924673b25aa8a1dcff4db00c3"},
