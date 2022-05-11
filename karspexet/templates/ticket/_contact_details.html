@@ -1,15 +1,15 @@
 <div class="form-group">
   <label>
     <span><strong>E-post *</strong></span>
-    <input name="email" autocomplete="email" type="email" placeholder="frank@example.com"  required />
+    {{ contact_form.email }}
   </label>
   <label>
     <span>Namn</span>
-    <input name="name" autocomplete="name" type="text" placeholder="Frank Hamer" />
+    {{ contact_form.name }}
   </label>
   <label>
     <span>Telefon</span>
-    <input name="phone" autocomplete="tel" type="tel" placeholder="070-1740605" />
+    {{ contact_form.phone }}
   </label>
 </div>
 

@@ -88,7 +88,10 @@ def select_seats(request, show_id: int):
     set_session_timeout(request)
 
     available_seats = Seat.objects.available_seats(show)
-    contact_form = ContactDetailsForm(data=request.POST or None)
+    contact_form = ContactDetailsForm(
+        data=request.POST or None,
+        initial={"reference": request.GET.get("referens")},
+    )
 
     if request.POST:
         if contact_form.is_valid():
@@ -142,6 +145,7 @@ def select_seats(request, show_id: int):
         'show': show,
         'venue': show.venue,
         'pricings': pricings,
+        "contact_form": contact_form,
         'seatSelection': seat_selection_json,
         'num_available_seats': len(available_seats),
     })
