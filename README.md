@@ -19,7 +19,7 @@ tabeller:
 ```sh
 docker-compose up -d postgres
 
-poetry run manage.py migrate
+poetry run python manage.py migrate
 ```
 
 ## Användning
