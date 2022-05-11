@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils import timezone
 
 from karspexet.show.models import Production, Show
 
@@ -10,7 +11,12 @@ class ProductionAdmin(admin.ModelAdmin):
 
 @admin.register(Show)
 class ShowAdmin(admin.ModelAdmin):
-    list_display = ("production", "slug", "date_string")
-    list_filter = ("production",)
+    list_display = ("date_string", "production", "venue", "visible", "is_upcoming")
+    list_select_related = ("production", "venue")
+    list_filter = ("visible", "production")
     exclude = ("slug",)
     ordering = ("-pk",)
+
+    @admin.display(boolean=True)
+    def is_upcoming(self, obj):
+        return obj.date > timezone.now()
