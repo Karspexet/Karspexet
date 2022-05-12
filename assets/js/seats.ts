@@ -1,14 +1,16 @@
 import $ from "cash-dom";
 
+import { initNumberInput } from "./number-input";
+
 const SPONSOR_TYPE = "sponsor";
 
 type PriceConfig = {
   seatSelection: SeatSelection;
 };
 type SeatSelection = {
-  freeSeating?: any;
-  pricings: Record<string, number | null>;
   allSeats: any;
+  freeSeating?: any;
+  pricings: Record<string, null | number>;
 };
 export function setupSelectSeats(config: PriceConfig) {
   const { seatSelection } = config || {};
@@ -90,9 +92,9 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
     function option(seatType: any, selectedSeatType: any) {
       let seatTypeTitle = seatType[0].toUpperCase() + seatType.slice(1);
       let e = createElm("option", {
-        value: seatType,
         selected: seatType === selectedSeatType,
         textContent: seatTypeTitle + " (" + pricing[seatType] + "kr)",
+        value: seatType,
       });
       return e.outerHTML;
     }
@@ -107,8 +109,8 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
     let d = createElm("div", {
       children: [
         createElm("label", {
-          textContent: displayName + ": ",
           children: [selectElm],
+          textContent: displayName + ": ",
         }),
       ],
     });
@@ -143,12 +145,60 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
   $(".seat:not(.taken-seat)").on("click", selectSeat);
 }
 
-function setupFreeSeating(config: SeatSelection) {
+export function setupFreeSeating(config: SeatSelection) {
+  let booking = createBookingState(config);
+
+  const requiredFields = $("[data-select-seats-form]").find("[required]");
+  requiredFields.on("input", renderBooking);
+
+  const totalElm = $('<div class="mt-4"></div>');
+  const listElm = $("<ul>");
+  $("[data-fn-ticket-type-list]").append(listElm, totalElm);
+
+  function renderBooking() {
+    const hasTickets = booking.getTotalTicketCount() > 0;
+    totalElm.text(!hasTickets ? "" : `Totalsumma: ${booking.getTotalPrice()} SEK`);
+
+    if (hasTickets && !!requiredFields.val()) {
+      enableSubmitButton();
+    } else {
+      disableSubmitButton();
+    }
+  }
+  const luva = createHappyLuva();
+
+  const types = ["sponsor", "normal", "student"];
+  for (let price of types) {
+    listElm.append(TicketInputRow(price, config.pricings as any));
+  }
+
+  listElm
+    .find("input[type=number]")
+    .each((_, elm) => {
+      initNumberInput(elm as HTMLInputElement);
+    })
+    .each((_, elm: any) => {
+      let seatType = elm.getAttribute("name");
+      elm.value = elm.value || 0;
+      booking.setTicketCount(seatType, elm.value);
+      elm.addEventListener("change", () => {
+        booking.setTicketCount(seatType, elm.value);
+        renderBooking();
+
+        if (seatType === SPONSOR_TYPE) {
+          luva.dance();
+        }
+      });
+    });
+
+  renderBooking();
+}
+
+function createBookingState(config: SeatSelection) {
   let booking: Record<string, number> = {};
   for (let price in config.pricings) {
     booking[price] = 0;
   }
-
   function getTotalPrice() {
     let sum = 0;
     for (let price in booking) {
@@ -157,7 +207,7 @@ function setupFreeSeating(config: SeatSelection) {
     return sum;
   }
 
-  function getTicketCount() {
+  function getTotalTicketCount() {
     let sum = 0;
     for (let price in booking) {
       sum += booking[price];
@@ -165,37 +215,15 @@ function setupFreeSeating(config: SeatSelection) {
     return sum;
   }
 
-  const requiredFields = $("[data-select-seats-form]").find("[required]");
-  requiredFields.on("input", renderBooking);
-
-  function renderBooking() {
-    $("[data-sum-total]").text(getTicketCount() === 0 ? "" : `Totalsumma: ${getTotalPrice()} SEK`);
-
-    if (getTicketCount() > 0 && !!requiredFields.val()) {
-      enableSubmitButton();
-    } else {
-      disableSubmitButton();
-    }
+  function setTicketCount(seatType: string, value: number) {
+    booking[seatType] = Math.max(Number(value), 0);
   }
-  const luva = createHappyLuva();
 
-  $(".number-of-seats").each((_, field: any) => {
-    let seatType = field.getAttribute("name");
-    function changeSeats() {
-      booking[seatType] = Math.max(Number(field.value), 0);
-      renderBooking();
-    }
-    field.value = field.value || 0;
-    changeSeats();
-
-    field.addEventListener("change", () => {
-      changeSeats();
-
-      if (seatType === SPONSOR_TYPE) {
-        luva.dance();
-      }
-    });
-  });
+  return {
+    getTotalPrice,
+    getTotalTicketCount,
+    setTicketCount,
+  };
 }
 
 function createElm(type: any, options: any) {
@@ -214,6 +242,48 @@ function createElm(type: any, options: any) {
     elm.appendChild(children[i]);
   }
   return elm;
+}
+
+const titles: { [k: string]: string } = {
+  normal: "Fullpris",
+  sponsor: "Guldbiljett",
+  student: "Student",
+};
+
+function TicketInputRow(type: string, pricings: { [k: string]: number }) {
+  const title = titles[type];
+  const price = pricings[type];
+  return $("<li>").append(
+    $('<div class="flex h-16 items-center">').append(
+      $('<div class="mr-2 ticket-name">').append(
+        $('<strong class="text-lg">').text(title),
+        $("<div>").text(price + " SEK"),
+      ),
+      $('<input type="number" class="number-of-seats" min="0">').attr("name", type),
+    ),
+    SponsorTicketMessage(type, pricings),
+  );
+}
+
+function SponsorTicketMessage(type: string, pricings: { [k: string]: number }) {
+  const sponsorPrice = pricings["sponsor"];
+  const normalPrice = pricings["normal"];
+  if (type !== "sponsor" || !sponsorPrice || !normalPrice) {
+    return null;
+  }
+  const extra = sponsorPrice - normalPrice;
+  const msgRows = [
+    // fmt: expand
+    `Guldbiljetten sponsrar oss med ${extra} kr,`,
+    "stort tack för din gåva!",
+  ];
+  return $('<div class="flex gap-2 ml-2 max-w-sm">').append(
+    $("<img data-sponsor-luva>")
+      .attr("src", "/static/svg/luva.svg")
+      .attr("alt", "")
+      .attr("class", "luva"),
+    $("<em>").append(...msgRows.map((text) => $('<span class="block">').text(text))),
+  );
 }
 
 function createHappyLuva() {

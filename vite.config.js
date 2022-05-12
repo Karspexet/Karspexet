@@ -18,4 +18,7 @@ export default defineConfig({
     },
     target: "es2015",
   },
+  test: {
+    environment: "jsdom",
+  },
 });
