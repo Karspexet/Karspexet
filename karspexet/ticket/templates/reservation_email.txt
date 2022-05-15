@@ -1,9 +1,11 @@
 Här är dina biljetter till Kårspexets föreställning: {{ reservation.show }}
 
 Bokningskod: {{ reservation.reservation_code }}
+{% if not reservation.show.free_seating %}
 {% for seat in reservation.seats %}
 * {{ seat.group.name }}: {{ seat.name }}
 {% endfor %}
+{% endif %}
 Länk till din reservation: {{ url }}
 
 Välkommen!
