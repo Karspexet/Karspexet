@@ -449,7 +449,7 @@ djangocms-attributes-field = ">=1"
 
 [[package]]
 name = "djangocms-picture"
-version = "3.0.0"
+version = "4.0.0"
 description = "Adds an image plugin to django CMS"
 category = "main"
 optional = false
@@ -1300,7 +1300,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "9c74517095ec2e60b7f9b091e778cc26ed69b8bc897d652ee825c6f7380bf278"
+content-hash = "973b33816ec30d613baebd27a34d4ace4d63444504eac8bdd5d9c019d9961c14"
 
 [metadata.files]
 arabic-reshaper = [
@@ -1587,8 +1587,8 @@ djangocms-link = [
     {file = "djangocms_link-3.0.0-py3-none-any.whl", hash = "sha256:b3121a7fc48ce46dbcdaa5be9e138154cd01661f27532208626b5a5d482ffb36"},
 ]
 djangocms-picture = [
-    {file = "djangocms-picture-3.0.0.tar.gz", hash = "sha256:d6efc414f044ee373126dac81c14e5a95983b2fa76a85e91a7e1328d62f0e57c"},
-    {file = "djangocms_picture-3.0.0-py3-none-any.whl", hash = "sha256:487b72f3c251745c062c052ef87a3e7f9ba458cf67534f13e92c684524e941ef"},
+    {file = "djangocms-picture-4.0.0.tar.gz", hash = "sha256:dfa691a5c759d84a9e1a14e1b67fd2562761347e9979c2092ec73e70d9220b82"},
+    {file = "djangocms_picture-4.0.0-py3-none-any.whl", hash = "sha256:88c931bab47403a8ebf3b74543f467ccd1dc934e37c0a185cae2cee361c14f9b"},
 ]
 djangocms-text-ckeditor = [
     {file = "djangocms-text-ckeditor-4.0.0.tar.gz", hash = "sha256:fdae918b267baec66811bdd9cd49d961016449d2e6d148823586b99dc595e072"},
