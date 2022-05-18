@@ -22,7 +22,7 @@
     "vitest": "^0.12.4"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "vite build --mode production",
     "start": "vite build --watch",
     "test": "vitest"
   },
