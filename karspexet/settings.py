@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.postgres",
     "cms",
+    "django_object_actions",
     "menus",
     "treebeard",
     "sekizai",

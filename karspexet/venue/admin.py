@@ -3,6 +3,7 @@ from django.contrib.admin.options import IncorrectLookupParameters
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.html import format_html
+from django_object_actions import DjangoObjectActions
 
 from karspexet.ticket.models import PricingModel
 from karspexet.utils import admin_change_url
@@ -53,17 +54,15 @@ class PricingModelInline(admin.TabularInline):
 
 
 @admin.register(Venue)
-class VenueAdmin(admin.ModelAdmin):
+class VenueAdmin(DjangoObjectActions, admin.ModelAdmin):
     inlines = [SeatingGroupInline]
     readonly_fields = ["num_seats"]
 
-    actions = ["add_seats"]
+    change_actions = ["add_seats"]
 
     @admin.display(description="Lägg till platser")
-    def add_seats(self, request, queryset):
-        if len(queryset) != 1:
-            return redirect("admin:venue_venue_changelist")
-        return redirect("manage_seats", venue_id=queryset[0].id)
+    def add_seats(self, request, obj):
+        return redirect("manage_seats", venue_id=obj.id)
 
     @admin.display(description="Number of seats")
     def num_seats(self, obj):
