@@ -313,6 +313,14 @@ django-js-asset = "*"
 tests = ["coverage", "mock-django"]
 
 [[package]]
+name = "django-object-actions"
+version = "4.0.0"
+description = "A Django app for adding object tools for models in the admin"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[[package]]
 name = "django-polymorphic"
 version = "3.0.0"
 description = "Seamless polymorphic inheritance for Django models"
@@ -1111,7 +1119,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ee115b923354270b10f9b676f17b74c66d10a5903c03daf646a91a651c06f0f4"
+content-hash = "5eacd98c1f5b53033aece33fe996d52835c7b845aed0ee112f634910d0628e67"
 
 [metadata.files]
 arabic-reshaper = [
@@ -1281,6 +1289,10 @@ django-js-asset = [
 django-mptt = [
     {file = "django-mptt-0.13.4.tar.gz", hash = "sha256:80c9fb34df7796a4e5af0cb6b8ade3697555b1aa438bd07a01f32b3ab5202b63"},
     {file = "django_mptt-0.13.4-py3-none-any.whl", hash = "sha256:75745b621ae31d97957ed924155a750dfa8cacd9543799ada2d713fd6bc3f5c7"},
+]
+django-object-actions = [
+    {file = "django-object-actions-4.0.0.tar.gz", hash = "sha256:e08f46ff4b41509d6647486ab2a2305692e80c126bdf9327b7a357d9724db53b"},
+    {file = "django_object_actions-4.0.0-py3-none-any.whl", hash = "sha256:d87b4bb8a31e8485291acae39ceede40316091914d24bfb3073b54138f409313"},
 ]
 django-polymorphic = [
     {file = "django-polymorphic-3.0.0.tar.gz", hash = "sha256:9d886f19f031d26bb1391c055ed9be06fb226a04a4cec1842b372c58873b3caa"},
