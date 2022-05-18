@@ -463,11 +463,11 @@ easy-thumbnails = "*"
 
 [[package]]
 name = "djangocms-text-ckeditor"
-version = "4.0.0"
+version = "5.0.1"
 description = "Text Plugin for django CMS with CKEditor support"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 
 [package.dependencies]
 django-cms = ">=3.6"
@@ -1300,7 +1300,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "9c74517095ec2e60b7f9b091e778cc26ed69b8bc897d652ee825c6f7380bf278"
+content-hash = "b229d8d295d5e608d439283cbe0c4d7ab07cb7c0d9e5066ec3ac52ff9928bfc8"
 
 [metadata.files]
 arabic-reshaper = [
@@ -1591,8 +1591,8 @@ djangocms-picture = [
     {file = "djangocms_picture-3.0.0-py3-none-any.whl", hash = "sha256:487b72f3c251745c062c052ef87a3e7f9ba458cf67534f13e92c684524e941ef"},
 ]
 djangocms-text-ckeditor = [
-    {file = "djangocms-text-ckeditor-4.0.0.tar.gz", hash = "sha256:fdae918b267baec66811bdd9cd49d961016449d2e6d148823586b99dc595e072"},
-    {file = "djangocms_text_ckeditor-4.0.0-py3-none-any.whl", hash = "sha256:3af9ffecd1ecce3b632bc9121385aaa6183c1afcd9e668439c3990d3bd1e1771"},
+    {file = "djangocms-text-ckeditor-5.0.1.tar.gz", hash = "sha256:1450950294a7e0b14dc211b1c7f0d809e98e65ad5cd04e8a95edf267d3b9caee"},
+    {file = "djangocms_text_ckeditor-5.0.1-py3-none-any.whl", hash = "sha256:a181a3eb1c1804e11a8131a213c72f0c499f5c73f3a5ba136f0a242d9a78f4f1"},
 ]
 easy-thumbnails = [
     {file = "easy-thumbnails-2.8.1.tar.gz", hash = "sha256:1a283fe8a3569c3feab4605e8279929d75c85c1151b2fd627f95b1863b5fc6c2"},
