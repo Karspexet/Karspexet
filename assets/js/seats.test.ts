@@ -1,7 +1,7 @@
 import $ from "cash-dom";
 import { expect, it } from "vitest";
 
-import { setupFreeSeating } from "./seats";
+import { setupFreeSeating } from "./free-seating";
 
 it("Renders ticket selection inputs", () => {
   document.body.innerHTML = "<div data-fn-ticket-type-list></div>";

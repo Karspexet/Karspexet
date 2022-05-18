@@ -1,5 +1,7 @@
 import $, { Cash } from "cash-dom";
 
+import { timeout } from "./utils";
+
 declare var DEBUG: boolean;
 declare var Stripe: (key: string) => {
   elements: (config: any) => any;
@@ -146,18 +148,6 @@ function Spinner(container: Cash) {
     hide() {
       showTimer.cancel();
       elm.addClass("hidden");
-    },
-  };
-}
-
-function timeout(func: Function) {
-  let timer: number = 0;
-  return {
-    queue: (t: number) => {
-      setTimeout(func, t);
-    },
-    cancel: () => {
-      clearTimeout(timer);
     },
   };
 }
