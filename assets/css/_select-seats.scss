@@ -47,7 +47,7 @@ div.seat-info > * {
   border: 0;
   border-style: outset;
   margin: 1em 0;
-  background-color: hsl(349, 94.5%, 28.4%);
+  background-color: hsl(349deg 94.5% 28.4%);
   border-radius: 10px;
   color: $gold;
   cursor: pointer;
@@ -55,7 +55,7 @@ div.seat-info > * {
 }
 
 #book-submit-button:hover {
-  background-color: hsl(349, 94.5%, 30%);
+  background-color: hsl(349deg 94.5% 30%);
 }
 
 #book-submit-button:disabled {

@@ -2,5 +2,8 @@ extends:
   - stylelint-config-standard
   - stylelint-config-idiomatic-order
   - stylelint-config-prettier
+customSyntax: postcss-scss
 rules:
   at-rule-no-unknown: null
+  selector-class-pattern: null
+  selector-id-pattern: null

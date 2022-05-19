@@ -7,15 +7,15 @@
 .payment-form .group {
   background: white;
   border-radius: 4px;
-  box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 7px 14px 0 rgb(49 49 93 / 10%), 0 3px 6px 0 rgb(0 0 0 / 8%);
 
   label {
-    cursor: pointer;
     position: relative;
     display: block;
     height: 40px;
     margin-left: 20px;
     color: black;
+    cursor: pointer;
     font-size: small;
     font-weight: 300;
     line-height: 40px;
