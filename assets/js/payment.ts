@@ -45,7 +45,7 @@ export function setupPayment(config: Config) {
   });
   card.mount("#card-element");
 
-  let submitButton = $(".fn-payment-submit-button")!;
+  let submitButton = $("[data-fn-payment-submit-button]")!;
   let spinner = Spinner(paymentForm);
 
   function setError(result: { error: { message: string } }) {

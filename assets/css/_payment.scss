@@ -10,6 +10,7 @@
   box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
 
   label {
+    cursor: pointer;
     position: relative;
     display: block;
     height: 40px;
@@ -43,52 +44,17 @@
     font-weight: 300;
     outline: none;
   }
-
-  .field::-webkit-input-placeholder {
-    color: #cfd7e0;
-  }
-
-  .field::-moz-placeholder {
-    color: #cfd7e0;
-  }
-
-  .field:-ms-input-placeholder {
-    color: #cfd7e0;
-  }
-
-  button {
-    display: block;
-    width: 100%;
-    height: 40px;
-    border: 0;
-    background: $red-dark;
-    border-radius: 4px;
-    box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.08);
-    color: $gold;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 38px;
-    outline: none;
-  }
-
-  button:focus {
-    background: $gold;
-    color: black;
-  }
-
-  button:active {
-    background: $gold;
-    color: black;
-  }
-
-  button:disabled {
-    background: $gray;
-  }
 }
 
-section.contact-details {
+.contact-details {
   margin-right: auto;
   margin-left: auto;
+}
+
+// Using where to apply "base styling" for this section with lower specificity,
+// so we can override it with utility classes later on.
+:where(.contact-details) button {
+  @apply bg-red-2 border-0 rounded-lg p-2 text-gold cursor-pointer;
 }
 
 .payment-error-message {
