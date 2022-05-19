@@ -1,29 +1,23 @@
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 
 from factories import factories as f
 
 
 class TestOverview(TestCase):
-    def setUp(self):
-        self.client = Client()
-
     def test_only_staff_can_access_overview_page(self):
         url = reverse("economy_overview")
         response = self.client.get(url)
         assert response.status_code == 302
 
-        f.CreateStaffUser(username="ture", password="test")
-        assert self.client.login(username="ture", password="test")
+        user = f.CreateStaffUser(username="amon")
+        self.client.force_login(user)
 
         response = self.client.get(url)
         assert "Föreställningsöversikt" in response.content.decode("utf-8")
 
 
 class TestShowDetail(TestCase):
-    def setUp(self):
-        self.client = Client()
-
     def test_only_staff_can_access_detail_page(self):
         venue = f.CreateVenue(num_seats=1)
         seat = venue.seatinggroup_set.first().seat_set.first()
@@ -34,7 +28,7 @@ class TestShowDetail(TestCase):
         response = self.client.get(url)
         assert response.status_code == 302
 
-        staff = f.CreateStaffUser(username="ture", password="test")
+        staff = f.CreateStaffUser(username="cmon")
         self.client.force_login(staff)
 
         response = self.client.get(url)
@@ -44,7 +38,7 @@ class TestShowDetail(TestCase):
 class TestVouchers(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.staff = f.CreateStaffUser(username="ture", password="test")
+        cls.staff = f.CreateStaffUser(username="bmon")
 
     def test_vouchers_list(self):
         url = reverse("economy_vouchers")

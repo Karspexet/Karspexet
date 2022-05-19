@@ -56,39 +56,83 @@ class TestTicketViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Det finns inte tillräckligt många biljetter kvar.")
 
+    def test_reservation_detail(self):
+        reservation = f.CreateReservationWithTicket()
+        url = reverse(views.reservation_detail, args=[reservation.reservation_code])
+        response = self.client.get(url, follow=False)
+        self.assertContains(response, "Här finner du dina biljetter")
 
-@pytest.mark.django_db
-@override_settings(PAYMENT_PROCESS="stripe")
-def test_booking_overview_with_active_session__includes_payment_intent(show, client):
-    reservation = _reservation(show)
-    session = client.session
-    session["show_%s" % show.id] = str(reservation.id)
-    session.save()
+    def test_send_reservation_email(self):
+        reservation = f.CreateReservationWithTicket()
+        url = reverse(views.send_reservation_email, args=[reservation.reservation_code])
+        response = self.client.post(url, data={}, follow=False)
+        assert response.status_code == 302
+        assert response["Location"] == reverse(views.reservation_detail, args=[reservation.reservation_code])
 
-    url = reverse(views.booking_overview, args=[show.id])
-    with mock.patch("karspexet.ticket.views.payment", autospec=True) as mock_payment:
+
+class TestSelectSeats(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.show = f.CreateShow(venue__num_seats=1)
+        cls.url = reverse(views.select_seats, args=[cls.show.id])
+
+    def test_creates_reservation_and_redirects_to_booking_overview(self):
+        show = self.show
+        seat = Seat.objects.first()
+
+        response = self.client.post(self.url, data={f"seat_{seat.id}": "normal"})
+        assert response.status_code == 302
+        assert response["Location"] == reverse(views.booking_overview, args=[show.id])
+        reservation = Reservation.objects.get()
+        assert reservation.tickets == {str(seat.id): "normal"}
+
+    def test_with_finalized_reservation_in_session_gives_new_reservation(self):
+        show = self.show
+        reservation = f.CreateReservationWithTicket(show=show, finalized=True)
+
+        response = self.client.get(self.url, session={f"show_{show.id}": reservation.id})
+        assert response._request.session[f"show_{show.id}"] != reservation.id
+
+
+class TestBookingOverview(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.show = f.CreateShow(venue__num_seats=1)
+        cls.url = reverse(views.booking_overview, args=[cls.show.id])
+
+    def _add_reservation_to_session(self, reservation):
+        session = self.client.session
+        session["show_%s" % reservation.show.id] = str(reservation.id)
+        session.save()
+
+    @override_settings(PAYMENT_PROCESS="stripe")
+    def test_booking_overview_with_active_session__includes_payment_intent(self):
+        show = self.show
+        reservation = f.CreateReservationWithTicket(show=show)
+        self._add_reservation_to_session(reservation)
+
         mock_payment_intent = object()
-        mock_payment.get_payment_intent_from_reservation.return_value = mock_payment_intent
-        response = client.get(url)
-    assert response.status_code == 200
-    assert response.context["reservation"] == reservation
-    assert response.context["stripe_payment_indent"] == mock_payment_intent
+        with mock.patch(
+            "karspexet.ticket.views.payment.get_payment_intent_from_reservation",
+            autospec=True,
+            return_value=mock_payment_intent,
+        ) as mock_payment:
+            response = self.client.get(self.url)
+        assert response.status_code == 200
+        assert response.context["reservation"] == reservation
+        assert response.context["stripe_payment_indent"] == mock_payment_intent
 
+    @override_settings(PAYMENT_PROCESS="fake")
+    def test_booking_overview_with_active_session__with_fake_intent(self):
+        show = self.show
+        reservation = f.CreateReservationWithTicket(show=show)
+        self._add_reservation_to_session(reservation)
 
-@pytest.mark.django_db
-@override_settings(PAYMENT_PROCESS="fake")
-def test_booking_overview_with_active_session__with_fake_intent(show, client):
-    reservation = _reservation(show)
-    session = client.session
-    session["show_%s" % show.id] = str(reservation.id)
-    session.save()
-
-    url = reverse(views.booking_overview, args=[show.id])
-    with mock.patch("karspexet.ticket.views.payment", autospec=True):
-        response = client.get(url)
-    assert response.status_code == 200
-    assert response.context["reservation"] == reservation
-    assert "fake" in response.context["payment_partial"]
+        with mock.patch("karspexet.ticket.views.payment", autospec=True):
+            response = self.client.get(self.url)
+        assert response.status_code == 200
+        assert response.context["reservation"] == reservation
+        assert "fake" in response.context["payment_partial"]
 
 
 class TestWebhooks(TestCase):
@@ -111,7 +155,7 @@ class TestWebhooks(TestCase):
 
 @pytest.mark.django_db
 def test_apply_voucher_with_active_reservation__updates_reservation_total(client, show):
-    reservation = _reservation(show)
+    reservation = f.CreateReservationWithTicket(show=show)
     voucher = f.CreateVoucher()
     session = client.session
     session["show_%s" % show.id] = str(reservation.id)
@@ -132,7 +176,7 @@ def test_apply_voucher_with_active_reservation__updates_reservation_total(client
 
 @pytest.mark.django_db
 def test_process_payment(client, show):
-    reservation = _reservation(show)
+    reservation = f.CreateReservationWithTicket(show=show)
     voucher = f.CreateVoucher(amount=reservation.total)
     discount = reservation.apply_voucher(voucher.code)
     reservation.save()
@@ -148,7 +192,7 @@ def test_process_payment(client, show):
 
 @pytest.mark.django_db
 def test_cancelling_a_discounted_reservation_allows_voucher_for_reuse(show, user):
-    reservation = _reservation(show)
+    reservation = f.CreateReservationWithTicket(show=show)
     voucher = Voucher.objects.create(amount=100, created_by=user)
     discount = reservation.apply_voucher(voucher.code)
 
@@ -159,43 +203,19 @@ def test_cancelling_a_discounted_reservation_allows_voucher_for_reuse(show, user
 
 
 @pytest.mark.django_db
-class TestSelectSeats:
-    def test_creates_reservation_and_redirects_to_booking_overview(self, show):
-        seat = Seat.objects.first()
-
-        response = _post(views.select_seats, show.id, data={f"seat_{seat.id}": "normal"})
-        assert response.status_code == 302
-        assert response["Location"] == reverse(views.booking_overview, args=[show.id])
-        reservation = Reservation.objects.get()
-        assert reservation.tickets == {str(seat.id): "normal"}
-
-    def test_select_seats__with_finalized_reservation_in_session__gives_new_reservation(self, show):
-        reservation = _reservation(show, finalized=True)
-
-        response = _get(views.select_seats, show.id, session={f"show_{show.id}": reservation.id})
-        assert response._request.session[f"show_{show.id}"] != reservation.id
-
-
-@pytest.mark.django_db
 class TestTickets:
     def test_ticket_detail(self, show):
-        reservation = _reservation(show)
+        reservation = f.CreateReservationWithTicket(show=show)
         ticket = f.CreateTicket(show=show, seat_id=list(reservation.tickets.keys())[0])
         response = _get(views.ticket_detail, reservation.id, ticket.ticket_code)
         assert response.status_code == 200
 
     def test_ticket_pdf(self, show):
-        reservation = _reservation(show)
+        reservation = f.CreateReservationWithTicket(show=show)
         ticket = f.CreateTicket(show=show, seat_id=list(reservation.tickets.keys())[0])
         response = _get(views.ticket_pdf, reservation.id, ticket.ticket_code)
         assert response.status_code == 200
         assert response["Content-Type"] == "application/pdf"
-
-
-def _reservation(show, **kwargs):
-    seat = Seat.objects.first()
-    tickets = {str(seat.id): "normal"}
-    return f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show, **kwargs)
 
 
 def _post(view, *args, data=None, session=None):

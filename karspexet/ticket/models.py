@@ -42,6 +42,7 @@ def _generate_voucher_code():
 
 
 def _next_fifteenth_september():
+    # By the 15nth of September, the previous show season is usually over
     today = timezone.now().date()
     fifteenth_september_this_year = date(today.year, 9, 15)
     fifteenth_september_next_year = date(today.year + 1, 9, 15)
@@ -91,14 +92,19 @@ class Reservation(models.Model):
     def is_free(self) -> bool:
         return self.get_amount() == 0
 
+    def seat_ids(self) -> list:
+        if not self.tickets:
+            return []
+        return list(self.tickets.keys())
+
     def seats(self):
-        return Seat.objects.filter(pk__in=self.tickets.keys()).all()
+        return Seat.objects.filter(pk__in=self.seat_ids()).all()
 
     def ticket_set(self):
-        return Ticket.objects.filter(show=self.show).filter(seat_id__in=self.tickets.keys())
+        return Ticket.objects.filter(show=self.show).filter(seat_id__in=self.seat_ids())
 
     def num_tickets(self) -> int:
-        return len(self.tickets.keys())
+        return len(self.seat_ids())
 
     def apply_voucher(self, code) -> Discount:
         if Discount.objects.filter(reservation=self).exists():

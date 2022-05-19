@@ -6,11 +6,13 @@ from factory.django import DjangoModelFactory
 
 
 class CreateStaffUser(DjangoModelFactory):
-    email = "ture@example.com"
-    is_staff = True
-
     class Meta:
         model = User
+        django_get_or_create = ("username",)
+
+    is_staff = True
+    email = "ture@example.com"
+    username = "ture@example.com"
 
     @factory.post_generation
     def password(self, create, extracted, **kwargs):
@@ -34,15 +36,18 @@ class CreateVenue(DjangoModelFactory):
 
 class CreateSeatingGroup(DjangoModelFactory):
     class Meta:
-        model = "venue.seatinggroup"
+        model = "venue.SeatingGroup"
+
+    venue = factory.SubFactory("factories.factories.CreateVenue")
 
 
 class CreateSeat(DjangoModelFactory):
-    x_pos = 0
-    y_pos = 0
-
     class Meta:
         model = "venue.Seat"
+
+    x_pos = 0
+    y_pos = 0
+    group = factory.SubFactory("factories.factories.CreateSeatingGroup")
 
 
 class CreateShow(DjangoModelFactory):
@@ -67,6 +72,18 @@ class CreateReservation(DjangoModelFactory):
     session_timeout = timezone.now()
 
 
+class CreateReservationWithTicket(CreateReservation):
+    @factory.lazy_attribute
+    def tickets(self):
+        group = CreateSeatingGroup(venue=self.show.venue)
+        CreatePricingModel(seating_group=group, prices={"student": 200, "normal": 250})
+        seat = CreateSeat(group=group)
+        return {str(seat.id): "normal"}
+
+    show = factory.SubFactory("factories.factories.CreateShow")
+    session_timeout = timezone.now()
+
+
 class CreateAccount(DjangoModelFactory):
     name = "Bonnie"
     email = "bonnie@example.com"
@@ -76,11 +93,13 @@ class CreateAccount(DjangoModelFactory):
 
 
 class CreateTicket(DjangoModelFactory):
-    price = 200
-    account = factory.SubFactory("factories.factories.CreateAccount")
-
     class Meta:
         model = "ticket.Ticket"
+
+    price = 200
+    account = factory.SubFactory("factories.factories.CreateAccount")
+    show = factory.SubFactory("factories.factories.CreateShow")
+    seat = factory.SubFactory("factories.factories.CreateSeat")
 
 
 class CreateVoucher(DjangoModelFactory):
@@ -103,4 +122,5 @@ class CreatePricingModel(DjangoModelFactory):
     class Meta:
         model = "ticket.PricingModel"
 
+    seating_group = factory.SubFactory("factories.factories.CreateSeatingGroup")
     valid_from = LazyAttribute(lambda a: timezone.now())

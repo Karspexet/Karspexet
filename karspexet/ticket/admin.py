@@ -34,6 +34,7 @@ class ReservationAdmin(admin.ModelAdmin):
         "tickets",
     )
     search_fields = ("reservation_code",)
+    list_select_related = ["show", "show__production"]
     list_display = ("reservation_code", "show", "finalized", "ticket_price", "total", "session_timeout", "tickets")
     list_filter = ("finalized", "show")
     readonly_fields = ("show_link", "reservation_code", "related_tickets")
@@ -135,6 +136,7 @@ class VoucherAdmin(admin.ModelAdmin):
 @admin.register(PricingModel)
 class PricingModelAdmin(admin.ModelAdmin):
     list_display = ("_venue", "_from", "prices")
+    list_select_related = ["seating_group", "seating_group__venue"]
 
     @admin.display(description="Venue / Group")
     def _venue(self, obj):
