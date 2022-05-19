@@ -42,7 +42,7 @@ class TestAdminsAreFast(TestCase):
     def test_reservation_admin(self):
         objs = f.CreateReservationWithTicket.create_batch(self.num_objects)
 
-        with self.assertNumQueries(14):
+        with self.assertNumQueries(9):
             response = self.client.get(admin_changelist_url(objs[0]))
         self.assertEqual(response.status_code, 200)
 
