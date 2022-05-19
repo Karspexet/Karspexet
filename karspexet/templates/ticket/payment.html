@@ -8,10 +8,10 @@
       {% include "ticket/_reservation_details.html" %}
     </div>
 
-    <p class="fn-session-timeout text-sm text-gray-200">
+    <p data-fn-session-timeout class="text-sm text-gray-200">
       Din reservation är giltig till
-      <time data-time="{{reservation.session_timeout|date:'c'}}">{{ reservation.session_timeout|date:"H:i" }}</time>
-      (<span class="fn-session-timeout-output">30 minuter</span> kvar)
+      <time data-time="{{ reservation.session_timeout|date:'c' }}">{{ reservation.session_timeout|date:"H:i" }}</time>
+      <span data-fn-session-timeout-output></span>
     </p>
 
     {% if payment_failed %}
