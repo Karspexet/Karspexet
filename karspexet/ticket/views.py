@@ -41,10 +41,8 @@ logger = logging.getLogger(__name__)
 
 
 def home(request):
-    upcoming_shows = Show.upcoming().filter(visible=True).all()
-
     return TemplateResponse(request, "ticket/ticket.html", {
-        'upcoming_shows': upcoming_shows
+        "upcoming_shows": Show.objects.upcoming()
     })
 
 
