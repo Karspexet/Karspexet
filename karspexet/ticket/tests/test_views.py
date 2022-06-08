@@ -16,8 +16,8 @@ class TestTicketViews(TestCase):
         tomorrow = timezone.now() + timezone.timedelta(days=1)
         yesterday = timezone.now() - timezone.timedelta(days=1)
 
-        show = f.CreateShow(date=tomorrow)
-        old_show = f.CreateShow(date=yesterday)
+        show = f.CreateShow(date=tomorrow, visible=True)
+        old_show = f.CreateShow(date=yesterday, visible=True)
         invisible_show = f.CreateShow(date=tomorrow, visible=False)
 
         response = _get(views.home)
