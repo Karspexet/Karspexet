@@ -49,11 +49,10 @@ export function setupPayment(config: Config) {
   let spinner = Spinner(paymentForm);
 
   function setError(result: { error: { message: string } }) {
-    let errorElement = $(".error")!;
-    errorElement.removeClass("visible");
+    let errorElement = $("[data-fn-payment-payment-errors]")!;
+    errorElement.removeAttr('hidden')
     if (result.error) {
       errorElement.text(result.error.message);
-      errorElement.addClass("visible");
     }
     spinner.hide();
     submitButton.prop("disabled", false);

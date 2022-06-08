@@ -118,12 +118,13 @@
       </div>
     </form>
 
+    <output data-fn-payment-payment-errors hidden class="my-6 block text-center text-lg"></output>
+
     <div>
       <form method="post" action="{% url 'cancel_reservation' reservation.show.id %}">
         {% csrf_token %}
         <span>eller</span>
         <input type="submit" id="cancel-reservation-button" value="Avbryt bokningen">
-        <div id="fn-payment-errors"></div>
       </form>
     </div>
   </section>
