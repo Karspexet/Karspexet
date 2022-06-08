@@ -9,10 +9,6 @@
   justify-content: space-around;
 }
 
-.card_container.select_show {
-  flex: 0 0 auto;
-}
-
 .card {
   display: block;
   width: 300px;
@@ -53,17 +49,4 @@
       }
     }
   }
-}
-
-.show-card:hover {
-  background-color: #222;
-}
-
-.show-card .alt-name {
-  color: white;
-}
-
-.show-card em,
-.show-card address {
-  color: white;
 }
