@@ -50,7 +50,7 @@ export function setupPayment(config: Config) {
 
   function setError(result: { error: { message: string } }) {
     let errorElement = $("[data-fn-payment-payment-errors]")!;
-    errorElement.removeAttr('hidden')
+    errorElement.removeAttr("hidden");
     if (result.error) {
       errorElement.text(result.error.message);
     }
@@ -75,7 +75,7 @@ export function setupPayment(config: Config) {
       if (result.error) {
         setError(result);
         // @ts-expect-error
-        window.Sentry?.captureMessage("Payment failed.")
+        window.Sentry?.captureMessage("Payment failed.");
       }
       if (result.paymentIntent) {
         // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)

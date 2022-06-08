@@ -16,7 +16,7 @@ export function initSentry() {
   });
 
   // @ts-ignore
-  window.Sentry = Sentry
+  window.Sentry = Sentry;
 
   // @ts-ignore
   window.triggerError = () => console.log(myUndefinedFunction());
