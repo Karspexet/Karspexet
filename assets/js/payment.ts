@@ -74,6 +74,8 @@ export function setupPayment(config: Config) {
       }
       if (result.error) {
         setError(result);
+        // @ts-expect-error
+        window.Sentry?.captureMessage("Payment failed.")
       }
       if (result.paymentIntent) {
         // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)
