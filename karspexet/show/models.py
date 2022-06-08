@@ -21,6 +21,10 @@ class Production(models.Model):
 
 
 class ShowQuerySet(models.QuerySet):
+    def upcoming(self) -> models.QuerySet:
+        today = timezone.make_aware(datetime.today())
+        return self.filter(date__gte=today, visible=True)
+
     def annotate_ticket_coverage(self) -> list[Show]:
         """
         Aggregates the ticket and seat counts for each show in the query
@@ -46,7 +50,7 @@ class Show(models.Model):
     production = models.ForeignKey(Production, on_delete=models.PROTECT)
     date = models.DateTimeField()
     venue = models.ForeignKey("venue.Venue", on_delete=models.PROTECT)
-    visible = models.BooleanField(default=True)
+    visible = models.BooleanField(default=False, blank=True)
     slug = models.CharField(max_length=20, unique=True, default=get_random_string)
     short_description = models.CharField(null=False, blank=True, default="", max_length=255)
     free_seating = models.BooleanField(default=False, null=False, help_text="Fri placering")
@@ -62,10 +66,6 @@ class Show(models.Model):
 
     def get_absolute_url(self) -> str:
         return reverse("select_seats", args=[self.id])
-
-    @staticmethod
-    def upcoming():
-        return Show.objects.filter(date__gte=timezone.make_aware(datetime.today()))
 
     def date_string(self):
         return timezone.localtime(self.date).strftime("%Y-%m-%d %H:%M")
