@@ -43,7 +43,7 @@ python-dateutil = "^2.8.1"
 sentry-sdk = "1.5.12"
 stripe = "^2.55.1"
 whitenoise = "^6"
-xhtml2pdf = "^0.2.5"
+xhtml2pdf = "^0.2.8"
 
 [tool.poetry.dev-dependencies]
 bpython = "*"

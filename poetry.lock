@@ -1280,7 +1280,7 @@ brotli = ["brotli"]
 
 [[package]]
 name = "xhtml2pdf"
-version = "0.2.7"
+version = "0.2.8"
 description = "PDF generator using HTML and CSS"
 category = "main"
 optional = false
@@ -1300,7 +1300,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "591ec1378d4a8a961f42b0919c912d0e60d225da774dd8fc123328cf33b293df"
+content-hash = "513ebe00375d497d8207e9801c9544004dfa9e774b3057b2fd9c7916d3321965"
 
 [metadata.files]
 arabic-reshaper = [
@@ -2136,6 +2136,6 @@ whitenoise = [
     {file = "whitenoise-6.1.0.tar.gz", hash = "sha256:6ccc6d1ad6fb688a398ea65d97db47f018ea0be7da75e146e8f2e837a04ba590"},
 ]
 xhtml2pdf = [
-    {file = "xhtml2pdf-0.2.7-py3-none-any.whl", hash = "sha256:1b6410bd437a2fce37a5cfb1f27fdb2443c632199ee6aed7a82b7fec625c94ba"},
-    {file = "xhtml2pdf-0.2.7.tar.gz", hash = "sha256:292342f0436f4df77c40d2973bde4d0cb052dff00d6c7102d5530d761965bd6d"},
+    {file = "xhtml2pdf-0.2.8-py3-none-any.whl", hash = "sha256:330bf335d1bc436eb0fe7efc64d82aa09c7a728df6a57f07a8b062e478c7aa36"},
+    {file = "xhtml2pdf-0.2.8.tar.gz", hash = "sha256:d8e1db3d8acc9ff8071718b89b8967abb561a15d74d2cbd1606539c6d17660c4"},
 ]
