@@ -1269,7 +1269,7 @@ python-versions = "*"
 
 [[package]]
 name = "whitenoise"
-version = "6.1.0"
+version = "6.2.0"
 description = "Radically simplified static file serving for WSGI applications"
 category = "main"
 optional = false
@@ -2132,8 +2132,8 @@ webencodings = [
     {file = "webencodings-0.5.1.tar.gz", hash = "sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"},
 ]
 whitenoise = [
-    {file = "whitenoise-6.1.0-py3-none-any.whl", hash = "sha256:2067fe9008a3cd7d0d75f75c9240b54f5f59996ca285cbeab18fc1e89949e30d"},
-    {file = "whitenoise-6.1.0.tar.gz", hash = "sha256:6ccc6d1ad6fb688a398ea65d97db47f018ea0be7da75e146e8f2e837a04ba590"},
+    {file = "whitenoise-6.2.0-py3-none-any.whl", hash = "sha256:8e9c600a5c18bd17655ef668ad55b5edf6c24ce9bdca5bf607649ca4b1e8e2c2"},
+    {file = "whitenoise-6.2.0.tar.gz", hash = "sha256:8fa943c6d4cd9e27673b70c21a07b0aa120873901e099cd46cab40f7cc96d567"},
 ]
 xhtml2pdf = [
     {file = "xhtml2pdf-0.2.8-py3-none-any.whl", hash = "sha256:330bf335d1bc436eb0fe7efc64d82aa09c7a728df6a57f07a8b062e478c7aa36"},
