@@ -1109,7 +1109,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "stripe"
-version = "2.76.0"
+version = "4.0.2"
 description = "Python bindings for the Stripe API"
 category = "main"
 optional = false
@@ -1300,7 +1300,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "8d2abfa6e3be934593edfb775057fa6e11b09d3f4d8dc47e818615a91803c47f"
+content-hash = "fa748d8892905b7374c61303c7064c3271c30e5ed86f458ad4060cac3c77290f"
 
 [metadata.files]
 arabic-reshaper = [
@@ -2077,8 +2077,8 @@ sqlparse = [
     {file = "sqlparse-0.4.2.tar.gz", hash = "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"},
 ]
 stripe = [
-    {file = "stripe-2.76.0-py2.py3-none-any.whl", hash = "sha256:756bf6c1206f438d1fa23bb90cdf1233c9383478f854f2720a8a3e1eaf1f715b"},
-    {file = "stripe-2.76.0.tar.gz", hash = "sha256:fd3fc6935c3b6189967191607b6f38ebe490005a590b4d0d43fbe3aba45deca8"},
+    {file = "stripe-4.0.2-py2.py3-none-any.whl", hash = "sha256:de2d532764d07aca0b974ac4ce8d1feee4007cf8c3c2cf6070c16b4cdbb4eb6d"},
+    {file = "stripe-4.0.2.tar.gz", hash = "sha256:d085b3e9450a5550912f476c6dbb2bafa129e485e24d6f4047c5094ff08d5de2"},
 ]
 svglib = [
     {file = "svglib-1.3.0.tar.gz", hash = "sha256:a38998b95d1bb99564dc9dffaf15e4e9453761f2790d2dd4147a4ad5fbac1078"},
