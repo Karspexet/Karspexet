@@ -3,49 +3,50 @@
 $border-style: 1px solid $gray;
 
 .number-input {
-  display: inline-flex;
   align-items: stretch;
-}
+  display: inline-flex;
 
-.number-input input[type="number"] {
-  display: flex;
-  width: 2rem;
-  padding: 0.25rem;
-  border: 0;
-  border-top: $border-style;
-  border-bottom: $border-style;
-  border-radius: 0;
-  text-align: center;
-}
+  input[type="number"] {
+    display: flex;
+    width: 2rem;
+    padding: 0.25rem;
+    border: 0;
+    border-top: $border-style;
+    border-bottom: $border-style;
+    border-radius: 0;
+    text-align: center;
+    height: 100%;
+  }
 
-.number-input input[type="number"]::-webkit-inner-spin-button {
-  appearance: none;
-}
+  input[type="number"]::-webkit-inner-spin-button {
+    appearance: none;
+  }
 
-.number-input button {
-  padding: 0.25rem 0.5rem;
-  border: 0;
-  margin: 0;
-  background-color: white;
-  color: black;
-}
+  button {
+    background-color: white;
+    border: 0;
+    color: black;
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+  }
 
-.number-input button[disabled] {
-  background-color: #cacaca;
-}
+  button[disabled] {
+    background-color: #cacaca;
+  }
 
-.number-input button:not([disabled]) {
-  cursor: pointer;
-}
+  button:not([disabled]) {
+    cursor: pointer;
+  }
 
-.number-input :first-child {
-  border: $border-style;
-  border-bottom-left-radius: 25%;
-  border-top-left-radius: 25%;
-}
+  :first-child {
+    border: $border-style;
+    border-bottom-left-radius: 25%;
+    border-top-left-radius: 25%;
+  }
 
-.number-input :last-child {
-  border: $border-style;
-  border-bottom-right-radius: 25%;
-  border-top-right-radius: 25%;
+  :last-child {
+    border: $border-style;
+    border-bottom-right-radius: 25%;
+    border-top-right-radius: 25%;
+  }
 }
