@@ -10,7 +10,7 @@ RUN python -m venv $VIRTUAL_ENV \
 # Install postfix to get django_sendmail_backend working
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
-    postfix=3.5.6-1+b1 \
+    postfix \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
