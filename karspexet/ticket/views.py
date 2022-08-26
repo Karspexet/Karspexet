@@ -97,9 +97,9 @@ def select_seats(request, show_id: int):
 
         if show.free_seating:
             prices = [t[0] for t in TICKET_TYPES]
-            requested_seats: dict = {
-                price: int(request.POST.get(price, 0)) for price in prices
-            }
+            requested_seats: dict = {}
+            for price in prices:
+                requested_seats[price] = int(request.POST.get(price, 0) or 0)
             num_requested_seats = sum(requested_seats.values())
             if num_requested_seats <= len(available_seats):
                 seats = {}

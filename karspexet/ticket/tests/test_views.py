@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from factories import factories as f
 from karspexet.ticket import views
-from karspexet.ticket.models import Discount, Reservation, Seat, Voucher
+from karspexet.ticket.models import Discount, Reservation, Seat, TicketType, Voucher
 
 
 class TestTicketViews(TestCase):
@@ -38,8 +38,9 @@ class TestTicketViews(TestCase):
         # Frank will get three seats randomly assigned to them
         url = reverse(views.select_seats, args=[show.id])
         data = {
-            "normal": 1,
-            "student": 2,
+            TicketType.normal: 1,
+            TicketType.student: 2,
+            TicketType.sponsor: '',
             "email": "frank@example.com",
         }
         response = self.client.post(url, data=data, follow=False)
