@@ -464,15 +464,16 @@ easy-thumbnails = "*"
 
 [[package]]
 name = "djangocms-text-ckeditor"
-version = "4.0.0"
+version = "5.1.2"
 description = "Text Plugin for django CMS with CKEditor support"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 
 [package.dependencies]
 django-cms = ">=3.6"
 html5lib = ">=1"
+packaging = "*"
 Pillow = "*"
 
 [[package]]
@@ -695,7 +696,7 @@ asn1crypto = ">=1.5.1"
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -870,7 +871,7 @@ async-http = ["aiohttp (>=3.8.0,<3.9.0)"]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.8"
 
@@ -1317,7 +1318,7 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "8d2abfa6e3be934593edfb775057fa6e11b09d3f4d8dc47e818615a91803c47f"
+content-hash = "e046685453a2b583f05ca435d0b2bb12c0e485a81e2f75737d51e8ed39bc0c5e"
 
 [metadata.files]
 arabic-reshaper = [
@@ -1612,8 +1613,8 @@ djangocms-picture = [
     {file = "djangocms_picture-3.0.0-py3-none-any.whl", hash = "sha256:487b72f3c251745c062c052ef87a3e7f9ba458cf67534f13e92c684524e941ef"},
 ]
 djangocms-text-ckeditor = [
-    {file = "djangocms-text-ckeditor-4.0.0.tar.gz", hash = "sha256:fdae918b267baec66811bdd9cd49d961016449d2e6d148823586b99dc595e072"},
-    {file = "djangocms_text_ckeditor-4.0.0-py3-none-any.whl", hash = "sha256:3af9ffecd1ecce3b632bc9121385aaa6183c1afcd9e668439c3990d3bd1e1771"},
+    {file = "djangocms-text-ckeditor-5.1.2.tar.gz", hash = "sha256:6edaf6ad1334b7797223b04046d9d91fc427595fa5892a6b27ee47af7e7f03d5"},
+    {file = "djangocms_text_ckeditor-5.1.2-py3-none-any.whl", hash = "sha256:3523bc77af346f5bb54e1f153d1694802b6dba2d47dda9a081c24223e743b850"},
 ]
 easy-thumbnails = [
     {file = "easy-thumbnails-2.8.1.tar.gz", hash = "sha256:1a283fe8a3569c3feab4605e8279929d75c85c1151b2fd627f95b1863b5fc6c2"},
