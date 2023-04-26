@@ -519,22 +519,24 @@ django = ">=2.2"
 
 [[package]]
 name = "django-cms"
-version = "3.10.0"
+version = "3.11.3"
 description = "Lean enterprise content management powered by Django."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "django_cms-3.10.0-py2.py3-none-any.whl", hash = "sha256:372e7b51a5336714d39c6eed062bddb3ad6e6c61a3a685a2c246cef183c3d85f"},
+    {file = "django-cms-3.11.3.tar.gz", hash = "sha256:1d97b5b07f8cd0a48a3d4a20a2495347b886568779aff954cb9aede3252c10f8"},
+    {file = "django_cms-3.11.3-py2.py3-none-any.whl", hash = "sha256:fcbe668e5363a085683bd213f3bdf5a32ec53536ce5e1cf4b84df454696d5074"},
 ]
 
 [package.dependencies]
-Django = ">=2.2,<4.0"
+Django = ">=2.2,<5.0"
 django-classy-tags = ">=0.7.2"
 django-formtools = ">=2.1"
 django-sekizai = ">=0.7"
 django-treebeard = ">=4.3"
 djangocms-admin-style = ">=1.2"
+packaging = "*"
 
 [[package]]
 name = "django-filer"
@@ -1184,7 +1186,7 @@ asn1crypto = ">=1.5.1"
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1536,7 +1538,7 @@ async-http = ["aiohttp (>=3.8.0,<3.9.0)"]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.8"
 files = [
@@ -2196,4 +2198,4 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "8d2abfa6e3be934593edfb775057fa6e11b09d3f4d8dc47e818615a91803c47f"
+content-hash = "d89a39e22ba047f807599f09150947eacb752a5715715a5b06eb115126c99cbf"
