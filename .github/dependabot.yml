@@ -24,3 +24,7 @@ updates:
           - 0.20.1
           - 0.20.2
           - 0.20.3
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
