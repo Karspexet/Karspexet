@@ -7,9 +7,9 @@ import { randomChoice, sum } from "./utils";
 const SPONSOR_TYPE = "sponsor";
 
 const titles: { [k: string]: string } = {
-  normal: "Fullpris",
+  normal: "Ordinarie",
   sponsor: "Guldbiljett",
-  student: "Student",
+  student: "Rabatterad",
 };
 
 export function setupFreeSeating(config: SeatSelection) {
