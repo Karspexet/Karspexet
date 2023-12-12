@@ -7,12 +7,6 @@ WORKDIR /app
 RUN python -m venv $VIRTUAL_ENV \
  && useradd --uid 1000 app \
  && chown app /app
-# Install postfix to get django_sendmail_backend working
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends \
-    postfix \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
-
 
 #
 # Python Venv

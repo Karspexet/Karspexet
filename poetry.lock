@@ -644,19 +644,6 @@ django = ">=2.2"
 django-classy-tags = ">=1"
 
 [[package]]
-name = "django-sendmail-backend"
-version = "0.1.2"
-description = "Its a simple command line sendmail backend for Django"
-optional = false
-python-versions = "*"
-files = [
-    {file = "django_sendmail_backend-0.1.2.tar.gz", hash = "sha256:2d077f602aaa37633acdbf35f28f5799d6b57c8bc2122d193762d70c7d92b3ad"},
-]
-
-[package.dependencies]
-Django = ">=1.4"
-
-[[package]]
 name = "django-treebeard"
 version = "4.4"
 description = "Efficient tree implementations for Django"
@@ -2137,4 +2124,4 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "9306fb4309e3ee2ba4d15cf628ff1486729e7a6c21b70c076427176cb65a56d8"
+content-hash = "541b38a8a3d8dccabc50b0369199905cbb023d13a6668059d624cb37f023f592"
