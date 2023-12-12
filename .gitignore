@@ -56,3 +56,5 @@ staticfiles/
 target/
 var/
 webpack-stats.json
+/.envrc
+/.env
