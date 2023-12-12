@@ -36,7 +36,7 @@ class SeatingGroup(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return f"{self.venue.name} / {self.name}"
 
     def active_pricing_model(self, timestamp=None):
         return self.pricingmodel_set.active(timestamp).filter(seating_group_id=self.id).first()
