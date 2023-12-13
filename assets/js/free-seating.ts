@@ -24,7 +24,9 @@ export function setupFreeSeating(config: SeatSelection) {
 
   function renderBooking() {
     const hasTickets = booking.getTotalTicketCount() > 0;
-    totalElm.text(!hasTickets ? "" : `Totalsumma: ${booking.getTotalPrice()} SEK`);
+    totalElm.text(
+      !hasTickets ? "" : `Totalsumma: ${booking.getTotalPrice()} SEK`,
+    );
     const allowSubmit = hasTickets && !!requiredFields.val();
     $("#book-submit-button").prop("disabled", !allowSubmit);
   }
@@ -66,7 +68,10 @@ function TicketInputRow(type: string, pricings: { [k: string]: number }) {
         $('<strong class="text-lg">').text(title),
         $("<div>").text(price + " SEK"),
       ),
-      $('<input type="number" class="number-of-seats" min="0">').attr("name", type),
+      $('<input type="number" class="number-of-seats" min="0">').attr(
+        "name",
+        type,
+      ),
     ),
     SponsorTicketMessage(type, pricings),
   );
@@ -119,7 +124,9 @@ function SponsorTicketMessage(type: string, pricings: { [k: string]: number }) {
       .attr("src", "/static/svg/luva.svg")
       .attr("alt", "")
       .attr("class", "luva"),
-    $("<em>").append(...msgRows.map((text) => $('<span class="block">').text(text))),
+    $("<em>").append(
+      ...msgRows.map((text) => $('<span class="block">').text(text)),
+    ),
   );
 }
 
@@ -130,7 +137,9 @@ function createBookingState(prices: SeatSelection["pricings"]) {
 
   return {
     getTotalPrice() {
-      return sum(Object.keys(booking).map((type) => getCount(type) * getPrice(type)));
+      return sum(
+        Object.keys(booking).map((type) => getCount(type) * getPrice(type)),
+      );
     },
     getTotalTicketCount() {
       return sum(Object.keys(booking).map(getCount));

@@ -121,8 +121,12 @@ function setupSeatMapSelection(config: { allSeats: any; pricings: any }) {
       let info = createElm("div", {
         children: [
           createElm("div", { textContent: name }),
-          createElm("div", { textContent: "Rabatterad: " + pricing["student"] + "kr" }),
-          createElm("div", { textContent: "Ordinarie: " + pricing["normal"] + "kr" }),
+          createElm("div", {
+            textContent: "Rabatterad: " + pricing["student"] + "kr",
+          }),
+          createElm("div", {
+            textContent: "Ordinarie: " + pricing["normal"] + "kr",
+          }),
         ],
       });
 

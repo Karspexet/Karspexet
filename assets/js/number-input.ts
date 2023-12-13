@@ -35,7 +35,9 @@ export function initNumberInput(elm: HTMLInputElement) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll<HTMLInputElement>(".fn-number-input").forEach((elm) => {
-    initNumberInput(elm);
-  });
+  document
+    .querySelectorAll<HTMLInputElement>(".fn-number-input")
+    .forEach((elm) => {
+      initNumberInput(elm);
+    });
 });
