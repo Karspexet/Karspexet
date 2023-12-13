@@ -93,7 +93,6 @@ INSTALLED_APPS = [
     "sekizai",
     "filer",
     "easy_thumbnails",
-    "mptt",
     "svg",
 ] + OUR_APPS
 
