@@ -51,7 +51,7 @@ class Show(models.Model):
     date = models.DateTimeField()
     venue = models.ForeignKey("venue.Venue", on_delete=models.PROTECT)
     visible = models.BooleanField(default=False, blank=True)
-    slug = models.CharField(max_length=20, unique=True, default=get_random_string)
+    slug = models.CharField(max_length=20, unique=True, default=lambda: get_random_string(20))
     short_description = models.CharField(null=False, blank=True, default="", max_length=255)
     free_seating = models.BooleanField(default=False, null=False, help_text="Fri placering")
 

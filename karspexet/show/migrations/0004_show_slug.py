@@ -25,8 +25,13 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(generate_show_slugs, reverse_code=migrations.RunPython.noop),
         migrations.AlterField(
-            model_name='show',
-            name='slug',
-            field=models.CharField(default=django.utils.crypto.get_random_string, null=False, max_length=20, unique=True),
+            model_name="show",
+            name="slug",
+            field=models.CharField(
+                default=lambda: django.utils.crypto.get_random_string(20),
+                null=False,
+                max_length=20,
+                unique=True,
+            ),
         ),
     ]
