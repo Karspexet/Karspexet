@@ -1983,17 +1983,18 @@ test = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "stripe"
-version = "2.76.0"
+version = "7.8.2"
 description = "Python bindings for the Stripe API"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.6"
 files = [
-    {file = "stripe-2.76.0-py2.py3-none-any.whl", hash = "sha256:756bf6c1206f438d1fa23bb90cdf1233c9383478f854f2720a8a3e1eaf1f715b"},
-    {file = "stripe-2.76.0.tar.gz", hash = "sha256:fd3fc6935c3b6189967191607b6f38ebe490005a590b4d0d43fbe3aba45deca8"},
+    {file = "stripe-7.8.2-py2.py3-none-any.whl", hash = "sha256:06c4729c71d0e2c3f10b34a8b995454b191c138e394f214f3adf780e5b13be98"},
+    {file = "stripe-7.8.2.tar.gz", hash = "sha256:9be13e00b7c1cc773fcf1e56616f084cf97b1cbe2f0fd9679f2698fc7e4803ed"},
 ]
 
 [package.dependencies]
 requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
+typing-extensions = {version = ">=4.5.0", markers = "python_version >= \"3.7\""}
 
 [[package]]
 name = "svglib"
@@ -2192,4 +2193,4 @@ test = ["coverage (>=5.3)", "tomli (>=2.0.1)", "tox"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "f68a58c5e50f4f0fbc833ca6e2d52e73cec34bdcfc188c3a10fe74c469275597"
+content-hash = "df3d31762788ead1cadf05c05a811cff3c5b71b5f57e6601a91dc60f33dd8200"
