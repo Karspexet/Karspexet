@@ -722,18 +722,19 @@ easy-thumbnails = "*"
 
 [[package]]
 name = "djangocms-text-ckeditor"
-version = "4.0.0"
+version = "5.1.5"
 description = "Text Plugin for django CMS with CKEditor support"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "djangocms-text-ckeditor-4.0.0.tar.gz", hash = "sha256:fdae918b267baec66811bdd9cd49d961016449d2e6d148823586b99dc595e072"},
-    {file = "djangocms_text_ckeditor-4.0.0-py3-none-any.whl", hash = "sha256:3af9ffecd1ecce3b632bc9121385aaa6183c1afcd9e668439c3990d3bd1e1771"},
+    {file = "djangocms-text-ckeditor-5.1.5.tar.gz", hash = "sha256:eca45b3393879c61bb69d3c23df14a5fd4bef1f2ad66dc36a5bf7bfe06c6b7c3"},
+    {file = "djangocms_text_ckeditor-5.1.5-py3-none-any.whl", hash = "sha256:d3e7ac79ca04bbb8c20de313ae1a4c9f0e4a79479b0f3b7a7b196c4f0b34ab29"},
 ]
 
 [package.dependencies]
 django-cms = ">=3.6"
 html5lib = ">=1"
+packaging = "*"
 Pillow = "*"
 
 [[package]]
@@ -2139,4 +2140,4 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "ea6340d0133372112fe532d13a655f004dcdb7a19eab233432f0224ddc7a22bd"
+content-hash = "5b0014ec87f0248c7b84e2ff395744682afc05b4b61c0925de6afc017d605013"
