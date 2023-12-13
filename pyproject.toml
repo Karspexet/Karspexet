@@ -46,7 +46,6 @@ select = [
 max-line-length = 120
 
 [tool.poetry.dependencies]
-cssmin = "^0.2.0"
 dj-database-url = "^2"
 django = "^4"
 django-cms = "^3.11.4"
