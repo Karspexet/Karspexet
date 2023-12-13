@@ -1,5 +1,7 @@
 from unittest import mock
 
+from django.conf import settings
+from importlib import import_module
 import pytest
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.shortcuts import reverse
@@ -221,21 +223,16 @@ class TestTickets:
 
 def _post(view, *args, data=None, session=None):
     request = RequestFactory().post(reverse(view, args=args), data=data)
-    _add_session(request, session)
-    return view(request, *args)
 
-
-def _get(view, *args, session=None):
-    request = RequestFactory().get(reverse(view, args=args))
-    _add_session(request, session)
-    return view(request, *args)
-
-
-def _add_session(request, session=None):
     session = session or {}
-    middleware = SessionMiddleware()
-    middleware.process_request(request)
-    request.session.save()
+    session_engine = import_module(settings.SESSION_ENGINE)
+    request.session = session_engine.SessionStore(settings.SESSION_COOKIE_NAME)
     for key in session:
         request.session[key] = session[key]
-    return request
+
+    return view(request, *args)
+
+
+def _get(view, *args):
+    request = RequestFactory().get(reverse(view, args=args))
+    return view(request, *args)
