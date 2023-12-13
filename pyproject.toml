@@ -70,7 +70,6 @@ django-csp = "^3.7"
 
 [tool.poetry.dev-dependencies]
 bpython = "*"
-codacy-coverage = "*"
 factory-boy = "*"
 jedi = "*"
 pre-commit = "*"
