@@ -21,6 +21,30 @@ version = "1.0.0"
 description = ""
 authors = ["Kårspexet <webmaster@karspexet.se>"]
 
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+select = [
+    # pycodestyle
+    "E",
+    # pycodestyle warnings
+    "W",
+    # pyflakes
+    "F",
+    # isort
+    "I",
+    # Log statements
+    "G",
+    # Mutable data structures for argument defaults
+    "B006",
+    # pyupgrade
+    "UP"
+]
+
+[tool.ruff.pycodestyle]
+max-line-length = 120
+
 [tool.poetry.dependencies]
 cssmin = "^0.2.0"
 dj-database-url = "^2"
