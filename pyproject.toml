@@ -23,7 +23,7 @@ authors = ["Kårspexet <webmaster@karspexet.se>"]
 
 [tool.poetry.dependencies]
 cssmin = "^0.2.0"
-dj-database-url = "^0.5.0"
+dj-database-url = "^2"
 django = "4.0.10"
 django-cms = "^3.11.4"
 django-filer = "^3.1.1"
