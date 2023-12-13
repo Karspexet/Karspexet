@@ -705,13 +705,13 @@ djangocms-attributes-field = ">=1"
 
 [[package]]
 name = "djangocms-picture"
-version = "3.0.0"
+version = "4.1.1"
 description = "Adds an image plugin to django CMS"
 optional = false
 python-versions = "*"
 files = [
-    {file = "djangocms-picture-3.0.0.tar.gz", hash = "sha256:d6efc414f044ee373126dac81c14e5a95983b2fa76a85e91a7e1328d62f0e57c"},
-    {file = "djangocms_picture-3.0.0-py3-none-any.whl", hash = "sha256:487b72f3c251745c062c052ef87a3e7f9ba458cf67534f13e92c684524e941ef"},
+    {file = "djangocms-picture-4.1.1.tar.gz", hash = "sha256:29ffadc514bfa306ec1f2ebb145391b9b860c12ba001e2475dffb5fe1be5cac2"},
+    {file = "djangocms_picture-4.1.1-py3-none-any.whl", hash = "sha256:d5a568f7bbbed7f9af3c7eb4901ec95b94ccdbc16b3debf52ae98f2ec6920671"},
 ]
 
 [package.dependencies]
@@ -2139,4 +2139,4 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "ea6340d0133372112fe532d13a655f004dcdb7a19eab233432f0224ddc7a22bd"
+content-hash = "cbce3ecb23d27253b3cb126b95e3ca3feebd2bb612c972a1727a191db09937ce"
