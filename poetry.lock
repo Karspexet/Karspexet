@@ -530,21 +530,22 @@ packaging = "*"
 
 [[package]]
 name = "django-filer"
-version = "2.2.1"
+version = "3.1.1"
 description = "A file management application for django that makes handling of files and images a breeze."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "django-filer-2.2.1.tar.gz", hash = "sha256:588101c0d84c389451893c22a927a4a8de655e49e69a4b3b42e4f3aa56ea2ec7"},
-    {file = "django_filer-2.2.1-py3-none-any.whl", hash = "sha256:29d014f470d571a0b817cde5834c77a403ff65b4024b570a8d6e01bd8ac5d825"},
+    {file = "django-filer-3.1.1.tar.gz", hash = "sha256:c58628155ace4bb9f10f6ea9cdf92049b5961bd2ef82c5a3b76f09091f8af50d"},
+    {file = "django_filer-3.1.1-py3-none-any.whl", hash = "sha256:126026a15a160561097e0c486839c4cf3076f4363065e287e692c9316d197a86"},
 ]
 
 [package.dependencies]
-django = ">=2.2,<4.1"
-django-mptt = "*"
+django = ">=3.2,<5.1"
 django-polymorphic = "*"
-easy-thumbnails = ">=2.8.0"
-Unidecode = ">=0.04,<1.2"
+easy-thumbnails = {version = "*", extras = ["svg"]}
+
+[package.extras]
+heif = ["pillow-heif"]
 
 [[package]]
 name = "django-formtools"
@@ -572,40 +573,6 @@ files = [
 
 [package.dependencies]
 Django = ">=1.8"
-
-[[package]]
-name = "django-js-asset"
-version = "2.0.0"
-description = "script tag with additional attributes for django.forms.Media"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "django_js_asset-2.0.0-py3-none-any.whl", hash = "sha256:86f9f300d682537ddaf0487dc2ab356581b8f50c069bdba91d334a46e449f923"},
-    {file = "django_js_asset-2.0.0.tar.gz", hash = "sha256:adc1ee1efa853fad42054b540c02205344bb406c9bddf87c9e5377a41b7db90f"},
-]
-
-[package.dependencies]
-Django = ">=2.2"
-
-[package.extras]
-tests = ["coverage"]
-
-[[package]]
-name = "django-mptt"
-version = "0.13.4"
-description = "Utilities for implementing Modified Preorder Tree Traversal with your Django Models and working with trees of Model instances."
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "django-mptt-0.13.4.tar.gz", hash = "sha256:80c9fb34df7796a4e5af0cb6b8ade3697555b1aa438bd07a01f32b3ab5202b63"},
-    {file = "django_mptt-0.13.4-py3-none-any.whl", hash = "sha256:75745b621ae31d97957ed924155a750dfa8cacd9543799ada2d713fd6bc3f5c7"},
-]
-
-[package.dependencies]
-django-js-asset = "*"
-
-[package.extras]
-tests = ["coverage", "mock-django"]
 
 [[package]]
 name = "django-object-actions"
@@ -2020,17 +1987,6 @@ devenv = ["black", "pyroma", "pytest-cov", "zest.releaser"]
 test = ["pytest (>=4.3)", "pytest-mock (>=3.3)"]
 
 [[package]]
-name = "unidecode"
-version = "1.1.2"
-description = "ASCII transliterations of Unicode text"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-files = [
-    {file = "Unidecode-1.1.2-py2.py3-none-any.whl", hash = "sha256:4c9d15d2f73eb0d2649a151c566901f80a030da1ccb0a2043352e1dbf647586b"},
-    {file = "Unidecode-1.1.2.tar.gz", hash = "sha256:a039f89014245e0cad8858976293e23501accc9ff5a7bdbc739a14a2b7b85cdc"},
-]
-
-[[package]]
 name = "uritools"
 version = "4.0.0"
 description = "URI parsing, classification and composition"
@@ -2139,4 +2095,4 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "ea6340d0133372112fe532d13a655f004dcdb7a19eab233432f0224ddc7a22bd"
+content-hash = "495e029304bb5a2fcf54b56a1a7ea87d8a71a66006f8b620f12f22fdbd67a2d2"
