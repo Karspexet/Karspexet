@@ -10,36 +10,69 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Seat',
+            name="Seat",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Till exempel "Rad 17, Stol 5011"', max_length=40)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text='Till exempel "Rad 17, Stol 5011"', max_length=40
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='SeatingGroup',
+            name="SeatingGroup",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Venue',
+            name="Venue",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('description', models.TextField(blank=True)),
-                ('address', models.TextField(blank=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("description", models.TextField(blank=True)),
+                ("address", models.TextField(blank=True)),
             ],
         ),
         migrations.AddField(
-            model_name='seatinggroup',
-            name='venue',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='venue.Venue'),
+            model_name="seatinggroup",
+            name="venue",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="venue.Venue"
+            ),
         ),
         migrations.AddField(
-            model_name='seat',
-            name='group',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='venue.SeatingGroup'),
+            model_name="seat",
+            name="group",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="venue.SeatingGroup"
+            ),
         ),
     ]

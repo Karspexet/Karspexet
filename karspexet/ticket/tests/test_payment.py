@@ -26,7 +26,9 @@ class TestPaymentSuccess:
 
         with mock.patch("karspexet.ticket.payment.stripe") as mock_stripe:
             mock_stripe.PaymentMethod.retrieve.return_value = intent
-            handle_stripe_webhook(_stripe_event(metadata={"reservation_id": reservation.id}))
+            handle_stripe_webhook(
+                _stripe_event(metadata={"reservation_id": reservation.id})
+            )
         reservation.refresh_from_db()
         assert reservation.finalized
 
@@ -54,7 +56,11 @@ class TestPaymentSuccess:
 
         assert Ticket.objects.count() == 1
 
-    @mock.patch("karspexet.ticket.payment.send_ticket_email_to_customer", autospec=True, side_effect=Exception)
+    @mock.patch(
+        "karspexet.ticket.payment.send_ticket_email_to_customer",
+        autospec=True,
+        side_effect=Exception,
+    )
     def test_finalizes_reservation_even_with_email_error(self, _, show):
         reservation = self._build_reservation(show)
         with pytest.raises(Exception):
@@ -65,7 +71,9 @@ class TestPaymentSuccess:
     def _build_reservation(self, show):
         seat = Seat.objects.first()
         tickets = {str(seat.id): "normal"}
-        return f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
+        return f.CreateReservation(
+            tickets=tickets, session_timeout=timezone.now(), show=show
+        )
 
     def test_stores_reference_if_passed(self, show):
         reservation = self._build_reservation(show)
@@ -125,7 +133,9 @@ class TestGetPaymentIntentFromReservation:
             intent = get_payment_intent_from_reservation(request, reservation)
 
         assert not mock_stripe.PaymentIntent.create.called
-        mock_stripe.PaymentIntent.modify.assert_called_once_with(intent.id, amount=updated_amount)
+        mock_stripe.PaymentIntent.modify.assert_called_once_with(
+            intent.id, amount=updated_amount
+        )
         assert request.session["payment_intent_id"] == intent.id
 
     def test_change_payment_intent_if_incorrect_reservation_return(self, show):
@@ -151,7 +161,9 @@ class TestGetPaymentIntentFromReservation:
         if seat is None:
             seat = Seat.objects.first()
         tickets = {str(seat.id): "normal"}
-        return f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
+        return f.CreateReservation(
+            tickets=tickets, session_timeout=timezone.now(), show=show
+        )
 
     def _build_request(self, reservation):
         show = reservation.show
@@ -180,7 +192,9 @@ class FakeIntent:
         self.status = "pending"
 
 
-def _stripe_event(metadata={}):
+def _stripe_event(metadata=None):
+    if metadata is None:
+        metadata = {}
     data = {
         "api_version": "2019-12-03",
         "created": 1575659828,
@@ -302,7 +316,12 @@ def _stripe_event(metadata={}):
                 "object": "payment_intent",
                 "on_behalf_of": None,
                 "payment_method": "pm_1FmmIZHLvgPvarOiI710yOuB",
-                "payment_method_options": {"card": {"installments": None, "request_three_d_secure": "automatic"}},
+                "payment_method_options": {
+                    "card": {
+                        "installments": None,
+                        "request_three_d_secure": "automatic",
+                    }
+                },
                 "payment_method_types": ["card"],
                 "receipt_email": None,
                 "review": None,

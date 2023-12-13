@@ -41,9 +41,9 @@ logger = logging.getLogger(__name__)
 
 
 def home(request):
-    return TemplateResponse(request, "ticket/ticket.html", {
-        "upcoming_shows": Show.objects.upcoming()
-    })
+    return TemplateResponse(
+        request, "ticket/ticket.html", {"upcoming_shows": Show.objects.upcoming()}
+    )
 
 
 @csrf_exempt
@@ -68,7 +68,7 @@ def _parse_stripe_payload(body: str) -> stripe.Event:
         return None
     try:
         return stripe.Event.construct_from(data, stripe.api_key)
-    except ValueError as e:
+    except ValueError:
         logger.exception("Invalid Stripe payload! body=%s", data)
         return None
 
@@ -105,20 +105,25 @@ def select_seats(request, show_id: int):
                 seats = {}
                 idx = 0
                 for price, num_seats in requested_seats.items():
-                    seats[price] = available_seats[idx:idx + num_seats]
+                    seats[price] = available_seats[idx : idx + num_seats]
                     idx += num_seats
 
                 reservation.build_tickets(seats)
                 reservation.save()
                 return redirect("booking_overview", show_id=show.id)
             else:
-                messages.error(request, "Det finns inte tillräckligt många biljetter kvar.")
+                messages.error(
+                    request, "Det finns inte tillräckligt många biljetter kvar."
+                )
 
         else:
             # Select seats from seatmap
             seat_params = seat_specifications(request)
             if not all_seats_available(taken_seats_qs, seat_params.keys()):
-                messages.error(request, "Vissa av platserna du valde har redan blivit bokade av någon annan")
+                messages.error(
+                    request,
+                    "Vissa av platserna du valde har redan blivit bokade av någon annan",
+                )
             elif some_seat_is_missing_ticket_type(seat_params):
                 messages.error(request, "Du måste välja biljettyp för alla platser")
             else:
@@ -126,27 +131,35 @@ def select_seats(request, show_id: int):
                 reservation.save()
                 return redirect("booking_overview", show_id=show.id)
 
-    taken_seats = set(map(int, set().union(*[r.tickets.keys() for r in taken_seats_qs.all()])))
+    taken_seats = set(
+        map(int, set().union(*[r.tickets.keys() for r in taken_seats_qs.all()]))
+    )
 
     pricings, seats = build_pricings_and_seats(show.venue)
     if show.free_seating:
         pricings = next(iter(pricings.values()), {})
 
-    seat_selection_json = json.dumps({
-        "allSeats": seats,
-        "pricings": pricings,
-        "freeSeating": show.free_seating,
-    })
+    seat_selection_json = json.dumps(
+        {
+            "allSeats": seats,
+            "pricings": pricings,
+            "freeSeating": show.free_seating,
+        }
+    )
 
-    return TemplateResponse(request, "ticket/select_seats.html", {
-        'taken_seats': list(taken_seats),
-        'show': show,
-        'venue': show.venue,
-        'pricings': pricings,
-        "contact_form": contact_form,
-        'seatSelection': seat_selection_json,
-        'num_available_seats': len(available_seats),
-    })
+    return TemplateResponse(
+        request,
+        "ticket/select_seats.html",
+        {
+            "taken_seats": list(taken_seats),
+            "show": show,
+            "venue": show.venue,
+            "pricings": pricings,
+            "contact_form": contact_form,
+            "seatSelection": seat_selection_json,
+            "num_available_seats": len(available_seats),
+        },
+    )
 
 
 @transaction.atomic
@@ -154,7 +167,9 @@ def booking_overview(request, show_id: int):
     show: Show = get_object_or_404(Show, id=show_id)
     if session_expired(request):
         messages.warning(
-            request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
+            request,
+            "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!",
+        )
         return redirect("select_seats", show_id=show.id)
 
     set_session_timeout(request)
@@ -163,7 +178,9 @@ def booking_overview(request, show_id: int):
     if settings.PAYMENT_PROCESS != "stripe":
         payment_intent = {"client_secret": "not_stripe"}
     else:
-        payment_intent = payment.get_payment_intent_from_reservation(request, reservation)
+        payment_intent = payment.get_payment_intent_from_reservation(
+            request, reservation
+        )
 
     if not reservation.tickets:
         messages.warning(request, "Du måste välja minst en plats")
@@ -172,14 +189,18 @@ def booking_overview(request, show_id: int):
     seats = get_used_seats(reservation)
     contact_details = request.session.get("contact_details")
 
-    return TemplateResponse(request, 'ticket/payment.html', {
-        'seats': seats,
-        'reservation': reservation,
-        'payment_partial': payment_partial(reservation),
-        'contact_details': contact_details,
-        'stripe_payment_indent': payment_intent,
-        'stripe_key': settings.STRIPE_PUBLISHABLE_KEY,
-    })
+    return TemplateResponse(
+        request,
+        "ticket/payment.html",
+        {
+            "seats": seats,
+            "reservation": reservation,
+            "payment_partial": payment_partial(reservation),
+            "contact_details": contact_details,
+            "stripe_payment_indent": payment_intent,
+            "stripe_key": settings.STRIPE_PUBLISHABLE_KEY,
+        },
+    )
 
 
 @transaction.atomic
@@ -189,14 +210,18 @@ def apply_voucher(request, reservation_id: int):
 
     if session_expired(request):
         messages.warning(
-            request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
+            request,
+            "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!",
+        )
         return redirect("select_seats", show_id=show.id)
 
     if request.method == "POST":
         try:
             payment.apply_voucher(request, reservation)
         except KeyError:
-            messages.error(request, "För att kunna få rabatt måste du fylla i ett presentkort")
+            messages.error(
+                request, "För att kunna få rabatt måste du fylla i ett presentkort"
+            )
         except InvalidVoucherException:
             messages.error(request, "Presentkortet har redan använts")
         except AlreadyDiscountedException:
@@ -213,7 +238,9 @@ def process_payment(request, reservation_id: int):
 
     if session_expired(request):
         messages.warning(
-            request, "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!")
+            request,
+            "Du har väntat för länge, så din bokning har tröttnat och gått och lagt sig. Du får börja om från början!",
+        )
         return redirect("select_seats", show_id=reservation.show.id)
 
     if not reservation.is_free() and settings.PAYMENT_PROCESS == "stripe":
@@ -232,29 +259,37 @@ def reservation_detail(request, reservation_code: str):
     reservation = Reservation.objects.get(reservation_code=reservation_code)
     email_form = CustomerEmailForm()
 
-    return TemplateResponse(request, "reservation_detail.html", {
-        'reservation': reservation,
-        'show': reservation.show,
-        'venue': reservation.show.venue,
-        'production': reservation.show.production,
-        'tickets': reservation.ticket_set(),
-        'email_form': email_form,
-    })
+    return TemplateResponse(
+        request,
+        "reservation_detail.html",
+        {
+            "reservation": reservation,
+            "show": reservation.show,
+            "venue": reservation.show.venue,
+            "production": reservation.show.production,
+            "tickets": reservation.ticket_set(),
+            "email_form": email_form,
+        },
+    )
 
 
 def ticket_detail(request, reservation_id: int, ticket_code):
     reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
-    return TemplateResponse(request, "ticket_detail.html", {
-        "reservation": reservation,
-        "show": reservation.show,
-        "venue": reservation.show.venue,
-        "production": reservation.show.production,
-        "ticket": ticket,
-        "seat": ticket.seat,
-        "qr_code": qr_code_as_png_data_url(request),
-    })
+    return TemplateResponse(
+        request,
+        "ticket_detail.html",
+        {
+            "reservation": reservation,
+            "show": reservation.show,
+            "venue": reservation.show.venue,
+            "production": reservation.show.production,
+            "ticket": ticket,
+            "seat": ticket.seat,
+            "qr_code": qr_code_as_png_data_url(request),
+        },
+    )
 
 
 def ticket_pdf(request, reservation_id: int, ticket_code):
@@ -263,18 +298,29 @@ def ticket_pdf(request, reservation_id: int, ticket_code):
     reservation = Reservation.objects.get(pk=reservation_id)
     ticket = reservation.ticket_set().get(ticket_code=ticket_code)
 
-    html = TemplateResponse(request, "ticket_detail.html", {
-        "reservation": reservation,
-        "show": reservation.show,
-        "venue": reservation.show.venue,
-        "production": reservation.show.production,
-        "ticket": ticket,
-        "seat": ticket.seat,
-        "qr_code": qr_code_as_png_data_url(request),
-    }, content_type="utf-8").render().content.decode()
+    html = (
+        TemplateResponse(
+            request,
+            "ticket_detail.html",
+            {
+                "reservation": reservation,
+                "show": reservation.show,
+                "venue": reservation.show.venue,
+                "production": reservation.show.production,
+                "ticket": ticket,
+                "seat": ticket.seat,
+                "qr_code": qr_code_as_png_data_url(request),
+            },
+            content_type="utf-8",
+        )
+        .render()
+        .content.decode()
+    )
 
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = "inline;filename=karspexet-bokning-{}-{}.pdf".format(reservation_id, ticket_code)
+    response[
+        "Content-Disposition"
+    ] = f"inline;filename=karspexet-bokning-{reservation_id}-{ticket_code}.pdf"
     pisa_status = pisa.CreatePDF(html, dest=response)
     if pisa_status.err:
         raise Exception(pisa_status)
@@ -296,9 +342,9 @@ def send_reservation_email(request, reservation_code: str):
     reservation = get_object_or_404(Reservation, reservation_code=reservation_code)
     form = CustomerEmailForm(data=request.POST)
     if form.is_valid():
-        send_ticket_email_to_customer(reservation, form.data['email'])
-        messages.success(request, 'E-postmeddelande skickat!')
+        send_ticket_email_to_customer(reservation, form.data["email"])
+        messages.success(request, "E-postmeddelande skickat!")
     else:
-        messages.error(request, 'Felaktig e-postadress')
+        messages.error(request, "Felaktig e-postadress")
 
     return redirect("reservation_detail", reservation_code=reservation.reservation_code)

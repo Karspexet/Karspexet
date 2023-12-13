@@ -18,16 +18,15 @@ class Command(BaseCommand):
             Seat.objects.filter(group__venue=venue).delete()
             SeatingGroup.objects.filter(venue=venue).delete()
 
-        groupings = {group.name: group for group in SeatingGroup.objects.filter(venue=venue)}
+        groupings = {
+            group.name: group for group in SeatingGroup.objects.filter(venue=venue)
+        }
 
         count = 0
         for group_name, x_pos, y_pos, seat_name in self._read_file(options["file"]):
             group = groupings.get(group_name, None)
             if group is None:
-                group = SeatingGroup.objects.create(
-                    name=group_name,
-                    venue=venue
-                )
+                group = SeatingGroup.objects.create(name=group_name, venue=venue)
                 groupings[group_name] = group
 
             _, created = Seat.objects.get_or_create(
@@ -40,7 +39,7 @@ class Command(BaseCommand):
                 count += created
 
         total = Seat.objects.filter(group__venue=venue).count()
-        self.stdout.write("Created %s new Seats for %s (now has %s)" % (count, venue, total))
+        self.stdout.write(f"Created {count} new Seats for {venue} (now has {total})")
 
     @staticmethod
     def _read_file(filename):

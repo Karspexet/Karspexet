@@ -5,11 +5,10 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('show', '0001_initial'),
-        ('venue', '0001_initial'),
-        ('ticket', '0001_initial'),
+        ("show", "0001_initial"),
+        ("venue", "0001_initial"),
+        ("ticket", "0001_initial"),
     ]
 
     operations = [

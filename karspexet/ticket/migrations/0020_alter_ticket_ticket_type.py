@@ -4,15 +4,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0019_set_on_delete'),
+        ("ticket", "0019_set_on_delete"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ticket',
-            name='ticket_type',
-            field=models.CharField(choices=[('normal', 'Fullpris'), ('student', 'Student'), ('sponsor', 'Sponsor')], default='normal', max_length=10),
+            model_name="ticket",
+            name="ticket_type",
+            field=models.CharField(
+                choices=[
+                    ("normal", "Fullpris"),
+                    ("student", "Student"),
+                    ("sponsor", "Sponsor"),
+                ],
+                default="normal",
+                max_length=10,
+            ),
         ),
     ]

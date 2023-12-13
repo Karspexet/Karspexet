@@ -35,7 +35,15 @@ class ReservationAdmin(admin.ModelAdmin):
     )
     search_fields = ("reservation_code",)
     list_select_related = ["show", "show__production"]
-    list_display = ("reservation_code", "show", "finalized", "ticket_price", "total", "session_timeout", "tickets")
+    list_display = (
+        "reservation_code",
+        "show",
+        "finalized",
+        "ticket_price",
+        "total",
+        "session_timeout",
+        "tickets",
+    )
     list_filter = ("finalized", "show")
     readonly_fields = ("show_link", "reservation_code", "related_tickets")
 
@@ -50,7 +58,10 @@ class ReservationAdmin(admin.ModelAdmin):
     def related_tickets(self, obj=None):
         if obj is None:
             return ""
-        tickets = [(admin_change_url(t), f"{t.seat}: {t.account.name}") for t in obj.ticket_set().all()]
+        tickets = [
+            (admin_change_url(t), f"{t.seat}: {t.account.name}")
+            for t in obj.ticket_set().all()
+        ]
         return format_html_join("<br>", '<a href="{0}">{1}</a>', tickets)
 
 

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('show', '0006_allow_blank_show_short_description_20180323_0951'),
+        ("show", "0006_allow_blank_show_short_description_20180323_0951"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='show',
-            name='free_seating',
-            field=models.BooleanField(default=False, help_text='Fri placering'),
+            model_name="show",
+            name="free_seating",
+            field=models.BooleanField(default=False, help_text="Fri placering"),
         ),
     ]

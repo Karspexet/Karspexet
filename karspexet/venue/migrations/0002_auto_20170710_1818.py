@@ -4,21 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('venue', '0001_initial'),
+        ("venue", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='seat',
-            name='x_pos',
+            model_name="seat",
+            name="x_pos",
             field=models.IntegerField(default=0),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='seat',
-            name='y_pos',
+            model_name="seat",
+            name="y_pos",
             field=models.IntegerField(default=0),
             preserve_default=False,
         ),

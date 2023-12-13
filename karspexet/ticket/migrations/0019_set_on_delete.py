@@ -6,35 +6,44 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0018_ticket_reference'),
+        ("ticket", "0018_ticket_reference"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='pricingmodel',
-            name='seating_group',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='venue.SeatingGroup'),
+            model_name="pricingmodel",
+            name="seating_group",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="venue.SeatingGroup"
+            ),
         ),
         migrations.AlterField(
-            model_name='ticket',
-            name='account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='ticket.Account'),
+            model_name="ticket",
+            name="account",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="ticket.Account"
+            ),
         ),
         migrations.AlterField(
-            model_name='ticket',
-            name='seat',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='venue.Seat'),
+            model_name="ticket",
+            name="seat",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="venue.Seat"
+            ),
         ),
         migrations.AlterField(
-            model_name='ticket',
-            name='show',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='show.Show'),
+            model_name="ticket",
+            name="show",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="show.Show"
+            ),
         ),
         migrations.AlterField(
-            model_name='voucher',
-            name='created_by',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            model_name="voucher",
+            name="created_by",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

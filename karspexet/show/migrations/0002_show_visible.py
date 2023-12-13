@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('show', '0001_initial'),
+        ("show", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='show',
-            name='visible',
+            model_name="show",
+            name="visible",
             field=models.BooleanField(default=True),
         ),
     ]

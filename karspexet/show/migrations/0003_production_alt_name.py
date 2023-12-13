@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('show', '0002_show_visible'),
+        ("show", "0002_show_visible"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='production',
-            name='alt_name',
+            model_name="production",
+            name="alt_name",
             field=models.CharField(blank=True, max_length=100),
         ),
     ]

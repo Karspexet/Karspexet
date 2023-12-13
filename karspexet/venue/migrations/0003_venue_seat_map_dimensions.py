@@ -5,15 +5,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('venue', '0002_auto_20170710_1818'),
+        ("venue", "0002_auto_20170710_1818"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='venue',
-            name='seat_map_dimensions',
+            model_name="venue",
+            name="seat_map_dimensions",
             field=django.contrib.postgres.fields.hstore.HStoreField(default={}),
         ),
     ]

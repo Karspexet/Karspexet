@@ -28,7 +28,9 @@ def manage_seats(request: HttpRequest, venue_id: int) -> HttpResponse:
     if not venue:
         raise Http404
 
-    group_qs = SeatingGroup.objects.filter(venue=venue).annotate(num_seats=Count("seat"))
+    group_qs = SeatingGroup.objects.filter(venue=venue).annotate(
+        num_seats=Count("seat")
+    )
     groups: list[SeatingGroup] = list(group_qs)
 
     if request.method == "POST":
@@ -49,7 +51,11 @@ def manage_seats(request: HttpRequest, venue_id: int) -> HttpResponse:
             messages.success(request, f"Skapade {num_seats} extra sittplatser")
         return redirect("manage_seats", venue_id=venue.id)
 
-    return render(request, "venue/manage_seats.html", {
-        "venue": venue,
-        "groups": groups,
-    })
+    return render(
+        request,
+        "venue/manage_seats.html",
+        {
+            "venue": venue,
+            "groups": groups,
+        },
+    )

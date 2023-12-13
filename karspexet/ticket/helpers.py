@@ -39,7 +39,9 @@ def get_or_create_reservation_object(request, show) -> Reservation:
         except ObjectDoesNotExist:
             pass
 
-    reservation = Reservation.objects.create(show=show, tickets={}, session_timeout=timeout)
+    reservation = Reservation.objects.create(
+        show=show, tickets={}, session_timeout=timeout
+    )
     request.session[session_key] = reservation.id
 
     return reservation
@@ -62,7 +64,9 @@ def some_seat_is_missing_ticket_type(seat_params) -> bool:
 
 
 def build_pricings_and_seats(venue) -> tuple[dict, dict]:
-    qs = PricingModel.objects.select_related("seating_group").filter(seating_group__venue_id=venue)
+    qs = PricingModel.objects.select_related("seating_group").filter(
+        seating_group__venue_id=venue
+    )
     pricings = {pricing.seating_group_id: pricing.prices for pricing in qs.all()}
 
     seats = {
@@ -88,27 +92,34 @@ def get_used_seats(reservation: Reservation) -> list[tuple[str, str, int]]:
         reserved_seats: dict = {}
         for seat in reservation.seats():
             ticket_type = reservation.tickets[str(seat.id)]
-            tickets = reserved_seats.get(ticket_type, {
-                'price': seat.price_for_type(ticket_type),
-                'count': 0,
-                'group': seat.group.name,
-            })
-            tickets['count'] += 1
+            tickets = reserved_seats.get(
+                ticket_type,
+                {
+                    "price": seat.price_for_type(ticket_type),
+                    "count": 0,
+                    "group": seat.group.name,
+                },
+            )
+            tickets["count"] += 1
             reserved_seats[ticket_type] = tickets
 
-        for (ticket_type, ticket_group) in reserved_seats.items():
-            seats.append((
-                "%d x %s" % (ticket_group['count'], ticket_group['group']),
-                ticket_type,
-                ticket_group['price'],
-            ))
+        for ticket_type, ticket_group in reserved_seats.items():
+            seats.append(
+                (
+                    f'{ticket_group["count"]} x {ticket_group["group"]}',
+                    ticket_type,
+                    ticket_group["price"],
+                )
+            )
     else:
         reserved_seats = {seat.id: seat for seat in reservation.seats()}
-        for (id, ticket_type) in reservation.tickets.items():
+        for id, ticket_type in reservation.tickets.items():
             seat = reserved_seats[int(id)]
-            seats.append((
-                "%s: %s" % (seat.group.name, seat.name),
-                ticket_type,
-                seat.price_for_type(ticket_type),
-            ))
+            seats.append(
+                (
+                    f"{seat.group.name}: {seat.name}",
+                    ticket_type,
+                    seat.price_for_type(ticket_type),
+                )
+            )
     return seats

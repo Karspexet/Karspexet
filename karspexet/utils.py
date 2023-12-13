@@ -2,4 +2,7 @@ from django.shortcuts import reverse
 
 
 def admin_change_url(obj) -> str:
-    return reverse("admin:%s_%s_change" % (obj._meta.app_label, obj._meta.model_name), args=(obj.pk,))
+    return reverse(
+        f"admin:{obj._meta.app_label}_{obj._meta.model_name}_change",
+        args=(obj.pk,),
+    )

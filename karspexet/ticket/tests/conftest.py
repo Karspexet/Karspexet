@@ -10,8 +10,8 @@ def show():
     group = f.CreateSeatingGroup(venue=venue)
     f.CreatePricingModel(
         seating_group=group,
-        prices={'student': 200, 'normal': 250},
-        valid_from=timezone.now()
+        prices={"student": 200, "normal": 250},
+        valid_from=timezone.now(),
     )
     f.CreateSeat(group=group)
     f.CreateSeat(group=group)
