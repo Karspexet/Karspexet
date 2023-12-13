@@ -9,6 +9,7 @@ class CreateStaffUser(DjangoModelFactory):
     class Meta:
         model = User
         django_get_or_create = ("username",)
+        skip_postgeneration_save = True
 
     is_staff = True
     email = "ture@example.com"
@@ -23,6 +24,7 @@ class CreateStaffUser(DjangoModelFactory):
 class CreateVenue(DjangoModelFactory):
     class Meta:
         model = "venue.Venue"
+        skip_postgeneration_save = True
 
     @post_generation
     def num_seats(self, create, num_seats, **kwargs):
