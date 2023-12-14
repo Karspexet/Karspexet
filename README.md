@@ -52,7 +52,7 @@ pytest
 Vi använder `ruff` som linter och formaterare för python-koden, och `prettier` för frontend-koden.
 
 ``` sh
-ruff check .
-ruff format . --check
+poetry ruff check .
+poetry ruff format . --check
 npm run lint
 ```
