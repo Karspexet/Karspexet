@@ -56,7 +56,7 @@ stripe.api_key = ENV.get("STRIPE_SECRET_KEY", "fake")
 TICKET_EMAIL_FROM_ADDRESS = "Kårspexet <biljett@karspexet.se>"
 
 sentry_sdk.init(
-    dsn=ENV.get("sentry_dsn"),
+    dsn=ENV.get("SENTRY_DSN"),
     integrations=[
         DjangoIntegration(),
         # Capture info and above as breadcrumbs, send errors as events
