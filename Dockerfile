@@ -4,6 +4,10 @@ ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/virtualenv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libcairo-dev \
+    && rm -rf /var/lib/apt/lists/*
 RUN python -m venv $VIRTUAL_ENV \
  && useradd --uid 1000 app \
  && chown app /app
@@ -12,9 +16,9 @@ RUN python -m venv $VIRTUAL_ENV \
 # Python Venv
 #
 FROM builder as deps-py
-RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel poetry
+RUN python -m pip install --no-cache-dir --upgrade pip wheel poetry
 COPY poetry.lock pyproject.toml ./
-RUN poetry install --no-dev --no-interaction --no-root
+RUN poetry install --only main --no-interaction --no-root
 
 
 #
