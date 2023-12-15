@@ -162,6 +162,7 @@ if to_bool(ENV.get("HTTPS", "False")):
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = "SAMEORIGIN"
+    CSRF_TRUSTED_ORIGINS=ENV.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 
 # Internationalization
