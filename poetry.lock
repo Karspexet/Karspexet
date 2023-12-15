@@ -476,19 +476,19 @@ typing-extensions = ">=3.10.0.0"
 
 [[package]]
 name = "django"
-version = "3.2.23"
-description = "A high-level Python Web framework that encourages rapid development and clean, pragmatic design."
+version = "4.0.10"
+description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "Django-3.2.23-py3-none-any.whl", hash = "sha256:d48608d5f62f2c1e260986835db089fa3b79d6f58510881d316b8d88345ae6e1"},
-    {file = "Django-3.2.23.tar.gz", hash = "sha256:82968f3640e29ef4a773af2c28448f5f7a08d001c6ac05b32d02aeee6509508b"},
+    {file = "Django-4.0.10-py3-none-any.whl", hash = "sha256:4496eb4f65071578b703fdc6e6f29302553c7440e3f77baf4cefa4a4e091fc3d"},
+    {file = "Django-4.0.10.tar.gz", hash = "sha256:2c2f73c16b11cb272c6d5e3b063f0d1be06f378d8dc6005fbe8542565db659cc"},
 ]
 
 [package.dependencies]
-asgiref = ">=3.3.2,<4"
-pytz = "*"
+asgiref = ">=3.4.1,<4"
 sqlparse = ">=0.2.2"
+tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 
 [package.extras]
 argon2 = ["argon2-cffi (>=19.1.0)"]
@@ -2139,4 +2139,4 @@ svglib = ">=1.2.1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "ea6340d0133372112fe532d13a655f004dcdb7a19eab233432f0224ddc7a22bd"
+content-hash = "aaad70dcd04c97b42a853c5b33adad8f9fd780d8c2a9c3b7392509eadc1c8240"

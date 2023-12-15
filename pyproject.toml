@@ -24,7 +24,7 @@ authors = ["Kårspexet <webmaster@karspexet.se>"]
 [tool.poetry.dependencies]
 cssmin = "^0.2.0"
 dj-database-url = "^2.1.0"
-django = "^3"
+django = "^4"
 django-cms = "^3.11.4"
 django-filer = "^2.2.1"
 django-inline-svg = "^0.1.1"
