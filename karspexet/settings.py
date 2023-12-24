@@ -101,6 +101,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "csp.middleware.CSPMiddleware",
     "cms.middleware.utils.ApphookReloadMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -289,6 +290,8 @@ CMS_PLACEHOLDER_CONF = {
         "name": "Sponsor Images",
     },
 }
+
+CSP_DEFAULT_SRC = tuple(ENV.get("CSP_DEFAULT_SRC", "'self'").split(","))
 
 # Logging
 LOGGING = {
