@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0008_add_pricing_model'),
+        ("ticket", "0008_add_pricing_model"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='account',
-            name='phone',
-            field=models.CharField(default='', max_length=255),
+            model_name="account",
+            name="phone",
+            field=models.CharField(default="", max_length=255),
             preserve_default=False,
         ),
     ]

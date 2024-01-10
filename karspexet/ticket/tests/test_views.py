@@ -1,9 +1,8 @@
+from importlib import import_module
 from unittest import mock
 
-from django.conf import settings
-from importlib import import_module
 import pytest
-from django.contrib.sessions.middleware import SessionMiddleware
+from django.conf import settings
 from django.shortcuts import reverse
 from django.test import RequestFactory, TestCase, override_settings
 from django.utils import timezone
@@ -42,7 +41,7 @@ class TestTicketViews(TestCase):
         data = {
             TicketType.normal: 1,
             TicketType.student: 2,
-            TicketType.sponsor: '',
+            TicketType.sponsor: "",
             "email": "frank@example.com",
         }
         response = self.client.post(url, data=data, follow=False)
@@ -57,7 +56,9 @@ class TestTicketViews(TestCase):
         }
         response = self.client.post(url, data=data, follow=False)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Det finns inte tillräckligt många biljetter kvar.")
+        self.assertContains(
+            response, "Det finns inte tillräckligt många biljetter kvar."
+        )
 
     def test_reservation_detail(self):
         reservation = f.CreateReservationWithTicket()
@@ -70,7 +71,9 @@ class TestTicketViews(TestCase):
         url = reverse(views.send_reservation_email, args=[reservation.reservation_code])
         response = self.client.post(url, data={}, follow=False)
         assert response.status_code == 302
-        assert response["Location"] == reverse(views.reservation_detail, args=[reservation.reservation_code])
+        assert response["Location"] == reverse(
+            views.reservation_detail, args=[reservation.reservation_code]
+        )
 
 
 class TestSelectSeats(TestCase):
@@ -93,7 +96,9 @@ class TestSelectSeats(TestCase):
         show = self.show
         reservation = f.CreateReservationWithTicket(show=show, finalized=True)
 
-        response = self.client.get(self.url, session={f"show_{show.id}": reservation.id})
+        response = self.client.get(
+            self.url, session={f"show_{show.id}": reservation.id}
+        )
         assert response._request.session[f"show_{show.id}"] != reservation.id
 
 
@@ -119,7 +124,7 @@ class TestBookingOverview(TestCase):
             "karspexet.ticket.views.payment.get_payment_intent_from_reservation",
             autospec=True,
             return_value=mock_payment_intent,
-        ) as mock_payment:
+        ):
             response = self.client.get(self.url)
         assert response.status_code == 200
         assert response.context["reservation"] == reservation
@@ -181,14 +186,16 @@ def test_apply_voucher_with_active_reservation__updates_reservation_total(client
 def test_process_payment(client, show):
     reservation = f.CreateReservationWithTicket(show=show)
     voucher = f.CreateVoucher(amount=reservation.total)
-    discount = reservation.apply_voucher(voucher.code)
+    reservation.apply_voucher(voucher.code)
     reservation.save()
     assert reservation.is_free()
 
     url = reverse(views.process_payment, args=[reservation.id])
     response = client.post(url)
     assert response.status_code == 302
-    assert response["Location"] == reverse(views.reservation_detail, args=[reservation.reservation_code])
+    assert response["Location"] == reverse(
+        views.reservation_detail, args=[reservation.reservation_code]
+    )
 
     assert Reservation.objects.get(pk=reservation.id).finalized
 
@@ -199,7 +206,9 @@ def test_cancelling_a_discounted_reservation_allows_voucher_for_reuse(show, user
     voucher = Voucher.objects.create(amount=100, created_by=user)
     discount = reservation.apply_voucher(voucher.code)
 
-    response = _post(views.cancel_reservation, show.id, session={f"show_{show.id}": reservation.id})
+    _post(
+        views.cancel_reservation, show.id, session={f"show_{show.id}": reservation.id}
+    )
 
     assert Reservation.objects.filter(pk=reservation.id).count() == 0
     assert Discount.objects.filter(pk=discount.id).count() == 0

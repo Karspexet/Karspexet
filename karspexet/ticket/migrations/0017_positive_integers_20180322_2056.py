@@ -5,35 +5,39 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0016_add_voucher_note_20180213_2307'),
+        ("ticket", "0016_add_voucher_note_20180213_2307"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='discount',
-            name='amount',
-            field=models.PositiveIntegerField(validators=[django.core.validators.MinValueValidator(100), django.core.validators.MaxValueValidator(5000)]),
+            model_name="discount",
+            name="amount",
+            field=models.PositiveIntegerField(
+                validators=[
+                    django.core.validators.MinValueValidator(100),
+                    django.core.validators.MaxValueValidator(5000),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='reservation',
-            name='ticket_price',
+            model_name="reservation",
+            name="ticket_price",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='reservation',
-            name='total',
+            model_name="reservation",
+            name="total",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='ticket',
-            name='price',
+            model_name="ticket",
+            name="price",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='voucher',
-            name='amount',
-            field=models.PositiveIntegerField(help_text='Rabatt i SEK'),
+            model_name="voucher",
+            name="amount",
+            field=models.PositiveIntegerField(help_text="Rabatt i SEK"),
         ),
     ]

@@ -29,7 +29,9 @@ class ShowQuerySet(models.QuerySet):
         """
         Aggregates the ticket and seat counts for each show in the query
         """
-        shows = self.prefetch_related("production").annotate(ticket_count=Count("ticket"))
+        shows = self.prefetch_related("production").annotate(
+            ticket_count=Count("ticket")
+        )
 
         venue_ids = {show.venue_id for show in shows}
         venues: dict[int, Venue] = (
@@ -41,7 +43,9 @@ class ShowQuerySet(models.QuerySet):
         for show in shows:
             venue = venues[show.venue_id]
             show.venue = venue
-            show.sales_percentage = 100 * ((show.ticket_count / venue.seat_count) if venue.seat_count else 0)
+            show.sales_percentage = 100 * (
+                (show.ticket_count / venue.seat_count) if venue.seat_count else 0
+            )
 
         return shows
 
@@ -51,9 +55,15 @@ class Show(models.Model):
     date = models.DateTimeField()
     venue = models.ForeignKey("venue.Venue", on_delete=models.PROTECT)
     visible = models.BooleanField(default=False, blank=True)
-    slug = models.CharField(max_length=20, unique=True, default=lambda: get_random_string(20))
-    short_description = models.CharField(null=False, blank=True, default="", max_length=255)
-    free_seating = models.BooleanField(default=False, null=False, help_text="Fri placering")
+    slug = models.CharField(
+        max_length=20, unique=True, default=lambda: get_random_string(20)
+    )
+    short_description = models.CharField(
+        null=False, blank=True, default="", max_length=255
+    )
+    free_seating = models.BooleanField(
+        default=False, null=False, help_text="Fri placering"
+    )
 
     objects = ShowQuerySet.as_manager()
 

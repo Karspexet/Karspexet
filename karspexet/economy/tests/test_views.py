@@ -46,7 +46,9 @@ class TestVouchers(TestCase):
 
         self.client.force_login(self.staff)
 
-        response = self.client.post(url, data={"note": "Rabbatkod ABC123", "amount": 100})
+        response = self.client.post(
+            url, data={"note": "Rabbatkod ABC123", "amount": 100}
+        )
         assert response.status_code == 302
 
         response = self.client.get(url)
@@ -60,7 +62,9 @@ class TestVouchers(TestCase):
 
         venue = f.CreateVenue(num_seats=1)
         seat = venue.seatinggroup_set.first().seat_set.first()
-        reservation = f.CreateReservation(show__venue=venue, tickets={str(seat.id): "normal"})
+        reservation = f.CreateReservation(
+            show__venue=venue, tickets={str(seat.id): "normal"}
+        )
         f.CreateDiscount(reservation=reservation, voucher__code="Rabbat")
 
         response = self.client.get(url)

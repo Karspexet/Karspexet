@@ -29,10 +29,13 @@ def send_ticket_email_to_customer(reservation, email, name=None):
     subject = "Dina biljetter till Kårspexet"
     site = Site.objects.get_current()
     reservation_url = f"https://{site.domain}{reservation.get_absolute_url()}"
-    body = render_to_string("reservation_email.txt", {
-        "reservation": reservation,
-        "url": reservation_url,
-    })
+    body = render_to_string(
+        "reservation_email.txt",
+        {
+            "reservation": reservation,
+            "url": reservation_url,
+        },
+    )
 
     try:
         send_mail(
@@ -43,5 +46,5 @@ def send_ticket_email_to_customer(reservation, email, name=None):
             fail_silently=False,
         )
         logger.info("Send confirmation email to %s", to_address)
-    except Exception as e:
+    except Exception:
         logger.exception("Failed to send Email to %s", to_address)

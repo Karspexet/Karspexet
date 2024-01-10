@@ -5,33 +5,59 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('venue', '0001_initial'),
+        ("venue", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Production',
+            name="Production",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('description', models.TextField(blank=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("description", models.TextField(blank=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Show',
+            name="Show",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateTimeField()),
-                ('production', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='show.Production')),
-                ('venue', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='venue.Venue')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateTimeField()),
+                (
+                    "production",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="show.Production",
+                    ),
+                ),
+                (
+                    "venue",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT, to="venue.Venue"
+                    ),
+                ),
             ],
         ),
         migrations.AlterModelOptions(
-            name='show',
-            options={'ordering': ('date',)},
+            name="show",
+            options={"ordering": ("date",)},
         ),
     ]

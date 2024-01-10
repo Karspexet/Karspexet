@@ -49,9 +49,10 @@ pytest
 
 ## Linters
 
-Vi har en bunt olika linters och kodformatterare som går att köra med
-verktyget https://pre-commit.com/. Du kör det på filerna med:
+Vi använder `ruff` som linter och formaterare för python-koden, och `prettier` för frontend-koden.
 
-```sh
-pre-commit run -a
+``` sh
+poetry ruff check .
+poetry ruff format . --check
+npm run lint
 ```

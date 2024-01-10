@@ -1,6 +1,6 @@
 [project]
 name = "karspexet"
-requires-python = "3.10"
+requires-python = ">=3.10.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "setuptools", "Cython"]
@@ -21,8 +21,31 @@ version = "1.0.0"
 description = ""
 authors = ["Kårspexet <webmaster@karspexet.se>"]
 
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+select = [
+    # pycodestyle
+    "E",
+    # pycodestyle warnings
+    "W",
+    # pyflakes
+    "F",
+    # isort
+    "I",
+    # Log statements
+    "G",
+    # Mutable data structures for argument defaults
+    "B006",
+    # pyupgrade
+    "UP"
+]
+
+[tool.ruff.pycodestyle]
+max-line-length = 120
+
 [tool.poetry.dependencies]
-cssmin = "^0.2.0"
 dj-database-url = "^2"
 django = "^4"
 django-cms = "^3.11.4"
@@ -47,12 +70,9 @@ django-csp = "^3.7"
 
 [tool.poetry.dev-dependencies]
 bpython = "*"
-codacy-coverage = "*"
 factory-boy = "*"
-flake8 = "*"
-isort = "*"
 jedi = "*"
-pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
+ruff = "*"

@@ -6,20 +6,23 @@ import karspexet.ticket.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0015_reservation_ticket_price'),
+        ("ticket", "0015_reservation_ticket_price"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='voucher',
-            name='note',
-            field=models.CharField(default='', max_length=255),
+            model_name="voucher",
+            name="note",
+            field=models.CharField(default="", max_length=255),
         ),
         migrations.AlterField(
-            model_name='voucher',
-            name='code',
-            field=models.CharField(default=karspexet.ticket.models._generate_voucher_code, max_length=16, unique=True),
+            model_name="voucher",
+            name="code",
+            field=models.CharField(
+                default=karspexet.ticket.models._generate_voucher_code,
+                max_length=16,
+                unique=True,
+            ),
         ),
     ]

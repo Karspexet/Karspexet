@@ -47,7 +47,9 @@ ALLOWED_HOSTS = ENV.get("ALLOWED_HOSTS", "localhost").split(",")
 
 SITE_ID = 1
 
-EMAIL_BACKEND = ENV.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_BACKEND = ENV.get(
+    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+)
 EMAIL_HOST = ENV.get("EMAIL_HOST")
 EMAIL_PORT = ENV.get("EMAIL_PORT")
 
@@ -151,7 +153,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -166,7 +170,7 @@ if to_bool(ENV.get("HTTPS", "False")):
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = "SAMEORIGIN"
 
-CSRF_TRUSTED_ORIGINS=ENV.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+CSRF_TRUSTED_ORIGINS = ENV.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 
 # Internationalization
@@ -221,7 +225,9 @@ MEDIA_FILER_ROOT = os.path.join(MEDIA_ROOT, "filer_public/uploads/")
 MEDIA_FILER_URL = urljoin(MEDIA_URL, "filer_public/")
 
 MEDIA_THUMBS_LOC = os.path.join(MEDIA_ROOT, "filer_public_thumbnails/uploads/")
-MEDIA_THUMBS_ROOT = os.path.join(MEDIA_ROOT, "filer_public_thumbnails/uploads/filer_public_thumbnails/")
+MEDIA_THUMBS_ROOT = os.path.join(
+    MEDIA_ROOT, "filer_public_thumbnails/uploads/filer_public_thumbnails/"
+)
 MEDIA_THUMBS_URL = urljoin(MEDIA_URL, "filer_public_thumbnails/")
 
 FILER_STORAGES = {

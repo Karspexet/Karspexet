@@ -6,29 +6,34 @@ import karspexet.ticket.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0013_discount'),
+        ("ticket", "0013_discount"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='voucher',
-            old_name='rebate_amount',
-            new_name='amount',
+            model_name="voucher",
+            old_name="rebate_amount",
+            new_name="amount",
         ),
         migrations.RemoveField(
-            model_name='voucher',
-            name='reservation',
+            model_name="voucher",
+            name="reservation",
         ),
         migrations.AddField(
-            model_name='voucher',
-            name='code',
-            field=models.CharField(default=karspexet.ticket.models._generate_random_code, max_length=16, unique=True),
+            model_name="voucher",
+            name="code",
+            field=models.CharField(
+                default=karspexet.ticket.models._generate_random_code,
+                max_length=16,
+                unique=True,
+            ),
         ),
         migrations.AddField(
-            model_name='voucher',
-            name='expiry_date',
-            field=models.DateField(default=karspexet.ticket.models._next_fifteenth_september),
+            model_name="voucher",
+            name="expiry_date",
+            field=models.DateField(
+                default=karspexet.ticket.models._next_fifteenth_september
+            ),
         ),
     ]

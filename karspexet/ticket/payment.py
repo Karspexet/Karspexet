@@ -18,12 +18,20 @@ def get_payment_intent_from_reservation(request, reservation) -> dict:
         if intent.metadata.reservation_id == str(reservation.id):
             amount = reservation.get_amount()
             if amount > 0 and intent.amount != amount:
-                logger.info("Updated PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
+                logger.info(
+                    "Updated PaymentIntent=%s for reservation=%s",
+                    intent.id,
+                    reservation.id,
+                )
                 return stripe.PaymentIntent.modify(payment_intent_id, amount=amount)
             return intent
 
         # We have a PaymentIntent from an old reservation in the session - create a new one instead
-        logger.warning("Retrieved wrong PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
+        logger.warning(
+            "Retrieved wrong PaymentIntent=%s for reservation=%s",
+            intent.id,
+            reservation.id,
+        )
 
     amount = reservation.get_amount()
     if amount < 1:
@@ -38,7 +46,9 @@ def get_payment_intent_from_reservation(request, reservation) -> dict:
         statement_descriptor="Biljett Kårspexet",
         metadata={"reservation_id": reservation.id},
     )
-    logger.info("Created PaymentIntent=%s for reservation=%s", intent.id, reservation.id)
+    logger.info(
+        "Created PaymentIntent=%s for reservation=%s", intent.id, reservation.id
+    )
     request.session["payment_intent_id"] = intent.id
     return intent
 
@@ -67,9 +77,13 @@ def handle_stripe_webhook(event: stripe.Event):
             reservation = Reservation.objects.get(id=reservation_id)
         except Reservation.DoesNotExist:
             # This is not an error we can recover from, so let's log the error and return 200 OK :(
-            logger.error("Payment succeeded for missing Reservation=%s", reservation_id, extra={
-                "payment": payment_intent,
-            })
+            logger.error(
+                "Payment succeeded for missing Reservation=%s",
+                reservation_id,
+                extra={
+                    "payment": payment_intent,
+                },
+            )
             return
 
         charge = payment_intent.charges.data[0]
@@ -77,19 +91,27 @@ def handle_stripe_webhook(event: stripe.Event):
         reference = get_reference_from_payment(charge.payment_method)
 
         handle_successful_payment(reservation, billing_details, reference)
-        logger.info("PaymentIntent=%s for Reservation=%s succeeded", payment_intent.id, reservation.id)
+        logger.info(
+            "PaymentIntent=%s for Reservation=%s succeeded",
+            payment_intent.id,
+            reservation.id,
+        )
 
 
 def get_reference_from_payment(payment_method_id):
     try:
-        return stripe.PaymentMethod.retrieve(payment_method_id).metadata.get("reference", "")
+        return stripe.PaymentMethod.retrieve(payment_method_id).metadata.get(
+            "reference", ""
+        )
     except stripe.error.StripeError:
         # TODO: Better handling of error? Should we store payment_method_id instead?
         logger.exception("Failed to get reference from payment_method")
         return None
 
 
-def handle_successful_payment(reservation: Reservation, billing_data: dict, reference=""):
+def handle_successful_payment(
+    reservation: Reservation, billing_data: dict, reference=""
+):
     """
     Our honored customer has paid us money - let's send them a ticket
     """
@@ -109,13 +131,13 @@ def handle_successful_payment(reservation: Reservation, billing_data: dict, refe
                 f"Payment succeeded for Reservation={reservation.id}, but seat={seat.id} is occupied",
             )
 
-        ticket = Ticket.objects.create(
+        Ticket.objects.create(
             price=seat.price_for_type(ticket_type),
             ticket_type=ticket_type,
             show=reservation.show,
             seat=seat,
             account=account,
-            reference=reference
+            reference=reference,
         )
 
     reservation.finalized = True

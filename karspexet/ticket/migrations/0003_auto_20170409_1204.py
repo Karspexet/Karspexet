@@ -7,51 +7,66 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('show', '0001_initial'),
-        ('venue', '0001_initial'),
-        ('ticket', '0002_add_hstore_extension'),
+        ("show", "0001_initial"),
+        ("venue", "0001_initial"),
+        ("ticket", "0002_add_hstore_extension"),
     ]
 
     operations = [
         HStoreExtension(),
         migrations.CreateModel(
-            name='Account',
+            name="Account",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=254)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("email", models.EmailField(max_length=254)),
             ],
         ),
         migrations.AddField(
-            model_name='reservation',
-            name='tickets',
+            model_name="reservation",
+            name="tickets",
             field=django.contrib.postgres.fields.hstore.HStoreField(default={}),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='ticket',
-            name='seat',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='venue.Seat'),
+            model_name="ticket",
+            name="seat",
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to="venue.Seat"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='ticket',
-            name='show',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='show.Show'),
+            model_name="ticket",
+            name="show",
+            field=models.ForeignKey(
+                default=1, on_delete=django.db.models.deletion.CASCADE, to="show.Show"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='ticket',
-            name='ticket_type',
+            model_name="ticket",
+            name="ticket_type",
             field=models.CharField(default=1, max_length=10),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='ticket',
-            name='account',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='ticket.Account'),
+            model_name="ticket",
+            name="account",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="ticket.Account",
+            ),
             preserve_default=False,
         ),
     ]

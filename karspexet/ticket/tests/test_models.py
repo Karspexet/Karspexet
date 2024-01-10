@@ -23,16 +23,18 @@ class TestReservation(TestCase):
     def setUp(self):
         venue = f.CreateVenue()
         group = f.CreateSeatingGroup(venue=venue)
-        pricing = f.CreatePricingModel(
+        f.CreatePricingModel(
             seating_group=group,
-            prices={'student': 200, 'normal': 250},
-            valid_from=timezone.now()
+            prices={"student": 200, "normal": 250},
+            valid_from=timezone.now(),
         )
         self.seat1 = f.CreateSeat(group=group)
         self.seat2 = f.CreateSeat(group=group)
 
         production = f.CreateProduction()
-        self.show = f.CreateShow(production=production, venue=venue, date=timezone.now())
+        self.show = f.CreateShow(
+            production=production, venue=venue, date=timezone.now()
+        )
 
     def test_reservation_is_active_if_session_timer_has_not_passed(self):
         timestamp = timezone.now() + relativedelta(minutes=10)
@@ -72,8 +74,8 @@ class TestReservation(TestCase):
             show=self.show,
             session_timeout=timestamp,
             tickets={
-                str(self.seat1.id): 'student',
-                str(self.seat2.id): 'normal',
+                str(self.seat1.id): "student",
+                str(self.seat2.id): "normal",
             },
         )
 
@@ -97,36 +99,38 @@ class TestPricingModel(TestCase):
             seating_group=self.group,
             valid_from=timezone.now(),
             prices={
-                'student': 200,
-                'normal': 250,
+                "student": 200,
+                "normal": 250,
             },
         )
 
-        assert pricing.price_for('student') == 200
-        assert pricing.price_for('normal') == 250
+        assert pricing.price_for("student") == 200
+        assert pricing.price_for("normal") == 250
 
     def test_price_for_at_past_date(self):
-        old_pricing = PricingModel.objects.create(
+        # Old pricing
+        PricingModel.objects.create(
             seating_group=self.group,
             valid_from=timezone.now() - relativedelta(days=2),
             prices={
-                'student': 150,
-                'normal': 200,
+                "student": 150,
+                "normal": 200,
             },
         )
-        new_pricing = PricingModel.objects.create(
+        # New pricing
+        PricingModel.objects.create(
             seating_group=self.group,
             valid_from=timezone.now(),
             prices={
-                'student': 200,
-                'normal': 250,
+                "student": 200,
+                "normal": 250,
             },
         )
         seat = f.CreateSeat(group=self.group)
         one_day_ago = timezone.now() - relativedelta(days=1)
 
-        assert seat.price_for_type('student') == 200
-        assert seat.price_for_type('student', one_day_ago) == 150
+        assert seat.price_for_type("student") == 200
+        assert seat.price_for_type("student", one_day_ago) == 150
 
 
 class TestTicket(TestCase):
@@ -135,19 +139,26 @@ class TestTicket(TestCase):
         venue = f.CreateVenue()
         group = f.CreateSeatingGroup(venue=venue)
         self.seat = f.CreateSeat(group=group)
-        self.show = f.CreateShow(venue=venue, production=production, date=timezone.now())
+        self.show = f.CreateShow(
+            venue=venue, production=production, date=timezone.now()
+        )
         self.pricing = f.CreatePricingModel(
             seating_group=group,
-            prices={'student': 200, 'normal': 250},
-            valid_from=timezone.now()
+            prices={"student": 200, "normal": 250},
+            valid_from=timezone.now(),
         )
 
     def test_ticket_must_be_unique_per_show(self):
-        old_ticket = f.CreateTicket(show=self.show, seat=self.seat, price=200, account=f.CreateAccount())
+        # Old ticket
+        f.CreateTicket(
+            show=self.show, seat=self.seat, price=200, account=f.CreateAccount()
+        )
 
-        duplicate_ticket = Ticket(show=self.show, seat=self.seat, price=200, account=f.CreateAccount())
+        duplicate_ticket = Ticket(
+            show=self.show, seat=self.seat, price=200, account=f.CreateAccount()
+        )
 
-        with pytest.raises(ValidationError) as error:
+        with pytest.raises(ValidationError):
             duplicate_ticket.full_clean()
 
 
@@ -155,8 +166,10 @@ class TestTicket(TestCase):
 class TestDiscount:
     def test_discount_lowers_the_total_of_a_reservation(self, show, user):
         seat = Seat.objects.first()
-        tickets = {str(seat.id): 'normal'}
-        reservation = f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
+        tickets = {str(seat.id): "normal"}
+        reservation = f.CreateReservation(
+            tickets=tickets, session_timeout=timezone.now(), show=show
+        )
         voucher = Voucher.objects.create(amount=100, created_by=user)
         discount = reservation.apply_voucher(voucher.code)
 
@@ -165,9 +178,13 @@ class TestDiscount:
 
     def test_discount_can_result_in_free_tickets(self, show, user):
         seat = Seat.objects.first()
-        tickets = {str(seat.id): 'normal'}
-        reservation = f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
-        voucher = Voucher.objects.create(amount=reservation.ticket_price, created_by=user)
+        tickets = {str(seat.id): "normal"}
+        reservation = f.CreateReservation(
+            tickets=tickets, session_timeout=timezone.now(), show=show
+        )
+        voucher = Voucher.objects.create(
+            amount=reservation.ticket_price, created_by=user
+        )
         discount = reservation.apply_voucher(voucher.code)
 
         assert discount.amount == reservation.ticket_price
@@ -175,8 +192,10 @@ class TestDiscount:
 
     def test_excess_voucher_amount_is_void(self, show, user):
         seat = Seat.objects.first()
-        tickets = {str(seat.id): 'normal'}
-        reservation = f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
+        tickets = {str(seat.id): "normal"}
+        reservation = f.CreateReservation(
+            tickets=tickets, session_timeout=timezone.now(), show=show
+        )
         voucher = Voucher.objects.create(amount=300, created_by=user)
         discount = reservation.apply_voucher(voucher.code)
 
@@ -185,16 +204,12 @@ class TestDiscount:
 
     def test_a_voucher_cannot_be_reused(self, show, user):
         seat = Seat.objects.all()[0]
-        seat2 = Seat.objects.all()[1]
+        Seat.objects.all()[1]
         reservation = f.CreateReservation(
-            tickets={str(seat.id): 'normal'},
-            session_timeout=timezone.now(),
-            show=show
+            tickets={str(seat.id): "normal"}, session_timeout=timezone.now(), show=show
         )
         reservation2 = f.CreateReservation(
-            tickets={str(seat.id): 'normal'},
-            session_timeout=timezone.now(),
-            show=show
+            tickets={str(seat.id): "normal"}, session_timeout=timezone.now(), show=show
         )
 
         voucher = Voucher.objects.create(amount=300, created_by=user)
@@ -209,8 +224,10 @@ class TestDiscount:
 
     def test_a_voucher_cannot_have_multiple_discounts(self, show, user):
         seat = Seat.objects.first()
-        tickets = {str(seat.id): 'normal'}
-        reservation = f.CreateReservation(tickets=tickets, session_timeout=timezone.now(), show=show)
+        tickets = {str(seat.id): "normal"}
+        reservation = f.CreateReservation(
+            tickets=tickets, session_timeout=timezone.now(), show=show
+        )
         voucher = Voucher.objects.create(amount=100, created_by=user)
         voucher2 = Voucher.objects.create(amount=100, created_by=user)
         discount = reservation.apply_voucher(voucher.code)

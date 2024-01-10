@@ -65,25 +65,30 @@ export function setupPayment(config: Config) {
     e.preventDefault();
     submitButton.prop("disabled", true);
 
-    let paymentDetails = getStripePaymentDetails(paymentForm.get(0) as HTMLFormElement, card);
+    let paymentDetails = getStripePaymentDetails(
+      paymentForm.get(0) as HTMLFormElement,
+      card,
+    );
     spinner.show();
-    stripe.confirmCardPayment(clientSecret, paymentDetails).then((result: any) => {
-      // Handle result.error or result.paymentIntent
-      if ((window as any).DEBUG) {
-        console.debug(result);
-      }
-      if (result.error) {
-        setError(result);
-        // @ts-expect-error
-        window.Sentry?.captureMessage("Payment failed.");
-      }
-      if (result.paymentIntent) {
-        // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)
-        setTimeout(() => {
-          window.location.href = config.successUrl;
-        }, 5000);
-      }
-    });
+    stripe
+      .confirmCardPayment(clientSecret, paymentDetails)
+      .then((result: any) => {
+        // Handle result.error or result.paymentIntent
+        if ((window as any).DEBUG) {
+          console.debug(result);
+        }
+        if (result.error) {
+          setError(result);
+          // @ts-expect-error
+          window.Sentry?.captureMessage("Payment failed.");
+        }
+        if (result.paymentIntent) {
+          // FIXME: Poll for finalized reservation before redirecting to success page (show error after ~1min)
+          setTimeout(() => {
+            window.location.href = config.successUrl;
+          }, 5000);
+        }
+      });
   });
 }
 

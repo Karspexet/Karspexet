@@ -7,15 +7,18 @@ import karspexet.venue.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('venue', '0006_fix_seat_map_dimensions_default_202007'),
+        ("venue", "0006_fix_seat_map_dimensions_default_202007"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='venue',
-            name='seat_map_dimensions',
-            field=django.contrib.postgres.fields.hstore.HStoreField(blank=True, default=dict, validators=[karspexet.venue.models.validate_dimensions]),
+            model_name="venue",
+            name="seat_map_dimensions",
+            field=django.contrib.postgres.fields.hstore.HStoreField(
+                blank=True,
+                default=dict,
+                validators=[karspexet.venue.models.validate_dimensions],
+            ),
         ),
     ]

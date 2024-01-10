@@ -5,16 +5,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0014_rework_voucher_model_20180212_2109'),
+        ("ticket", "0014_rework_voucher_model_20180212_2109"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='reservation',
-            name='ticket_price',
-            field=models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0)]),
+            model_name="reservation",
+            name="ticket_price",
+            field=models.IntegerField(
+                default=0, validators=[django.core.validators.MinValueValidator(0)]
+            ),
             preserve_default=False,
         ),
         migrations.RunSQL("UPDATE ticket_reservation SET ticket_price = total"),

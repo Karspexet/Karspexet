@@ -6,27 +6,44 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('venue', '0001_initial'),
-        ('ticket', '0007_timestamp_remaining_ticket_models'),
+        ("venue", "0001_initial"),
+        ("ticket", "0007_timestamp_remaining_ticket_models"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PricingModel',
+            name="PricingModel",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('prices', django.contrib.postgres.fields.hstore.HStoreField()),
-                ('valid_from', models.DateTimeField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('last_modified_at', models.DateTimeField(auto_now=True)),
-                ('seating_group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='venue.SeatingGroup')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("prices", django.contrib.postgres.fields.hstore.HStoreField()),
+                ("valid_from", models.DateTimeField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("last_modified_at", models.DateTimeField(auto_now=True)),
+                (
+                    "seating_group",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="venue.SeatingGroup",
+                    ),
+                ),
             ],
         ),
         migrations.AlterField(
-            model_name='ticket',
-            name='ticket_type',
-            field=models.CharField(choices=[('normal', 'Fullpris'), ('student', 'Student')], default='normal', max_length=10),
+            model_name="ticket",
+            name="ticket_type",
+            field=models.CharField(
+                choices=[("normal", "Fullpris"), ("student", "Student")],
+                default="normal",
+                max_length=10,
+            ),
         ),
     ]

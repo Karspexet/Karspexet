@@ -25,7 +25,9 @@ class Venue(models.Model):
     description = models.TextField(blank=True)
     address = models.TextField(blank=True)
     map_address = models.CharField(blank=True, max_length=255)
-    seat_map_dimensions = HStoreField(null=False, default=dict, blank=True, validators=[validate_dimensions])
+    seat_map_dimensions = HStoreField(
+        null=False, default=dict, blank=True, validators=[validate_dimensions]
+    )
 
     def __str__(self):
         return self.name
@@ -39,13 +41,19 @@ class SeatingGroup(models.Model):
         return f"{self.venue.name} / {self.name}"
 
     def active_pricing_model(self, timestamp=None):
-        return self.pricingmodel_set.active(timestamp).filter(seating_group_id=self.id).first()
+        return (
+            self.pricingmodel_set.active(timestamp)
+            .filter(seating_group_id=self.id)
+            .first()
+        )
 
 
 class SeatManager(models.Manager):
     def available_seats(self, show) -> list[Seat]:
         taken_seats = set(show.ticket_set.values_list("seat_id", flat=True))
-        reserved_seats = show.reservation_set(manager="active").values_list("tickets", flat=True)
+        reserved_seats = show.reservation_set(manager="active").values_list(
+            "tickets", flat=True
+        )
         for tickets in reserved_seats:
             taken_seats.update(map(int, tickets.keys()))
         seats = Seat.objects.filter(group__venue=show.venue).exclude(id__in=taken_seats)

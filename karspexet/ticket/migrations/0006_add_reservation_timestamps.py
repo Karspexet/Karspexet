@@ -4,21 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ticket', '0005_reservation_show'),
+        ("ticket", "0005_reservation_show"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='reservation',
-            name='created_at',
+            model_name="reservation",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True, default=None),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='reservation',
-            name='last_modified_at',
+            model_name="reservation",
+            name="last_modified_at",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

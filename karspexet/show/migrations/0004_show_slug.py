@@ -5,25 +5,26 @@ from django.db import migrations, models
 
 
 def generate_show_slugs(apps, schema_editor):
-    Show = apps.get_model('show', 'Show')
+    Show = apps.get_model("show", "Show")
     for row in Show.objects.all():
         row.slug = row.id
         row.save()
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('show', '0003_production_alt_name'),
+        ("show", "0003_production_alt_name"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='show',
-            name='slug',
+            model_name="show",
+            name="slug",
             field=models.CharField(null=True, max_length=20, unique=True),
         ),
-        migrations.RunPython(generate_show_slugs, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(
+            generate_show_slugs, reverse_code=migrations.RunPython.noop
+        ),
         migrations.AlterField(
             model_name="show",
             name="slug",

@@ -55,7 +55,11 @@ def _next_fifteenth_september():
 
 class ActiveReservationsManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(Q(session_timeout__gt=timezone.now()) | Q(finalized=True))
+        return (
+            super()
+            .get_queryset()
+            .filter(Q(session_timeout__gt=timezone.now()) | Q(finalized=True))
+        )
 
 
 class Reservation(models.Model):
@@ -67,14 +71,17 @@ class Reservation(models.Model):
     finalized = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
-    reservation_code = models.CharField(unique=True, max_length=16, default=_generate_random_code)
+    reservation_code = models.CharField(
+        unique=True, max_length=16, default=_generate_random_code
+    )
 
     objects = models.Manager()
     active = ActiveReservationsManager()
 
     def __repr__(self):
         fields = ["id", "show_id"]
-        return "<%s(%s)>" % (type(self).__name__, ", ".join(f"{f}={getattr(self, f)}" for f in fields))
+        fields_str = (", ".join(f"{f}={getattr(self, f)}" for f in fields),)
+        return f"<{type(self).__name__}({fields_str})"
 
     def __str__(self):
         return repr(self)
@@ -84,7 +91,9 @@ class Reservation(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self) -> str:
-        return reverse("reservation_detail", kwargs={"reservation_code": self.reservation_code})
+        return reverse(
+            "reservation_detail", kwargs={"reservation_code": self.reservation_code}
+        )
 
     def get_amount(self) -> int:
         return self.total * 100  # Price in Öre
@@ -108,19 +117,28 @@ class Reservation(models.Model):
 
     def apply_voucher(self, code) -> Discount:
         if Discount.objects.filter(reservation=self).exists():
-            raise AlreadyDiscountedException("This reservation already has a discount: reservation_id=%d existing_discount_code=%s new_code=%s" % (
-                self.id, self.discount.voucher.code, code))
+            raise AlreadyDiscountedException(
+                "This reservation already has a discount: reservation_id=%d existing_discount_code=%s new_code=%s"
+                % (self.id, self.discount.voucher.code, code)
+            )
         if Discount.objects.filter(Q(voucher__code=code)).exists():
-            raise InvalidVoucherException("Voucher has already been used: code=%s" % code)
+            raise InvalidVoucherException(
+                "Voucher has already been used: code=%s" % code
+            )
         voucher = Voucher.objects.get(code=code)
         amount = min(self.ticket_price, voucher.amount)
-        discount = Discount.objects.create(reservation=self, voucher=voucher, amount=amount)
+        discount = Discount.objects.create(
+            reservation=self, voucher=voucher, amount=amount
+        )
         self.total = self.ticket_price - amount
 
         return discount
 
     def calculate_ticket_price_and_total(self) -> None:
-        self.ticket_price = sum(int(seat.price_for_type(self.tickets[str(seat.id)])) for seat in self.seats())
+        self.ticket_price = sum(
+            int(seat.price_for_type(self.tickets[str(seat.id)]))
+            for seat in self.seats()
+        )
         try:
             self.total = self.ticket_price - self.discount.amount
         except ObjectDoesNotExist:
@@ -133,7 +151,9 @@ class Reservation(models.Model):
                 tickets[str(seat.id)] = price
 
         if len(tickets) != sum(map(len, seats.values())):
-            raise MultipleTicketTypeException("One seat may not have multiple ticket types")
+            raise MultipleTicketTypeException(
+                "One seat may not have multiple ticket types"
+            )
 
         self.tickets = tickets
 
@@ -151,20 +171,24 @@ class Account(models.Model):
 
 class Ticket(models.Model):
     price = models.PositiveIntegerField()
-    ticket_type = models.CharField(max_length=10, choices=TICKET_TYPES, default="normal")
+    ticket_type = models.CharField(
+        max_length=10, choices=TICKET_TYPES, default="normal"
+    )
     show = models.ForeignKey("show.Show", null=False, on_delete=models.PROTECT)
     seat = models.ForeignKey("venue.Seat", null=False, on_delete=models.PROTECT)
     account = models.ForeignKey(Account, null=False, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
-    ticket_code = models.CharField(unique=True, max_length=16, default=_generate_random_code)
+    ticket_code = models.CharField(
+        unique=True, max_length=16, default=_generate_random_code
+    )
     reference = models.CharField(max_length=255, null=False, blank=True, default="")
 
     class Meta:
         unique_together = ("show", "seat")
 
     def __repr__(self):
-        return "<Ticket %s | %s | %s>" % (self.ticket_type, self.show, self.seat)
+        return f"<Ticket {self.ticket_type} | {self.show} | {self.seat}>"
 
     def __str__(self):
         if self.show.free_seating:
@@ -188,8 +212,11 @@ class Voucher(models.Model):
 
     Vouchers cannot be partially applied to a Reservation, so any excess value is void after use.
     """
+
     amount = models.PositiveIntegerField(help_text="Rabatt i SEK")
-    code = models.CharField(unique=True, max_length=16, null=False, default=_generate_voucher_code)
+    code = models.CharField(
+        unique=True, max_length=16, null=False, default=_generate_voucher_code
+    )
     expiry_date = models.DateField(null=False, default=_next_fifteenth_september)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -200,7 +227,9 @@ class Voucher(models.Model):
 
     @staticmethod
     def active():
-        return Voucher.objects.exclude(id__in=Discount.objects.values_list('id', flat=True))
+        return Voucher.objects.exclude(
+            id__in=Discount.objects.values_list("id", flat=True)
+        )
 
     def __str__(self):
         return f"id={self.id} amount={self.amount} code={self.code}"
@@ -215,9 +244,16 @@ class Discount(models.Model):
     A Voucher can only ever be discounted to one single Reservation, and a
     Reservation can only ever have one single Discount applied.
     """
-    amount = models.PositiveIntegerField(validators=[MinValueValidator(100), MaxValueValidator(5000)], null=False)
-    reservation = models.OneToOneField(Reservation, null=False, unique=True, on_delete=models.CASCADE)
-    voucher = models.OneToOneField(Voucher, null=False, unique=True, on_delete=models.CASCADE)
+
+    amount = models.PositiveIntegerField(
+        validators=[MinValueValidator(100), MaxValueValidator(5000)], null=False
+    )
+    reservation = models.OneToOneField(
+        Reservation, null=False, unique=True, on_delete=models.CASCADE
+    )
+    voucher = models.OneToOneField(
+        Voucher, null=False, unique=True, on_delete=models.CASCADE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
 
@@ -229,7 +265,12 @@ class ActivePricingModelManager(models.Manager):
     def active(self, timestamp=None):
         if not timestamp:
             timestamp = timezone.now()
-        return super().get_queryset().filter(valid_from__lte=timestamp).order_by("-valid_from")
+        return (
+            super()
+            .get_queryset()
+            .filter(valid_from__lte=timestamp)
+            .order_by("-valid_from")
+        )
 
 
 class PricingModel(models.Model):
@@ -237,7 +278,9 @@ class PricingModel(models.Model):
     A pricing model for a seating group.
     """
 
-    seating_group = models.ForeignKey("venue.SeatingGroup", null=False, on_delete=models.PROTECT)
+    seating_group = models.ForeignKey(
+        "venue.SeatingGroup", null=False, on_delete=models.PROTECT
+    )
     prices = HStoreField(null=False)
     valid_from = models.DateTimeField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -246,11 +289,10 @@ class PricingModel(models.Model):
     objects = ActivePricingModelManager()
 
     def __repr__(self):
-        return "<PricingModel(id={}, prices={}, seating_group={}, valid_from={})>".format(
-            self.id,
-            self.prices,
-            self.seating_group,
-            self.valid_from
+        return (
+            "<PricingModel(id={}, prices={}, seating_group={}, valid_from={})>".format(
+                self.id, self.prices, self.seating_group, self.valid_from
+            )
         )
 
     def __str__(self):
