@@ -69,6 +69,7 @@ function TicketInputRow(type: string, pricings: { [k: string]: number }) {
       $('<input type="number" class="number-of-seats" min="0">').attr("name", type),
     ),
     SponsorTicketMessage(type, pricings),
+    DiscountTicketMessage(type),
   );
 }
 
@@ -119,6 +120,16 @@ function SponsorTicketMessage(type: string, pricings: { [k: string]: number }) {
       .attr("src", "/static/svg/luva.svg")
       .attr("alt", "")
       .attr("class", "luva"),
+    $("<em>").append(...msgRows.map((text) => $('<span class="block">').text(text))),
+  );
+}
+
+function DiscountTicketMessage(type: string) {
+  if (type !== "student") {
+    return null;
+  }
+  const msgRows = ["För barn under 18, studenter och pensionärer"];
+  return $('<div class="flex gap-2 ml-2 max-w-sm">').append(
     $("<em>").append(...msgRows.map((text) => $('<span class="block">').text(text))),
   );
 }
