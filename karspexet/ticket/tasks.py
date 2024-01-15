@@ -25,7 +25,6 @@ def send_ticket_email_to_customer(reservation, email, name=None):
     if not name:
         name = email
 
-    to_address = f"{name} <{email}>"
     subject = "Dina biljetter till Kårspexet"
     site = Site.objects.get_current()
     reservation_url = f"https://{site.domain}{reservation.get_absolute_url()}"
@@ -39,9 +38,9 @@ def send_ticket_email_to_customer(reservation, email, name=None):
             subject,
             body,
             settings.TICKET_EMAIL_FROM_ADDRESS,
-            [to_address],
+            [email],
             fail_silently=False,
         )
-        logger.info("Send confirmation email to %s", to_address)
+        logger.info("Send confirmation email to %s", email)
     except Exception as e:
-        logger.exception("Failed to send Email to %s", to_address)
+        logger.exception("Failed to send Email to %s", email)
