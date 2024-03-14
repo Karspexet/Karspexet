@@ -50,7 +50,7 @@ class TestPaymentSuccess:
         assert reservation.finalized
 
         assert len(mail.outbox) == 1
-        assert mail.outbox[0].to == ["Frank Hamer <frank@hamer.com>"]
+        assert mail.outbox[0].to == ["frank@hamer.com"]
 
         assert Ticket.objects.count() == 1
 
