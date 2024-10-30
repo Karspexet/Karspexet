@@ -2032,13 +2032,13 @@ doc = ["sphinx"]
 
 [[package]]
 name = "stripe"
-version = "7.8.2"
+version = "11.2.0"
 description = "Python bindings for the Stripe API"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "stripe-7.8.2-py2.py3-none-any.whl", hash = "sha256:06c4729c71d0e2c3f10b34a8b995454b191c138e394f214f3adf780e5b13be98"},
-    {file = "stripe-7.8.2.tar.gz", hash = "sha256:9be13e00b7c1cc773fcf1e56616f084cf97b1cbe2f0fd9679f2698fc7e4803ed"},
+    {file = "stripe-11.2.0-py2.py3-none-any.whl", hash = "sha256:dec812eabc95488862be40e6c799acdaf2e1225d686490a793f949fab745fdd0"},
+    {file = "stripe-11.2.0.tar.gz", hash = "sha256:4c53d61d7b596070324bfa5d7215843145fe5466e48973d828aab41ad209b5ce"},
 ]
 
 [package.dependencies]
@@ -2243,4 +2243,4 @@ test = ["coverage (>=5.3)", "tomli (>=2.0.1)", "tox"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "fa7849af1f506839fdff7d317abbfeb7ba9f23b31760d618c55d95e8e1c104ea"
+content-hash = "577e8a6db73b1c772b733855b759d48142661a787c04c50b24ce66f217df9938"
