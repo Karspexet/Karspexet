@@ -605,23 +605,28 @@ django = ">=3.2"
 
 [[package]]
 name = "django-cms"
-version = "3.11.4"
+version = "4.1.4"
 description = "Lean enterprise content management powered by Django."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "django-cms-3.11.4.tar.gz", hash = "sha256:58ff8bda97f0012fe365eaa542f1c91a310c6b774030ef5d6c2c3caaabf3cf31"},
-    {file = "django_cms-3.11.4-py2.py3-none-any.whl", hash = "sha256:ed27c0d547695b796483d5de5dcfe4b9cedcd73b688c788f32c0175425b7017a"},
+    {file = "django_cms-4.1.4-py2.py3-none-any.whl", hash = "sha256:db8a76bf35d12c8bd1ddd70b310d476a949a3997b89945219b500e9091c0a021"},
+    {file = "django_cms-4.1.4.tar.gz", hash = "sha256:a8e700f84d5fc780e492aef777a3d6ad3372f5e87e04e121b60813cece0e6f31"},
 ]
 
 [package.dependencies]
-Django = ">=3.2,<5.0"
+Django = ">=2.2"
 django-classy-tags = ">=0.7.2"
 django-formtools = ">=2.1"
 django-sekizai = ">=0.7"
 django-treebeard = ">=4.3"
 djangocms-admin-style = ">=1.2"
 packaging = "*"
+setuptools = "*"
+
+[package.extras]
+argon2 = ["argon2-cffi (>=19.1.0)"]
+bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-csp"
@@ -2243,4 +2248,4 @@ test = ["coverage (>=5.3)", "tomli (>=2.0.1)", "tox"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "fa7849af1f506839fdff7d317abbfeb7ba9f23b31760d618c55d95e8e1c104ea"
+content-hash = "25ee800d5c4c54d25104f5b6a0d7b599aa49c463ef0c204568b70b040032158e"
