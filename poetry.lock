@@ -643,17 +643,17 @@ tests = ["jinja2 (>=2.9.6)", "pytest", "pytest-cov", "pytest-django", "pytest-ru
 
 [[package]]
 name = "django-filer"
-version = "3.1.4"
+version = "3.3.0"
 description = "A file management application for django that makes handling of files and images a breeze."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django_filer-3.1.4-py3-none-any.whl", hash = "sha256:d1bd5bba7699f11beb1fd4d1eee355ee53746491d903f691f8100cdfb53850a1"},
-    {file = "django_filer-3.1.4.tar.gz", hash = "sha256:41dac6d7a912bd10a49cb55431108397622c23358f48645255a11a7bf7a6d230"},
+    {file = "django_filer-3.3.0-py3-none-any.whl", hash = "sha256:6f7fac2b800f4eda1f39fe8d2ee13ed29d7e22ea16f1f248bcb62701f055bbe2"},
+    {file = "django_filer-3.3.0.tar.gz", hash = "sha256:21bc9ac9644e256d40db4a92486c7da8a7b55c062fed603ab69cb4906585c438"},
 ]
 
 [package.dependencies]
-django = ">=3.2,<5.1"
+django = ">=3.2"
 django-polymorphic = "*"
 easy-thumbnails = {version = "*", extras = ["svg"]}
 
@@ -2243,4 +2243,4 @@ test = ["coverage (>=5.3)", "tomli (>=2.0.1)", "tox"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "fa7849af1f506839fdff7d317abbfeb7ba9f23b31760d618c55d95e8e1c104ea"
+content-hash = "b3871274f3049e424329dab935795d291f0b6532eb67075e477fdf114382d59c"
