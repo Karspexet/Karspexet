@@ -771,18 +771,17 @@ django-cms = ">=3.7"
 
 [[package]]
 name = "djangocms-link"
-version = "3.1.1"
+version = "5.0.0"
 description = "Adds a link plugin to django CMS"
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 files = [
-    {file = "djangocms-link-3.1.1.tar.gz", hash = "sha256:e9e989b851ba93ca5e57c497c4e989fe76f16979467c6093f51349b43eba4391"},
-    {file = "djangocms_link-3.1.1-py3-none-any.whl", hash = "sha256:1ee4c34fe08830fcf41ed85bfc40d869b3ac42dde7c351814ebd7b1181cb4c18"},
+    {file = "djangocms_link-5.0.0-py3-none-any.whl", hash = "sha256:45c0d37febcf616fa2614ca231ce71b5437187b3a190c8bee23ce30d5bf3a531"},
+    {file = "djangocms_link-5.0.0.tar.gz", hash = "sha256:df212037a69e8422da5896f93196783e22be947e43b2b445047f2ca2a16feb77"},
 ]
 
 [package.dependencies]
-django-cms = ">=3.7"
-django-filer = ">=1.7"
+django-cms = ">=3.7,<4.1 || >4.1,<4.1.1 || >4.1.1,<4.1.2 || >4.1.2"
 djangocms-attributes-field = ">=1"
 
 [[package]]
@@ -2243,4 +2242,4 @@ test = ["coverage (>=5.3)", "tomli (>=2.0.1)", "tox"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "fa7849af1f506839fdff7d317abbfeb7ba9f23b31760d618c55d95e8e1c104ea"
+content-hash = "42d5363061a71bbddceee0ebc9c694505385b5228bd7286e3f27aaafe6ce628e"
